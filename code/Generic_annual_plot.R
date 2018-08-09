@@ -1,5 +1,5 @@
 ##############################################################################
-#This script creates monthly boxplots of Outflow and PE to compare two CRSS runs
+#This script creates annual plots of Outflow and PE to compare two CRSS runs
 
 #DEVELOPMENT IS ON GOING ON THIS
 
@@ -41,11 +41,11 @@ file = "res.rdf"
 
 rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scenarios[1],file))) #check slots in rdf
 
-# variables = "Mead.Pool Elevation"
-variables = "Powell.Inflow"
+variables = "Mead.Pool Elevation"
+# variables = "Powell.Inflow"
 
-floworpe = "flow" #or "pe" 
-cyorwy = "cy" #or "wy" 
+floworpe = "pe" #"flow" or "pe" 
+cyorwy = "cy" #"cy" or "wy" 
 
 #plot inputs 
 startyr = 2019 #filter out all years > this year
@@ -95,15 +95,17 @@ message('Figures will be saved to: ', ofigs)
 #y axis titles 
 if (floworpe == "flow"){
   if (cyorwy == "cy"){
-    y_lab = "Annual CY Outflow (ac-ft/mo)"
+    y_lab = "Annual CY Flow (ac-ft/mo)"
   } else {
-    y_lab = "Annual WY Outflow (ac-ft/mo)"
+    y_lab = "Annual WY Flow (ac-ft/mo)"
   }
 } else {
   if (cyorwy == "cy"){
     y_lab = "EOCY PE (ft)"
+    peperiod = "eocy"
   } else {
     y_lab = "EOWY PE (ft)"
+    peperiod = "eowy"
   }
 }
 
@@ -114,7 +116,11 @@ if (floworpe == "flow"){
 rwa1 <- rwd_agg(data.frame(
   file = file,
   slot = variables, 
-  period = cyorwy,
+  period = if (floworpe == "flow"){
+    cyorwy
+  } else{
+    peperiod
+  },
   summary = if (floworpe == "flow"){
     "sum"
   } else{
@@ -160,8 +166,8 @@ if (figuretype == 1){
     dplyr::group_by(Scenario, Year) %>%
     dplyr::summarise(Value = mean(Value)) %>%
     ggplot(aes(x = factor(Year), y = Value, color = Scenario)) + 
-    geom_point() +
     geom_line() +
+    geom_point() +
     labs(title = paste("Mean",variable,startyr,"-",filteryrlessorequal), 
          y = y_lab, x = "Year") 
   print(p)
