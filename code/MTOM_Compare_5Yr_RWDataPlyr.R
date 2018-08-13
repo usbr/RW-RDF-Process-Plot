@@ -95,10 +95,10 @@ if(!file.exists(file.path(scen_dir, scenarios[1]))
   stop('Scenarios folder(s) do not exist or scen_dir is set up incorrectly. 
        Please ensure Scenarios is set correctly.')
 
-if (!file.exists(file.path(scen_dir, 'results'))) {
-  message(paste(file.path(scen_dir, 'results'),
+if (!file.exists(file.path(getwd(), 'results'))) {
+  message(paste(file.path(getwd(), 'results'),
                 'does not exist. Creating this folder...'))
-  dir.create(file.path(scen_dir, 'results'))
+  dir.create(file.path(getwd(), 'results'))
 }
 
 oFigs <- file.path(getwd(),'results',mainScenGroup) 
