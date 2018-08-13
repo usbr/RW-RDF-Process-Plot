@@ -54,7 +54,7 @@ filteryrlessorequal = 2022 #filter out all years > this year
 #file names 
 figs <- 'Generic_AnnualFig' #objectslot + .pdf will be added when creating plots
 
-figuretype <- 2 #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance 
+figuretype <- 1 #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance 
 #### End of Normally You'll Only Change This ####
 
 # the mainScenGroup is the name of the subfolder this analysis will be stored
@@ -165,7 +165,7 @@ if (figuretype == 1){
     dplyr::filter(Year <= filteryrlessorequal) %>% #filter year
     dplyr::group_by(Scenario, Year) %>%
     dplyr::summarise(Value = mean(Value)) %>%
-    ggplot(aes(x = factor(Year), y = Value, color = Scenario)) + 
+    ggplot(aes(x = factor(Year), y = Value, color = Scenario,group=Scenario)) + 
     geom_line() +
     geom_point() +
     labs(title = paste("Mean",variable,startyr,"-",filteryrlessorequal), 
