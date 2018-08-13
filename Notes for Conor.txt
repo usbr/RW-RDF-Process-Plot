@@ -1,0 +1,12 @@
+########################################################
+############## Notes for Conor #########################
+########################################################
+
+-I had to type packrat::restore() twice since it failed halfway through the packages on xts
+
+
+
+ source("code/MTOM_Compare_5Yr_RWDataPlyr.R")
+Error in eval(ei, envir) : 
+  Scenarios folder(s) do not exist or scen_dir is set up incorrectly. 
+       Please ensure Scenarios is set correctly.

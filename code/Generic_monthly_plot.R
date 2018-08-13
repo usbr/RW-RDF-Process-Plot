@@ -54,6 +54,7 @@ filteryrlessorequal = 2022 #filter out all years > this year
 figs <- 'Generic_MonthlyFig' #objectslot + .pdf will be added when creating plots
 
 figuretype <- 2 #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance 
+
 # IF PICKING 3 you must specify a month
 exc_month = 12 #1 - Jan, 12 - Dec
 
@@ -100,7 +101,7 @@ if (floworpe == "flow"){
 } else {
   y_lab = "End of Month PE (ft)"
 }
-
+figuretypes = c("Mean","Bxplt","Exceedance")
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -141,7 +142,7 @@ scen_res$MonthNum = as.numeric(format.Date(scen_res$MonthNum, format = "%m"))
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ## create a pdf  
-pdf(paste0(file.path(ofigs,figs),"_",variables,".pdf"), width=9, height=6)
+pdf(paste0(file.path(ofigs,figs),"_",variables,"_",figuretypes[figuretype],".pdf"), width=9, height=6)
 
 variable = variables
 
