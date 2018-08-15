@@ -47,8 +47,10 @@ createSimple5yrTable <- TRUE
 
 ### Update to 2019 ###############
 #Additional inputs 
-yrs2show <- 2018:2022 # years to show the crit stats figures
-peYrs <- 2017:2022 # years to show the Mead/Powell 10/50/90 figures for
+yrs2show <- 2019:2023 # years to show the crit stats figures
+
+#You can't change the start of peYrs to 2019 until the IC is in 2019. 
+peYrs <- 2018:2023 # years to show the Mead/Powell 10/50/90 figures for
  
 # the mainScenGroup is the scenario to use when creating 
 # the current month's 5-year table, etc. In the plots, we want to show the 
@@ -57,7 +59,7 @@ mainScenGroup <- "CurrentRun"
 
 # text that will be added to figures
 annText <- 'Results from Current MTOM Run' 
-yy5 <- 2018:2022 # years to use for the simple 5-year table
+yy5 <- 2019:2022 # years to use for the simple 5-year table
 tableFootnote <- NA # for the simple 5-year table, this should either be a 
 #footnote corresponding to one of the my_scens names or NA
 
