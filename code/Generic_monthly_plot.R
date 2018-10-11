@@ -27,10 +27,17 @@ scen_dir = file.path(getwd(),"scenarios")
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+#generic scenario locations 
 scenarios <- list(
-  "PreviousRun" = "PreviousRun", 
+  "PreviousRun" = "PreviousRun",
   "CurrentRun" = "CurrentRun"
 )
+
+#custom scenario folders, select the below lines and ctrl + shift + c to turn off
+# scenarios <- list(
+#   "Dev" = "Dev", 
+#   "FGdev" = "FGdev"
+# ) #this is case sensitive 
 
 #### Normally You'll Only Change This ####
 first_ensemble = c(2,2) #filter out Most,Min,Max. For 38 trace offical = 4, 
@@ -41,10 +48,12 @@ file = "res.rdf"
 
 rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scenarios[1],file))) #check slots in rdf
 
-variables = "Mead.Pool Elevation"
-# variables = "Powell.Inflow"
+# # only specify one of variable here are some examples only the bottom is used
+# variables = "FlamingGorge.Pool Elevation"
+# variables = "FlamingGorge.Outflow"
+variables = "Powell.Inflow"
 
-floworpe = "pe" #"flow" or "pe" 
+floworpe = "flow" #"flow" or "pe" 
 
 #plot inputs 
 startyr = 2019 #filter out all years > this year
@@ -68,7 +77,7 @@ customcaption <- NA #NA or this will over write the default caption on boxplots
 
 # the mainScenGroup is the name of the subfolder this analysis will be stored
 #under in the results folder 
-mainScenGroup <- "CurrentRun"
+mainScenGroup <- scenarios[2] #"CurrentRun"
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #                               END USER INPUT

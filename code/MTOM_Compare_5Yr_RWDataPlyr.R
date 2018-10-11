@@ -28,9 +28,16 @@ scen_dir = file.path(getwd(),"scenarios")
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #scenarios are folder names for the rdfs from your different runs
-scenarios = my_scens =  c("PreviousRun", "CurrentRun") 
+
+#generic scenario locations 
+my_scens = c("PreviousRun", "CurrentRun") #names for your senarios to plot
+
 # this is the order they will show up in the table & plot, so list the newest 
 #run second there should only be 2 scenarios
+
+# #custom scenario folders, select the below lines and ctrl + shift + c to use
+#scenarios = my_scens =  c("dev", "FGdev") 
+
 # my_scens = c("PreviousRun", "CurrentRun") #names for your senarios to plot 
 #KEEP THESE SAME AS SCENARIOS, otherwise something is erroring
 names(scenarios) = my_scens #naming 
@@ -47,15 +54,17 @@ createSimple5yrTable <- TRUE
 
 ### Update to 2019 ###############
 #Additional inputs 
-yrs2show <- 2019:2023 # years to show the crit stats figures
+# yrs2show <- 2019:2023 # years to show the crit stats figures
+yrs2show <- 2019:2022 # can't use this until your run extends to end of 2023
 
 #You can't change the start of peYrs to 2019 until the IC is in 2019. 
-peYrs <- 2018:2023 # years to show the Mead/Powell 10/50/90 figures for
+# peYrs <- 2018:2023 # can't use this until your run extends to end of 2023
+peYrs <- 2018:2022 # years to show the Mead/Powell 10/50/90 figures for
  
 # the mainScenGroup is the scenario to use when creating 
 # the current month's 5-year table, etc. In the plots, we want to show the 
 # previous months runs, but in the tables, we only want the current month run.
-mainScenGroup <- "CurrentRun"
+mainScenGroup <- names(scenarios)[2] #"CurrentRun"
 
 # text that will be added to figures
 annText <- 'Results from Current MTOM Run' 
