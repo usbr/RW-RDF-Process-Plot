@@ -3,239 +3,122 @@
 
 #DEVELOPMENT IS ON GOING ON THIS
 
-#Contents 
-## 1. Set Up ##
-## 2. User Input ##
-## 3. Process Results ## 
-## 4. Plot ## 
-
 #   Created by C. Felletter 8/2018
+#   Updated by CF on 10/2018 to be a function
 ##############################################################################
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 1. Set Up ##
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-rm(list=ls()) #clear the enviornment 
-library(RWDataPlyr)
+generic.annual.plot <- function(scen_res) { 
 
-## Directory Set Up
-# where scenarios are folder are kept
-scen_dir = file.path(getwd(),"scenarios") 
-#containing the sub folders for each ensemble
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 2. User Input ##
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-#generic scenario locations 
-scenarios <- list(
-  "PreviousRun" = "PreviousRun",
-  "CurrentRun" = "CurrentRun"
-)
-
-#custom scenario folders, select the below lines and ctrl + shift + c to turn off
-# scenarios <- list(
-#   "Dev" = "Dev", 
-#   "FGdev" = "FGdev"
-# ) #this is case sensitive 
-
-
-#### Normally You'll Only Change This ####
-first_ensemble = c(2,2) #filter out Most,Min,Max. For 38 trace offical = 4, 
-#36 trace month w Most = 2. Same order as for scenarios  
-
-#rdf file with slot you want 
-file = "res.rdf" 
-
-rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scenarios[1],file))) #check slots in rdf
-
-# # only specify one of variable here are some examples only the bottom is used
-# variables = "FlamingGorge.Pool Elevation"
-# variables = "FlamingGorge.Outflow"
-variables = "Powell.Inflow"
-
-#must set this whenever you change the variable
-floworpe = "flow" #"flow" or "pe" 
-cyorwy = "cy" #"cy" or "wy" 
-
-#plot inputs 
-startyr = 2019 #filter out all years > this year
-filteryrlessorequal = 2022 #filter out all years > this year
-
-#file names 
-figs <- 'Generic_AnnualFig' #objectslot + .pdf will be added when creating plots
-
-figuretype <- 2 #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance 
-
-#### End of Normal Change Section ####
-
-#output image parameters 
-width=9 #inches
-height=6
-imgtype = "pdf" #supports pdf, png, jpeg. pdf looks the best 
-customcaption <- NA #NA or this will over write the default caption on boxplots 
-
-# the mainScenGroup is the name of the subfolder this analysis will be stored
-#under in the results folder 
-mainScenGroup <- scenarios[2] #"CurrentRun"
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#                               END USER INPUT
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-#Additional plotting functions and libraries 
-library('tidyverse') #ggplot2,dplyr,tidyr
-library('devtools')
-library(RWDataPlyr)
-#see RWDATPlyr Workflow for more information 
-# library(CRSSIO)
-# plotEOCYElev() and csVarNames()
-source('code/Stat_emp_ExcCrv.r')
-source('code/stat-boxplot-custom.r')
-
-# some sanity checks that UI is correct:
-if(!(mainScenGroup %in% names(scenarios))) 
-  stop(mainScenGroup, ' is not found in scens.')
-
-# check folders
-if(!file.exists(file.path(scen_dir, scenarios[1])) 
-   | !file.exists(file.path(scen_dir, scenarios[2])))
-  stop('Scenarios folder(s) do not exist or scen_dir is set up incorrectly. 
-       Please ensure Scenarios is set correctly.')
-
-ofigs <- file.path(getwd(),'results',mainScenGroup) 
-if (!file.exists(ofigs)) {
-  message(paste('Creating folder:', ofigs))
-  dir.create(ofigs)
-}
-
-message('Figures will be saved to: ', ofigs)
-
-#y axis titles 
-if (floworpe == "flow"){
-  if (cyorwy == "cy"){
-    y_lab = "Annual CY Flow (ac-ft/mo)"
+  # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  ## 1. Set Up ##
+  # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  
+  #Additional plotting functions and libraries
+  library('tidyverse') #ggplot2,dplyr,tidyr
+  source('code/Stat_emp_ExcCrv.r')
+  source('code/stat-boxplot-custom.r')
+  
+  figurenames <- c("mean","bxplt","exceedance")
+  
+  ## create a pdf
+  # pdf(paste0(file.path(ofigs,figs),"_",variables,"_",figurenames[figuretypes],".pdf"), width=9, height=6)
+  #enable the above if using loops (advanced) and want one pdf
+  #must disable ggsave at bottom and captions won't work w/o ggsave
+  
+  #y axis titles
+  if (floworpe == "flow"){
+    if (cyorwy == "cy"){
+      y_lab = "Annual CY Flow (ac-ft/mo)"
+    } else {
+      y_lab = "Annual WY Flow (ac-ft/mo)"
+    }
   } else {
-    y_lab = "Annual WY Flow (ac-ft/mo)"
+    if (cyorwy == "cy"){
+      y_lab = "EOCY PE (ft)"
+    } else {
+      y_lab = "EOWY PE (ft)"
+    }
   }
-} else {
-  if (cyorwy == "cy"){
-    y_lab = "EOCY PE (ft)"
-    peperiod = "eocy"
+  
+  if (is.na(custom_y_lab)){
+    y_lab <- y_lab #default
   } else {
-    y_lab = "EOWY PE (ft)"
-    peperiod = "eowy"
+    y_lab <- custom_y_lab
   }
-}
+  
+  
+  figs <- figname
+  
+  # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  ## 4. Plot Choosen Figure Type
+  # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  
+  #figure captions
+  if (is.na(customcaption) &  figuretype == 2){
+    caption <- "Note: The boxplots show the distribution of traces, one for each year. The boxplot boxes correspond to the 25th and 75th quantiles,\nthe whiskers enclose the 10th to 90th quantiles,with points representing data that falls outside this range."
+  } else if (is.na(customcaption)){
+    caption <- "" #no caption
+  } else {
+    caption <- customcaption #user supplied
+  }
+  
+  message(paste("Creating",variable,timestep,cyorwy,figurenames[figuretype]))
+  
+  #    -------------------        All Trace Mean        ----------------------
+  
+  if (figuretype == 1){
+    p <- scen_res %>%
+      # dplyr::filter(Variable == variable) %>%
+      dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+      dplyr::group_by(Scenario, Year) %>%
+      dplyr::summarise(Value = mean(Value)) %>%
+      ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+      geom_line() +
+      geom_point() +
+      labs(title = paste("Mean",variable,startyr,"-",endyr),
+           y = y_lab, x = "Year", caption = caption) +
+      theme(plot.caption = element_text(hjust = 0)) #left justify
+    print(p)
+  }
+  
+  #    -------------------        All Trace Boxplot        ----------------------
+  
+  if (figuretype == 2){
+    p <- scen_res %>%
+      # dplyr::filter(Variable == variable) %>%
+      dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+      dplyr::group_by(Scenario, Year) %>%
+      ggplot(aes(x = factor(Year), y = Value, color = Scenario)) +
+      # geom_boxplot() + #generic geom uses 1.5 * IQR for the whiskers
+      # custom has whiskers go to the 10th/90th
+      stat_boxplot_custom(qs = c(0.1, 0.25, 0.5, 0.75, 0.9)) +
+      labs(title = paste(variable,startyr,"-",endyr),
+           y = y_lab, x = "Year", caption = caption) +
+      theme(plot.caption = element_text(hjust = 0)) #left justify
+      print(p)
+  }
+  
+  #    -------------------        Percent Exceedance of Traces       ----------------------
+  
+  if (figuretype == 3){
+    p <- scen_res %>%
+      # dplyr::filter(Variable == variable) %>%
+      dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+      dplyr::group_by(Scenario, Year) %>%
+      ggplot(aes(Value, color = Scenario)) +
+      stat_eexccrv() +
+      labs(title = paste(variable,"Trace Exceedance",startyr,"-",endyr),
+           y = y_lab, caption = caption) +
+      scale_x_continuous("Year",labels = scales::percent) +
+      theme(plot.caption = element_text(hjust = 0)) #left justify
+    print(p)
+  }
+  
+  if(combineplots == F){
+  ## save off image
+  ggsave(filename = paste0(file.path(ofigs,figs),"_",timestep,"_",cyorwy,"_",variable,"_",figurenames[figuretype],".",imgtype), width = width, height = height, units ="in")
+  
+  dev.off()
+  }
 
-figuretypes = c("Mean","Bxplt","Exceedance")
-
-#figure captions
-if (is.na(customcaption) &  figuretype == 2){
-  caption <- "Note: The boxplots show the distribution of traces, one for each year. The boxplot boxes correspond to the 25th and 75th quantiles,\nthe whiskers enclose the 10th to 90th quantiles,with points representing data that falls outside this range."
-} else if (is.na(customcaption)){
-  caption <- "" #no caption 
-} else {
-  caption <- customcaption #user supplied 
-}
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 3. Process Results 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#generic agg file 
-rwa1 <- rwd_agg(data.frame(
-  file = file,
-  slot = variables, 
-  period = if (floworpe == "flow"){
-    cyorwy
-  } else{
-    peperiod
-  },
-  summary = if (floworpe == "flow"){
-    "sum"
-  } else{
-    NA
-  },
-  eval = NA,
-  t_s = NA,
-  variable = variables,
-  stringsAsFactors = FALSE
-))
-
-#rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
-scen_res <- rw_scen_aggregate(
-  scenarios,
-  agg = rwa1,
-  scen_dir = scen_dir
-) %>% 
-  # filter out Most,Min,Max
-  dplyr::filter(
-    (Scenario == scenarios[1] & TraceNumber >= first_ensemble[1]) |
-    (Scenario == scenarios[2] & TraceNumber >= first_ensemble[2])
-  ) 
-
-unique(scen_res$Scenario) #check variable names
-unique(scen_res$Variable) #check variable names
-unique(scen_res$TraceNumber) #check trace numbers 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 4. Plot Choosen Figure Type 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-variable = variables
-
-#    -------------------        All Trace Mean        ----------------------
-
-if (figuretype == 1){
-  p <- scen_res %>%
-    # dplyr::filter(Variable == variable) %>%
-    dplyr::filter(Year >= startyr) %>% #filter year
-    dplyr::filter(Year <= filteryrlessorequal) %>% #filter year
-    dplyr::group_by(Scenario, Year) %>%
-    dplyr::summarise(Value = mean(Value)) %>%
-    ggplot(aes(x = factor(Year), y = Value, color = Scenario,group=Scenario)) + 
-    geom_line() +
-    geom_point() +
-    labs(title = paste("Mean",variable,startyr,"-",filteryrlessorequal), 
-         y = y_lab, x = "Year", caption = caption) +
-    theme(plot.caption = element_text(hjust = 0)) #left justify 
-  print(p)
-}
-
-#    -------------------        All Trace Boxplot        ----------------------
-
-if (figuretype == 2){
-  p <- scen_res %>%
-    # dplyr::filter(Variable == variable) %>%
-    dplyr::filter(Year >= startyr) %>% #filter year
-    dplyr::filter(Year <= filteryrlessorequal) %>% #filter year
-    dplyr::group_by(Scenario, Year) %>%
-    ggplot(aes(x = factor(Year), y = Value, color = Scenario)) + 
-    geom_boxplot() +
-    labs(title = paste(variable,startyr,"-",filteryrlessorequal), 
-         y = y_lab, x = "Year", caption = caption) +
-    theme(plot.caption = element_text(hjust = 0)) #left justify 
-  print(p)
-}
-
-#    -------------------        Percent Exceedance of Traces       ----------------------
-
-if (figuretype == 3){
-  p <- scen_res %>%
-    # dplyr::filter(Variable == variable) %>%
-    dplyr::filter(Year >= startyr) %>% #filter year
-    dplyr::filter(Year <= filteryrlessorequal) %>% #filter year
-    dplyr::group_by(Scenario, Year) %>%
-    ggplot(aes(Value, color = Scenario)) + 
-    stat_eexccrv() + 
-    labs(title = paste(variable,"Trace Exceedance",startyr,"-",filteryrlessorequal), 
-         y = y_lab, caption = caption) +
-    scale_x_continuous("Year",labels = scales::percent) + 
-    theme(plot.caption = element_text(hjust = 0)) #left justify 
-  print(p)
-}
-
-## save off image 
-ggsave(filename = paste0(file.path(ofigs,figs),"_",variables,"_",figuretypes[figuretype],".",imgtype), width = width, height = height, units ="in")
-
-dev.off()
+} #end function

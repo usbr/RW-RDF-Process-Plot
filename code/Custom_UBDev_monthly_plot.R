@@ -17,12 +17,12 @@ scen_dir = file.path(getwd(),"scenarios")
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #generic scenario locations 
-my_scens = c("PreviousRun", "CurrentRun") #names for your senarios to plot
+# my_scens = c("PreviousRun", "CurrentRun") #names for your senarios to plot
 # this is the order they will show up in the table & plot, so list the newest 
 #run second there should only be 2 scenarios
 
 # #custom scenario folders, select the below lines and ctrl + shift + c to use
-# scenarios = my_scens =  c("dev", "FGdev") 
+scenarios = my_scens =  c("dev", "FGdev")
 
 names(scenarios) = my_scens #naming 
 
