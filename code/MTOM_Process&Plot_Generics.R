@@ -19,29 +19,32 @@
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 rm(list=ls()) #clear the enviornment 
 
+library(RWDataPlyr)
+
 ## Directory Set Up
-#Set folder where studies are kept as sub folders. 
-CRSSDIR <- Sys.getenv("CRSS_DIR")
 
 # where scenarios are folder are kept
-scen_dir = file.path(CRSSDIR,"Scenario") 
+scen_dir <- file.path(getwd(),"scenarios") 
 #containing the sub folders for each ensemble
 
-results_dir <- file.path(CRSSDIR,"results") 
+results_dir <- file.path(getwd(),"results") 
+
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+#list scenarios folders in scen_dir
 list.dirs(scen_dir) #list dirs in set folder folder for us in next input
 
 #### Normally You'll Only Change The Below ####
-#scens you want to compare 
+#scens you want to compare, list as "your plot name" = "folder name"
 scens <- list(
-  "Aug 2018" = "Aug2018_2019,DNF,2007Dems,IG,Most",
-  "Aug 2018 + Fix" = "Aug2018_2019_9000,DNF,2007Dems,IG_9000,Most_BM_FGltsp"
+  "Aug 2018" = "PreviousRun",
+  "Aug 2018 + Fix" = "CurrentRun"
 )
 
+#list rdf files in dir
 list.files(file.path(scen_dir,scens[1])) #list files in scen folder for next input
 
 #files, variables, floworpes, cyorwys, figuretypes, exc_months (if using exceed
@@ -51,18 +54,20 @@ list.files(file.path(scen_dir,scens[1])) #list files in scen folder for next inp
 
 ## Process Variables ##
 
-rdffiles <- c("Res.rdf") #rdf file with slot you want
-# rdffiles <- c("DailyFlows.rdf") #rdf file with slot you want
-# rdffiles <- c("UBRes.rdf") #rdf file with slot you want
+rdffiles <- c("res.rdf") #rdf file with slot you want
+rdffiles <- c("daily.rdf") #rdf file with slot you want
+
+#list slots in rdf
+rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],rdffiles[1])))
 
 variables <- c("Powell.Inflow") #RW Object.Slot
 # variables <- c("Powell.Pool Elevation") #RW Object.Slot
 # variables <- c("FlamingGorge.Pool Elevation") #RW Object.Slot
-# variables <- c("DailyFlows.FlamingGorgeDaily") #RW Object.Slot
+variables <- c("KNN_MTOM.FlamingGorgeDaily") #RW Object.Slot
 
 # timesteps <- c("annual") #"annual" or "monthly"
-timesteps <- c("monthly") #"annual" or "monthly"
-# timesteps <- c("daily") #"annual" or "monthly" or "daily"
+# timesteps <- c("monthly") #"annual" or "monthly"
+timesteps <- c("daily") #"annual" or "monthly" or "daily"
 
 
 floworpes <- c("flow") #"flow" or "pe"
@@ -71,7 +76,12 @@ floworpes <- c("flow") #"flow" or "pe"
 cyorwys <- c("cy") #"cy" or "wy". wy not tested for all plot configurations
 #daily only supports cy
 
-mainScenGroup <<- names(scens)[1] #name of the subfolder this analysis will be stored
+mainScenGroup <<- names(scens)[2] #name of the subfolder this analysis will be stored
+
+first_ensemble <<- c(2,2) #filter out Most,Min,Max. For 38 trace offical = 4, 
+#36 trace month w Most = 2. Same order as for scenarios  
+
+model <<- "MTOM" #"CRSS" or "MTOM"
 
 ## Plot Variables ##
 
@@ -83,7 +93,7 @@ exc_months <- c(12) #1 - Jan, 12 - Dec
 #Note: exceedance month is only needed for monthly pe exceedance (3)
 
 startyrs <- c(2019) #filter out all years > this year
-endyrs <- c(2026) #filter out all years > this year
+endyrs <- c(2022) #filter out all years > this year
 #these must match if doing daily slot
 
 customcaptions <- c(NA) #NA or this will overwrite the default captions
@@ -118,6 +128,33 @@ imgtype <<- "pdf" #supports pdf, png, jpeg. pdf looks the best
 # #Note: any parameters that are listed twice will be set as the latest (furtherst 
 # #down) value
 
+#Example 2, FG Dev plots: Monthly Flow Bxplt, Annual PE Exceedance. Don't combine plots.
+
+
+rdffiles <- c("daily.rdf","daily.rdf","res.rdf","res.rdf","res.rdf","res.rdf") #rdf file with slot you want
+variables <- c("KNN_MTOM.FlamingGorgeDaily","KNN_MTOM.FlamingGorgeDaily",
+               "FlamingGorge.Pool Elevation","FlamingGorge.Outflow",
+               "Powell.Inflow","Powell.Pool Elevation") #RW Object.Slot
+timesteps <- c("daily","daily","monthly","monthly","monthly","annual") #"annual" or "monthly" or "daily"
+floworpes <- c("flow","flow","pe","flow","flow","pe") #"flow" or "pe"
+cyorwys <- c("cy","cy","cy","cy","cy","cy") #"cy" or "wy". wy not tested for all plot configurations
+mainScenGroup <<- names(scens)[2] #name of the subfolder this analysis will be stored
+first_ensemble <<- c(2,2) #filter out Most,Min,Max. For 38 trace offical = 4, 
+model <<- "MTOM" #"CRSS" or "MTOM"
+## Plot Variables ##
+combineplots <<- T #F for individual files saved, true to combineplots multiple files
+figuretypes <- c(2,3,2,2,3,1) #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance
+# IF PICKING "monthly" 3 you must specify a month
+exc_months <- c(NA,5,NA,NA,12,NA) #1 - Jan, 12 - Dec
+#Note: exceedance month is only needed for monthly pe exceedance (3)
+#Note: must specify exc_month for Exceedance, since we want wy this is 9/sept
+startyrs <<- c(2019,2019,2019,2019,2019,2019) #filter out all years > this year
+endyrs <<- c(2019,2019,2022,2022,2022,2022) #filter out all years > this year
+#Note: start year same as end year for Daily
+customcaptions <- c(NA,"May Outflow Exceedance",NA,NA,NA,NA) #NA or this will over write the default caption on boxplots
+custom_y_labs <- c(NA,"May Outflow Exceedance",NA,NA,NA,NA) #NA gives defaults, enter if want soemthing different
+# Note: use of custom caption and labels
+figname <<- 'FGDev_Sensitivity'
 
 #Example 2: Monthly Flow Bxplt, Annual PE Exceedance. Don't combine plots.
 
@@ -238,6 +275,14 @@ for(i in 1:length(variables)){
   
   # some sanity checks that UI is correct:
   generic.input.check(scen_dir,scens,timestep) 
+  
+  vars <- list(rdffiles,variables,floworpes,cyorwys,timesteps,figuretypes,
+               exc_months,startyrs,endyrs,customcaptions,custom_y_labs)
+  # check to make sure
+  if(length(unique(unlist(lapply(X = vars,FUN = length)))) > 1){ 
+    stop('variables must all be the same length')
+  }
+  
   
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   ## 3. Process Results 

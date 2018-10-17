@@ -13,6 +13,12 @@ generic.input.check <- function(scen_dir,scens,timestep) {
   ## 1. Set Up ##
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   
+  
+  #Additional libraries 
+  library('tidyverse') #ggplot2,dplyr,tidyr
+  library('devtools')
+  library(RWDataPlyr)
+  
   # ## Examples ##
   # mainScenGroup <- "Scoopity Woop" 
   # rdffile <<- "FakeNews.rdf"
@@ -45,6 +51,15 @@ generic.input.check <- function(scen_dir,scens,timestep) {
   } 
   
  
+  if(!(model == "CRSS" | model == "MTOM")){
+    stop(paste(model,'is not a supported model'))
+  }
+  
+  if(all(model == "MTOM",!(first_ensemble[1] %in% 1:4),
+         !(first_ensemble[2] %in% 1:4))){
+    stop(paste(first_ensemble[1],'or',first_ensemble[2],'is not a supported first_ensemble'))
+  }
+  
   if(!(cyorwy == "cy" | cyorwy == "wy")){
     stop(paste(cyorwy,'is not a supported cyorwy'))
     }
@@ -57,8 +72,13 @@ generic.input.check <- function(scen_dir,scens,timestep) {
     stop(paste(figuretype,'is not a supported figuretype'))
   }
   
-  if(!any(exc_month %in% 1:12)){ 
+  if(!any(exc_month %in% 1:12) && !is.na(exc_month)){ 
     stop(paste(exc_month,'is not a supported exc_month'))
+  }
+  
+  if(!any(exc_month %in% 1:12) && floworpe == "pe" && timestep == "monthly" &&
+     figuretype == 3){ 
+    stop(paste(exc_month,'exc_month must be 1-12 for monthly pe exceed'))
   }
   
   if(startyr > endyr){
@@ -69,17 +89,18 @@ generic.input.check <- function(scen_dir,scens,timestep) {
     stop(paste(startyr,'startyr must be numeric'))
   }
   
-  endyr <<- "Really??"
+  # # one last test
+  # endyr <<- "Really??"
   
   if(!is.numeric(endyr)){
     stop(paste(endyr,'endyr must be numeric'))
   }
   
-  if(!is.character(customcaption)){
+  if(!is.character(customcaption) && !is.na(customcaption)){
     stop(paste(customcaption,'customcaption must be char'))
   }
   
-  if(!is.character(custom_y_lab)){
+  if(!is.character(custom_y_lab) && !is.na(custom_y_lab)){
     stop(paste(custom_y_lab,'custom_y_lab must be char'))
   }
 

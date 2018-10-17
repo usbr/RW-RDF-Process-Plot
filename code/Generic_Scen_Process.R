@@ -96,6 +96,17 @@ generic.scen.process <- function(scen_dir,scens,timestep) {
       scen_res$MonthNum = as.numeric(format.Date(scen_res$MonthNum, format = "%m"))
     }
     
+    if (model == "MTOM"){
+      test <- scen_res %>% 
+        # filter out Most,Min,Max
+        dplyr::filter(
+          (Scenario == names(scens[1]) && TraceNumber >= first_ensemble[1]) |
+            (Scenario == names(scens[2]) && TraceNumber >= first_ensemble[2])
+        ) 
+      
+      message(paste('Filtering out trace',first_ensemble[1],'from',names(scens[1]),"and",first_ensemble[2],'from',names(scens[2])))
+    }
+    
     return(scen_res)
     
   } #end of ann/mon process 
@@ -115,10 +126,7 @@ generic.scen.process <- function(scen_dir,scens,timestep) {
       scen_res_x <- file.path(scen_dir,scens[i],rdffile) %>% #this means "pipe" the data to the next function 
         rdf_to_rwtbl2() %>%
         filter(ObjectSlot == variable)
-      
-      # #filter out Most,Min,Max only would do this for MTOM 
-      # filter(TraceNumber >= first_ensemble[1]) 
-      
+     
       #add on Scenario since rdf_to_rwtbl2 doesn't add it  
       scen_res_x <- cbind.data.frame(
         scen_res_x,
@@ -147,6 +155,16 @@ generic.scen.process <- function(scen_dir,scens,timestep) {
     scen_res$MonthNum = as.numeric(format.Date(scen_res$Timestep, format = "%m"))
     scen_res$DayNum = as.numeric(format.Date(scen_res$Timestep, format = "%d"))
     
+    if (model == "MTOM"){
+      test <- scen_res %>% 
+        # filter out Most,Min,Max
+        dplyr::filter(
+          (Scenario == names(scens[1]) && TraceNumber >= first_ensemble[1]) |
+            (Scenario == names(scens[2]) && TraceNumber >= first_ensemble[2])
+        ) 
+      message(paste('Filtering out trace',first_ensemble[1],'from',names(scens[1]),"and",first_ensemble[2],'from',names(scens[2])))
+    }
+  
     return(scen_res)
     
   } else {
