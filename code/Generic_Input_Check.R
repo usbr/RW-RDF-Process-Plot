@@ -21,16 +21,16 @@ generic.input.check <- function(scen_dir,scens,timestep) {
   
   # ## Examples ##
   # mainScenGroup <- "Scoopity Woop" 
-  # rdffile <<- "FakeNews.rdf"
-  # variable <<- "Poopity.Scoop"
-  # floworpe <<- "MAGA"
-  # cyorwy <<- ""
-  # figuretype <<- "tripolar"
-  # exc_month <<- 12345
-  # startyr <<- 2099 
-  # endyr <<- 1922
-  # customcaption <<- 1
-  # custom_y_lab <<- 2
+  # rdffile <- "FakeNews.rdf"
+  # variable <- "Poopity.Scoop"
+  # floworpe <- "MAGA"
+  # cyorwy <- ""
+  # figuretype <- "tripolar"
+  # exc_month <- 12345
+  # startyr <- 2099 
+  # endyr <- 1922
+  # customcaption <- 1
+  # custom_y_lab <- 2
   
   # some sanity checks that UI is correct:
   if(!(mainScenGroup %in% names(scens))) 
@@ -60,9 +60,12 @@ generic.input.check <- function(scen_dir,scens,timestep) {
     stop(paste(first_ensemble[1],'or',first_ensemble[2],'is not a supported first_ensemble'))
   }
   
-  if(!(cyorwy == "cy" | cyorwy == "wy")){
-    stop(paste(cyorwy,'is not a supported cyorwy'))
+  if (timestep == "monthly"){
+    if(!(cyorwy == "cy" | cyorwy == "wy")){
+      stop(paste(cyorwy,'is not a supported cyorwy'))
     }
+  }
+  
   
   if(!(floworpe == "flow" | floworpe == "pe")){
     stop(paste(floworpe,'is not a supported floworpe'))
@@ -90,7 +93,7 @@ generic.input.check <- function(scen_dir,scens,timestep) {
   }
   
   # # one last test
-  # endyr <<- "Really??"
+  # endyr <- "Really??"
   
   if(!is.numeric(endyr)){
     stop(paste(endyr,'endyr must be numeric'))
