@@ -7,7 +7,7 @@
 #   Updated by CF on 10/2018 to be a function
 ##############################################################################
 
-generic.monthly.plot <- function(scen_res) { 
+generic_monthly_plot <- function(scen_res) { 
   
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   ## 1. Set Up ##

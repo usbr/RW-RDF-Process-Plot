@@ -7,7 +7,7 @@
 # ##############################################################################
 
 
-generic.input.check <- function(scen_dir,scens,timestep) { 
+generic_input_check <- function(scen_dir,scens,timestep) { 
 
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   ## 1. Set Up ##

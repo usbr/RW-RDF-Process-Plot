@@ -156,73 +156,6 @@ custom_y_labs <- c(NA,"May Outflow Exceedance",NA,NA,NA,NA) #NA gives defaults, 
 # Note: use of custom caption and labels
 figname <<- 'FGDev_Sensitivity'
 
-#Example 2: Monthly Flow Bxplt, Annual PE Exceedance. Don't combine plots.
-
-# rdffiles <- c("Res.rdf","Res.rdf") #rdf file with slot you want
-# variables <- c("Powell.Outflow","Powell.Pool Elevation") #RW Object.Slot
-# timesteps <- c("annual","monthly")
-# floworpes <- c("flow","pe") #"flow" or "pe"
-# cyorwys <- c("cy","cy") #"cy" or "wy". wy not tested for all plot configurations
-# mainScenGroup <<- names(scens)[1] #name of the subfolder this analysis will be stored
-# ## Plot Variables ##
-# combineplots <<- T #F for individual files saved, true to combineplots multiple files
-# # # #Note: creating a single pdf 
-# figuretypes <- c(3,2) #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance
-# exc_months <- c(NA,NA) #1 - Jan, 12 - Dec
-# #Note: exceedance month is only needed for monthly pe exceedance (3)
-# startyrs <<- c(2019,2019) #filter out all years > this year
-# endyrs <<- c(2026,2026) #filter out all years > this year
-# customcaptions <- c(NA,NA) #NA or this will over write the default caption on boxplots
-# custom_y_labs <- c(NA,NA) #NA gives defaults, enter if want soemthing different
-# figname <<- 'Example_2_Fig'
-
-#Example 3: Daily Mean, Monthly Flow Bxplt, Monthly Exceedance Flow, Annual PE Bxplt
-
-# # Process Variables ##
-# rdffiles <- c("DailyFlows.rdf","UBRes.rdf","Res.rdf","Res.rdf") #rdf file with slot you want
-# variables <- c("DailyFlows.FlamingGorgeDaily","FlamingGorge.Outflow","Powell.Inflow","Powell.Pool Elevation") #RW Object.Slot
-# timesteps <- c("daily","monthly","monthly","annual")
-# floworpes <- c("flow","flow","flow","pe") #"flow" or "pe"
-# cyorwys <- c("cy","cy","wy","wy") #"cy" or "wy". wy not tested for all plot configurations
-# mainScenGroup <<- names(scens)[1] #name of the subfolder this analysis will be stored
-# ## Plot Variables ##
-# combineplots <<- F #F for individual files saved, true to combineplots multiple file
-# #Note: creating a series of seperate files
-# figuretypes <- c(1,2,3,2) #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance
-# exc_months <- c(NA,NA,9,NA) #1 - Jan, 12 - Dec
-# #Note: must specify exc_month for Exceedance, since we want wy this is 9/sept
-# startyrs <<- c(2019,2019,2019,2019) #filter out all years > this year
-# endyrs <<- c(2019,2026,2026,2026) #filter out all years > this year
-# #Note: start year same as end year for Daily
-# customcaptions <- c(NA,NA,"Inflow Exceedance",NA) #NA or this will over write the default caption on boxplots
-# custom_y_labs <- c(NA,NA,"Inflow Exceedance",NA) #NA gives defaults, enter if want soemthing different
-# # Note: use of custom caption and labels
-# figname <<- 'Example_3_Fig'
-
-
-#Example 4: Monthly Exceedance PE, Monthly Flow Bxplt, , Annual PE Bxplt
-
-# # Process Variables ##
-# rdffiles <- c("UBRes.rdf","Res.rdf","Res.rdf") #rdf file with slot you want
-# variables <- c("FlamingGorge.Pool Elevation","Powell.Inflow","Powell.Pool Elevation") #RW Object.Slot
-# timesteps <- c("monthly","monthly","annual")
-# floworpes <- c("pe","flow","pe") #"flow" or "pe"
-# cyorwys <- c("wy","wy","wy") #"cy" or "wy". wy not tested for all plot configurations
-# # Note: everything is on wy but since doing monthly exceedances it doesn't matter for 1&2
-# mainScenGroup <<- names(scens)[1] #name of the subfolder this analysis will be stored
-# ## Plot Variables ##
-# combineplots <<- T #F for individual files saved, true to combineplots multiple files
-# # #Note: creating a single pdf 
-# figuretypes <- c(3,3,2) #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance
-# exc_months <- c(5,5,NA) #1 - Jan, 12 - Dec
-# #Note: looking at exceedance for a PE and a flow for May 
-# startyrs <<- c(2019,2019,2019) #filter out all years > this year
-# endyrs <<- c(2026,2026,2026) #filter out all years > this year
-# customcaptions <- c("May PE",NA,NA) #NA or this will over write the default caption on boxplots
-# custom_y_labs <- c("May PE (ft) Exceedance",NA,NA) #NA gives defaults, enter if want soemthing different
-# # # Note: use of custom caption and labels and compare to standard labels on next plot 
-# figname <<- 'Example_4_Fig'
-
 #Example 5: Bad UI, slot not in rdf
 
 # figuretypes <- 4
@@ -274,7 +207,7 @@ for(i in 1:length(variables)){
   custom_y_lab <<- custom_y_labs[i]
   
   # some sanity checks that UI is correct:
-  generic.input.check(scen_dir,scens,timestep) 
+  generic_input_check(scen_dir,scens,timestep) 
   
   vars <- list(rdffiles,variables,floworpes,cyorwys,timesteps,figuretypes,
                exc_months,startyrs,endyrs,customcaptions,custom_y_labs)
@@ -288,7 +221,7 @@ for(i in 1:length(variables)){
   ## 3. Process Results 
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   
-  scen_res <- generic.scen.process(scen_dir,scens,timestep) 
+  scen_res <- generic_scen_process(scen_dir,scens,timestep) 
   # scen_res <- generic.scen.process(scen_dir,scens,file,variable,timestep,floworpe,cyorwy,mainScenGroup) 
   
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -296,11 +229,11 @@ for(i in 1:length(variables)){
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
   
   if(timestep == "annual"){
-    generic.annual.plot(scen_res)
+    generic_annual_plot(scen_res)
   } else if(timestep == "monthly"){
-    generic.monthly.plot(scen_res) 
+    generic_monthly_plot(scen_res) 
   } else if(timestep == "daily"){
-    generic.daily.plot(scen_res)
+    generic_daily_plot(scen_res)
   } else {
     stop(paste0("Plot type ",timestep," not supported"))
   }

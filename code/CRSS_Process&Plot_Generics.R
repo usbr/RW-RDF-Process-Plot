@@ -19,12 +19,14 @@
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 rm(list=ls()) #clear the enviornment 
 
+library(RWDataPlyr)
+
 ## Directory Set Up
 #Set folder where studies are kept as sub folders. 
 CRSSDIR <- Sys.getenv("CRSS_DIR")
 
 # where scenarios are folder are kept
-scen_dir = file.path(CRSSDIR,"Scenario") 
+scen_dir <- file.path(CRSSDIR,"Scenario") 
 #containing the sub folders for each ensemble
 
 results_dir <- file.path(CRSSDIR,"results") 
@@ -33,15 +35,17 @@ results_dir <- file.path(CRSSDIR,"results")
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+#list scenarios folders in scen_dir
 list.dirs(scen_dir) #list dirs in set folder folder for us in next input
 
 #### Normally You'll Only Change The Below ####
-#scens you want to compare 
+#scens you want to compare, list as "your plot name" = "folder name"
 scens <- list(
   "Aug 2018" = "Aug2018_2019,DNF,2007Dems,IG,Most",
   "Aug 2018 + Fix" = "Aug2018_2019_9000,DNF,2007Dems,IG_9000,Most_BM_FGltsp"
 )
 
+#list rdf files in dir
 list.files(file.path(scen_dir,scens[1])) #list files in scen folder for next input
 
 #files, variables, floworpes, cyorwys, figuretypes, exc_months (if using exceed
@@ -54,6 +58,9 @@ list.files(file.path(scen_dir,scens[1])) #list files in scen folder for next inp
 rdffiles <- c("Res.rdf") #rdf file with slot you want
 # rdffiles <- c("DailyFlows.rdf") #rdf file with slot you want
 # rdffiles <- c("UBRes.rdf") #rdf file with slot you want
+
+#list slots in rdf
+rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],rdffiles[1])))
 
 variables <- c("Powell.Inflow") #RW Object.Slot
 # variables <- c("Powell.Pool Elevation") #RW Object.Slot
@@ -71,7 +78,9 @@ floworpes <- c("flow") #"flow" or "pe"
 cyorwys <- c("cy") #"cy" or "wy". wy not tested for all plot configurations
 #daily only supports cy
 
-mainScenGroup <<- names(scens)[1] #name of the subfolder this analysis will be stored
+mainScenGroup <<- names(scens)[2] #name of the subfolder this analysis will be stored
+
+model <<- "MTOM" #"CRSS" or "MTOM"
 
 ## Plot Variables ##
 
@@ -237,13 +246,21 @@ for(i in 1:length(variables)){
   custom_y_lab <<- custom_y_labs[i]
   
   # some sanity checks that UI is correct:
-  generic.input.check(scen_dir,scens,timestep) 
+  generic_input_check(scen_dir,scens,timestep) 
+  
+  vars <- list(rdffiles,variables,floworpes,cyorwys,timesteps,figuretypes,
+               exc_months,startyrs,endyrs,customcaptions,custom_y_labs)
+  # check to make sure
+  if(length(unique(unlist(lapply(X = vars,FUN = length)))) > 1){ 
+    stop('variables must all be the same length')
+  }
+  
   
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   ## 3. Process Results 
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   
-  scen_res <- generic.scen.process(scen_dir,scens,timestep) 
+  scen_res <- generic_scen_process(scen_dir,scens,timestep) 
   # scen_res <- generic.scen.process(scen_dir,scens,file,variable,timestep,floworpe,cyorwy,mainScenGroup) 
   
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -251,11 +268,11 @@ for(i in 1:length(variables)){
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
   
   if(timestep == "annual"){
-    generic.annual.plot(scen_res)
+    generic_annual_plot(scen_res)
   } else if(timestep == "monthly"){
-    generic.monthly.plot(scen_res) 
+    generic_monthly_plot(scen_res) 
   } else if(timestep == "daily"){
-    generic.daily.plot(scen_res)
+    generic_daily_plot(scen_res)
   } else {
     stop(paste0("Plot type ",timestep," not supported"))
   }

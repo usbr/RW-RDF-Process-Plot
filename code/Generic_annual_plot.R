@@ -7,7 +7,7 @@
 #   Updated by CF on 10/2018 to be a function
 ##############################################################################
 
-generic.annual.plot <- function(scen_res) { 
+generic_annual_plot <- function(scen_res) { 
 
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   ## 1. Set Up ##

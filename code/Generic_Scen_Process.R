@@ -8,7 +8,7 @@
 # ##############################################################################
 
 
-generic.scen.process <- function(scen_dir,scens,timestep) { 
+generic_scen_process <- function(scen_dir,scens,timestep) { 
 
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   ## 1. Set Up ##

@@ -8,7 +8,7 @@
 # ##############################################################################
 
 
-generic.daily.plot <- function(scen_dir,scens,timestep) { 
+generic_daily_plot <- function(scen_dir,scens,timestep) { 
   
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   ## 4. Plot Choosen Figure Type 
