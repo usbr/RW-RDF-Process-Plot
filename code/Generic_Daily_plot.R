@@ -46,6 +46,11 @@ generic_daily_plot <- function(scen_dir,scens,timestep) {
   
   message(paste("Creating ",variable, figurenames[figuretype])) 
   
+  message("WARNING: Daily Plots are still under development and all results should be cross checked.")
+  
+  #Avoid using figuretypes 2 is Bxplt of Traces & 3 is Exceedance until further developement is complete. 
+  #https://github.com/usbr/RW-RDF-Process-Plot/issues/17
+  
   #    -------------------        All Trace Mean        ----------------------
 
   if (figuretype == 1){

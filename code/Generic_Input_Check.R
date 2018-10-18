@@ -66,10 +66,12 @@ generic_input_check <- function(scen_dir,scens,timestep) {
     }
   }
   
-  
-  if(!(floworpe == "flow" | floworpe == "pe")){
-    stop(paste(floworpe,'is not a supported floworpe'))
+  if (timestep == "monthly" | timestep == "annual"){
+    if(!(floworpe == "flow" | floworpe == "pe")){
+      stop(paste(floworpe,'is not a supported floworpe'))
+    } #daily only does flow and can be NA
   }
+  
   
   if(!any(figuretype %in% 1:3)){ 
     stop(paste(figuretype,'is not a supported figuretype'))

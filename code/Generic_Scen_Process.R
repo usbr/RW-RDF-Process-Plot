@@ -92,6 +92,7 @@ generic_scen_process <- function(scen_dir,scens,timestep) {
     if (timestep == "monthly"){
       #get everything on a date 
       scen_res$MonthNum = as.Date(paste0(scen_res$Year,scen_res$Month,"01"), format = "%Y%B%d")
+      ######## use YrMon in Zoo library and x scale YrMon object #########
       #get a numeric month number
       scen_res$MonthNum = as.numeric(format.Date(scen_res$MonthNum, format = "%m"))
     }

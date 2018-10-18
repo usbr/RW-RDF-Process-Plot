@@ -70,7 +70,9 @@ variables <- c("Powell.Inflow") #RW Object.Slot
 # timesteps <- c("annual") #"annual" or "monthly"
 timesteps <- c("monthly") #"annual" or "monthly"
 # timesteps <- c("daily") #"annual" or "monthly" or "daily"
-
+#WARNING: Daily Plots are still under development and all results should be cross checked. 
+#Avoid using figuretypes 2 is Bxplt of Traces & 3 is Exceedance until further developement is complete. 
+#https://github.com/usbr/RW-RDF-Process-Plot/issues/17
 
 floworpes <- c("flow") #"flow" or "pe"
 # floworpes <- c("pe") #"flow" or "pe"
