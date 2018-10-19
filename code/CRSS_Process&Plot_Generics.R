@@ -55,14 +55,14 @@ list.files(file.path(scen_dir,scens[1])) #list files in scen folder for next inp
 
 ## Process Variables ##
 
-rdffiles <- c("Res.rdf") #rdf file with slot you want
+# rdffiles <- c("Res.rdf") #rdf file with slot you want
 # rdffiles <- c("DailyFlows.rdf") #rdf file with slot you want
-# rdffiles <- c("UBRes.rdf") #rdf file with slot you want
+rdffiles <- c("UBRes.rdf") #rdf file with slot you want
 
 #list slots in rdf
 rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],rdffiles[1])))
 
-variables <- c("Powell.Inflow") #RW Object.Slot
+variables <- c("BlueMesa.Outflow") #RW Object.Slot
 # variables <- c("Powell.Pool Elevation") #RW Object.Slot
 # variables <- c("FlamingGorge.Pool Elevation") #RW Object.Slot
 # variables <- c("DailyFlows.FlamingGorgeDaily") #RW Object.Slot
@@ -82,13 +82,13 @@ cyorwys <- c("cy") #"cy" or "wy". wy not tested for all plot configurations
 
 mainScenGroup <<- names(scens)[2] #name of the subfolder this analysis will be stored
 
-model <<- "MTOM" #"CRSS" or "MTOM"
+model <<- "CRSS" #"CRSS" or "MTOM"
 
 ## Plot Variables ##
 
 combineplots <<- F #F for individual files saved, true to combineplots multiple files
 
-figuretypes <- c(1) #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance
+figuretypes <- c(2) #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance
 # IF PICKING "monthly" 3 you must specify a month
 exc_months <- c(12) #1 - Jan, 12 - Dec
 #Note: exceedance month is only needed for monthly pe exceedance (3)
