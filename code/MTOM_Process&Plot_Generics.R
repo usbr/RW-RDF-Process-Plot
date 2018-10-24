@@ -175,6 +175,7 @@ imgtype <<- "pdf" #supports pdf, png, jpeg. pdf looks the best
 
 source('code/Generic_Input_Check.r')
 source('code/Generic_Scen_Process.r')
+source('code/generic_minmax_check.r')
 source('code/Generic_Daily_Plot.r')
 source('code/Generic_annual_plot.r')
 source('code/Generic_monthly_plot.r')
@@ -223,7 +224,9 @@ for(i in 1:length(variables)){
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   
   scen_res <- generic_scen_process(scen_dir,scens,timestep) 
-  # scen_res <- generic.scen.process(scen_dir,scens,file,variable,timestep,floworpe,cyorwy,mainScenGroup) 
+  
+  #check minmax, outputs a .csv
+  minmaxchk <- generic_minmax_check(scen_dir,scens,timestep)   
   
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   ## 4. Plot Choosen Timestep Type 
