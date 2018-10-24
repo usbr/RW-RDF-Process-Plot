@@ -55,9 +55,11 @@ generic_input_check <- function(scen_dir,scens,timestep) {
     stop(paste(model,'is not a supported model'))
   }
   
-  if(all(model == "MTOM",!(first_ensemble[1] %in% 1:4),
-         !(first_ensemble[2] %in% 1:4))){
+  if(model == "MTOM"){
+    if(all(!(first_ensemble[1] %in% 1:4),
+       !(first_ensemble[2] %in% 1:4))){
     stop(paste(first_ensemble[1],'or',first_ensemble[2],'is not a supported first_ensemble'))
+    }
   }
   
   if (timestep == "monthly"){
