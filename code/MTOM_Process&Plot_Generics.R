@@ -34,86 +34,21 @@ results_dir <- file.path(getwd(),"results")
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+############# RDF File Loactions - Change For New Study ########################
+
 #list scenarios folders in scen_dir
 list.dirs(scen_dir) #list dirs in set folder folder for us in next input
 
-#### Normally You'll Only Change The Below ####
 #scens you want to compare, list as "your plot name" = "folder name"
 scens <- list(
-  "Jul 2018" = "dev",
-  "Jul 2018 + Fix" = "FGdev"
+  "PreviousRun" = "PreviousRun",
+  "CurrentRun" = "CurrentRun"
 )
 
 #list rdf files in dir
 list.files(file.path(scen_dir,scens[1])) #list files in scen folder for next input
 
-#files, variables, floworpes, cyorwys, figuretypes, exc_months (if using exceed
-# on PE), & custom captions/y_lab should be set to a single value
-#but could be used to loop through multiple plots if all c() variable were extended 
-#see example below 
-
-## Process Variables ##
-
-rdffiles <- c("res.rdf") #rdf file with slot you want
-# rdffiles <- c("daily.rdf") #rdf file with slot you want
-
-#list slots in rdf
-rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],rdffiles[1])))
-
-variables <- c("Powell.Inflow") #RW Object.Slot
-# variables <- c("Powell.Pool Elevation") #RW Object.Slot
-# variables <- c("FlamingGorge.Pool Elevation") #RW Object.Slot
-# variables <- c("KNN_MTOM.FlamingGorgeDaily") #RW Object.Slot
-
-# timesteps <- c("annual") #"annual" or "monthly"
-timesteps <- c("monthly") #"annual" or "monthly"
-# timesteps <- c("daily") #"annual" or "monthly" or "daily"
-#WARNING: Daily Plots are still under development and all results should be cross checked. 
-#Avoid using figuretypes 2 is Bxplt of Traces & 3 is Exceedance until further developement is complete. 
-#https://github.com/usbr/RW-RDF-Process-Plot/issues/17
-
-floworpes <- c("flow") #"flow" or "pe"
-# floworpes <- c("pe") #"flow" or "pe"
-
-cyorwys <- c("cy") #"cy" or "wy". wy not tested for all plot configurations
-#daily only supports cy
-
-mainScenGroup <<- names(scens)[2] #name of the subfolder this analysis will be stored
-
-first_ensemble <<- c(2,2) #filter out Most,Min,Max. For 38 trace offical = 4, 
-#36 trace month w Most = 2. Same order as for scenarios  
-
-model <<- "MTOM" #"CRSS" or "MTOM"
-
-## Plot Variables ##
-
-combineplots <<- F #F for individual files saved, true to combineplots multiple files
-
-figuretypes <- c(1) #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance
-# IF PICKING "monthly" 3 you must specify a month
-exc_months <- c(12) #1 - Jan, 12 - Dec
-#Note: exceedance month is only needed for monthly pe exceedance (3)
-
-startyrs <- c(2019) #filter out all years > this year
-endyrs <- c(2022) #filter out all years > this year
-#these must match if doing daily slot
-
-customcaptions <- c(NA) #NA or this will overwrite the default captions
-# customcaptions <- c("May") #NA or this will overwrite the default captions
-#set for mean (1) and boxplot (2)
-
-custom_y_labs <- c(NA) #NA gives defaults, enter if want soemthing different
-# custom_y_labs <- c("May") #NA gives defaults, enter if want soemthing different
-## daily = "Daily Flow (cfs)"
-## monthly = "Monthly Flow (ac-ft/mo)" OR "End of Month PE (ft)"
-## annual = "Annual C/WY Flow (ac-ft/mo)" OR "EOC/WY PE (ft)" it knows CYorWY
-
-#file names
-figname <<- 'Generic_Fig'
-#if combineplots is T figs saved as figname.pdf w/o captions
-#if F figs saved individually as figname_timestep_cyorwy_variable_figuretype.imgtype
-
-#### End of Normal Change Section ####
+############# Standard Plot Variables - Don't Change ########################
 
 #output image parameters 
 width <<- 9 #inches
@@ -122,52 +57,123 @@ height <<- 6
 imgtype <<- "pdf" #supports pdf, png, jpeg. pdf looks the best 
 #only works when individual plots are selected 
 
-#### Example of Multi Slot Process select region and hit ctrl+c to enable ####
+############# Plot Type Variables - Change For New Plot ########################
 
-#Example 1: Single Trace w/ above parameters. 
+#files, variables, floworpes, cyorwys, figuretypes, exc_months (if using exceed
+# on PE), & custom captions/y_lab should be set to a single value
+#but could be used to loop through multiple plots if all c() variable were extended 
+#see example below 
 
-# figname <<- 'Example_1_Fig'
-# #Note: any parameters that are listed twice will be set as the latest (furtherst 
-# #down) value
+## Process Variables ##
 
-#Example 2, FG Dev plots. Daily, Monthly and Annual. Combine plots.
-
-# rdffiles <- c("daily.rdf","daily.rdf","res.rdf","res.rdf","res.rdf","res.rdf","res.rdf") #rdf file with slot you want
-# variables <- c("KNN_MTOM.FlamingGorgeDaily","KNN_MTOM.FlamingGorgeDaily",
-#                "FlamingGorge.Pool Elevation","FlamingGorge.Outflow",
-#                "Powell.Inflow","Powell.Pool Elevation","Powell.Outflow") #RW Object.Slot
-# timesteps <- c("daily","daily","monthly","monthly","monthly","annual","annual") #"annual" or "monthly" or "daily"
-# floworpes <- c("flow","flow","pe","flow","flow","pe","flow") #"flow" or "pe"
-# cyorwys <- c("cy","cy","cy","cy","cy","cy","cy") #"cy" or "wy". wy not tested for all plot configurations
+# rdffiles <- c("res.rdf") #rdf file with slot you want
+# # rdffiles <- c("daily.rdf") #rdf file with slot you want
+# 
+# #list slots in rdf
+# rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],rdffiles[1])))
+# 
+# variables <- c("Powell.Inflow") #RW Object.Slot
+# # variables <- c("Powell.Pool Elevation") #RW Object.Slot
+# # variables <- c("FlamingGorge.Pool Elevation") #RW Object.Slot
+# # variables <- c("KNN_MTOM.FlamingGorgeDaily") #RW Object.Slot
+# 
+# # timesteps <- c("annual") #"annual" or "monthly"
+# timesteps <- c("monthly") #"annual" or "monthly"
+# # timesteps <- c("daily") #"annual" or "monthly" or "daily"
+# #WARNING: Daily Plots are still under development and all results should be cross checked. 
+# #Avoid using figuretypes 2 is Bxplt of Traces & 3 is Exceedance until further developement is complete. 
+# #https://github.com/usbr/RW-RDF-Process-Plot/issues/17
+# 
+# floworpes <- c("flow") #"flow" or "pe"
+# # floworpes <- c("pe") #"flow" or "pe"
+# 
+# cyorwys <- c("cy") #"cy" or "wy". wy not tested for all plot configurations
+# #daily only supports cy
+# 
 # mainScenGroup <<- names(scens)[2] #name of the subfolder this analysis will be stored
-# first_ensemble <<- c(2,2) #filter out Most,Min,Max. For 38 trace offical = 4,
+# 
+# first_ensemble <<- c(2,2) #filter out Most,Min,Max. For 38 trace offical = 4, 
+# #36 trace month w Most = 2. Same order as for scenarios  
+# 
 # model <<- "MTOM" #"CRSS" or "MTOM"
+# 
 # ## Plot Variables ##
-# combineplots <<- T #F for individual files saved, true to combineplots multiple files
-# figuretypes <- c(2,3,2,2,2,2,2) #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance
+# 
+# combineplots <<- F #F for individual files saved, true to combineplots multiple files
+# 
+# figuretypes <- c(1) #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance
 # # IF PICKING "monthly" 3 you must specify a month
-# exc_months <- c(NA,5,NA,NA,NA,NA,NA) #1 - Jan, 12 - Dec
+# exc_months <- c(12) #1 - Jan, 12 - Dec
 # #Note: exceedance month is only needed for monthly pe exceedance (3)
-# #Note: must specify exc_month for Exceedance, since we want wy this is 9/sept
-# startyrs <<- c(2019,2019,2019,2019,2019,2019,2019) #filter out all years > this year
-# endyrs <<- c(2019,2019,2022,2022,2022,2022,2022) #filter out all years > this year
-# #Note: start year same as end year for Daily
-# customcaptions <- c(NA,"May Outflow Exceedance",NA,NA,NA,NA,NA) #NA or this will over write the default caption on boxplots
-# custom_y_labs <- c(NA,"May Outflow Exceedance",NA,NA,NA,NA,NA) #NA gives defaults, enter if want soemthing different
-# # Note: use of custom caption and labels
-# figname <<- 'FGDev_Sensitivity'
+# 
+# startyrs <- c(2019) #filter out all years > this year
+# endyrs <- c(2022) #filter out all years > this year
+# #these must match if doing daily slot
+# 
+# customcaptions <- c(NA) #NA or this will overwrite the default captions
+# # customcaptions <- c("May") #NA or this will overwrite the default captions
+# #set for mean (1) and boxplot (2)
+# 
+# custom_y_labs <- c(NA) #NA gives defaults, enter if want soemthing different
+# # custom_y_labs <- c("May") #NA gives defaults, enter if want soemthing different
+# ## daily = "Daily Flow (cfs)"
+# ## monthly = "Monthly Flow (ac-ft/mo)" OR "End of Month PE (ft)"
+# ## annual = "Annual C/WY Flow (ac-ft/mo)" OR "EOC/WY PE (ft)" it knows CYorWY
+# 
+# #file names
+# figname <<- 'Example_1_Fig'
+# #if combineplots is T figs saved as figname.pdf w/o captions
+# #if F figs saved individually as figname_timestep_cyorwy_variable_figuretype.imgtype
+# 
+# minmaxchk <- F #only works for monthly currently (12/6/18)
 
-#Example 5: Bad UI, slot not in rdf
+############# Examples of Code Use ############################################
+
+## Select the region and hit ctrl+c to enable #####
+# # Note: Examples 1-3 use the above input parameters.any parameters that are 
+# #listed twice will be set as the latest (furtherst down) value
+
+# # Example 1: Single Trace w/ above parameters. 
+
+#Example 2: Bad UI, slot not in rdf
 
 # figuretypes <- 4
 
-#Example 6: Bad UI, slot not in rdf
+#Example 3: Bad UI, slot not in rdf
 
 # variables <- "Fake.News"
 
+# # Note: Examples 4 uses the below input parameters.
+
+############# Example of Multi Slot Process ########################
+
+#Example 4: Standard Powell-Mead Annual Ops
+
+# Process Variables ##
+rdffiles <- c("Res.rdf","Res.rdf","Res.rdf","Res.rdf","Res.rdf") #rdf file with slot you want
+variables <- c("Powell.Inflow","Powell.Pool Elevation","Mead.Inflow","Mead.Pool Elevation","Mead.Outflow") #RW Object.Slot
+timesteps <- c("annual","annual","annual","annual","annual")
+floworpes <- c("flow","pe","flow","pe","flow") #"flow" or "pe"
+cyorwys <- c("cy","cy","cy","cy","cy") #"cy" or "wy". wy not tested for all plot configurations
+mainScenGroup <<- names(scens)[2] #name of the subfolder this analysis will be stored
+## Plot Variables ##
+combineplots <<- T #F for individual files saved, true to combineplots multiple file
+#Note: creating a series of seperate files
+figuretypes <- c(2,2,2,2,2) #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance
+exc_months <- rep(NA,times = length(variables)) #c(NA,NA,NA,NA,NA) #1 - Jan, 12 - Dec
+#Note: must specify exc_month for Exceedance, since we want wy this is 9/sept
+startyrs <<- rep(2019,times = length(variables)) #c(2019,2019,2019,2019,2019) #filter out all years > this year
+endyrs <<- rep(2026,times = length(variables)) #c(2019,2026,2026,2026) #filter out all years > this year
+#Note: start year same as end year for Daily
+customcaptions <- rep(NA,times = length(variables)) #c(NA,NA,"Inflow Exceedance",NA) #NA or this will over write the default caption on boxplots
+custom_y_labs <- rep(NA,times = length(variables)) #c(NA,NA,"Inflow Exceedance",NA) #NA gives defaults, enter if want soemthing different
+# Note: use of custom caption and labels
+figname <<- 'Example_3_Std_PowellMead_Fig'
+model <<- "MTOM" #"CRSS" or "MTOM"
+first_ensemble <<- c(2,2) #filter out Most,Min,Max. For 38 trace offical = 4,
+minmaxchk <- T #only works for monthly currently (12/6/18)
+
 #### End Examples #### 
-
-
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #                               END USER INPUT
@@ -225,9 +231,6 @@ for(i in 1:length(variables)){
   
   scen_res <- generic_scen_process(scen_dir,scens,timestep) 
   
-  #check minmax, outputs a .csv
-  minmaxchk <- generic_minmax_check(scen_dir,scens,timestep)   
-  
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   ## 4. Plot Choosen Timestep Type 
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
@@ -235,6 +238,12 @@ for(i in 1:length(variables)){
   if(timestep == "annual"){
     generic_annual_plot(scen_res)
   } else if(timestep == "monthly"){
+    
+    if(timestep == "monthly" && minmaxchk == T){ #only works for monthly currently (12/6/18)
+      #check minmax, outputs a .csv
+      minmaxchk <- generic_minmax_check(scen_dir,scens,timestep) 
+    }
+    
     generic_monthly_plot(scen_res) 
   } else if(timestep == "daily"){
     generic_daily_plot(scen_res)
