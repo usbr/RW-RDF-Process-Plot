@@ -36,7 +36,7 @@ my_scens = c("PreviousRun", "CurrentRun") #names for your senarios to plot
 #run second there should only be 2 scenarios
 
 # #custom scenario folders, select the below lines and ctrl + shift + c to use
-scenarios = my_scens =  c("dev", "FGdev")
+my_scens = c("PreviousRun", "CurrentRun") #names for your senarios to plot
 
 # my_scens = c("PreviousRun", "CurrentRun") #names for your senarios to plot 
 #KEEP THESE SAME AS SCENARIOS, otherwise something is erroring
