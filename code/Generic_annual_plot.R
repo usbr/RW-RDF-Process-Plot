@@ -116,9 +116,11 @@ generic_annual_plot <- function(scen_res) {
   
   if(combineplots == F){
   ## save off image
-  ggsave(filename = paste0(file.path(ofigs,figs),"_",timestep,"_",cyorwy,"_",variable,"_",figurenames[figuretype],".",imgtype), width = width, height = height, units ="in")
+    var_nospacenocol <- gsub(":", ".", gsub("[[:space:]]", "", variable)) 
+    #remove var name spaces and any colons    
+    ggsave(filename = paste0(file.path(ofigs,figs),"_",timestep,"_",cyorwy,"_",var_nospacenocol,"_",figurenames[figuretype],".",imgtype), width = width, height = height, units ="in")
   
-  dev.off()
+    dev.off()
   }
 
 } #end function

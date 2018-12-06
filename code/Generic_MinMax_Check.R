@@ -74,8 +74,11 @@ generic_minmax_check <- function(scen_dir,scens,timestep) {
     
     
   } #closes scen loop
-    
-  write.csv(minmaxchk,file = paste0(ofigs,'/minmaxchk.csv'))
+  
+  var_nospacenocol <- gsub(":", ".", gsub("[[:space:]]", "", variable)) 
+  #remove var name spaces and any colons  
+  
+  write.csv(minmaxchk,file = paste0(ofigs,'/minmaxchk_',var_nospacenocol,'.csv'))
   
   return(minmaxchk)  
   
