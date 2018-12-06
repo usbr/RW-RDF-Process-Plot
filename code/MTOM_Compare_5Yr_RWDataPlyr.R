@@ -30,17 +30,17 @@ scen_dir = file.path(getwd(),"scenarios")
 #scenarios are folder names for the rdfs from your different runs
 
 #generic scenario locations 
-my_scens = c("PreviousRun", "CurrentRun") #names for your senarios to plot
+scenarios <- list(
+  "PreviousRun" = "PreviousRun",
+  "CurrentRun" = "CurrentRun"
+)
 
 # this is the order they will show up in the table & plot, so list the newest 
 #run second there should only be 2 scenarios
 
-# #custom scenario folders, select the below lines and ctrl + shift + c to use
-my_scens = c("PreviousRun", "CurrentRun") #names for your senarios to plot
-
 # my_scens = c("PreviousRun", "CurrentRun") #names for your senarios to plot 
 #KEEP THESE SAME AS SCENARIOS, otherwise something is erroring
-names(scenarios) = my_scens #naming 
+my_scens <- names(scenarios) =  #naming 
 
 #### Normally You'll Only Change This ####
 first_ensemble = c(2,2) #filter out Most,Min,Max. For 38 trace offical = 4, 
