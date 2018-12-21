@@ -33,8 +33,7 @@ packrat/src
 packrat/lib-R
 packrat/lib
 
-scenarios
+#scenarios
 !scenarios/CurrentRun/ReadMe.txt
 !scenarios/PreviousRun/ReadMe.txt
-results
-custom_code_notrack/*
+
