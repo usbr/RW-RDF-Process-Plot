@@ -37,3 +37,6 @@ scenarios
 !scenarios/CurrentRun/ReadMe.txt
 !scenarios/PreviousRun/ReadMe.txt
 
+results
+!results/ReadMe.txt
+custom_code_notrack
