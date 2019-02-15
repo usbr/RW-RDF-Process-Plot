@@ -90,7 +90,6 @@ The code below shows how data from `rw_scen_aggregate()` and user specified `rwd
 ```{r message = FALSE, warning = FALSE}
 #Load required scripts to create the custom plot types 
 source('code/Stat_emp_ExcCrv.r')
-source('code/stat-boxplot-custom.r')
 
 #Data for chart from RWDataPlyr package
 scen_res <- RWDataPlyr::scen_data
@@ -112,7 +111,7 @@ df <- scen_res %>%
 #plot data 
 p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario)) +
-  stat_boxplot_custom(qs = c(0.1, 0.25, 0.5, 0.75, 0.9)) +
+  CRSSIO::stat_boxplot_custom(qs = c(0.1, 0.25, 0.5, 0.75, 0.9)) +
   labs(title = paste(variable,startyr,"-",endyr),
        y = y_lab, x = "Year", caption = caption) +
   theme(plot.caption = element_text(hjust = 0)) #left justify
