@@ -10,29 +10,34 @@ output:
     theme: cosmo
 ---
 ```{r setup, include=FALSE, echo=TRUE, warning=FALSE}
-if(!require(pacman))install.packages("pacman")
-pacman::p_load('tidyverse', 'devtools', 'RWDataPlyr',
-               'scales')
 options(scipen = 999)
 ```
 
 
-# How to create Boulder BrainTrust<sup>TM</sup> style graphics
+# Boulder BrainTrust<sup>TM</sup> graphics and Data Wrangling
 
-We have developed an R cookbook to make the process of creating publication-ready graphics in our in-house style using R's ggplot2 library a more reproducible process, as well as making it easier for people new to R to create graphics. This was developed from BBC Visual Journalism data team's R graphics cookbook. For more info on the cookbook and `bbplot` check out the [package's Github repo](https://github.com/bbc/bbplot).  
+We have developed an R cookbook to make the process of creating publication-ready graphics in our in-house style using R's ggplot2 library a more reproducible process, as well as making it easier for people new to R to create graphics. This was inspired by the [BBC's cookbook](https://bbc.github.io/rcookbook/). 
 
-We'll get to how you can put together the various elements of these graphics, but **let's get the admin out of the way first...**
+In addition to creating graphics, this cookbook also includes two sections on data wrangling. One is specific to working with RiverWare output in the form of rdf files, and the other is more generic. The idea here is to document wrangling problems we've solved, to make it easier to solve the next time.
+
+**Let's get the admin out of the way first...**
 
 ## Load all the libraries you need
 
-A few of the steps in this cookbook - and to create charts in R in general - require certain packages to be installed and loaded. So that you do not have to install and load them one by one, you can use the `p_load` function in the `pacman` package to load them all at once with the following code. 
+A few of the steps in this cookbook - and to create charts in R in general - require certain packages to be installed and loaded. If these packages are not installed, you will need to install them first. Except for CRSSIO, all packages are available on CRAN. CRSSIO can be installed with `devtools::install_github("BoulderCodeHub/CRSSIO")`.
 
-```{r eval=FALSE}
-#This line of code installs the pacman page if you do not have it installed - if you do, it simply loads the package
-if(!require(pacman))install.packages("pacman")
-pacman::p_load('tidyverse', 'devtools', 'RWDataPlyr',
-               'scales')
+```{r eval=TRUE}
+library(tidyverse)
+library(RWDataPlyr)
+library(scales)
+library(devtools)
+library(CRSSIO) # install with devtools::install_github("BoulderCodeHub/CRSSIO")
 ```
+
+
+# Data Wrangling
+
+# rdf Wrangling
 
 ## RWDataPlyr
 
@@ -85,7 +90,6 @@ The code below shows how data from `rw_scen_aggregate()` and user specified `rwd
 ```{r message = FALSE, warning = FALSE}
 #Load required scripts to create the custom plot types 
 source('code/Stat_emp_ExcCrv.r')
-source('code/stat-boxplot-custom.r')
 
 #Data for chart from RWDataPlyr package
 scen_res <- RWDataPlyr::scen_data
@@ -107,7 +111,7 @@ df <- scen_res %>%
 #plot data 
 p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario)) +
-  stat_boxplot_custom(qs = c(0.1, 0.25, 0.5, 0.75, 0.9)) +
+  CRSSIO::stat_boxplot_custom(qs = c(0.1, 0.25, 0.5, 0.75, 0.9)) +
   labs(title = paste(variable,startyr,"-",endyr),
        y = y_lab, x = "Year", caption = caption) +
   theme(plot.caption = element_text(hjust = 0)) #left justify
@@ -116,13 +120,9 @@ p <- df %>%
 print(p)
 ```
 
-# How to use the RW-RDF-Process-Plot Scripts 
 
-## RW-RDF-Process-Plot Scripts Example 
 
-The following example is intended to demonstrate how the master scripts could be used to generate plots which compare two different runs of the MTOM model. This is done by modifying `code/MTOM_Process&Plot_Generics.R` in the RW-RDF-Process-Plot directory. 
 
-### RDF File Loactions
 
 The first block of code specifies the location of the scenario rdf files from the completed RiverWare runs.
 
@@ -236,14 +236,16 @@ All plots are from 2019-2022 and will be generated as png files.
 
 Further infromation follows about setup up and the uses of individual functions in the RW-RDF-Process-Plot family. __Users lacking experience with R will want to only modify the master scripts__ `code/MTOM_Process&Plot_Generics.R` and `code/CRSS_Process&Plot_Generics.R` which call the appropriate functions. 
 
-## Generate rdf Files from RiverWare
 1. Use RiverWare MRM to generate rdf Files from MTOM or CRSS
 1. Option A: Move files for the current run to ./scenarios/currentrun folder. Move old rdf files into ../scenarios/previousrun folder 
 1. Option B: Later modify code to point scen_dir at the location of your scenarios 
 
-## Setup RW-RDF-Process-Plot
+### Setup RW-RDF-Process-Plot
 
-### If its your first time using the MTOM R process script and/or R in general
+### If you've previously cloned RW-RDF-Process-Plot
+### If you have a previous packrat library you want to move into this repository
+### If its your first time using the processing scripts and/or R in general
+#### If its your first time using the MTOM R process script and/or R in general
 Ensure the following are installed:
 * [R (3.4.4)](https://cran.r-project.org/)
 * [R tools](https://cran.rstudio.com/bin/windows/Rtools/)
@@ -274,7 +276,6 @@ The first time you use R, or when upgrading to a new releases (e.g., 3.4.x to 3.
 
 1. **Close RStudio, and Reopen it.**
 
-### If you've previously cloned RW-RDF-Process-Plot
 1. Open the repository in git extensions 
 1. Start up the Git Bash control line
 1. Enter 
@@ -287,7 +288,6 @@ Moving previous packrat library (from MTOM directory or other)
 1. Run `packrat::init()` to init packrat.
 1. In the lower right window verify Packages lists a Packrat Library with all files having descriptions
 
-## Master Model Scripts 
 Master scripts are designed to make plotting results simple. These scripts take user input then call the process and plot functions. __Users lacking experience with R will want to only modify the master scripts.__
 
 1. open __code/[MODEL XXXX]_Process&Plot_Generics.R__
@@ -300,7 +300,7 @@ Master scripts are designed to make plotting results simple. These scripts take 
 
 1. Ctrl + Alt + R to run the code and create the figures in your results_dir 
 
-## Supporting Functions
+## Process Function
 
 Master scripts utilize the following functions were are explained below:
 
@@ -319,30 +319,61 @@ Data is plotted "asis." If plotting (3) Exceedance you must specify a exc_month 
 #### Generic Daily Plot  
 Data processing is not available via RWDataPlyr functions so output from daily slots is handled differently than the above. It is not recommended that you use this script to look at more than one year of data so the script defaults to taking only the year listed as startyr. When plotting (1) Trace Mean is all the daily means as individual data points but NOTE: the months appear to start in Feb since first CRSS timestep is Jan 31. For (2) Boxpolt of all Traces the boxplots show the distribution of daily flow grouped by month. (3) Exceedance is the CDF for all daily flows.    
 
-WARNING: Daily Plots are still under development and all results should be cross checked.Avoid using figuretypes 2 is Bxplt of Traces & 3 is Exceedance until further developement is complete. https://github.com/usbr/RW-RDF-Process-Plot/issues/17
+## Generic Input Check 
 
 ### Generic Input Check 
 This function checks the input provided in the master scripts 
 
-# Customize your plots by writting your own R Script  
+## Custom plots 
 
-## How to plots means of all traces
+Sample data to use, which includes EOCY Mead elevation and annual Powell release.
 
-*The developer regrets to inform you...*  
+```{r sampleRdfData}
+scen_path <- system.file("extdata/Scenario", package = "RWDataPlyr")
 
-## How to plot a histogram of trace values
+rwa <- rwd_agg(data.frame(
+  file = "KeySlots.rdf",
+  slot = c("Powell.Outflow", "Mead.Pool Elevation"),
+  period = c("cy", "eocy"),
+  summary = c("sum", NA),
+  eval = NA,
+  t_s = NA,
+  variable = c("powell_out", "mead_pe"),
+  stringsAsFactors = FALSE
+))
+
+scens <- c(
+  "most" = "ISM1988_2014,2007Dems,IG,Most", 
+  "other_ic" = "ISM1988_2014,2007Dems,IG,2002"
+)
+
+rdftbl <- rw_scen_aggregate(scens, agg = rwa, scen_dir = scen_path)
+```
+
+### Plot means of all traces
+
+```{r traceMeanPlot}
+rdftbl %>%
+  filter(Variable == "mead_pe") %>%
+  group_by(Scenario, Year) %>%
+  summarise(Value = mean(Value)) %>%
+  ggplot(aes(Year, Value, color = Scenario)) %+%
+  geom_line()
+```
+
+### How to plot a histogram of trace values
 
 *that unfortunately this project was not funded.*  
 
-## How to plot exceedances of all traces 
+### How to plot exceedances of all traces 
 
 *I'm afraid your on your own.*  
 
-## How to get trace min/max
+### How to get trace min/max
 
 *It's a cold dark stackoverflow out there...*  
 
-## How find and plot the max diff trace of two scenarios 
+### How find and plot the max diff trace of two scenarios 
 
 # Further Customize your plots with these features
 
