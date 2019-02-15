@@ -10,9 +10,6 @@ output:
     theme: cosmo
 ---
 ```{r setup, include=FALSE, echo=TRUE, warning=FALSE}
-if(!require(pacman))install.packages("pacman")
-pacman::p_load('tidyverse', 'devtools', 'RWDataPlyr',
-               'scales')
 options(scipen = 999)
 ```
 
@@ -25,13 +22,14 @@ We'll get to how you can put together the various elements of these graphics, bu
 
 ## Load all the libraries you need
 
-A few of the steps in this cookbook - and to create charts in R in general - require certain packages to be installed and loaded. So that you do not have to install and load them one by one, you can use the `p_load` function in the `pacman` package to load them all at once with the following code. 
+A few of the steps in this cookbook - and to create charts in R in general - require certain packages to be installed and loaded. If these packages are not installed, you will need to install them first. Except for CRSSIO, all packages are available on CRAN. CRSSIO can be installed with `devtools::install_github("BoulderCodeHub/CRSSIO")`.
 
-```{r eval=FALSE}
-#This line of code installs the pacman page if you do not have it installed - if you do, it simply loads the package
-if(!require(pacman))install.packages("pacman")
-pacman::p_load('tidyverse', 'devtools', 'RWDataPlyr',
-               'scales')
+```{r eval=TRUE}
+library(tidyverse)
+library(RWDataPlyr)
+library(scales)
+library(devtools)
+library(CRSSIO) # install with devtools::install_github("BoulderCodeHub/CRSSIO")
 ```
 
 ## RWDataPlyr
