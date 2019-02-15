@@ -38,5 +38,10 @@ scenarios
 !scenarios/PreviousRun/ReadMe.txt
 
 results
+results/ExampleResults/*
 !results/ReadMe.txt
+
 custom_code_notrack
+custom_code_notrack/ReadMe.txt
+
+
