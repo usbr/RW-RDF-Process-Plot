@@ -210,23 +210,54 @@ This function checks the input provided in the master scripts
 
 ## Custom plots 
 
-## How to plots means of all traces
+Sample data to use, which includes EOCY Mead elevation and annual Powell release.
 
-*The developer regrets to inform you...*  
+```{r sampleRdfData}
+scen_path <- system.file("extdata/Scenario", package = "RWDataPlyr")
 
-## How to plot a histogram of trace values
+rwa <- rwd_agg(data.frame(
+  file = "KeySlots.rdf",
+  slot = c("Powell.Outflow", "Mead.Pool Elevation"),
+  period = c("cy", "eocy"),
+  summary = c("sum", NA),
+  eval = NA,
+  t_s = NA,
+  variable = c("powell_out", "mead_pe"),
+  stringsAsFactors = FALSE
+))
+
+scens <- c(
+  "most" = "ISM1988_2014,2007Dems,IG,Most", 
+  "other_ic" = "ISM1988_2014,2007Dems,IG,2002"
+)
+
+rdftbl <- rw_scen_aggregate(scens, agg = rwa, scen_dir = scen_path)
+```
+
+### Plot means of all traces
+
+```{r traceMeanPlot}
+rdftbl %>%
+  filter(Variable == "mead_pe") %>%
+  group_by(Scenario, Year) %>%
+  summarise(Value = mean(Value)) %>%
+  ggplot(aes(Year, Value, color = Scenario)) %+%
+  geom_line()
+```
+
+### How to plot a histogram of trace values
 
 *that unfortunately this project was not funded.*  
 
-## How to plot exceedances of all traces 
+### How to plot exceedances of all traces 
 
 *I'm afraid your on your own.*  
 
-## How to get trace min/max
+### How to get trace min/max
 
 *It's a cold dark stackoverflow out there...*  
 
-## How find and plot the max diff trace of two scenarios 
+### How find and plot the max diff trace of two scenarios 
 
 
 
