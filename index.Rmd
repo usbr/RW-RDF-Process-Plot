@@ -16,13 +16,14 @@ pacman::p_load('tidyverse', 'devtools', 'RWDataPlyr',
 options(scipen = 999)
 ```
 
-## How to create Boulder BrainTrust<sup>TM</sup> style graphics
+
+# How to create Boulder BrainTrust<sup>TM</sup> style graphics
 
 We have developed an R cookbook to make the process of creating publication-ready graphics in our in-house style using R's ggplot2 library a more reproducible process, as well as making it easier for people new to R to create graphics. This was developed from BBC Visual Journalism data team's R graphics cookbook. For more info on the cookbook and `bbplot` check out the [package's Github repo](https://github.com/bbc/bbplot).  
 
 We'll get to how you can put together the various elements of these graphics, but **let's get the admin out of the way first...**
 
-### Load all the libraries you need
+## Load all the libraries you need
 
 A few of the steps in this cookbook - and to create charts in R in general - require certain packages to be installed and loaded. So that you do not have to install and load them one by one, you can use the `p_load` function in the `pacman` package to load them all at once with the following code. 
 
@@ -33,13 +34,13 @@ pacman::p_load('tidyverse', 'devtools', 'RWDataPlyr',
                'scales')
 ```
 
-### RWDataPlyr
+## RWDataPlyr
 
-#### Overview
+### Overview
 
 RWDataPlyr is a tool to read and manipulate data generated from [RiverWare<sup>TM</sup>](http://www.riverware.org) simulations in rdf, csv, and nc formats and work with those data in a dplyr pipeline. It provides functions to gather,  aggregate, and summarize data from multiple RiverWare simulations, i.e., scenarios.
 
-#### Installation
+### Installation
 
 RWDataPlyr can be installed from CRAN:
 
@@ -54,7 +55,7 @@ Or the development version can be installed from GitHub:
 devtools::install_github("BoulderCodeHub/RWDataPlyr")
 ```
 
-#### How does RWDataPlyr work?
+### How does RWDataPlyr work?
 
 RWDataPlyr provides at least three workflows for reading and using RiverWare data:
 
@@ -115,6 +116,93 @@ p <- df %>%
 print(p)
 ```
 
+# How to use the RW-RDF-Process-Plot Scripts 
+
+## Generate rdf Files from RiverWare
+1. Use RiverWare MRM to generate rdf Files from MTOM or CRSS
+1. Option A: Move files for the current run to ./scenarios/currentrun folder. Move old rdf files into ../scenarios/previousrun folder 
+1. Option B: Later modify code to point scen_dir at the location of your scenarios 
+
+## Setup RW-RDF-Process-Plot
+
+### If you've previously cloned RW-RDF-Process-Plot
+1. Open the repository in git extensions 
+1. Start up the Git Bash control line
+1. Enter 
+`$ git remote set-url origin https://github.com/usbr/RW-RDF-Process-Plot.git` 
+
+### If you have a previous packrat library you want to move into this repository
+Moving previous packrat library (from MTOM directory or other)
+1. Clone the package to your local area where you have write access
+1. Move your packrat file from your MTOM folder to this location a. Don't overwrite any existing files in this repo
+1. Run `packrat::init()` to init packrat.
+1. In the lower right window verify Packages lists a Packrat Library with all files having descriptions
+
+### If its your first time using the processing scripts and/or R in general
+Follow the instructions in the 2.Using R for post processing MTOM results wiki
+
+Your set to run!
+See _3. Using the Code_ wiki
+
+### If its your first time using the MTOM R process script and/or R in general
+Ensure the following are installed:
+* [R (3.4.4)](https://cran.r-project.org/)
+* [R tools](https://cran.rstudio.com/bin/windows/Rtools/)
+    * R tools must be added to the Path environment variable. This is an option while installing R tools, so as long as it is performed during the install, no additional steps are necessary.
+* [RStudio desktop](https://www.rstudio.com/products/rstudio/download/)
+
+**First time Running R (or after installing a new version)**
+
+The first time you use R, or when upgrading to a new releases (e.g., 3.4.x to 3.5.x), it will take some time (~20 minutes) to install all of the necessary R packages. After the first time, it will be much quicker. 
+
+1. Double-click MTOM.Rproj to launch the R-Studio project. You should get the following message:
+    ![Packrat bootstrap message](https://i.imgur.com/DqcL4Bh.png)
+1. Install all necessary packages, using either method a, or b.
+
+    a. Type `packrat::restore()` in the R-console and hit enter
+
+    b. Use the R-studio GUI options *this does not seem to be available in all versions of RStudio)
+
+    * Navigate to the Packages tab (in the lower right pane of RStudio)
+
+    * If the down carrot (see picture) is available, click it, then click "Check Library Status". If it's not available, use method **a)** to install the packages. 
+
+    ![Packrat RStudio options](https://i.imgur.com/wlRZKRy.png)
+
+    * You should receive a message that many of the packages need updating. Click "Restore"
+
+1. If you receive any errors, **close RStudio, reopen it**, and then type `packrat::restore()` in the R console and press enter to continue the installation.
+
+1. **Close RStudio, and Reopen it.**
+
+## Master Model Scripts 
+These are the master scripts which take user input then call the process and plot functions. 
+1. open _code/[MODEL XXXX]_Process&Plot_Generics.R _ 
+1. update scen_dir and results_dir in **1. Set Up** if scenarios aren't listed location or you want a custom results location 
+1. update the variables in **2.UserInput** section
+1. Optional: save the changes as a custom name (don't push these unless its a standard analysis for the team)
+1. Ctrl + Alt + R to run the code and create the figures in your results_dir 
+
+## Process Function
+This function processes annual, monthly or daily output from CRSS & MTOM for reservoir Inflow, Outflow ("flow") or Pool Elevation ("pe").
+
+## Generic Plot Functions
+These functions are called by the master scripts after Generic_Scen_Process() returns scen_res. The functions can process designed for reservoir Inflow, Outflow ("flow") or Pool Elevation ("pe"). The functions allow users to pick one of 3 figure types (1) Trace Mean, (2) Boxpolt of all Traces, (3) is Exceedance. 
+
+### Generic Annual Plot  
+Annual period of Calendar Year ("cy") or Water Year ("wy") must be specified. Plotting varies based on if the slot is a "flow", monthly values are summed over the annual period, or if a "pe", value for the end of the annual period (CY = Dec, WY = Sept) is used.   
+
+### Generic Annual Plot  
+Data is plotted "asis." If plotting (3) Exceedance you must specify a exc_month of 1-12 (1 - Jan, 12 - Dec). 
+
+### Generic Daily Plot  
+Data processing is not available via RWDataPlyr functions so output from daily slots is handled differently than the above. It is not recommended that you use this script to look at more than one year of data so the script defaults to taking only the year listed as startyr. When plotting (1) Trace Mean is all the daily means as individual data points but NOTE: the months appear to start in Feb since first CRSS timestep is Jan 31. For (2) Boxpolt of all Traces the boxplots show the distribution of daily flow grouped by month. (3) Exceedance is the CDF for all daily flows.    
+
+## Generic Input Check 
+This function checks the input provided in the master scripts 
+
+# Customize your plots by writting your own R Script  
+
 ## How to plots means of all traces
 
 *The developer regrets to inform you...*  
@@ -132,5 +220,7 @@ print(p)
 *It's a cold dark stackoverflow out there...*  
 
 ## How find and plot the max diff trace of two scenarios 
+
+
 
 
