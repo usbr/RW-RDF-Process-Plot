@@ -120,36 +120,130 @@ print(p)
 ```
 
 
-# Plotting
 
-## How to use the RW-RDF-Process-Plot Scripts 
 
-### Generate rdf Files from RiverWare
+
+The first block of code specifies the location of the scenario rdf files from the completed RiverWare runs.
+
+```{r, eval = FALSE}
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## 1. Set Up ##
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+rm(list=ls()) #clear the enviornment 
+
+library(RWDataPlyr)
+
+## Directory Set Up
+# where scenarios are folder are kept
+scen_dir <- file.path(getwd(),"scenarios") 
+#containing the sub folders for each ensemble
+
+results_dir <- file.path(getwd(),"results") 
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## 2. User Input ##
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+############# RDF File Loactions - Change For New Study ########################
+
+#list scenarios folders in scen_dir
+list.dirs(scen_dir) #list dirs in set folder folder for us in next input
+
+#scens you want to compare, list as "your plot name" = "folder name"
+scens <- list(
+  "PreviousRun" = "PreviousRun",
+  "CurrentRun" = "CurrentRun"
+)
+
+#list rdf files in dir
+list.files(file.path(scen_dir,scens[1])) #list files in scen folder for next input
+```
+
+If the rdf files for the scenarios are in the [RW-RDF-Process-Plot directory]/scenarios /CurrentRun and /PreviousRun folders you are set. If they are elsewhere the `scen_dir` variable must be changed. If you would like a custom folder location and plot name you could use the following for `scens`
+
+```{r, eval = FALSE}
+scens <- list(
+  "Jan Offc" =  "CRSS.V2.8.0.2019.9704.Aug2018,DNF,2007Dems,IG_v2.7.0.9700,Most",
+  "FG Dev" = "CRSS.V2.8.0.2019.9703.Aug2018,DNF,2007Dems,IG_v2.7.0.9700,Most"
+  )
+```
+
+### Plot Specifications
+
+The next code block is where you specify the rdfs, variables and plot types as well as
+additional plot features. 
+
+```{r, eval = FALSE}
+############# Specify Plots ########################
+
+# Process Variables ##
+rdffiles <- c("Res.rdf","Res.rdf","Res.rdf") #rdf file with slot you want
+variables <- c("Powell.Inflow","Powell.Pool Elevation","Mead.Inflow") #RW Object.Slot
+timesteps <- c("monthly","annual","annual") #"annual" or "monthly" or "daily"
+# #WARNING: Daily Plots are still under development and all results should be cross checked. 
+# #Avoid using figuretypes 2 is Bxplt of Traces & 3 is Exceedance until further developement is complete. 
+# #https://github.com/usbr/RW-RDF-Process-Plot/issues/17
+floworpes <- c("flow","pe","flow") #"flow" or "pe"
+cyorwys <- c("cy","cy","wy") #"cy" or "wy". wy not tested for all plot configurations
+mainScenGroup <<- names(scens)[2] #name of the subfolder this analysis will be stored
+## Plot Variables ##
+combineplots <<- F #F for individual files saved, true to combineplots multiple file
+#Note: creating a series of seperate files
+figuretypes <- c(1,2,3) #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance
+exc_months <- c(NA,NA,9) #1 - Jan, 12 - Dec rep(NA,times = length(variables))
+#Note: must specify exc_month for Exceedance, since we want wy this is 9/sept
+startyrs <<- rep(2019,times = length(variables)) #c(2019,2019,2019,2019,2019) #filter out all years > this year
+endyrs <<- rep(2022,times = length(variables)) #c(2019,2026,2026,2026) #filter out all years > this year
+#Note: start year same as end year for Daily
+customcaptions <-  c(NA,NA,"Inflow Exceedance") #NA or this will over write the default caption on boxplots rep(NA,times = length(variables))
+custom_y_labs <- c(NA,NA,"Inflow Exceedance") #NA gives defaults, enter if want soemthing different rep(NA,times = length(variables))
+# Note: use of custom caption and labels
+figname <<- "ExampleFigs"
+model <<- "MTOM" #"CRSS" or "MTOM"
+first_ensemble <<- c(4,4) #filter out Most,Min,Max. For 38 trace offical = 4,
+minmaxchk <- T #only works for monthly currently (12/6/18)
+
+############# Standard Plot Variables - Don't Change ########################
+
+#output image parameters 
+width <<- 9 #inches
+height <<- 6
+
+imgtype <<- "png" #supports pdf, png, jpeg. pdf looks the best 
+#only works when individual plots are selected 
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#                               END USER INPUT
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+```
+
+Plots are listed in order with a `,` seperating each in the variable declareation. Any number of plots can be generated but each variable must be specified for all plots. Hit `Ctrl + Alt + R` to run the code and create the figures in your `results_dir` In this example our plots will be: 
+
+1. A monthly mean of the traces of Powell.Inflow 
+
+![](results/ExampleResults/ExampleFigs_monthly_cy_Powell.Inflow_mean.png?raw=true)
+
+1. A annual boxplot of the traces of Powell.Pool Elevation 
+
+![](results/ExampleResults/ExampleFigs_annual_cy_Powell.PoolElevation_bxplt.png?raw=true)
+
+1. A annual exceedance of the traces of Mead.Inflow  
+
+![](results/ExampleResults/ExampleFigs_annual_wy_Mead.Inflow_exceedance.png?raw=true)
+
+All plots are from 2019-2022 and will be generated as png files.  
+
+Further infromation follows about setup up and the uses of individual functions in the RW-RDF-Process-Plot family. __Users lacking experience with R will want to only modify the master scripts__ `code/MTOM_Process&Plot_Generics.R` and `code/CRSS_Process&Plot_Generics.R` which call the appropriate functions. 
+
 1. Use RiverWare MRM to generate rdf Files from MTOM or CRSS
 1. Option A: Move files for the current run to ./scenarios/currentrun folder. Move old rdf files into ../scenarios/previousrun folder 
 1. Option B: Later modify code to point scen_dir at the location of your scenarios 
 
 ### Setup RW-RDF-Process-Plot
 
-#### If you've previously cloned RW-RDF-Process-Plot
-1. Open the repository in git extensions 
-1. Start up the Git Bash control line
-1. Enter 
-`$ git remote set-url origin https://github.com/usbr/RW-RDF-Process-Plot.git` 
-
-#### If you have a previous packrat library you want to move into this repository
-Moving previous packrat library (from MTOM directory or other)
-1. Clone the package to your local area where you have write access
-1. Move your packrat file from your MTOM folder to this location a. Don't overwrite any existing files in this repo
-1. Run `packrat::init()` to init packrat.
-1. In the lower right window verify Packages lists a Packrat Library with all files having descriptions
-
-#### If its your first time using the processing scripts and/or R in general
-Follow the instructions in the 2.Using R for post processing MTOM results wiki
-
-Your set to run!
-See _3. Using the Code_ wiki
-
+### If you've previously cloned RW-RDF-Process-Plot
+### If you have a previous packrat library you want to move into this repository
+### If its your first time using the processing scripts and/or R in general
 #### If its your first time using the MTOM R process script and/or R in general
 Ensure the following are installed:
 * [R (3.4.4)](https://cran.r-project.org/)
@@ -181,13 +275,33 @@ The first time you use R, or when upgrading to a new releases (e.g., 3.4.x to 3.
 
 1. **Close RStudio, and Reopen it.**
 
-### Master Model Scripts 
-These are the master scripts which take user input then call the process and plot functions. 
-1. open _code/[MODEL XXXX]_Process&Plot_Generics.R _ 
+1. Open the repository in git extensions 
+1. Start up the Git Bash control line
+1. Enter 
+`$ git remote set-url origin https://github.com/usbr/RW-RDF-Process-Plot.git` 
+
+### If you have a previous packrat library you want to move into this repository
+Moving previous packrat library (from MTOM directory or other)
+1. Clone the package to your local area where you have write access
+1. Move your packrat file from your MTOM folder to this location a. Don't overwrite any existing files in this repo
+1. Run `packrat::init()` to init packrat.
+1. In the lower right window verify Packages lists a Packrat Library with all files having descriptions
+
+Master scripts are designed to make plotting results simple. These scripts take user input then call the process and plot functions. __Users lacking experience with R will want to only modify the master scripts.__
+
+1. open __code/[MODEL XXXX]_Process&Plot_Generics.R__
+
 1. update scen_dir and results_dir in **1. Set Up** if scenarios aren't listed location or you want a custom results location 
+
 1. update the variables in **2.UserInput** section
-1. Optional: save the changes as a custom name (don't push these unless its a standard analysis for the team)
+
+1. Optional: save the changes as a custom name. Don't save and push these in the __code__ folder unless its a standard analysis for the team. Instead save them to the __custom_code_notrack__ folder. 
+
 1. Ctrl + Alt + R to run the code and create the figures in your results_dir 
+
+## Process Function
+
+Master scripts utilize the following functions were are explained below:
 
 ### Process Function
 This function processes annual, monthly or daily output from CRSS & MTOM for reservoir Inflow, Outflow ("flow") or Pool Elevation ("pe").
@@ -203,6 +317,8 @@ Data is plotted "asis." If plotting (3) Exceedance you must specify a exc_month 
 
 #### Generic Daily Plot  
 Data processing is not available via RWDataPlyr functions so output from daily slots is handled differently than the above. It is not recommended that you use this script to look at more than one year of data so the script defaults to taking only the year listed as startyr. When plotting (1) Trace Mean is all the daily means as individual data points but NOTE: the months appear to start in Feb since first CRSS timestep is Jan 31. For (2) Boxpolt of all Traces the boxplots show the distribution of daily flow grouped by month. (3) Exceedance is the CDF for all daily flows.    
+
+## Generic Input Check 
 
 ### Generic Input Check 
 This function checks the input provided in the master scripts 
@@ -257,6 +373,17 @@ rdftbl %>%
 *It's a cold dark stackoverflow out there...*  
 
 ### How find and plot the max diff trace of two scenarios 
+
+# Further Customize your plots with these features
+
+## Shaded regions
+
+## Horizontal lines for only part of the x-axis
+
+## Modifying the legend
+
+
+
 
 
 

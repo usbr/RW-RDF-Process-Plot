@@ -32,11 +32,17 @@ packrat/lib*/
 packrat/src
 packrat/lib-R
 packrat/lib
+packrat/init.R
 
 scenarios
 !scenarios/CurrentRun/ReadMe.txt
 !scenarios/PreviousRun/ReadMe.txt
 
 results
+!results/ExampleResults/*
 !results/ReadMe.txt
+
 custom_code_notrack
+!custom_code_notrack/ReadMe.txt
+
+
