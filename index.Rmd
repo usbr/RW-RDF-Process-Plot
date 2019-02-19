@@ -1,5 +1,5 @@
 ---
-title: "Boulder BrainTrust<sup>TM</sup> cookbook for R graphics"
+title: "Boulder BrainTrust<sup>TM</sup> graphics and Data Wrangling"
 author: "cfelletter"
 date: "Last updated: `r format(Sys.Date())`"
 output: 
@@ -18,9 +18,6 @@ library(devtools)
 library(CRSSIO)
 library(tidyverse)
 ```
-
-
-# Boulder BrainTrust<sup>TM</sup> graphics and Data Wrangling
 
 We have developed an R cookbook to make the process of creating publication-ready graphics in our in-house style using R's ggplot2 library a more reproducible process, as well as making it easier for people new to R to create graphics. This was inspired by the [BBC's cookbook](https://bbc.github.io/rcookbook/). 
 
