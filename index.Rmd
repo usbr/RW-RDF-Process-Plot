@@ -16,6 +16,7 @@ library(RWDataPlyr)
 suppressPackageStartupMessages(library(scales))
 library(devtools)
 library(CRSSIO)
+library(tidyverse)
 ```
 
 
@@ -35,9 +36,7 @@ A few of the steps in this cookbook - and to create charts in R in general - req
 
 # Data Wrangling
 
-# rdf Wrangling
-
-## RWDataPlyr
+## rdf Wrangling with RWDataPlyr
 
 ### Overview
 
@@ -119,8 +118,15 @@ print(p)
 ```
 
 
+# Plotting 
 
+## Predefined Plotting with RW-RDF-Process-Plot Scripts 
 
+### RW-RDF-Process-Plot Scripts Example 
+
+The following example is intended to demonstrate how the master scripts could be used to generate plots which compare two different runs of the MTOM model. This is done by modifying `code/MTOM_Process&Plot_Generics.R` in the RW-RDF-Process-Plot directory. 
+
+#### RDF File Loactions
 
 The first block of code specifies the location of the scenario rdf files from the completed RiverWare runs.
 
@@ -167,7 +173,7 @@ scens <- list(
   )
 ```
 
-### Plot Specifications
+#### Plot Specifications
 
 The next code block is where you specify the rdfs, variables and plot types as well as
 additional plot features. 
@@ -234,15 +240,13 @@ All plots are from 2019-2022 and will be generated as png files.
 
 Further infromation follows about setup up and the uses of individual functions in the RW-RDF-Process-Plot family. __Users lacking experience with R will want to only modify the master scripts__ `code/MTOM_Process&Plot_Generics.R` and `code/CRSS_Process&Plot_Generics.R` which call the appropriate functions. 
 
+### Generate rdf Files from RiverWare
 1. Use RiverWare MRM to generate rdf Files from MTOM or CRSS
 1. Option A: Move files for the current run to ./scenarios/currentrun folder. Move old rdf files into ../scenarios/previousrun folder 
 1. Option B: Later modify code to point scen_dir at the location of your scenarios 
 
 ### Setup RW-RDF-Process-Plot
 
-### If you've previously cloned RW-RDF-Process-Plot
-### If you have a previous packrat library you want to move into this repository
-### If its your first time using the processing scripts and/or R in general
 #### If its your first time using the MTOM R process script and/or R in general
 Ensure the following are installed:
 * [R (3.4.4)](https://cran.r-project.org/)
@@ -274,18 +278,20 @@ The first time you use R, or when upgrading to a new releases (e.g., 3.4.x to 3.
 
 1. **Close RStudio, and Reopen it.**
 
+#### If you've previously cloned RW-RDF-Process-Plot
 1. Open the repository in git extensions 
 1. Start up the Git Bash control line
 1. Enter 
 `$ git remote set-url origin https://github.com/usbr/RW-RDF-Process-Plot.git` 
 
-### If you have a previous packrat library you want to move into this repository
+#### If you have a previous packrat library you want to move into this repository
 Moving previous packrat library (from MTOM directory or other)
 1. Clone the package to your local area where you have write access
 1. Move your packrat file from your MTOM folder to this location a. Don't overwrite any existing files in this repo
 1. Run `packrat::init()` to init packrat.
 1. In the lower right window verify Packages lists a Packrat Library with all files having descriptions
 
+### Master Model Scripts 
 Master scripts are designed to make plotting results simple. These scripts take user input then call the process and plot functions. __Users lacking experience with R will want to only modify the master scripts.__
 
 1. open __code/[MODEL XXXX]_Process&Plot_Generics.R__
@@ -298,31 +304,31 @@ Master scripts are designed to make plotting results simple. These scripts take 
 
 1. Ctrl + Alt + R to run the code and create the figures in your results_dir 
 
-## Process Function
+### Supporting Functions
 
 Master scripts utilize the following functions were are explained below:
 
-### Process Function
+#### Process Function
 This function processes annual, monthly or daily output from CRSS & MTOM for reservoir Inflow, Outflow ("flow") or Pool Elevation ("pe").
 
-### Generic Plot Functions
+#### Generic Plot Functions
 These functions are called by the master scripts after Generic_Scen_Process() returns scen_res. The functions can process designed for reservoir Inflow, Outflow ("flow") or Pool Elevation ("pe"). The functions allow users to pick one of 3 figure types (1) Trace Mean, (2) Boxpolt of all Traces, (3) is Exceedance. 
 
-#### Generic Annual Plot  
+##### Generic Annual Plot  
 Annual period of Calendar Year ("cy") or Water Year ("wy") must be specified. Plotting varies based on if the slot is a "flow", monthly values are summed over the annual period, or if a "pe", value for the end of the annual period (CY = Dec, WY = Sept) is used.   
 
-#### Generic Annual Plot  
+##### Generic Annual Plot  
 Data is plotted "asis." If plotting (3) Exceedance you must specify a exc_month of 1-12 (1 - Jan, 12 - Dec). 
 
-#### Generic Daily Plot  
+##### Generic Daily Plot  
 Data processing is not available via RWDataPlyr functions so output from daily slots is handled differently than the above. It is not recommended that you use this script to look at more than one year of data so the script defaults to taking only the year listed as startyr. When plotting (1) Trace Mean is all the daily means as individual data points but NOTE: the months appear to start in Feb since first CRSS timestep is Jan 31. For (2) Boxpolt of all Traces the boxplots show the distribution of daily flow grouped by month. (3) Exceedance is the CDF for all daily flows.    
 
-## Generic Input Check 
+WARNING: Daily Plots are still under development and all results should be cross checked.Avoid using figuretypes 2 is Bxplt of Traces & 3 is Exceedance until further developement is complete. https://github.com/usbr/RW-RDF-Process-Plot/issues/17
 
-### Generic Input Check 
-This function checks the input provided in the master scripts 
+#### Generic Input Check 
+This function checks the input provided in the master scripts  
 
-## Custom plots 
+## Custom plots by writting your own R Script 
 
 Sample data to use, which includes EOCY Mead elevation and annual Powell release.
 
@@ -373,13 +379,13 @@ rdftbl %>%
 
 ### How find and plot the max diff trace of two scenarios 
 
-# Further Customize your plots with these features
+## Further Customize your plots with these features
 
-## Shaded regions
+### Shaded regions
 
-## Horizontal lines for only part of the x-axis
+### Horizontal lines for only part of the x-axis
 
-## Modifying the legend
+### Modifying the legend
 
 
 
