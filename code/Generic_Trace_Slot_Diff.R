@@ -62,16 +62,28 @@ imgtype <<- "pdf" #supports pdf, png, jpeg. pdf looks the best
 #list rdf files in dir
 # list.files(file.path(scen_dir,scens[1])) 
 
-rdffiles <- c("UBRes.rdf") #rdf file with slot you want
+rdffiles <- c("UBRch.rdf") #rdf file with slot you want
+# # Currently all files must be in the same rdf 
 
 # #list slots in rdf
 rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],rdffiles[1])))
 # 
-variables <- c("FlamingGorge.Pool Elevation","FlamingGorge.Outflow") #RW Object.Slot
-# variables <- c("Powell.Pool Elevation") #RW Object.Slot
-
-# # Repeat rdf file name if all variables are in same rdf 
-# rdffiles <- rep(x = "UBRch.rdf" ,times = length(variables))
+variables <- c("PariaColorado.Inflow1",
+"PariaRiver.Inflow",
+"CoRivPariaToLittleCO.Inflow",
+"DoloresRiver.Inflow",
+"DuchesneAboveStarv.Inflow",
+"GreenRAboveFontenelle.Inflow",
+"GunnisonColorado.Outflow",
+"SanJuanColorado.Inflow1",
+"SanJuanColorado.Inflow2",
+"SanRafaelRiver.Inflow",
+"SJAboveNavajo.Inflow",
+"UpperColoradoReach.Inflow",
+"WhiteRiverAboveWatson.Inflow",
+"WhiteRiverBelowWatson.Inflow",
+"YampaRiver.Inflow",
+"LittleSnakeRiver.Inflow") #RW Object.Slot
 
 # trace_to_plot <- c(66,66) #length(trace_to_plot) must be equal to length(variables)
 trace_to_plot <- c(NA,NA) #use defualt max diff traces 
@@ -81,6 +93,12 @@ timestartstop <-c(NA,NA) #use whole record
 
 ub_old <- read_rdf(iFile = file.path(scen_dir,scens[1],rdffiles[1]))
 ub_new <- read_rdf(iFile = file.path(scen_dir,scens[2],rdffiles[1]))
+
+#check slots in rdf
+if(!any(rdf_slot_names(ub_old) %in% variables)|
+   !any(rdf_slot_names(ub_new) %in% variables)
+  ){ stop(paste('Slot ',variable,' does not exist in given rdf'))
+} 
 
 if(saveplots == T){
   pdf(file.path(ofigs,paste0(figname,".pdf")), width=width, height=height)
@@ -129,7 +147,6 @@ for(i in 1:length(variables)){
   
 }
 
-write.csv(data,file = paste0(ofigs,'/SlotDiff.csv'))
-
-
 dev.off()
+
+write.csv(data,file = paste0(ofigs,'/SlotDiff.csv'))
