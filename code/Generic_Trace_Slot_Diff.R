@@ -31,23 +31,18 @@ if (model == "MTOM"){
   # where scenarios are folder are kept
   scen_dir <- file.path(CRSSDIR,"Scenario")
   
-  # scens <- list( ########update every time##########
-  #                "Aug 2018 9000" = "Aug2018_2019_9000,DNF,2007Dems,IG_9000,Most_BM_FGltsp",
-  #                "Aug 2018 9002 (+ CC Fix)" = "Aug2018_2019_v2.8.0.9002,DNF,2007Dems,IG_v2.7.0.9002,Most" #Verify
-  # )
-  
-  #CC compare 
-  scens <- list( ########update every time##########
-                 "9600" = "Aug2018_2019_v2.8.0.9600,VIC,2007Dems_ScheduleSlots,IG_v2.7.0.9600,Most",
-                 "9700 + Fix" = "Aug2018_2019_v2.8.0.9700,VIC,2007Dems_ScheduleSlots,IG_v2.7.0.9700,Most" #Verify
+  scens <- list(
+    "woMin10wMaxDivSalt" = "woMin10wMaxDivSalt",
+    "9004wConverg" = "9004wConverg" 
   )
   
   results_dir <- file.path(CRSSDIR,"results")
   
 } else {stop("Set Model")}
 
+mainScenGroup <<- names(scens)[2] #name of the subfolder this analysis will be stored
 
-figname <<- F
+figname <<- "SlotDiffFigs"
 
 ofigs <- file.path(results_dir,mainScenGroup) 
 if (!file.exists(ofigs)) {
@@ -64,21 +59,10 @@ imgtype <<- "pdf" #supports pdf, png, jpeg. pdf looks the best
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#list scenarios folders in scen_dir
-list.dirs(scen_dir) #list dirs in set folder folder for us in next input
-
-# #### Normally You'll Only Change The Below ####
-# #scens you want to compare, list as "your plot name" = "folder name"
-# scens <- list(
-#   "PreviousRun" = "PreviousRun",
-#   "CurrentRun" = "CurrentRun"
-# )
-
 #list rdf files in dir
-list.files(file.path(scen_dir,scens[1])) 
+# list.files(file.path(scen_dir,scens[1])) 
 
 rdffiles <- c("UBRes.rdf") #rdf file with slot you want
-# rdffiles <- c("Res.rdf") #rdf file with slot you want
 
 # #list slots in rdf
 rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],rdffiles[1])))
@@ -86,12 +70,14 @@ rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],rdffiles[1])))
 variables <- c("FlamingGorge.Pool Elevation","FlamingGorge.Outflow") #RW Object.Slot
 # variables <- c("Powell.Pool Elevation") #RW Object.Slot
 
+# # Repeat rdf file name if all variables are in same rdf 
+# rdffiles <- rep(x = "UBRch.rdf" ,times = length(variables))
+
 # trace_to_plot <- c(66,66) #length(trace_to_plot) must be equal to length(variables)
 trace_to_plot <- c(NA,NA) #use defualt max diff traces 
 
-timestartstop <-c(NA,NA) #use whole record
-timestartstop <-c(1,496) #drop last 8 months for FG
-
+timestartstop <-c(NA,NA) #use whole record 
+# timestartstop <-c(1,496) #drop last 8 months for FG
 
 ub_old <- read_rdf(iFile = file.path(scen_dir,scens[1],rdffiles[1]))
 ub_new <- read_rdf(iFile = file.path(scen_dir,scens[2],rdffiles[1]))
@@ -113,9 +99,9 @@ for(i in 1:length(variables)){
   plot(apply(abs(diffM), 2, max), type = 'h', main = paste("Diff",variables[i]),xlab = "Trace",ylab = variables[i])
   
   maxtrace <- which.max(apply(diffM, 2, max)) #54
-  message(paste("Max diff trace",maxtrace,"of",apply(diffM, 2, max)[maxtrace],"in",variables[i]))
+  # message(paste("Max diff trace",maxtrace,"of",apply(diffM, 2, max)[maxtrace],"in",variables[i]))
   mintrace <- which.min(apply(diffM, 2, min)) #31
-  message(paste("Min diff trace",mintrace,"of",apply(diffM, 2, min)[mintrace],"in",variables[i]))
+  # message(paste("Min diff trace",mintrace,"of",apply(diffM, 2, min)[mintrace],"in",variables[i]))
   
   if(which.max(c(apply(diffM, 2, max)[maxtrace],apply(diffM, 2, min)[mintrace])) == 1){
     plot(diffM[,maxtrace], type = 'h', main = paste("Diff",variables[2],"trace",maxtrace),xlab = "Timestep",ylab = variables[i])
@@ -131,6 +117,19 @@ for(i in 1:length(variables)){
     
     
   }
+  
+  if(i==1){
+    data <- data.frame("Slot" = variables[i], "Max_diff_trace" = maxtrace,"Max_diff" = apply(diffM, 2, max)[maxtrace],
+                       "Min_diff_trace" = mintrace, "Min_diff" = apply(diffM, 2, min)[mintrace])
+  } else{
+    data <- rbind.data.frame(data,data.frame("Slot" = variables[i], "Max_diff_trace" = maxtrace,"Max_diff" = apply(diffM, 2, max)[maxtrace],
+                       "Min_diff_trace" = mintrace, "Min_diff" = apply(diffM, 2, min)[mintrace])
+    )
+  }
+  
 }
+
+write.csv(data,file = paste0(ofigs,'/SlotDiff.csv'))
+
 
 dev.off()
