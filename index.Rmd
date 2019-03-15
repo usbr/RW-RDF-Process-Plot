@@ -378,6 +378,28 @@ rdftbl %>%
 
 ## Further Customize your plots with these features
 
+### Transparent Backgrounds
+
+- set the plot regions to transparent
+- and set the output background to transparent
+
+```{r, eval=FALSE}
+## gg is some ggplot
+gg <- gg + 
+  theme(rect = element_rect(fill = "transparent"))
+
+# or for more control (not all rectangles)
+gg <- gg +
+  theme(
+    panel.background = element_rect(fill = "transparent"),
+    plot.background = element_rect(fill = "transparent"),
+    legend.background = element_rect(fill = "transparent"),
+    legend.box.background = element_rect(fill = "transparent")
+  )
+
+ggsave(gg, "sample.png", bg = "transparent")
+```
+
 ### Shaded regions
 
 ### Horizontal lines for only part of the x-axis
