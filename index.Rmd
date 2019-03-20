@@ -115,6 +115,35 @@ print(p)
 ```
 
 
+## Converting rdfs to Excel
+
+CADSWES provides the [RdfToExcel](https://cadswes2.colorado.edu/downloads/riverware/releases/index.html) tool to convert rdf files to Excel files. This tool can be used interactively, or within RiverSMART to automate the conversion process. However, sometimes, it can be useful to batch convert a lot of rdf files outside of RiverSMART. The conversion can be scripted in R.
+
+**Make sure that the file paths do not include any spaces**
+
+
+```{r}
+# path to the executable
+rdf2excel <- "C:/Program Files/CADSWES/RdfToExcel/RdfToExcelExecutable.exe"
+
+ifile <- system.file(
+  "extdata/Scenario/ISM1988_2014,2007Dems,IG,Most/KeySlots.rdf", 
+  package = "RWDataPlyr"
+)
+
+ofile <- file.path(tempdir(), "KeySlots.xlsx")
+
+lfile <- file.path(tempdir(), "rdf2excel.log")
+
+# construct the command arguements as a vector        
+my_args <- c("-i", ifile, "-o", ofile, "-l", lfile)
+        
+# call the executable with the arguments
+system2(rdf2excel, args = my_args)
+```
+
+The "-l" flag does not have to be used; it will create a log file in the input directory. Similarly, if the output file is not specified, it will create the file in the input directory with the same name as the rdf file, but with a xlsx extension.
+
 # Plotting 
 
 ## Predefined Plotting with RW-RDF-Process-Plot Scripts 
