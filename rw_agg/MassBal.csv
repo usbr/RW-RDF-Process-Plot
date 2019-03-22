@@ -1,0 +1,12 @@
+file,slot,period,summary,eval,t_s,variable
+SaltMassBalance.rdf,UB Salt Mass Balance.Natural Inflow,cy,sum,NA,NA,UB_Natural_Inflow
+SaltMassBalance.rdf,UB Salt Mass Balance.Agricultural Inflow,cy,sum,NA,NA,UB_Agricultural_Inflow
+SaltMassBalance.rdf,UB Salt Mass Balance.Exports,cy,sum,NA,NA,UB_Exports
+SaltMassBalance.rdf,UB Salt Mass Balance.WQIPS,cy,sum,NA,NA,UB_WQIPS
+SaltMassBalance.rdf,UB Salt Mass Balance.ReservoirSaltMass,cy,sum,NA,NA,UB_ReservoirSaltMass
+SaltMassBalance.rdf,UB Salt Mass Balance.ChangeInReachSaltMass,cy,sum,NA,NA,UB_ChangeInReachSaltMass
+SaltMassBalance.rdf,UB Salt Mass Balance.OutflowSaltMass,cy,sum,NA,NA,UB_OutflowSaltMass
+SaltMassBalance.rdf,UB Salt Mass Balance.AgSaltLoading,cy,sum,NA,NA,UB_AgSaltLoading
+SaltMassBalance.rdf,UB Salt Mass Balance.AgSaltLoadingExtra,cy,sum,NA,NA,UB_AgSaltLoadingExtra
+SaltMassBalance.rdf,UB Salt Mass Balance.ExportSaltMass,cy,sum,NA,NA,UB_ExportSaltMass
+SaltMassBalance.rdf,UB Salt Mass Balance.ExportSaltMassExtra,cy,sum,NA,NA,UB_ExportSaltMassExtra
