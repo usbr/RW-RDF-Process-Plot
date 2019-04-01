@@ -27,10 +27,6 @@ scen_dir <- file.path(CRSSDIR,"Scenario")
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-# Disable Scientifc Notation 
-options(scipen=999)
-##########################################################################
-
 # Compare 17 vs 19 model ICs with 2012 NFS and 2015 NFS (A vs B)
 scens <- list(
   "Jan17mdl_06-12NFS_TriRvw17Scen3" = "",
@@ -51,7 +47,7 @@ scens <- list(
 #file names
 Model.Step.Name <- "NFS 06-12 to 06-17" #plot title and results/folder name
 Figs <- '_NFS_06-12vs06-17'  #[plot type] identifying name .pdf 
-startyr <- 2017 #filter out all years > this year
+startyr <- 2020 #filter out all years > this year
 endyr <- 2040
 
 ##########################################################################
@@ -63,7 +59,7 @@ scens <- list(
 #file names
 Model.Step.Name <- "NFS 06-17 to 88-17" #plot title and results/folder name
 Figs <- '_NFS_06-17vs88-17'  #[plot type] identifying name .pdf 
-startyr <- 2017 #filter out all years > this year
+startyr <- 2020 #filter out all years > this year
 endyr <- 2040
 
 ##########################################################################
@@ -75,7 +71,7 @@ scens <- list(
 #file names
 Model.Step.Name <- "Plan of Imp 2017 vs 2020" #plot title and results/folder name
 Figs <- '_controls_17Scen3vs20Scen2'  #[plot type] identifying name .pdf 
-startyr <- 2017 #filter out all years > this year
+startyr <- 2020 #filter out all years > this year
 endyr <- 2040
 
 ##########################################################################
