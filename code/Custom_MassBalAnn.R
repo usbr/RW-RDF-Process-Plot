@@ -24,6 +24,9 @@ scen_dir <- file.path(CRSSDIR,"Scenario")
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+# Disable Scientifc Notation 
+options(scipen=999)
+
 #generic scenario locations 
 # scens <- list(
 #   "Without Additional Controls 2017" = "DNF,Jan2017,WQIP_Senario1",
@@ -41,16 +44,17 @@ scen_dir <- file.path(CRSSDIR,"Scenario")
 # startyr = 2017 #filter out all years > this year
 # endyr = 2040
 
-#Compare 2017 NFS vs 2017 NFS Stress Test with 19 model (C vs D)
+# Compare 17 vs 19 model ICs with 2012 NFS and 2015 NFS (A vs B)
 # scens <- list(
-#   "Jan19mdl_2017NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
-#   "Jan19mdl_2017NFS_88-17_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Senario3"
+#   "Jan17mdl_2012NFS_TriRvw17Scen3" = "DNF,Jan2017,WQIP_Senario3",
+#   "Jan19mdl_2015NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2015,Jan2019_2020,IG,WQIP_Senario3"
 # )
-# #file names 
-# Figs <- 'SaltMassBalGrph_17to17NFS_StressTest.pdf'
-# startyr = 2020 #filter out all years > this year
+# #file names
+# Figs <- 'SaltMassBalGrph_17to19mdl.pdf'
+# startyr = 2017 #filter out all years > this year
 # endyr = 2040
-# 
+# Model.Step.Name = "(Model Step A vs B)"
+
 # #Compare 2015 NFS vs 2017 NFS with 19 model (B vs C)
 # scens <- list(
 #   "Jan19mdl_2015NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2015,Jan2019_2020,IG,WQIP_Senario3",
@@ -60,23 +64,48 @@ scen_dir <- file.path(CRSSDIR,"Scenario")
 # Figs <- 'SaltMassBalGrph_15to17NFS.pdf'
 # startyr = 2020 #filter out all years > this year
 # endyr = 2040
+# Model.Step.Name = "(Model Step B vs C)"
 
-# Compare 17 vs 19 model ICs with 2012 NFS and 2015 NFS (A vs B)
+
+#Compare 2017 NFS vs 2017 NFS Stress Test with 19 model (C vs D)
+# scens <- list(
+#   "Jan19mdl_2017NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
+#   "Jan19mdl_2017NFS_88-17_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Senario3"
+# )
+# #file names
+# Figs <- 'SaltMassBalGrph_17to17NFS_StressTest.pdf'
+# startyr = 2020 #filter out all years > this year
+# endyr = 2040
+# Model.Step.Name = "(Model Step C vs D)"
+
+
+# # Compare 2017 NFS vs 2017 NFS Stress Test with 19 model (C vs E)
+# scens <- list(
+#   "Jan19mdl_2017NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
+#   "Jan19mdl_2017NFS_TriRvw20Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020"
+# )
+# #file names
+# Figs <- 'SaltMassBalGrph_17to20Scen3_Same2017NFS.pdf'
+# startyr = 2020 #filter out all years > this year
+# endyr = 2040
+# Model.Step.Name = "(Model Step C vs E)"
+
+# Compare 2017 NFS vs 2017 NFS Stress Test with 19 model (F)
 scens <- list(
-  "Jan17mdl_2012NFS_TriRvw17Scen3" = "DNF,Jan2017,WQIP_Senario3",
-  "Jan19mdl_2015NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2015,Jan2019_2020,IG,WQIP_Senario3"
+  "Jan19mdl_2017NFS_TriRvw20Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
+  "Jan19mdl_2017NFS_TriRvw20Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020"
 )
 #file names
-Figs <- 'SaltMassBalGrph_17to19mdl.pdf'
-startyr = 2017 #filter out all years > this year
+Figs <- 'SaltMassBalGrph_20to20Scen2&3_Same2017NFS.pdf'
+startyr = 2020 #filter out all years > this year
 endyr = 2040
-
+Model.Step.Name = "(Model Step F)"
 
 
 mainScenGroup <- names(scens)[2] #"CurrentRun"
 
 #agg file specifying which slots
-rw_agg_file <- "MassBal.csv" 
+# rw_agg_file <- "MassBal.csv" 
 rw_agg_file <- "MassBal_2017slots.csv" #2017 run didn't have UB Salt Mass Balance.AgSaltLoading, UB Salt Mass Balance.AgSaltLoadingExtra , UB Salt Mass Balance.ExportSaltMass, UB Salt Mass Balance.ExportSaltMassExtra
 
 
@@ -124,8 +153,8 @@ message('Figures and tables will be saved to: ', oFigs)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # list.files(file.path(scen_dir,scens[2]))
 # 
-rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"SaltMassBalance.rdf")))
-rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"MassBalance.rdf")))
+rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[2],"SaltMassBalance.rdf")))
+# rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"MassBalance.rdf")))
 #ISSUE: mass balance doesn't know which is inflow for which basin! they have same object.slot name
 
 #can't read not annual 
@@ -143,6 +172,10 @@ scen_res <- rw_scen_aggregate(
 
 unique(scen_res$Variable) #check variable names 
 
+## Divide Values by 1,000,000 to present data in Million of Tons/Year
+
+scen_res$Value=(scen_res$Value)/1000000
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Plot Custom UB Figures 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -154,10 +187,10 @@ pdf(file.path(oFigs,Figs), width=9, height=6)
 
 ### Means ###
 
-variable = "UB_Natural_Salt_Mass"
-y_lab = "Salt Mass (tons/yr)"
+variable = "UB_Natural_Inflow"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(0,7000000)
+ylims <- c(0,7)
 
 
 df_ub <- scen_res %>%
@@ -170,15 +203,16 @@ p <- df_ub %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  labs(title = title, y = y_lab, x = "Year")
+  labs(title = paste("UB Natural Salt Loading",Model.Step.Name) , y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
 #-------------------------------------------------------------------------------------
 
-variable = "LB_Natural_Salt_Mass"
-y_lab = "Salt Mass (tons/yr)"
+variable = "LB_Natural_Inflow"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(0,7000000)
+ylims <- c(0,4)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -186,33 +220,35 @@ df <- scen_res %>%
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
 
-p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
-  geom_line() +
-  geom_point() +
-  # ylim(ylims) +
-  labs(title = title, y = y_lab, x = "Year")
-print(p)
+variable2 = "CoRivPariaToLittleCO.Outflow Salt Mass"
+df2 <- scen_res %>%
+  dplyr::filter(Variable == variable2) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value))
 
+##Subtracting out the UB portion of LB Natural Salt Load
 df_lb = df
-df_lb$Value <- df$Value - df_ub$Value #subtract off UB
+
+df_lb$Value <- df$Value - df2$Value #subtract off UB
 
 p <- df_lb %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
   geom_line() +
   geom_point() +
-  # ylim(ylims) +
-  labs(title = "LB_Natural_Inflow w/o UB", y = y_lab, x = "Year")
+  ylim(ylims) +
+  labs(title = paste("LB Natural Salt Loading",Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
 # write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
-variable = "UB_Agricultural_Salt_Loading"
-y_lab = "Salt Mass (tons/yr)"
+variable = "UB_Agricultural_Inflow"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(0,7000000)
+ylims <- c(0,7)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -225,15 +261,16 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  labs(title = title, y = y_lab, x = "Year")
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
 #-------------------------------------------------------------------------------------
 
-variable = "LB_Agricultural_Salt_Loading"
-y_lab = "Salt Mass (tons/yr)"
+variable = "LB_Agricultural_Inflow"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(0,7000000)
+ylims <- c(0,7)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -246,15 +283,16 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  labs(title = title, y = y_lab, x = "Year")
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
 #-------------------------------------------------------------------------------------
 
 variable = "UB_Exports"
-y_lab = "Salt Mass (tons/yr)"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(0,7000000)
+ylims <- c(0,7)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -267,15 +305,16 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  labs(title = title, y = y_lab, x = "Year")
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
 #-------------------------------------------------------------------------------------
 
 variable = "LB_Exports"
-y_lab = "Salt Mass (tons/yr)"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(0,7000000)
+ylims <- c(0,7)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -288,15 +327,16 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  labs(title = title, y = y_lab, x = "Year")
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
 #-------------------------------------------------------------------------------------
 
 variable = "UB_WQIPS"
-y_lab = "Salt Mass (tons/yr)"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(0,7000000)
+ylims <- c(0,7)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -309,15 +349,17 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  labs(title = title, y = y_lab, x = "Year")
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
+write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
 
 variable = "LB_WQIPS"
-y_lab = "Salt Mass (tons/yr)"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(0,7000000)
+ylims <- c(0,7)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -330,15 +372,16 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  labs(title = title, y = y_lab, x = "Year")
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
 #-------------------------------------------------------------------------------------
 
 variable = "UB_ChangeInReachSaltMass"
-y_lab = "Salt Mass (tons/yr)"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(-3500000,3500000)
+ylims <- c(-3.5,3.5)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -351,15 +394,16 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  labs(title = title, y = y_lab, x = "Year")
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
 #-------------------------------------------------------------------------------------
 
 variable = "LB_ChangeInReachSaltMass"
-y_lab = "Salt Mass (tons/yr)"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(-3500000,3500000)
+ylims <- c(-3.5,3.5)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -372,15 +416,16 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  labs(title = title, y = y_lab, x = "Year")
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
 #-------------------------------------------------------------------------------------
 
 variable = "UB_ReservoirSaltMass"
-y_lab = "Salt Mass (tons/yr)"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(-3500000,3500000)
+ylims <- c(-3.5,3.5)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -393,15 +438,16 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  labs(title = title, y = y_lab, x = "Year")
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
 #-------------------------------------------------------------------------------------
 
 variable = "LB_ReservoirSaltMass"
-y_lab = "Salt Mass (tons/yr)"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(-3500000,3500000)
+ylims <- c(-3.5,3.5)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -414,8 +460,10 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  labs(title = title, y = y_lab, x = "Year")
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
 
 dev.off()
+
