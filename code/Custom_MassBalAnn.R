@@ -41,20 +41,30 @@ scen_dir <- file.path(CRSSDIR,"Scenario")
 # startyr = 2017 #filter out all years > this year
 # endyr = 2040
 
-#Compare 2015 NFS vs 2017 NFS with 19 model 
+#Compare 2017 NFS vs 2017 NFS Stress Test with 19 model (C vs D)
 # scens <- list(
-#   "Jan19mdl_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2015,Jan2019_2020,IG,WQIP_Senario3",
+#   "Jan19mdl_2017NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
+#   "Jan19mdl_2017NFS_88-17_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Senario3"
+# )
+# #file names 
+# Figs <- 'SaltMassBalGrph_17to17NFS_StressTest.pdf'
+# startyr = 2020 #filter out all years > this year
+# endyr = 2040
+# 
+# #Compare 2015 NFS vs 2017 NFS with 19 model (B vs C)
+# scens <- list(
+#   "Jan19mdl_2015NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2015,Jan2019_2020,IG,WQIP_Senario3",
 #   "Jan19mdl_2017NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3"
 # )
-#file names 
+# # file names
 # Figs <- 'SaltMassBalGrph_15to17NFS.pdf'
 # startyr = 2020 #filter out all years > this year
 # endyr = 2040
 
-# #Compare 17 vs 19 model ICs with 2015 NFS
+# Compare 17 vs 19 model ICs with 2012 NFS and 2015 NFS (A vs B)
 scens <- list(
-  "Jan17mdl_TriRvw17Scen3" = "DNF,Jan2017,WQIP_Senario3",
-  "Jan19mdl_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2015,Jan2019_2020,IG,WQIP_Senario3"
+  "Jan17mdl_2012NFS_TriRvw17Scen3" = "DNF,Jan2017,WQIP_Senario3",
+  "Jan19mdl_2015NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2015,Jan2019_2020,IG,WQIP_Senario3"
 )
 #file names
 Figs <- 'SaltMassBalGrph_17to19mdl.pdf'
@@ -87,7 +97,7 @@ library(CRSSIO)
 # plotEOCYElev() and csVarNames()
 
 # source('Output Data/RDF Process/plottingFunctions.R') 
-source("C:/Users/cfelletter/Documents/RW-RDF-Process-Plot/code/plottingFunctions.R")
+source("C:/Users/ealexander/Documents/Process-MTOM-R/code/plottingFunctions.R")
 
 # check folders
 if(!file.exists(file.path(scen_dir, scens[1])) 
@@ -144,7 +154,7 @@ pdf(file.path(oFigs,Figs), width=9, height=6)
 
 ### Means ###
 
-variable = "UB_Natural_Inflow"
+variable = "UB_Natural_Salt_Mass"
 y_lab = "Salt Mass (tons/yr)"
 title = variable
 ylims <- c(0,7000000)
@@ -165,7 +175,7 @@ print(p)
 
 #-------------------------------------------------------------------------------------
 
-variable = "LB_Natural_Inflow"
+variable = "LB_Natural_Salt_Mass"
 y_lab = "Salt Mass (tons/yr)"
 title = variable
 ylims <- c(0,7000000)
@@ -184,6 +194,7 @@ p <- df %>%
   labs(title = title, y = y_lab, x = "Year")
 print(p)
 
+df_lb = df
 df_lb$Value <- df$Value - df_ub$Value #subtract off UB
 
 p <- df_lb %>%
@@ -198,7 +209,7 @@ print(p)
 
 #-------------------------------------------------------------------------------------
 
-variable = "UB_Agricultural_Inflow"
+variable = "UB_Agricultural_Salt_Loading"
 y_lab = "Salt Mass (tons/yr)"
 title = variable
 ylims <- c(0,7000000)
@@ -219,7 +230,7 @@ print(p)
 
 #-------------------------------------------------------------------------------------
 
-variable = "LB_Agricultural_Inflow"
+variable = "LB_Agricultural_Salt_Loading"
 y_lab = "Salt Mass (tons/yr)"
 title = variable
 ylims <- c(0,7000000)

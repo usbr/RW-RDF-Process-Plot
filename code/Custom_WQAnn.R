@@ -41,25 +41,35 @@ scen_dir <- file.path(CRSSDIR,"Scenario")
 # startyr = 2017 #filter out all years > this year
 # endyr = 2040
 
-#Compare 2015 NFS vs 2017 NFS with 19 model 
-scens <- list(
-  "Jan19mdl_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2015,Jan2019_2020,IG,WQIP_Senario3",
-  "Jan19mdl_2017NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3"
-)
-#file names 
-Figs <- 'SaltMassBalGrph_15to17NFS.pdf'
-startyr = 2020 #filter out all years > this year
-endyr = 2040
-
-# #Compare 17 vs 19 model ICs with 2015 NFS
+#Compare 2017 NFS vs 2017 NFS Stress Test with 19 model (C vs D)
 # scens <- list(
-#   "Jan17mdl_TriRvw17Scen3" = "DNF,Jan2017,WQIP_Senario3",
-#   "Jan19mdl_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2015,Jan2019_2020,IG,WQIP_Senario3"
+#   "Jan19mdl_2017NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
+#   "Jan19mdl_2017NFS_88-17_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Senario3"
 # )
 # #file names 
-# Figs <- 'SaltMassBalGrph_17to19mdl.pdf'
-# startyr = 2017 #filter out all years > this year
+# Figs <- 'WQAnn_17to17NFS_StressTest.pdf'
+# startyr = 2020 #filter out all years > this year
 # endyr = 2040
+
+# #Compare 2015 NFS vs 2017 NFS with 19 model (B vs C)
+# scens <- list(
+#   "Jan19mdl_2015NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2015,Jan2019_2020,IG,WQIP_Senario3",
+#   "Jan19mdl_2017NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3"
+# )
+# #file names 
+# Figs <- 'SaltMassBalGrph_15to17NFS.pdf'
+# startyr = 2020 #filter out all years > this year
+# endyr = 2040
+
+#Compare 17 vs 19 model ICs with 2012 NFS and 2015 NFS (A vs B)
+scens <- list(
+  "Jan17mdl_2012NFS_TriRvw17Scen3" = "DNF,Jan2017,WQIP_Senario3",
+  "Jan19mdl_2015NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2015,Jan2019_2020,IG,WQIP_Senario3"
+)
+#file names
+Figs <- 'WQAnn_17to19mdl.pdf'
+startyr = 2017 #filter out all years > this year
+endyr = 2040
 
 mainScenGroup <- names(scens)[2] #"CurrentRun"
 
@@ -82,7 +92,7 @@ library(CRSSIO)
 # plotEOCYElev() and csVarNames()
 
 # source('Output Data/RDF Process/plottingFunctions.R') 
-source("C:/Users/cfelletter/Documents/RW-RDF-Process-Plot/code/plottingFunctions.R")
+source("C:/Users/ealexander/Documents/Process-MTOM-R/code/plottingFunctions.R")
 
 # check folders
 if(!file.exists(file.path(scen_dir, scens[1])) 
@@ -152,7 +162,6 @@ p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
   geom_line() +
   geom_point() +
-  geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
   ylim(ylims) +
   labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)
 print(p)
@@ -304,3 +313,4 @@ print(p)
 write.csv(df,file = paste0(oFigs,'/','Exc_',variable,'.csv'))
 
 dev.off()
+
