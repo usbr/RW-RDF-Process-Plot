@@ -1,159 +1,19 @@
 ##############################################################################
-#This script creates monthly boxplots of Outflow and PE to compare two MTOM runs
+#This script creates SaltMassBal figures 
 ##############################################################################
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 1. Set Up ##
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-rm(list=ls()) #clear the enviornment 
-
-### Directory Set Up
-# where scenarios are folder are kept
-scen_dir = file.path(getwd(),"scenarios") 
-#containing the sub folders for each ensemble
-
-CRSSDIR <- Sys.getenv("CRSS_DIR")
-
-# where scenarios are folder are kept
-scen_dir <- file.path(CRSSDIR,"Scenario")
-#containing the sub folders for each ensemble
-# 
-# results_dir <- file.path(CRSSDIR,"results") 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 2. User Input ##
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-# Disable Scientifc Notation 
-options(scipen=999)
-
-#generic scenario locations 
-# scens <- list(
-#   "Without Additional Controls 2017" = "DNF,Jan2017,WQIP_Senario1",
-#   "Plan of  Implementation 2035" = "DNF,Jan2017,WQIP_Senario3"
-# )
-
-#Compare All
-# scens <- list(
-#   "Jan17mdl_TriRvw17Scen3" = "DNF,Jan2017,WQIP_Senario3",
-#   "Jan19mdl_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2015,Jan2019_2020,IG,WQIP_Senario3",
-#   "Jan19mdl_2017NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3"
-# )
-# #file names
-# Figs <- 'SaltMassBalGrph_AllDevs.pdf'
-# startyr = 2017 #filter out all years > this year
-# endyr = 2040
-
-# Compare 17 vs 19 model ICs with 2012 NFS and 2015 NFS (A vs B)
-# scens <- list(
-#   "Jan17mdl_2012NFS_TriRvw17Scen3" = "DNF,Jan2017,WQIP_Senario3",
-#   "Jan19mdl_2015NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2015,Jan2019_2020,IG,WQIP_Senario3"
-# )
-# #file names
-# Figs <- 'SaltMassBalGrph_17to19mdl.pdf'
-# startyr = 2017 #filter out all years > this year
-# endyr = 2040
-# Model.Step.Name = "(Model Step A vs B)"
-
-# #Compare 2015 NFS vs 2017 NFS with 19 model (B vs C)
-# scens <- list(
-#   "Jan19mdl_2015NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2015,Jan2019_2020,IG,WQIP_Senario3",
-#   "Jan19mdl_2017NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3"
-# )
-# # file names
-# Figs <- 'SaltMassBalGrph_15to17NFS.pdf'
-# startyr = 2020 #filter out all years > this year
-# endyr = 2040
-# Model.Step.Name = "(Model Step B vs C)"
-
-
-#Compare 2017 NFS vs 2017 NFS Stress Test with 19 model (C vs D)
-# scens <- list(
-#   "Jan19mdl_2017NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
-#   "Jan19mdl_2017NFS_88-17_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Senario3"
-# )
-# #file names
-# Figs <- 'SaltMassBalGrph_17to17NFS_StressTest.pdf'
-# startyr = 2020 #filter out all years > this year
-# endyr = 2040
-# Model.Step.Name = "(Model Step C vs D)"
-
-
-# # Compare 2017 NFS vs 2017 NFS Stress Test with 19 model (C vs E)
-# scens <- list(
-#   "Jan19mdl_2017NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
-#   "Jan19mdl_2017NFS_TriRvw20Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020"
-# )
-# #file names
-# Figs <- 'SaltMassBalGrph_17to20Scen3_Same2017NFS.pdf'
-# startyr = 2020 #filter out all years > this year
-# endyr = 2040
-# Model.Step.Name = "(Model Step C vs E)"
-
-# Compare 2017 NFS vs 2017 NFS Stress Test with 19 model (F)
-scens <- list(
-  "Jan19mdl_2017NFS_TriRvw20Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
-  "Jan19mdl_2017NFS_TriRvw20Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020"
-)
-#file names
-Figs <- 'SaltMassBalGrph_20to20Scen2&3_Same2017NFS.pdf'
-startyr = 2020 #filter out all years > this year
-endyr = 2040
-Model.Step.Name = "(Model Step F)"
-
-
-mainScenGroup <- names(scens)[2] #"CurrentRun"
+# # Disable Scientifc Notation 
+# options(scipen=999)
 
 #agg file specifying which slots
-# rw_agg_file <- "MassBal.csv" 
 rw_agg_file <- "MassBal_2017slots.csv" #2017 run didn't have UB Salt Mass Balance.AgSaltLoading, UB Salt Mass Balance.AgSaltLoadingExtra , UB Salt Mass Balance.ExportSaltMass, UB Salt Mass Balance.ExportSaltMassExtra
-
-
-
-
-# yrs2show <- startyr:endyr # can't use this until your run extends to end of 2023
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#                               END USER INPUT
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-#Additional plotting functions and libraries 
-library('tidyverse') #ggplot2,dplyr,tidyr
-library('devtools')
-library(RWDataPlyr)
-#see RWDATPlyr Workflow for more information 
-library(CRSSIO)
-# plotEOCYElev() and csVarNames()
-
-# source('Output Data/RDF Process/plottingFunctions.R') 
-source("C:/Users/ealexander/Documents/Process-MTOM-R/code/plottingFunctions.R")
-
-# check folders
-if(!file.exists(file.path(scen_dir, scens[1])) 
-   | !file.exists(file.path(scen_dir, scens[2])))
-  stop('Scenarios folder(s) do not exist or scen_dir is set up incorrectly. 
-       Please ensure Scenarios is set correctly.')
-
-oFigs <- file.path(getwd(),'results') 
-if (!file.exists(oFigs)) {
-  message(paste('Creating folder:', oFigs))
-  dir.create(oFigs)
-}
-
-oFigs <- file.path(oFigs,mainScenGroup) 
-if (!file.exists(oFigs)) {
-  message(paste('Creating folder:', oFigs))
-  dir.create(oFigs)
-}
-
-message('Figures and tables will be saved to: ', oFigs)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # list.files(file.path(scen_dir,scens[2]))
 # 
-rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[2],"SaltMassBalance.rdf")))
+# rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[2],"SaltMassBalance.rdf")))
 # rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"MassBalance.rdf")))
 #ISSUE: mass balance doesn't know which is inflow for which basin! they have same object.slot name
 
@@ -181,7 +41,7 @@ scen_res$Value=(scen_res$Value)/1000000
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ## create a pdf  
-pdf(file.path(oFigs,Figs), width=9, height=6)
+pdf(file.path(oFigs,paste0("SaltMassBalGrph",Figs,".pdf")), width=9, height=6)
 
 # ++++++++++++++++++++++++++DoloresExp_OutSaltMass+++++++++++++++++++++++++++++++++++++
 
