@@ -11,17 +11,11 @@
 rm(list=ls()) #clear the enviornment 
 
 ### Directory Set Up
-# where scenarios are folder are kept
-scen_dir = file.path(getwd(),"scenarios") 
-#containing the sub folders for each ensemble
-
 CRSSDIR <- Sys.getenv("CRSS_DIR")
 
 # where scenarios are folder are kept
 scen_dir <- file.path(CRSSDIR,"Scenario")
 #containing the sub folders for each ensemble
-# 
-# results_dir <- file.path(CRSSDIR,"results") 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 2. User Input ##
@@ -75,14 +69,15 @@ startyr <- 2020 #filter out all years > this year
 endyr <- 2040
 
 ##########################################################################
-#Compare 2020 Scen 2 vs 2020 Scen 3 Max WQIP controls, 06-2017 NFS with 19 model (E vs F)
+#Compare 2020 Scen 2 vs 2020 Scen 3 Max WQIP controls, 06-2017 NFS with 19 model 
 scens <- list(
+  "Jan19mdl_06-17NFS_TriRvw20Scen1" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
   "Jan19mdl_06-17NFS_TriRvw20Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
   "Jan19mdl_06-17NFS_TriRvw20Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020"
 )
 #file names
-Model.Step.Name <- "Lmtd Funds vs Max" #plot title and results/folder name
-Figs <- '_controls_20Scen2vs20Scen3'  #[plot type] identifying name .pdf 
+Model.Step.Name <- "2020 Control Scenarios" #plot title and results/folder name
+Figs <- '_controls_20Scens'  #[plot type] identifying name .pdf 
 startyr <- 2020 #filter out all years > this year
 endyr <- 2040
 
@@ -98,8 +93,7 @@ library(RWDataPlyr)
 library(CRSSIO)
 # plotEOCYElev() and csVarNames()
 
-# source('Output Data/RDF Process/plottingFunctions.R') 
-source("C:/Users/ealexander/Documents/Process-MTOM-R/code/plottingFunctions.R")
+source("/code/plottingFunctions.R")
 
 # check folders
 if(!file.exists(file.path(scen_dir, scens[1])) 
@@ -127,6 +121,9 @@ message('Figures and tables will be saved to: ', oFigs)
 
 #WQAnn
 source("code/Custom_WQAnn.R")
-#MassBal
+#SaltMassBal
 source("code/Custom_MassBalAnn.R")
+#FlowMassBal
+source("code/Custom_FlowBalAnn.R")
+
 

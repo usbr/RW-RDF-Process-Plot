@@ -6,7 +6,7 @@
 # options(scipen=999)
 
 #agg file specifying which slots
-rw_agg_file <- "MassBal.csv" #20190402: Add back in UB Salt Mass Balance.AgSaltLoading, UB Salt Mass Balance.AgSaltLoadingExtra , UB Salt Mass Balance.ExportSaltMass, UB Salt Mass Balance.ExportSaltMassExtra
+rw_agg_file <- "SaltMassBal.csv" #20190402: Add back in UB Salt Mass Balance.AgSaltLoading, UB Salt Mass Balance.AgSaltLoadingExtra , UB Salt Mass Balance.ExportSaltMass, UB Salt Mass Balance.ExportSaltMassExtra
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
@@ -14,10 +14,6 @@ rw_agg_file <- "MassBal.csv" #20190402: Add back in UB Salt Mass Balance.AgSaltL
 # list.files(file.path(scen_dir,scens[2]))
 # 
 # rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[2],"SaltMassBalance.rdf")))
-# rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"MassBalance.rdf")))
-#ISSUE: mass balance doesn't know which is inflow for which basin! they have same object.slot name
-
-#can't read not annual 
 
 #read agg file specifying which slots
 # # NEW files are annual slots so use AsIs
