@@ -29,8 +29,8 @@ scen_dir <- file.path(CRSSDIR,"Scenario")
 
 # Compare 17 vs 19 model ICs with 2012 NFS and 2015 NFS (A vs B)
 scens <- list(
-  "Jan17mdl_06-12NFS_TriRvw17Scen3" = "",
-  "Jan19mdl_06-12NFS_TriRvw17Scen3" = ""
+  "Jan17mdl_06-12NFS_TriRvw17Scen3" = "DNF,Jan2017,WQIP_Senario3",
+  "Jan19mdl_06-12NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2012,Jan2019_2020,IG,WQIP_Senario3"
 )
 #file names
 Model.Step.Name <- "2017 to 2019 Model and ICs" #plot title and results/folder name
@@ -41,7 +41,7 @@ endyr <- 2040
 ##########################################################################
 # Compare 2015 NFS vs 2017 NFS with 19 model (B vs C)
 scens <- list(
-  "Jan19mdl_06-12NFS_TriRvw17Scen3" = "",
+  "Jan19mdl_06-12NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2012,Jan2019_2020,IG,WQIP_Senario3",
   "Jan19mdl_06-17NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3"
 )
 #file names
@@ -63,7 +63,7 @@ startyr <- 2020 #filter out all years > this year
 endyr <- 2040
 
 ##########################################################################
-#Compare 2017 Scen 3 vs 2020 Scen 2 WQIP controls, 06-2017 NFS with 19 model (C vs D)
+#Compare 2017 Scen 3 vs 2020 Scen 2 WQIP controls, 06-2017 NFS with 19 model (C vs E)
 scens <- list(
   "Jan19mdl_06-17NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
   "Jan19mdl_06-17NFS_TriRvw20Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020"
@@ -75,7 +75,7 @@ startyr <- 2020 #filter out all years > this year
 endyr <- 2040
 
 ##########################################################################
-#Compare 2020 Scen 2 vs 2020 Scen 3 Max WQIP controls, 06-2017 NFS with 19 model (C vs D)
+#Compare 2020 Scen 2 vs 2020 Scen 3 Max WQIP controls, 06-2017 NFS with 19 model (E vs F)
 scens <- list(
   "Jan19mdl_06-17NFS_TriRvw20Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
   "Jan19mdl_06-17NFS_TriRvw20Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020"
