@@ -1,8 +1,0 @@
-file,slot,period,summary,eval,t_s,variable
-WQAnn.rdf,AnnualSalinity.LeesFerry_FWAAC,asis,NA,NA,NA,AnnlSlntyLsFrry_FWAAC
-WQAnn.rdf,AnnualSalinity.Hoover_FWAAC,asis,NA,NA,NA,AnnlSlntyHvr_FWAAC
-WQAnn.rdf,AnnualSalinity.Parker_FWAAC,asis,NA,NA,NA,AnnlSlntyPrkr_FWAAC
-WQAnn.rdf,AnnualSalinity.Imperial_FWAAC,asis,NA,NA,NA,AnnlSlntyImprl_FWAAC
-WQAnn.rdf,AnnualSalinity.Hoover_FWAAC,asis,NA,>=,723,Exc_AnnlSlntyHvr_FWAAC
-WQAnn.rdf,AnnualSalinity.Parker_FWAAC,asis,NA,>=,747,Exc_AnnlSlntyPrkr_FWAAC
-WQAnn.rdf,AnnualSalinity.Imperial_FWAAC,asis,NA,>=,879,Exc_AnnlSlntyImprl_FWAAC

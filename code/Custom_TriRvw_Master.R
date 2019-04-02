@@ -69,7 +69,7 @@ scens <- list(
   "Jan19mdl_06-17NFS_TriRvw20Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020"
 )
 #file names
-Model.Step.Name <- "Plan of Imp 2017 vs 2020" #plot title and results/folder name
+Model.Step.Name <- "Lmtd Funds 2017 vs 2020" #plot title and results/folder name
 Figs <- '_controls_17Scen3vs20Scen2'  #[plot type] identifying name .pdf 
 startyr <- 2020 #filter out all years > this year
 endyr <- 2040
@@ -81,7 +81,7 @@ scens <- list(
   "Jan19mdl_06-17NFS_TriRvw20Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020"
 )
 #file names
-Model.Step.Name <- "Plan of Imp vs Max" #plot title and results/folder name
+Model.Step.Name <- "Lmtd Funds vs Max" #plot title and results/folder name
 Figs <- '_controls_20Scen2vs20Scen3'  #[plot type] identifying name .pdf 
 startyr <- 2020 #filter out all years > this year
 endyr <- 2040

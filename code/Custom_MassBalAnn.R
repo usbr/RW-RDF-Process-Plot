@@ -6,7 +6,7 @@
 # options(scipen=999)
 
 #agg file specifying which slots
-rw_agg_file <- "MassBal_2017slots.csv" #2017 run didn't have UB Salt Mass Balance.AgSaltLoading, UB Salt Mass Balance.AgSaltLoadingExtra , UB Salt Mass Balance.ExportSaltMass, UB Salt Mass Balance.ExportSaltMassExtra
+rw_agg_file <- "MassBal.csv" #20190402: Add back in UB Salt Mass Balance.AgSaltLoading, UB Salt Mass Balance.AgSaltLoadingExtra , UB Salt Mass Balance.ExportSaltMass, UB Salt Mass Balance.ExportSaltMassExtra
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
@@ -127,6 +127,50 @@ print(p)
 
 #-------------------------------------------------------------------------------------
 
+variable = "UB_AgSaltLoading"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(0,7)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value)) 
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+#-------------------------------------------------------------------------------------
+
+variable = "UB_AgSaltLoadingExtra"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(0,7)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value)) 
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+#-------------------------------------------------------------------------------------
+
 variable = "LB_Agricultural_Inflow"
 y_lab = "Salt Mass (million tons/yr)"
 title = variable
@@ -150,6 +194,50 @@ print(p)
 #-------------------------------------------------------------------------------------
 
 variable = "UB_Exports"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(0,7)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value)) 
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+#-------------------------------------------------------------------------------------
+
+variable = "UB_ExportSaltMass"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(0,7)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value)) 
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+#-------------------------------------------------------------------------------------
+
+variable = "UB_ExportSaltMassExtra"
 y_lab = "Salt Mass (million tons/yr)"
 title = variable
 ylims <- c(0,7)

@@ -34,7 +34,7 @@ scen_res <- rw_scen_aggregate(
 # #####################################################################################################################################################################
 # ## For old TriRvw 2017 Runs to plot you Outflow and Outflow Salt Mass you have to grab these slots from Salt.rdf since the output.control changed throughtout time#
 # ##################################################################################################################################################################
-rw_agg_file2 <- "Outflow&OutflowSaltMass_Post2017.csv"
+rw_agg_file2 <- "Outflow&OutflowSaltMass.csv"
 rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"KeySlots.rdf")))
 rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"Salt.rdf")))
 rwa2 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file2), stringsAsFactors = FALSE))
