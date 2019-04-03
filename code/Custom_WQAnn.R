@@ -47,7 +47,7 @@ scen_res2 <- rw_scen_aggregate(
   scen_dir = scen_dir
 )
 
-unique(scen_res2$Variable) #check variable names 
+# unique(scen_res2$Variable) #check variable names 
 ## Divide Values by 1,000,000 to present data in Million of Tons/Year or MAF
 scen_res2$Value=(scen_res2$Value)/1000000
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -78,6 +78,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year",subtitle = subtitle)+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -103,6 +104,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -127,6 +129,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -152,6 +155,7 @@ p <- df %>%
   geom_point() +
   geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year",subtitle = subtitle)+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -176,6 +180,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -200,6 +205,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -223,6 +229,7 @@ p <- df %>%
   geom_point() +
   geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year",subtitle = subtitle)+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -247,6 +254,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -271,6 +279,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -294,6 +303,7 @@ p <- df %>%
   geom_point() +
   geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year",subtitle = subtitle)+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -318,6 +328,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -342,6 +353,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -364,6 +376,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year" , subtitle = subtitle)+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -387,6 +400,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year" , subtitle = subtitle)+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -410,6 +424,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year" , subtitle = subtitle)+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)

@@ -60,6 +60,7 @@ p <- df_ub %>%
   geom_line() +
   geom_point() +
   # ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -82,6 +83,7 @@ p <- df_ub %>%
   geom_line() +
   geom_point() +
   # ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -104,6 +106,7 @@ p <- df_ub %>%
   geom_line() +
   geom_point() +
   # ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -125,6 +128,7 @@ p <- df_ub %>%
   geom_line() +
   geom_point() +
   # ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -150,6 +154,7 @@ p <- df_ub %>%
   geom_line() +
   geom_point() +
   # ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)

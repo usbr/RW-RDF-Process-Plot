@@ -35,8 +35,8 @@ endyr <- 2040
 ##########################################################################
 # Compare 2015 NFS vs 2017 NFS with 19 model (B vs C)
 scens <- list(
-  "Jan19mdl_06-12NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2012,Jan2019_2020,IG,WQIP_Senario3",
-  "Jan19mdl_06-17NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3"
+  "06-12NFS_Jan19mdl_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2012,Jan2019_2020,IG,WQIP_Senario3",
+  "06-17NFS_Jan19mdl_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3"
 )
 #file names
 Model.Step.Name <- "NFS 06-12 to 06-17" #plot title and results/folder name
@@ -47,8 +47,8 @@ endyr <- 2040
 ##########################################################################
 #Compare 06-2017 NFS vs 88-2017 NFS Stress Test with 19 model (C vs D)
 scens <- list(
-  "Jan19mdl_06-17NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
-  "Jan19mdl_2017NFS_88-17_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Senario3"
+  "06-17NFS_Jan19mdl_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
+  "88-17NFS_Jan19mdl_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Senario3"
 )
 #file names
 Model.Step.Name <- "NFS 06-17 to 88-17" #plot title and results/folder name
@@ -59,8 +59,8 @@ endyr <- 2040
 ##########################################################################
 #Compare 2017 Scen 3 vs 2020 Scen 2 WQIP controls, 06-2017 NFS with 19 model (C vs E)
 scens <- list(
-  "Jan19mdl_06-17NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
-  "Jan19mdl_06-17NFS_TriRvw20Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020"
+  "TriRvw17Scen3_Jan19mdl_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
+  "TriRvw20Scen2_Jan19mdl_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020"
 )
 #file names
 Model.Step.Name <- "Lmtd Funds 2017 vs 2020" #plot title and results/folder name
@@ -71,14 +71,30 @@ endyr <- 2040
 ##########################################################################
 #Compare 2020 Scen 2 vs 2020 Scen 3 Max WQIP controls, 06-2017 NFS with 19 model 
 scens <- list(
-  "Jan19mdl_06-17NFS_TriRvw20Scen1" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
-  "Jan19mdl_06-17NFS_TriRvw20Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
-  "Jan19mdl_06-17NFS_TriRvw20Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020"
+  "TriRvw20Scen1_Jan19mdl_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
+  "TriRvw20Scen2_Jan19mdl_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
+  "TriRvw20Scen3_Jan19mdl_06-17NFS3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020"
 )
 #file names
 Model.Step.Name <- "2020 Control Scenarios" #plot title and results/folder name
 Figs <- '_controls_20Scens'  #[plot type] identifying name .pdf 
 startyr <- 2020 #filter out all years > this year
+endyr <- 2040
+
+##########################################################################
+#Compare 2020 Scen 2 vs 2020 Scen 3 Max WQIP controls, 06-2017 NFS with 19 model 
+scens <- list(
+  "A.No Additional Controls TriRvw17" = "DNF,Jan2017,WQIP_Senario1",
+  "A.No Additional Controls TriRvw20" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
+  "B.Current Funding TriRvw17" = "DNF,Jan2017,WQIP_Senario2",
+  "B.Current Funding TriRvw20" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
+  "C.Expanded Funding TriRvw17" = "DNF,Jan2017,WQIP_Senario3",
+  "D.Max Potential Controls TriRvw20" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020"
+)
+#file names
+Model.Step.Name <- "2017 vs 2020 Control Scenarios" #plot title and results/folder name
+Figs <- '_controls_17v20Scens'  #[plot type] identifying name .pdf 
+startyr <- 2017 #filter out all years > this year
 endyr <- 2040
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
