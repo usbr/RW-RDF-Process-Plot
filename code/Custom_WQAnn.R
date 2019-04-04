@@ -142,7 +142,7 @@ variable = "AnnlSlntyHvr_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River below Hoover Dam" 
 subtitle = "Average Annual Concentration Comparision"
-ylims <- c(550,750)
+ylims <- c(545,750)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -290,7 +290,7 @@ variable = "AnnlSlntyImprl_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River above Imperial Dam" 
 subtitle = "Average Annual Concentration Comparision"
-ylims <- c(700,900)
+ylims <- c(675,900)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%

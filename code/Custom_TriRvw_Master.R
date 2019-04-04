@@ -82,19 +82,35 @@ startyr <- 2020 #filter out all years > this year
 endyr <- 2040
 
 ##########################################################################
-#Compare 2020 Scen 2 vs 2020 Scen 3 Max WQIP controls, 06-2017 NFS with 19 model 
+#Compare 2017 and 2020 Scenarios and 2017 model with 2012 NFS vs 2019 model with 2017 NFS
 scens <- list(
-  "A.No Additional Controls TriRvw17" = "DNF,Jan2017,WQIP_Senario1",
-  "A.No Additional Controls TriRvw20" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
-  "B.Current Funding TriRvw17" = "DNF,Jan2017,WQIP_Senario2",
-  "B.Current Funding TriRvw20" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
-  "C.Expanded Funding TriRvw17" = "DNF,Jan2017,WQIP_Senario3",
-  "D.Max Potential Controls TriRvw20" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020"
+  "A.No Additional Controls TriRvw17_71-12Regr" = "DNF,Jan2017,WQIP_Senario1",
+  "A.No Additional Controls TriRvw20_88-17Regr" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
+  "B.Current Funding TriRvw17_71-12Regr" = "DNF,Jan2017,WQIP_Senario2",
+  "B.Current Funding TriRvw20_88-17Regr" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
+  "C.Expanded Funding TriRvw17_71-12Regr" = "DNF,Jan2017,WQIP_Senario3",
+  "D.Max Potential Controls TriRvw2_88-17Regr" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020"
 )
 #file names
 Model.Step.Name <- "2017 vs 2020 Control Scenarios" #plot title and results/folder name
 Figs <- '_controls_17v20Scens'  #[plot type] identifying name .pdf 
 startyr <- 2017 #filter out all years > this year
+endyr <- 2040
+
+##########################################################################
+#Compare 2020 Scenarios between full 06-2017 (88-17 reg) NFS  with Stress Test 88-2017 (88-17 reg) NFS with 19 model 
+scens <- list(
+  "A.No Additional Controls TriRvw20_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
+  "A.No Additional Controls TriRvw20_88-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Scenario1_2020",
+  "B.Current Funding TriRvw20_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
+  "B.Current Funding TriRvw20_88-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Scenario2_2020",
+  "C.Max Potential Controls TriRvw20_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020",
+  "C.Max Potential Controls TriRvw20_88-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Scenario3_2020"
+)
+#file names
+Model.Step.Name <- "2017 NFS vs 2017 NFS 88-17 same 88-17 Regr" #plot title and results/folder name
+Figs <- '_17NFSvs17NFSST_w_controls_20Scens'  #[plot type] identifying name .pdf 
+startyr <- 2020 #filter out all years > this year
 endyr <- 2040
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
