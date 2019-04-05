@@ -181,6 +181,7 @@ source('code/generic_minmax_check.r')
 source('code/Generic_Daily_Plot.r')
 source('code/Generic_annual_plot.r')
 source('code/Generic_monthly_plot.r')
+source('code/generic_min0_check.r')
 
 ofigs <- file.path(results_dir,mainScenGroup) 
 if (!file.exists(ofigs)) {
@@ -237,7 +238,8 @@ for(i in 1:length(variables)){
     
     if(timestep == "monthly" && minmaxchk == T){ #only works for monthly currently (12/6/18)
       #check minmax, outputs a .csv
-      minmaxchk <- generic_minmax_check(scen_dir,scens,timestep) 
+      minmaxchk <- generic_minmax_check(scen_dir,scens,timestep)  #check minmax, outputs a .csv
+      generic_min0_check(scen_dir,scens,timestep) #list all <= 0 values and output as a .csv
     }
     
     generic_monthly_plot(scen_res) 
