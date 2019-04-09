@@ -64,6 +64,8 @@ p <- df_ub %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
 write.csv(df_ub,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
@@ -100,6 +102,8 @@ p <- df_lb %>%
   labs(title = paste("LB Natural Salt Loading",Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df_lb,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
@@ -308,6 +312,8 @@ p <- df %>%
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 

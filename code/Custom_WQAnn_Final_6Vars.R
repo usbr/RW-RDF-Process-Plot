@@ -55,19 +55,30 @@ scen_res2$Value=(scen_res2$Value)/1000000
 
 width=10 #9
 height=6.67 #6
-palette="Paired" #RColorBrewer https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf
 
-linetypes = c(rep("solid",times = 24),rep("dashed",times = 21),
-             rep("solid",times = 24),rep("dashed",times = 21),
-             rep("solid",times = 24),rep("dashed",times = 21))
-shapes = c(rep(1,times = 24),rep(19,times = 21),
-          rep(1,times = 24),rep(19,times = 21),
-          rep(1,times = 24),rep(19,times = 21))
-# sizes = c(rep(.1,times = 135)) #I can't get the size to work properly to make bolder lines
+if(length(unique(df$Scenario)) == 6){
+  lt_scale <- rep(c(2, 1), 3)
+  pt_scale <- rep(c(1, 19), 3)
+  mycolors <- c("#1F78B4","#1F78B4","#33A02C","#33A02C","#E31A1C","#E31A1C") # brewer.pal(6, "Paired")
+  # #Replace  scale_color_brewer(palette=pallette) + with scale_color_manual(values = mycolors) +
+  # palette="Paired" #RColorBrewer https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf
+} else if (length(unique(df$Scenario)) == 6){
+  lt_scale <- rep(c(2, 1), 1)
+  pt_scale <- rep(c(1, 19), 1)
+  mycolors <- c("#1F78B4","#1F78B4")
+} else {
+  stop("Not setup for correct Scens Number (6 or 2)")
+}
 
-# make custom axis shading, don't use for now doesn't look good with plotte pallette
-g <- rasterGrob(scales::alpha(blues9, 0.1), width=unit(1,"npc"), height = unit(1,"npc"), 
-                interpolate = TRUE) #alpha is the transperency 
+names(lt_scale) <- unique(df2$Scenario)
+names(pt_scale) <- unique(df2$Scenario)
+names(mycolors) <- unique(df2$Scenario)
+
+
+# The blue gradient background is "graph trash" 
+# # make custom axis shading, don't use for now doesn't look good with plotte pallette
+# g <- rasterGrob(scales::alpha(blues9, 0.1), width=unit(1,"npc"), height = unit(1,"npc"), 
+#                 interpolate = TRUE) #alpha is the transperency  
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Plot Custom UB Figures 
@@ -100,14 +111,16 @@ if (length(unique(df$Scenario)) == 6 && length(df$Scenario) == 135){
 }
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+ # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +
+  # # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
   labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -134,14 +147,15 @@ df <- scen_res2 %>%
 df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+ # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -167,14 +181,15 @@ df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetype
 
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+ # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -185,7 +200,6 @@ ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height
 
 NumCrit <- data.frame(yintercept=723)
 variable = "AnnlSlntyHvr_FWAAC"
-# variable = "AnnlSlntyPrkr_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River below Hoover Dam" 
 subtitle = "Average Annual Concentration Comparision"
@@ -200,14 +214,16 @@ df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetype
 
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+ # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
+  geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
   labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -233,14 +249,15 @@ df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetype
 
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+ # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -265,14 +282,15 @@ df <- scen_res2 %>%
 df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+ # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -296,14 +314,16 @@ df <- scen_res %>%
 df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+ # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
+  geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
   labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -328,14 +348,15 @@ df <- scen_res2 %>%
 df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+ # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -360,14 +381,15 @@ df <- scen_res2 %>%
 df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+ # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -391,14 +413,16 @@ df <- scen_res %>%
 df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+ # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
+  geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
   labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -423,14 +447,15 @@ df <- scen_res2 %>%
 df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+ # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -455,14 +480,15 @@ df <- scen_res2 %>%
 df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+ # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -486,14 +512,15 @@ df <- scen_res %>%
 df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+ # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -517,14 +544,15 @@ df <- scen_res %>%
 df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+ # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -548,14 +576,15 @@ df <- scen_res %>%
 df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
 p <- df2 %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = linetype, fill = Scenario, shape = shape)) +
-  guides(color=guide_legend("Scenario"), linetype = FALSE) + #remove the linetype legend
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ## guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette=pallette) +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
   labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -566,6 +595,4 @@ write.csv(df,file = paste0(oFigs,'/','Exc_',variable,'.csv'))
 
 dev.off()
 
-} else {
-  stop("Not setup for correct Scens (6) / Sim length (2017-2040, 2020-2040)")
-}
+
