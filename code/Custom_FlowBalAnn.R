@@ -65,6 +65,8 @@ p <- df_ub %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
+write.csv(df_ub,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+
 #-------------------------------------------------------------------------------------
 
 variable = "UBFlow_Outflow"

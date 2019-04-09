@@ -64,6 +64,8 @@ p <- df_ub %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
+write.csv(df_ub,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+
 #-------------------------------------------------------------------------------------
 
 variable = "LB_Natural_Inflow"
@@ -99,7 +101,7 @@ p <- df_lb %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-# write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+write.csv(df_lb,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
@@ -297,17 +299,30 @@ df <- scen_res %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-
 p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+
+# #custom scale for presentation 
+# ylims <- c(0,4)
+# p <- df %>%
+#   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+#   geom_line() +
+#   geom_point() +
+#   ylim(ylims) +
+#   scale_color_brewer(palette="Paired") +
+#   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+#   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+# print(p)
+
 #-------------------------------------------------------------------------------------
 
 variable = "LB_WQIPS"
@@ -326,6 +341,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -348,6 +364,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -370,6 +387,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -392,6 +410,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -414,6 +433,7 @@ p <- df %>%
   geom_line() +
   geom_point() +
   ylim(ylims) +
+  scale_color_brewer(palette="Paired") +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
