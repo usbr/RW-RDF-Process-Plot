@@ -21,6 +21,13 @@ scen_dir <- file.path(CRSSDIR,"Scenario")
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+## Plot Parameters ##
+
+width=10 #9
+height=6.67 #6
+
+## Scenarios ##
+
 # # Compare 17 vs 19 model ICs with 2012 NFS and 2015 NFS (A vs B)
 # scens <- list(
 #   "Jan17mdl_06-12NFS_TriRvw17Scen3" = "DNF,Jan2017,WQIP_Senario3",
@@ -60,15 +67,15 @@ scen_dir <- file.path(CRSSDIR,"Scenario")
 
 # ##########################################################################
 #Compare 2017 Scen 3 vs 2020 Scen 2 WQIP controls, 06-2017 NFS with 19 model (C vs E)
-scens <- list(
-  "TriRvw17Scen3_Jan19mdl_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
-  "TriRvw20Scen2_Jan19mdl_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020"
-)
-#file names
-Model.Step.Name <- "Lmtd Funds 2017 vs 2020" #plot title and results/folder name
-Figs <- '_controls_17Scen3vs20Scen2'  #[plot type] identifying name .pdf
-startyr <- 2020 #filter out all years > this year
-endyr <- 2040
+# scens <- list(
+#   "TriRvw17Scen3_Jan19mdl_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
+#   "TriRvw20Scen2_Jan19mdl_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020"
+# )
+# #file names
+# Model.Step.Name <- "Lmtd Funds 2017 vs 2020" #plot title and results/folder name
+# Figs <- '_controls_17Scen3vs20Scen2'  #[plot type] identifying name .pdf
+# startyr <- 2020 #filter out all years > this year
+# endyr <- 2040
 # 
 # # ##########################################################################
 # # #Compare 2020 Scen 2 vs 2020 Scen 3 Max WQIP controls, 06-2017 NFS with 19 model 
@@ -101,18 +108,18 @@ startyr <- 2017 #filter out all years > this year
 endyr <- 2040
 # 
 # ##########################################################################
-# #Compare 2017 and 2020 Scenarios and 2017 model with 2012 NFS vs 2019 model with 2017 NFS
-# scens <- list(
-#   "Current Funding TriRvw17 1.66M Tons" = "DNF,Jan2017,WQIP_Senario3",
-#   "Current Funding TriRvw20 1.68M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020"
-# )
-# 
-# #file names
-# Model.Step.Name <- "2017 vs 2020 Limited Funding Control Scenario" #plot title and results/folder name
-# Figs <- '_Trivw17v20_LmtdFunds'  #[plot type] identifying name .pdf
-# startyr <- 2017 #filter out all years > this year
-# endyr <- 2040
-# # 
+#Compare 2017 and 2020 Scenarios and 2017 model with 2012 NFS vs 2019 model with 2017 NFS
+scens <- list(
+  "Current Funding TriRvw17 1.66M Tons" = "DNF,Jan2017,WQIP_Senario3",
+  "Current Funding TriRvw20 1.68M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020"
+)
+
+#file names
+Model.Step.Name <- "2017 vs 2020 Limited Funding Control Scenario" #plot title and results/folder name
+Figs <- '_Trivw17v20_LmtdFunds'  #[plot type] identifying name .pdf
+startyr <- 2017 #filter out all years > this year
+endyr <- 2040
+#
 
 # ##########################################################################
 #Compare 2020 Scenarios between full 06-2017 (88-17 reg) NFS  with Stress Test 88-2017 (88-17 reg) NFS with 19 model
@@ -167,6 +174,26 @@ message('Figures and tables will be saved to: ', oFigs)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+if(length(scens) == 6){ #3 colors, first scen is dashed (old), second solid
+  lt_scale <- rep(c(2, 1), 3)
+  pt_scale <- rep(c(1, 19), 3)
+  mycolors <- c("#1F78B4","#1F78B4","#33A02C","#33A02C","#E31A1C","#E31A1C") # brewer.pal(6, "Paired")
+  # #Replace  scale_color_brewer(palette=pallette) + with scale_color_manual(values = mycolors) +
+  # palette="Paired" #RColorBrewer https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf
+} else if (length(scens) == 2){ #1 color, first scen dashed, second solid 
+  lt_scale <- rep(c(2, 1), 1)
+  pt_scale <- rep(c(1, 19), 1)
+  mycolors <- c("#1F78B4","#1F78B4")
+} else if (length(scens) == 3){ #3 colors, solid
+  lt_scale <- rep(1, 3)
+  pt_scale <- rep(1, 3)
+  mycolors <- c("#1F78B4","#33A02C","#E31A1C")
+} else {
+  stop("Not setup for correct Scens Number (6, 3, 2)")
+}
+
 
 #WQAnn
 source("code/Custom_WQAnn.R")

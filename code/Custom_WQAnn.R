@@ -50,12 +50,24 @@ scen_res2 <- rw_scen_aggregate(
 # unique(scen_res2$Variable) #check variable names 
 ## Divide Values by 1,000,000 to present data in Million of Tons/Year or MAF
 scen_res2$Value=(scen_res2$Value)/1000000
+
+#add scenario names to line, point and color scales
+names(lt_scale) <- unique(scen_res$Scenario)
+names(pt_scale) <- unique(scen_res$Scenario)
+names(mycolors) <- unique(scen_res$Scenario)
+
+
+# The blue gradient background is "graph trash" 
+# # make custom axis shading, don't use for now doesn't look good with plotte pallette
+# g <- rasterGrob(scales::alpha(blues9, 0.1), width=unit(1,"npc"), height = unit(1,"npc"), 
+#                 interpolate = TRUE) #alpha is the transperency  
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Plot Custom UB Figures 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ## create a pdf  
-pdf(file.path(oFigs,paste0("WQAnn",Figs,".pdf")), width=9, height=6)
+pdf(file.path(oFigs,paste0("WQAnn_",Figs,".pdf")), width= width, height= height)
 
 # ++++++++++++++++++++++++++Below Powell+++++++++++++++++++++++++++++++++++++
 
@@ -73,15 +85,23 @@ df <- scen_res %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year",subtitle = subtitle)+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +
+  # # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
+  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
@@ -99,15 +119,24 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
+
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 # write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -124,21 +153,29 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
+
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 # ++++++++++++++++++++++++++Below Mead+++++++++++++++++++++++++++++++++++++
 
 NumCrit <- data.frame(yintercept=723)
 variable = "AnnlSlntyHvr_FWAAC"
-# variable = "AnnlSlntyPrkr_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River below Hoover Dam" 
 subtitle = "Average Annual Concentration Comparision"
@@ -149,16 +186,25 @@ df <- scen_res %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
+
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
-  geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year",subtitle = subtitle)+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
+  geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
+  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -175,15 +221,24 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
+
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 # write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -200,15 +255,24 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
 #------------------------------Below Parker-------------------------------------------------------
 
 NumCrit <- data.frame(yintercept=747)
@@ -223,16 +287,24 @@ df <- scen_res %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
-  geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year",subtitle = subtitle)+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
+  geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
+  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -249,15 +321,23 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 # write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -274,15 +354,24 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
 #-------------------------------At Imperial------------------------------------------------------
 
 NumCrit <- data.frame(yintercept=879)
@@ -297,16 +386,24 @@ df <- scen_res %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
-  geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year",subtitle = subtitle)+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
+  geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
+  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -323,15 +420,23 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 # write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -348,15 +453,24 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
 #-------------------------------------------------------------------------------------
 ### Exceedence ###
 #-------------------------------------------------------------------------------------
@@ -371,15 +485,23 @@ df <- scen_res %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year" , subtitle = subtitle)+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Exc_',variable,'.csv'))
 
@@ -395,15 +517,23 @@ df <- scen_res %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year" , subtitle = subtitle)+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Exc_',variable,'.csv'))
 
@@ -419,17 +549,25 @@ df <- scen_res %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
+
+
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() +
+  geom_point() + 
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year" , subtitle = subtitle)+
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
+  labs(title = title, y = y_lab, x = "Year",subtitle = subtitle)+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Exc_',variable,'.csv'))
 
 dev.off()
+
 

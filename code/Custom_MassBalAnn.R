@@ -32,6 +32,11 @@ unique(scen_res$Variable) #check variable names
 
 scen_res$Value=(scen_res$Value)/1000000
 
+#add scenario names to line, point and color scales
+names(lt_scale) <- unique(scen_res$Scenario)
+names(pt_scale) <- unique(scen_res$Scenario)
+names(mycolors) <- unique(scen_res$Scenario)
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Plot Custom UB Figures 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -55,11 +60,11 @@ df_ub <- scen_res %>%
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
 p <- df_ub %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste("UB Natural Salt Loading",Model.Step.Name) , y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -94,11 +99,11 @@ df_lb = df
 df_lb$Value <- df$Value - df2$Value #subtract off UB
 
 p <- df_lb %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste("LB Natural Salt Loading",Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -121,11 +126,11 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -144,11 +149,11 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -167,11 +172,11 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -190,11 +195,11 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -213,11 +218,11 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -236,11 +241,11 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -259,11 +264,11 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -282,11 +287,11 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -304,11 +309,11 @@ df <- scen_res %>%
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -320,11 +325,11 @@ write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 # #custom scale for presentation 
 # ylims <- c(0,4)
 # p <- df %>%
-#   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+#   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
 #   geom_line() +
 #   geom_point() +
 #   ylim(ylims) +
-#   scale_color_brewer(palette="Paired") +
+#   scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
 #   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
 #   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 # print(p)
@@ -343,11 +348,11 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -366,11 +371,11 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -389,11 +394,11 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -412,11 +417,11 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
@@ -435,11 +440,11 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
-  scale_color_brewer(palette="Paired") +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
