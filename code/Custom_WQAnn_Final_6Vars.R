@@ -4,8 +4,6 @@
 
 #agg file specifying which slots
 
-if (length(unique(df$Scenario)) == 6 && length(df$Scenario) == 135){
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -62,7 +60,7 @@ if(length(unique(df$Scenario)) == 6){
   mycolors <- c("#1F78B4","#1F78B4","#33A02C","#33A02C","#E31A1C","#E31A1C") # brewer.pal(6, "Paired")
   # #Replace  scale_color_brewer(palette=pallette) + with scale_color_manual(values = mycolors) +
   # palette="Paired" #RColorBrewer https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf
-} else if (length(unique(df$Scenario)) == 6){
+} else if (length(unique(df$Scenario)) == 2){
   lt_scale <- rep(c(2, 1), 1)
   pt_scale <- rep(c(1, 19), 1)
   mycolors <- c("#1F78B4","#1F78B4")
@@ -70,9 +68,9 @@ if(length(unique(df$Scenario)) == 6){
   stop("Not setup for correct Scens Number (6 or 2)")
 }
 
-names(lt_scale) <- unique(df2$Scenario)
-names(pt_scale) <- unique(df2$Scenario)
-names(mycolors) <- unique(df2$Scenario)
+names(lt_scale) <- unique(scen_res$Scenario)
+names(pt_scale) <- unique(scen_res$Scenario)
+names(mycolors) <- unique(scen_res$Scenario)
 
 
 # The blue gradient background is "graph trash" 
@@ -104,15 +102,9 @@ df <- scen_res %>%
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
 
-if (length(unique(df$Scenario)) == 6 && length(df$Scenario) == 135){
-  df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes, size= sizes)
-} else {
-  stop("Not setup for correct Scens (6) / Sim length (2017-2040, 2020-2040)")
-}
-
-p <- df2 %>%
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
- # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
+
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -144,11 +136,11 @@ df <- scen_res2 %>%
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
 
-df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
-p <- df2 %>%
+
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
- # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
+
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -177,12 +169,12 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
 
-p <- df2 %>%
+
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
- # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
+
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -210,12 +202,12 @@ df <- scen_res %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
 
-p <- df2 %>%
+
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
- # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
+
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -245,12 +237,12 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
 
-p <- df2 %>%
+
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
- # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
+
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -279,11 +271,11 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
-p <- df2 %>%
+
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
- # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
+
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -311,11 +303,11 @@ df <- scen_res %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
-p <- df2 %>%
+
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
- # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
+
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -345,11 +337,11 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
-p <- df2 %>%
+
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
- # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
+
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -378,11 +370,11 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
-p <- df2 %>%
+
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
- # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
+
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -410,11 +402,11 @@ df <- scen_res %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
-p <- df2 %>%
+
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
- # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
+
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -444,11 +436,11 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
-p <- df2 %>%
+
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
- # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
+
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -477,11 +469,11 @@ df <- scen_res2 %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
-p <- df2 %>%
+
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
- # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
+
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -509,11 +501,11 @@ df <- scen_res %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
-p <- df2 %>%
+
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
- # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
+
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -541,11 +533,11 @@ df <- scen_res %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
-p <- df2 %>%
+
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
- # guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
+
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -573,11 +565,10 @@ df <- scen_res %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-df2 <- cbind.data.frame(df, linetype = linetypes, shape = shapes) # add linetypes and point shapes
 
-p <- df2 %>%
+
+p <- df %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
-  ## guides(color=guide_legend("Scenario"), linetype = FALSE) + #no longer need to remove legend linetype legend
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
