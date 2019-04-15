@@ -135,6 +135,10 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
+# ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+
 #-------------------------------------------------------------------------------------
 
 variable = "UB_AgSaltLoading"
@@ -322,8 +326,8 @@ ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
-# #custom scale for presentation 
-# ylims <- c(0,4)
+#custom scale for presentation
+# ylims <- c(0,3)
 # p <- df %>%
 #   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
 #   geom_line() +
@@ -333,6 +337,9 @@ write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
 #   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 # print(p)
+# 
+# ggsave(filename = file.path(oFigs,paste0(variable,"customlimits.png")), width= width, height= height)
+
 
 #-------------------------------------------------------------------------------------
 
@@ -380,6 +387,8 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
 #-------------------------------------------------------------------------------------
 
 variable = "LB_ChangeInReachSaltMass"
@@ -402,6 +411,8 @@ p <- df %>%
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 #-------------------------------------------------------------------------------------
 
@@ -426,6 +437,8 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
 #-------------------------------------------------------------------------------------
 
 variable = "LB_ReservoirSaltMass"
@@ -449,6 +462,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 dev.off()
 

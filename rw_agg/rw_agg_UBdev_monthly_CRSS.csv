@@ -1,0 +1,12 @@
+file,slot,period,summary,eval,t_s,variable
+UBRes.rdf,BlueMesa.Pool Elevation,asis,NA,NA,NA,BlueMesa.Pool Elevation
+UBRes.rdf,Crystal.Pool Elevation,asis,NA,NA,NA,Crystal.Pool Elevation
+UBRes.rdf,Fontenelle.Pool Elevation,asis,NA,NA,NA,Fontenelle.Pool Elevation
+UBRes.rdf,FlamingGorge.Pool Elevation,asis,NA,NA,NA,FlamingGorge.Pool Elevation
+UBRes.rdf,FlamingGorge.Outflow,asis,NA,NA,NA,FlamingGorge.Outflow
+UBRes.rdf,Fontenelle.Outflow,asis,NA,NA,NA,Fontenelle.Outflow
+UBRes.rdf,BlueMesa.Outflow,asis,NA,NA,NA,BlueMesa.Outflow
+UBRes.rdf,Crystal.Outflow,asis,NA,NA,NA,Crystal.Outflow
+UBRes.rdf,MorrowPoint.Pool Elevation,asis,NA,NA,NA,MorrowPoint.Pool Elevation
+UBRes.rdf,MorrowPoint.Outflow,asis,NA,NA,NA,MorrowPoint.Outflow
+MonthlyFlowTargets.rdf,GunnisonNearGrandJunction.Gage Outflow,asis,NA,NA,NA,GunnisonNearGrandJunction.AFOutflow
