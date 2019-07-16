@@ -11,12 +11,6 @@ output:
 ---
 ```{r setup, include=FALSE, echo=TRUE, warning=FALSE}
 options(scipen = 999)
-suppressPackageStartupMessages(library(tidyverse))
-library(RWDataPlyr)
-suppressPackageStartupMessages(library(scales))
-library(devtools)
-library(CRSSIO)
-library(tidyverse)
 ```
 
 We have developed an R cookbook to make the process of creating publication-ready graphics in our in-house style using R's ggplot2 library a more reproducible process, as well as making it easier for people new to R to create graphics. This was inspired by the [BBC's cookbook](https://bbc.github.io/rcookbook/). 
@@ -29,7 +23,15 @@ In addition to creating graphics, this cookbook also includes two sections on da
 
 A few of the steps in this cookbook - and to create charts in R in general - require certain packages to be installed and loaded. If these packages are not installed, you will need to install them first. Except for CRSSIO, all packages are available on CRAN. CRSSIO can be installed with `devtools::install_github("BoulderCodeHub/CRSSIO")`.
 
-**add code block here with packages**
+```{r, warning=FALSE, message=FALSE, results=FALSE}
+library(RWDataPlyr)
+library(tidyverse)
+library(RWDataPlyr)
+library(scales)
+library(devtools)
+library(CRSSIO)
+library(tidyverse)
+```
 
 # Data Wrangling
 
