@@ -68,7 +68,7 @@ df <- scen_res %>%
 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +  theme_light() +
 
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
@@ -83,7 +83,7 @@ print(p)
 
 ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
-# write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
 
 variable = "Mead.PoolElevation"
@@ -102,7 +102,7 @@ df <- scen_res %>%
 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +  theme_light() +
   
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
@@ -117,7 +117,7 @@ print(p)
 
 ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
-# write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
 
 variable = "Havasu.PoolElevation"
@@ -136,7 +136,7 @@ df <- scen_res %>%
 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +  theme_light() +
   
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +

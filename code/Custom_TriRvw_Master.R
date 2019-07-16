@@ -11,7 +11,8 @@
 rm(list=ls()) #clear the enviornment 
 
 ### Directory Set Up
-CRSSDIR <- Sys.getenv("CRSS_DIR")
+# CRSSDIR <- Sys.getenv("CRSS_DIR")
+CRSSDIR <- "C:/Users/cfelletter/Documents/crss.offc"
 
 # where scenarios are folder are kept
 scen_dir <- file.path(CRSSDIR,"Scenario")
@@ -23,81 +24,21 @@ scen_dir <- file.path(CRSSDIR,"Scenario")
 
 ## Plot Parameters ##
 
-width=10 #9
-height=6.67 #6
+width=9# 10 #9
+height=6 #6.67 #6
+
+startyr <- 2020 #filter out all years > this year
+endyr <- 2040
 
 ## Scenarios ##
-
-# Compare 17 vs 19 model ICs with 2012 NFS and 2015 NFS (A vs B)
-scens <- list(
-  "Jan17mdl_06-12NFS_TriRvw17Scen3" = "DNF,Jan2017,WQIP_Senario3",
-  "Jan19mdl_06-12NFS_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2012,Jan2019_2020,IG,WQIP_Senario3"
-)
-#file names
-Model.Step.Name <- "2017 to 2019 Model and ICs" #plot title and results/folder name
-Figs <- '_mdl_17vs19'  #[plot type] identifying name .pdf
-startyr <- 2017 #filter out all years > this year
-endyr <- 2040
-# 
-# ##########################################################################
-# # Compare 2015 NFS vs 2017 NFS with 19 model (B vs C)
-scens <- list(
-  "06-12NFSwreg71-12_Jan19mdl_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2012,Jan2019_2020,IG,WQIP_Senario3",
-  "06-17NFSwreg88-17_Jan19mdl_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3"
-)
-#file names
-Model.Step.Name <- "NFS 06-12 to 06-17" #plot title and results/folder name
-Figs <- '_NFS_06-12vs06-17'  #[plot type] identifying name .pdf
-startyr <- 2020 #filter out all years > this year
-endyr <- 2040
-
-##########################################################################
-# #Compare 71-17 reg with 88-17 reg - I think what Jim wanted was a comparision of the RW file for the 71-17 reg vs that of the 88-17 reg
-# scens <- list(
-#   "06-12NFSwreg71-12_Jan19mdl_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 2012,Jan2019_2020,IG,WQIP_Senario3",
-#   "06-17NFSwreg71-17_Jan19mdl_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity Reg7117,Jan2019_2020,IG,WQIP_Senario3",
-#   "06-17NFSwreg88-17_Jan19mdl_TriRvw17Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3"
-#   
-# )
-# # #file names
-# Model.Step.Name <- "NFS Reg Length Compare" #plot title and results/folder name
-# Figs <- '_NFS_RegCompare'  #[plot type] identifying name .pdf
-# startyr <- 2020 #filter out all years > this year
-# endyr <- 2040
-
-# ##########################################################################
-##Compare 2017 Scen 3 vs 2020 Scen 2 WQIP controls, 06-2017 NFS with 19 model (C vs E)
-scens <- list(
-  "TriRvw17Scen3_Jan19mdl_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Senario3",
-  "TriRvw20Scen2_Jan19mdl_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020"
-)
-#file names
-Model.Step.Name <- "Lmtd Funds 2017 vs 2020" #plot title and results/folder name
-Figs <- '_controls_17Scen3vs20Scen2'  #[plot type] identifying name .pdf
-startyr <- 2020 #filter out all years > this year
-endyr <- 2040
-# 
 # # ##########################################################################
-# # #Compare 2020 Scen 2 vs 2020 Scen 3 Max WQIP controls, 06-2017 NFS with 19 model 
-# # scens <- list(
-# #   "TriRvw20Scen1_Jan19mdl_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
-# #   "TriRvw20Scen2_Jan19mdl_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
-# #   "TriRvw20Scen3_Jan19mdl_06-17NFS3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020"
-# # )
-# # #file names
-# # Model.Step.Name <- "2020 Control Scenarios" #plot title and results/folder name
-# # Figs <- '_controls_20Scens'  #[plot type] identifying name .pdf 
-# # startyr <- 2020 #filter out all years > this year
-# # endyr <- 2040
-# 
-# ##########################################################################
-#Compare 2017 and 2020 Scenarios and 2017 model with 2012 NFS vs 2019 model with 2017 NFS
+# # #Compare 2017 and 2020 Scenarios and 2017 model with 2012 NFS vs 2019 model with 2017 NFS
 # scens <- list(
 #   "A.No Additional Controls TriRvw17 1.33M Tons" = "DNF,Jan2017,WQIP_Senario1",
 #   "A.No Additional Controls TriRvw20 1.42M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
 #   "B.Current Funding TriRvw17 1.66M Tons" = "DNF,Jan2017,WQIP_Senario3",
 #   "B.Current Funding TriRvw20 1.68M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
-#   "C.Expanded Funding TriRvw17 17.9M Tons" = "DNF,Jan2017,WQIP_Senario4",
+#   "C.Expanded Funding TriRvw17 1.79M Tons" = "DNF,Jan2017,WQIP_Senario4",
 #   "D.Max Potential Controls TriRvw20 2.42M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020"
 # )
 # 
@@ -106,36 +47,129 @@ endyr <- 2040
 # Figs <- '_controls_17v20Scens'  #[plot type] identifying name .pdf
 # startyr <- 2017 #filter out all years > this year
 # endyr <- 2040
+# #
+# # # ##########################################################################
+# # #Compare 2017 and 2020 Scenarios and 2017 model with 2012 NFS vs 2019 model with 2017 NFS
+# # scens <- list(
+# #   "Current Funding TriRvw17 1.66M Tons" = "DNF,Jan2017,WQIP_Senario3",
+# #   "Current Funding TriRvw20 1.68M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020"
+# # )
 # # 
-# # ##########################################################################
-# #Compare 2017 and 2020 Scenarios and 2017 model with 2012 NFS vs 2019 model with 2017 NFS
+# # #file names
+# # Model.Step.Name <- "2017 vs 2020 Limited Funding Control Scenario" #plot title and results/folder name
+# # Figs <- '_Trivw17v20_LmtdFunds'  #[plot type] identifying name .pdf
+# # startyr <- 2017 #filter out all years > this year
+# # endyr <- 2040
+# # #
+# # 
+# # # ##########################################################################
+# #Compare 2020 Scenarios between full 06-2017 (88-17 reg) NFS  with Stress Test 88-2017 (88-17 reg) NFS with 19 model
 # scens <- list(
-#   "Current Funding TriRvw17 1.66M Tons" = "DNF,Jan2017,WQIP_Senario3",
-#   "Current Funding TriRvw20 1.68M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020"
+#   "A.No Additional Controls TriRvw20_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
+#   "A.No Additional Controls TriRvw20_88-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Scenario1_2020",
+#   "B.Current Funding TriRvw20_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
+#   "B.Current Funding TriRvw20_88-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Scenario2_2020",
+#   "C.Max Potential Controls TriRvw20_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020",
+#   "C.Max Potential Controls TriRvw20_88-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Scenario3_2020"
 # )
 # 
 # #file names
-# Model.Step.Name <- "2017 vs 2020 Limited Funding Control Scenario" #plot title and results/folder name
-# Figs <- '_Trivw17v20_LmtdFunds'  #[plot type] identifying name .pdf
-# startyr <- 2017 #filter out all years > this year
-# endyr <- 2040
-# #
+# Model.Step.Name <- "Observed NF vs Stress Test" #plot title and results/folder name
+# Figs <- '_17NFSvs17NFSST_w_controls_20Scens'  #[plot type] identifying name .pdf
 # 
+# # # ##########################################################################
+# #Compare allow neg storage Salt Change wo Min10 , 2020 Scenarios, full 06-2017 (88-17 reg) NFS  
+# # May 13: New Files for RW 7.5 DM fixes
+# scens <- list(
+#   # "Scen1" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
+#   "Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
+#   "Scen2_woMin10" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019.9001.NoMin10,IG,WQIP_Scenario2_2020"#,
+#   # "Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020",
+# )
+# #file names
+# Model.Step.Name <- "w vs wo Min10 (RW 7.5)" #plot title and results/folder name
+# Figs <- '_wvswoMin10'  #[plot type] identifying name .pdf
+# 
+# # # ##########################################################################
+# #Compare NIPP and MasBal updates , 2020 Scenarios, full 06-2017 (88-17 reg) NFS  
+# scens <- list(
+#   "Scen2_woMin10" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019.9001.NoMin10,IG,WQIP_Scenario2_2020",#,
+#   "Scen2_woMin10_wMassBal" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019.9002.MassBal,IG,WQIP_Scenario2_2020"#,
+#   # "2007Dems,MTOM_Most,DNF with Salinity,Jan2019.9002.MassBal_wNIPPnoPICKUP,IG,WQIP_Scenario2_2020"
+#   )
+# #file names
+# Model.Step.Name <- "9002 w Mass Bal" #plot title and results/folder name
+# Figs <- '_wvswoMassBal'  #[plot type] identifying name .pdf
+# 
+# # # ##########################################################################
+# #Compare Convergance change updates , 2020 Scenarios, full 06-2017 (88-17 reg) NFS  
+# scens <- list(
+#   "Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019.9002.MassBal,IG,WQIP_Scenario2_2020",#,
+#   "Scen2_wConverg0.001" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019.9003.Converg,IG,WQIP_Scenario2_2020"#,
+#   )
+# #file names
+# Model.Step.Name <- "9003 w Converg" #plot title and results/folder name
+# Figs <- '_wvswoMassBal'  #[plot type] identifying name .pdf
+# 
+# # # ##########################################################################
+# #Compare changes of removing BLM from NFS and future controls 
+# scens <- list(
+#   "Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019.9003.Converg,IG,WQIP_Scenario2_2020",#,
+#   "Scen2_woBLM" = "2007Dems,MTOM_Most,DNF with Salinity BLM Only,Jan2019.9003.Converg,IG,WQIP_Scenario2_2020_BLM"#,
+#   # "Scen2_woallResampBLM" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jan2019.9003.Converg,IG,WQIP_Scenario2_2020_BLM"#,
+# )
+# #Scen2_woBLM has only AboveLees Salt change
+# #Scen2_woallResampBLM has all residuals changed in UB
+# #file names
+# Model.Step.Name <- "wo BLM" #plot title and results/folder name
+# Figs <- '_wvswoBLM'  #[plot type] identifying name .pdf
+# 
+# # # ##########################################################################
+# #Compare changes of changing the salt files going from PR to FWAC at Powell 
+# #and changing WMx to 2 Lay w/ Jan 2019 IC's based on projection of Oct 2018 
+# scens <- list(
+#   "WMx_wWMxSalts" = "2007Dems,MTOM_Most,DNF with Salinity,9004.PowWMx,IG,WQIP_Scenario2_2020_BLM",#,
+#   "2Lay_wFWACPwl" = "2007Dems,MTOM_Most,2Lay FWAC Salts,9004.Pow2Layer,IG,WQIP_Scenario2_2020_BLM"#,
+#   # "Scen2_woallResampBLM" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jan2019.9003.Converg,IG,WQIP_Scenario2_2020_BLM"#,
+# )
+# Model.Step.Name <- "WMx vs 2Lay Mthd & Salts" #plot title and results/folder name
+# Figs <- '_WMxvs2Lay'  #[plot type] identifying name .pdf
+# 
+# # # ##########################################################################
+# 
+# #Compare changes of changing the salt files going from PR to FWAC at Powell 
+# #and changing WMx to 2 Lay w/ Jan 2019 IC's based on projection of Oct 2018 
+# scens <- list(
+#   "1_WMx_wWMxSalts" = "2007Dems,MTOM_Most,DNF with Salinity,9004.PowWMx,IG,WQIP_Scenario2_2020_BLM",#,
+#   "2_WMx_wFWACPwl" = "2007Dems,MTOM_Most,2Lay FWAC Salts,9004.PowWMx,IG,WQIP_Scenario2_2020_BLM",#,
+#   "4_2Lay_wFWACPwl" = "2007Dems,MTOM_Most,2Lay FWAC Salts,9004.Pow2Layer,IG,WQIP_Scenario2_2020_BLM",
+#   "3_2Lay_wWMxSalts" = "2007Dems,MTOM_Most,DNF with Salinity,9004.Pow2Layer,IG,WQIP_Scenario2_2020_BLM"#,
+# )
+# Model.Step.Name <- "WMx vs 2Lay All Mthd & Salts" #plot title and results/folder name
+# Figs <- '_AllWMxvs2Lay'  #[plot type] identifying name .pdf
+
+
 # # ##########################################################################
-#Compare 2020 Scenarios between full 06-2017 (88-17 reg) NFS  with Stress Test 88-2017 (88-17 reg) NFS with 19 model
+
+#Compare changes of changing IC 30mg/l in 2 layer model 
 scens <- list(
-  "A.No Additional Controls TriRvw20_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
-  "A.No Additional Controls TriRvw20_88-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Scenario1_2020",
-  "B.Current Funding TriRvw20_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
-  "B.Current Funding TriRvw20_88-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Scenario2_2020",
-  "C.Max Potential Controls TriRvw20_06-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020",
-  "C.Max Potential Controls TriRvw20_88-17NFS" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jan2019_2020,IG,WQIP_Scenario3_2020"
+  "IC" = "2007Dems,MTOM_Most,2Lay FWAC Salts,9004.Pow2Layer,IG,WQIP_Scenario2_2020_BLM",#,
+  "IC-30" = "2007Dems,MTOM_Most,2Lay FWAC Salts,Down30mgl,IG,WQIP_Scenario2_2020_BLM",#,
+  "IC+30" = "2007Dems,MTOM_Most,2Lay FWAC Salts,Up30mgl,IG,WQIP_Scenario2_2020_BLM"
 )
-#file names
-Model.Step.Name <- "Observed NF vs Stress Test" #plot title and results/folder name
-Figs <- '_17NFSvs17NFSST_w_controls_20Scens'  #[plot type] identifying name .pdf
-startyr <- 2020 #filter out all years > this year
-endyr <- 2040
+Model.Step.Name <- "2 Lay IC Sensitivity" #plot title and results/folder name
+Figs <- '_2LayIC'  #[plot type] identifying name .pdf
+
+# # ##########################################################################
+
+#Moving to June DCP model  
+scens <- list(
+  "Jan2019" = "2007Dems,MTOM_Most,DNF with Salinity BLM Only,Jan2019.9003.Converg,IG,WQIP_Scenario2_2020_BLM",#,
+  "Jun2019_NoDCP" = "NV300,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG,WQIP_Scenario2_2020_BLM,No_DCP_Cons",#,
+  "Jun2019_DCP" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_BLM,DCP_Cons"
+)
+Model.Step.Name <- "Jan 19 to Jun 19 DCP" #plot title and results/folder name
+Figs <- '_JantoJunDCP'  #[plot type] identifying name .pdf
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #                               END USER INPUT
@@ -176,7 +210,7 @@ message('Figures and tables will be saved to: ', oFigs)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-if(length(scens) == 6){ #3 colors, first scen is dashed (old), second solid
+if(length(scens) == 6 | length(scens) == 4){ #3 colors, first scen is dashed (old), second solid
   lt_scale <- rep(c(2, 1), 3)
   pt_scale <- rep(c(1, 19), 3)
   mycolors <- c("#1F78B4","#1F78B4","#33A02C","#33A02C","#E31A1C","#E31A1C") # brewer.pal(6, "Paired")
@@ -201,5 +235,15 @@ source("code/Custom_WQAnn.R")
 source("code/Custom_MassBalAnn.R")
 #FlowMassBal
 source("code/Custom_FlowBalAnn.R")
+
+#This script can only be used with data processed using the new output.control file 6/27/2019
+source("code/Custom_InOutMass.R")
+# Powell Mead PE
+source("code/Custom_ResPE.R")
+#WQAnn
+source("code/Custom_WQAnn.R")
+
+
+
 
 

@@ -60,7 +60,7 @@ df_ub <- scen_res %>%
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
 p <- df_ub %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
@@ -99,7 +99,7 @@ df_lb = df
 df_lb$Value <- df$Value - df2$Value #subtract off UB
 
 p <- df_lb %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
@@ -126,16 +126,16 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  labs(title = "UB Agricultural Salt Loading", y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-# ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
@@ -153,7 +153,7 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
@@ -176,7 +176,7 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
@@ -199,7 +199,7 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
@@ -222,7 +222,7 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
@@ -245,7 +245,7 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
@@ -268,7 +268,7 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
@@ -291,7 +291,7 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
@@ -313,12 +313,12 @@ df <- scen_res %>%
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  labs(title = "UB Water Quality Improvement Projects", y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
@@ -326,15 +326,15 @@ ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
-#custom scale for presentation
+# #custom scale for presentation
 # ylims <- c(0,3)
 # p <- df %>%
-#   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+#   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
 #   geom_line() +
 #   geom_point() +
 #   ylim(ylims) +
 #   scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-#   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+#   labs(title = "UB Water Quality Improvement Projects", y = y_lab, x = "Year")+
 #   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 # print(p)
 # 
@@ -355,7 +355,7 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
@@ -378,7 +378,7 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
@@ -403,7 +403,7 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
@@ -428,12 +428,12 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  labs(title = "UB Reservoir Salt Mass", y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
@@ -453,12 +453,12 @@ df <- scen_res %>%
   dplyr::summarise(Value = mean(Value)) 
 
 p <- df %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
   geom_point() +
   ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  labs(title = "LB Reservoir Salt Mass", y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 

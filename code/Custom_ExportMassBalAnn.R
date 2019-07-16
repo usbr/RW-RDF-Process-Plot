@@ -1,20 +1,19 @@
 ##############################################################################
-#This script creates FlowMassBal figures 
+#This script creates SaltMassBal figures 
 ##############################################################################
 
 # # Disable Scientifc Notation 
 # options(scipen=999)
 
 #agg file specifying which slots
-rw_agg_file <- "FlowMassBal.csv" #20190402: Add back in UB Salt Mass Balance.AgSaltLoading, UB Salt Mass Balance.AgSaltLoadingExtra , UB Salt Mass Balance.ExportSaltMass, UB Salt Mass Balance.ExportSaltMassExtra
+rw_agg_file <- "SaltMassBal.csv" #20190402: Add back in UB Salt Mass Balance.AgSaltLoading, UB Salt Mass Balance.AgSaltLoadingExtra , UB Salt Mass Balance.ExportSaltMass, UB Salt Mass Balance.ExportSaltMassExtra
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # list.files(file.path(scen_dir,scens[2]))
 # 
-# rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"MassBalance.rdf")))
-#ISSUE: mass balance doesn't know which is inflow for which basin! they have same object.slot name
+# rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[2],"SaltMassBalance.rdf")))
 
 #read agg file specifying which slots
 # # NEW files are annual slots so use AsIs
@@ -43,138 +42,138 @@ names(mycolors) <- unique(scen_res$Scenario)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ## create a pdf  
-pdf(file.path(oFigs,paste0("FlowMassBalGrph",Figs,".pdf")), width=9, height=6)
+pdf(file.path(oFigs,paste0("Export_SaltMassBalGrph_Custom",Figs,".pdf")), width=9, height=6)
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++DoloresExp_OutSaltMass+++++++++++++++++++++++++++++++++++++
 
-### Means ###
 
-variable = "UBFlow_Inflow"
-y_lab = "Flow (MAF/yr)"
+#-------------------------------------------------------------------------------------
+
+variable = "UB_Exports"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(0,30)
+ylims <- c(0,0.25)
 
-
-df_ub <- scen_res %>%
+df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-p <- df_ub %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
   ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = "UB Natural Inflow", y = y_lab, x = "Year")+
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year", subtitle = "All Export: Div Salt Conc (I) & Rtrn Pickup Conc (I)")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
 ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df_ub,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+
 
 #-------------------------------------------------------------------------------------
 
-variable = "UBFlow_Outflow"
-y_lab = "Flow (MAF/yr)"
+variable = "UB_ExportSaltMass"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(0,7)
+ylims <- c(0,0.25)
 
-
-df_ub <- scen_res %>%
+df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-p <- df_ub %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
-  # ylim(ylims) +
+  ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year",
+       subtitle = "Div Salt Conc (I):Duchesne,RoaringFork,Glenwood,LilSnake,Price,SJChama",
+       caption = "Div Salt Conc (I) with no Rtrn. Doesn't inc Dolores since interbasin.")+  
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-#-------------------------------------------------------------------------------------
-
-variable = "UBFlow_OtherLosses"
-y_lab = "Flow (MAF/yr)"
-title = variable
-ylims <- c(0,7)
-
-
-df_ub <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise(Value = mean(Value)) 
-p <- df_ub %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-  geom_line() +
-  geom_point() +
-  # ylim(ylims) +
-  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-print(p)
-
-#-------------------------------------------------------------------------------------
-
-variable = "UBFlow_ChangeInReservoirStorage"
-y_lab = "Flow (MAF/yr)"
-title = variable
-ylims <- c(0,7)
-
-df_ub <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise(Value = mean(Value)) 
-p <- df_ub %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-  geom_line() +
-  geom_point() +
-  # ylim(ylims) +
-  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = "UB Change In Reservoir Storage", y = y_lab, x = "Year")+
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-print(p)
+write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
 ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df_ub,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+
+## Includes: DuchesneExp_DivSaltMass + RoaringForkExp_DivSaltMass + GlenwoodExp_DivSaltMass + LilSnakeExp_DivSaltMass
+## + PriceExp_DivSaltMass + SJChamaExp_DivSaltMass 
+
+##Missing: #DoloresExp_DivSaltMass - 130 mg/l interbasin + FontExp_DivSaltMass 0 mg/l 
+
 
 #-------------------------------------------------------------------------------------
 
-#We don't output LB inflow or outflow from MasBal summary slot 
-
-#-------------------------------------------------------------------------------------
-
-variable = "LBFlow_ChangeInReservoirStorage"
-y_lab = "Flow (MAF/yr)"
+variable = "UB_ExportSaltMassExtra"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(0,7)
+ylims <- c(0,0.25)
 
-df_ub <- scen_res %>%
+df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
-p <- df_ub %>%
-  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
   geom_line() +
   geom_point() +
-  # ylim(ylims) +
+  ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = "LB Change In Reservoir Storage", y = y_lab, x = "Year")+
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year",
+       subtitle = "Rtrn Pickup Conc (I):MIGreendaleOuray,LilSnakeMisc,UTSynfuels,SanRafEnergy,NIPP",
+       caption = "Div at Inflow Salt Conc then Rtrn at Pickup Conc (I), 0 for all except NIPP (1390). ") +  
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
+write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+
 ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df_ub,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+# Rtrn Pickup Conc (I): 0 mg/l MIGreendaleOuray,LilSnakeMisc,UTSynfuels,SanRafEnergy,NIPP 1390mg/l
+
+#-------------------------------------------------------------------------------------
+
+variable = "LB_Exports"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(0,2)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value)) 
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year",
+       subtitle = "Inc:CAP,MWD,MohaveSteam,PersPerfRights,Needles,NRA")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+
+
+
+#-------------------------------------------------------------------------------------
 
 
 dev.off()
