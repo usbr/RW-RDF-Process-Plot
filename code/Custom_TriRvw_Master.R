@@ -80,16 +80,16 @@ endyr <- 2040
 # # # ##########################################################################
 # #Compare allow neg storage Salt Change wo Min10 , 2020 Scenarios, full 06-2017 (88-17 reg) NFS  
 # # May 13: New Files for RW 7.5 DM fixes
-# scens <- list(
-#   # "Scen1" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
-#   "Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
-#   "Scen2_woMin10" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019.9001.NoMin10,IG,WQIP_Scenario2_2020"#,
-#   # "Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020",
-# )
-# #file names
-# Model.Step.Name <- "w vs wo Min10 (RW 7.5)" #plot title and results/folder name
-# Figs <- '_wvswoMin10'  #[plot type] identifying name .pdf
-# 
+scens <- list(
+  # "Scen1" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
+  "wMin10" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
+  "woMin10" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019.9001.NoMin10,IG,WQIP_Scenario2_2020"#,
+  # "Scen3" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020",
+)
+#file names
+Model.Step.Name <- "w vs wo Min10 (RW 7.5)" #plot title and results/folder name
+Figs <- '_wvswoMin10'  #[plot type] identifying name .pdf
+
 # # # ##########################################################################
 # #Compare NIPP and MasBal updates , 2020 Scenarios, full 06-2017 (88-17 reg) NFS  
 # scens <- list(
@@ -113,17 +113,17 @@ endyr <- 2040
 # 
 # # # ##########################################################################
 # #Compare changes of removing BLM from NFS and future controls 
-# scens <- list(
-#   "Scen2" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019.9003.Converg,IG,WQIP_Scenario2_2020",#,
-#   "Scen2_woBLM" = "2007Dems,MTOM_Most,DNF with Salinity BLM Only,Jan2019.9003.Converg,IG,WQIP_Scenario2_2020_BLM"#,
-#   # "Scen2_woallResampBLM" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jan2019.9003.Converg,IG,WQIP_Scenario2_2020_BLM"#,
-# )
-# #Scen2_woBLM has only AboveLees Salt change
-# #Scen2_woallResampBLM has all residuals changed in UB
-# #file names
-# Model.Step.Name <- "wo BLM" #plot title and results/folder name
-# Figs <- '_wvswoBLM'  #[plot type] identifying name .pdf
-# 
+scens <- list(
+  "Baseline" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019.9003.Converg,IG,WQIP_Scenario2_2020",#,
+  "BLMWellPlugOnly" = "2007Dems,MTOM_Most,DNF with Salinity BLM Only,Jan2019.9003.Converg,IG,WQIP_Scenario2_2020_BLM"#,
+  # "Scen2_woallResampBLM" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jan2019.9003.Converg,IG,WQIP_Scenario2_2020_BLM"#,
+)
+#Scen2_woBLM has only AboveLees Salt change
+#Scen2_woallResampBLM has all residuals changed in UB
+#file names
+Model.Step.Name <- "wo BLM" #plot title and results/folder name
+Figs <- '_wvswoBLM'  #[plot type] identifying name .pdf
+
 # # # ##########################################################################
 # #Compare changes of changing the salt files going from PR to FWAC at Powell 
 # #and changing WMx to 2 Lay w/ Jan 2019 IC's based on projection of Oct 2018 
@@ -162,14 +162,66 @@ Figs <- '_2LayIC'  #[plot type] identifying name .pdf
 
 # # ##########################################################################
 
-#Moving to June DCP model  
+#Jan to June IC 
 scens <- list(
   "Jan2019" = "2007Dems,MTOM_Most,DNF with Salinity BLM Only,Jan2019.9003.Converg,IG,WQIP_Scenario2_2020_BLM",#,
-  "Jun2019_NoDCP" = "NV300,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG,WQIP_Scenario2_2020_BLM,No_DCP_Cons",#,
+  "Jun2019_NoDCP" = "NV300,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG,WQIP_Scenario2_2020_BLM,No_DCP_Cons"#,
+  # "Jun2019_DCP" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_BLM,DCP_Cons"
+)
+Model.Step.Name <- "Jan 19 to Jun 19 IC" #plot title and results/folder name
+Figs <- '_JantoJunIC'  #[plot type] identifying name .pdf
+
+# # ##########################################################################
+
+#Moving to DCP model  
+scens <- list(
+  # "Jan2019" = "2007Dems,MTOM_Most,DNF with Salinity BLM Only,Jan2019.9003.Converg,IG,WQIP_Scenario2_2020_BLM",#,
+  "Jun2019_NoDCP" = "NV300,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG,WQIP_Scenario2_2020_BLM,No_DCP_Cons",
   "Jun2019_DCP" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_BLM,DCP_Cons"
 )
-Model.Step.Name <- "Jan 19 to Jun 19 DCP" #plot title and results/folder name
-Figs <- '_JantoJunDCP'  #[plot type] identifying name .pdf
+Model.Step.Name <- "No DCP to DCP" #plot title and results/folder name
+Figs <- '_NoDCPtoDCP'  #[plot type] identifying name .pdf
+
+# # ##########################################################################
+
+#Updating USDA controls 
+scens <- list(
+  "Baseline" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_BLM,DCP_Cons",
+  "USDA_Update" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_20190908,DCP_Cons"
+  )
+Model.Step.Name <- "August19 USDA Update" #plot title and results/folder name
+Figs <- '_20190908USDA'  #[plot type] identifying name .pdf
+
+# # ##########################################################################
+
+# # # 2020 Scenarios for Aug 2019 MTG Preliminary Results 
+scens <- list(
+  "1.Jun19/No Additional Controls 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_20190908,DCP_Cons",
+  "2.Jun19/Current Funding 1.58M Tons" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_20190908,DCP_Cons",
+  "3.Jun19/Max Potential Controls 2.24M Tons" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario3_2020_20190908,DCP_Cons"
+  )
+
+#file names
+Model.Step.Name <- "Aug 2019 WG Results" #plot title and results/folder name
+Figs <- '_Aug19WGmtg'  #[plot type] identifying name .pdf
+
+
+# # ##########################################################################
+
+# # # 2020 Scenarios Aug 2019 w/ Jun19 mdl vs Apr MTG w/ Apr19 mdl  
+scens <- list(
+  "1.Jan19/No Additional Controls 1.42M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario1_2020",
+  "1.Jun19/No Additional Controls 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_20190908,DCP_Cons",
+  "2.Jan19/Current Funding 1.68M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario2_2020",
+  "2.Jun19/Current Funding 1.58M Tons" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_20190908,DCP_Cons",
+  "3.Jan19/Max Potential Controls 2.42M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jan2019_2020,IG,WQIP_Scenario3_2020",
+  "3.Jun19/Max Potential Controls 2.24M Tons" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario3_2020_20190908,DCP_Cons"
+)
+
+#file names
+Model.Step.Name <- "Aug vs Apr Results" #plot title and results/folder name
+Figs <- '_AugvsApr'  #[plot type] identifying name .pdf
+
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #                               END USER INPUT
@@ -240,8 +292,6 @@ source("code/Custom_FlowBalAnn.R")
 source("code/Custom_InOutMass.R")
 # Powell Mead PE
 source("code/Custom_ResPE.R")
-#WQAnn
-source("code/Custom_WQAnn.R")
 
 
 
