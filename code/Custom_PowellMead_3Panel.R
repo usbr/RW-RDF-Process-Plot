@@ -1,5 +1,9 @@
 ##############################################################################
-#This script creates monthly boxplots of Outflow and PE to compare two MTOM runs
+#This script creates Flow, Mass and Concentration 3 Panel Figures to compare runs
+
+##DEVELOPMENT UNDERWAY## 
+##############INFLOW FWA SLOT NEEDS BUILT IN ANNUAL SALINITY, Update control & rw_agg############ 
+
 ##############################################################################
 
 #agg file specifying which slots
@@ -18,6 +22,11 @@ rw_agg_file <- "PowellMeadInOut.csv" #doesn't include outflow
 rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE))
 # # # Old files from 2017 review are monthly so use EOCY 
 
+file.exists(file.path(scen_dir,scens[1],"Salt.rdf"))
+rdf_slot_names(rdf = read.rdf(iFile=file.path(scen_dir,scens[1],"Salt.rdf")))
+cbind(rwa1$variable, rwa1$file ,rwa1$variable %in% rdf_slot_names(rdf = read.rdf(iFile=file.path(scen_dir,scens[1],"Salt.rdf"))))
+#check to make sure you have latest TriRvw output.control. All slots should be true for Salt.rdf except res.In,Stor,Out
+
 #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
 scen_res <- rw_scen_aggregate(
   scens,
@@ -27,11 +36,8 @@ scen_res <- rw_scen_aggregate(
 
 unique(scen_res$Variable) #check variable names
 
-## New ##
-## Make a dataframe for Outflow and Outflow Salt Mass at each of the Numeric Criteria Points and Lees
-#agg file specifying which slots
 
-# unique(scen_res2$Variable) #check variable names 
+
 ## Divide Values by 1,000,000 to present data in Million of Tons/Year or MAF
 scen_res2$Value=(scen_res2$Value)/1000000
 
@@ -39,12 +45,6 @@ scen_res2$Value=(scen_res2$Value)/1000000
 names(lt_scale) <- unique(scen_res$Scenario)
 names(pt_scale) <- unique(scen_res$Scenario)
 names(mycolors) <- unique(scen_res$Scenario)
-
-
-# The blue gradient background is "graph trash" 
-# # make custom axis shading, don't use for now doesn't look good with plotte pallette
-# g <- rasterGrob(scales::alpha(blues9, 0.1), width=unit(1,"npc"), height = unit(1,"npc"), 
-#                 interpolate = TRUE) #alpha is the transperency  
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Plot Custom UB Figures 
@@ -150,7 +150,7 @@ p3 <- df3 %>%
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-print(p3)
+# print(p3)
 
 library(gridExtra)
 grid.arrange(p1,p2,p3,ncol=1)
@@ -172,15 +172,15 @@ df1 <- scen_res %>%
 
 df1$Value <- df1$Value/1000000
 
-# variable = "Powell.Reservoir Salt Mass"
-# 
-# df2 <- scen_res %>%
-#   dplyr::filter(Variable == variable) %>%
-#   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-#   dplyr::group_by(Scenario, Year) %>%
-#   dplyr::summarise(Value = mean(Value)) 
-# 
-# df2$Value <- df2$Value/1000000
+variable = "Powell.Reservoir Salt Mass"
+
+df2 <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value))
+
+df2$Value <- df2$Value/1000000
 
 variable = "Powell.Outflow Salt Mass"
 df3 <- scen_res %>%
@@ -210,23 +210,23 @@ p1 <- df1 %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 # print(p1)
 
-# y_lab = "Storage (million acre-ft)"
-# title = "Lake Powell Average Annual Storage" 
-# # ylims <- c(0,20)
+y_lab = "Storage (million acre-ft)"
+title = "Lake Powell Average Annual Storage"
+# ylims <- c(0,20)
 # 
-# p2 <- df2 %>%
-#   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+p2 <- df2 %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
 #   
-#   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
-#   geom_line() +
-#   geom_point() + 
-#   # ylim(ylims) +
-#   scale_linetype_manual(values = lt_scale) +
-#   scale_shape_manual(values = pt_scale) +
-#   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-#   labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-#   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-# # print(p2)
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() +
+  # ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+# print(p2)
 
 y_lab = "Outflow Salt Mass (million tons/year)"
 title = "Lake Powell Average Annual Outflow Salt Mass" 
@@ -245,18 +245,19 @@ p3 <- df3 %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 # print(p3)
 
-# grid.arrange(p1,p2,p3,ncol=1)
-grid.arrange(p1,p3,ncol=1)
+grid.arrange(p1,p2,p3,ncol=1)
+# grid.arrange(p1,p3,ncol=1) # if don't have latest control file won't have res.salt mass
 
-ggsave(filename = file.path(oFigs,paste0("Powell_Flow_3Panel.png")), width= width, height= height)
+ggsave(filename = file.path(oFigs,paste0("Powell_Mass_3Panel.png")), width= width, height= height)
 
 
 #-------------------------------------------------------------------------------------
 # Powell Concentration 
 #-------------------------------------------------------------------------------------
 
+##############SLOT NEEDS BUILT IN ANNUAL SALINITY############ 
 
-variable = "Powell.Inflow Salt Concentration"
+variable = "AnnlSlntyPowell_FWAAC"
 
 df1 <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -264,6 +265,7 @@ df1 <- scen_res %>%
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise(Value = mean(Value)) 
 
+### FOR WELL MIXED RES CONC = OUTFLOW CONC - do 2 panel for now
 # variable = "Powell.Reservoir Salt Concentration"
 # 
 # df2 <- scen_res %>%
@@ -274,31 +276,16 @@ df1 <- scen_res %>%
 # 
 # df2$Value <- df2$Value/1000000
 
-##############SWITCH TO FWAAC############# 
-# variable = "AnnlSlntyLsFrry_FWAAC"
-# y_lab = "Salt Concentration (mg/l)"
-# title = "Colorado River at Lees Ferry" 
-# subtitle = "Average Annual Concentration Comparision"
-# ylims <- c(350,550)
-# 
-# 
-# df <- scen_res %>%
-#   dplyr::filter(Variable == variable) %>%
-#   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-#   dplyr::group_by(Scenario, Year) %>%
-#   dplyr::summarise(Value = mean(Value)) 
-
-
-variable = "Powell.Outflow Salt Concentration"
+variable = "AnnlSlntyLsFrry_FWAAC"
 df3 <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise(Value = mean(Value)) 
+  dplyr::summarise(Value = mean(Value))
 
-y_lab = "Outflow Salt Concentration (million tons/year)"
-title = "Lake Powell Average EOCY Outflow Salt Concentration" 
 
+y_lab = "Inflow Salt Concentration (million tons/year)"
+title = "Lake Powell FWA Inflow Salt Concentration" 
 
 p1 <- df1 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -333,7 +320,7 @@ p1 <- df1 %>%
 # # print(p2)
 
 y_lab = "Outflow Salt Concentration (million tons/year)"
-title = "Lake Powell Average EOCY Inflow Salt Concentration" 
+title = "Lake Powell FWA Reservoir/Outflow Salt Concentration" 
 
 p3 <- df3 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -349,45 +336,301 @@ p3 <- df3 %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 # print(p3)
 
-# grid.arrange(p1,p2,p3,ncol=1)
-grid.arrange(p1,p3,ncol=1)
+grid.arrange(p1,p3,ncol=1) #no need for Res Conc while all are well mixed
 
 
-ggsave(filename = file.path(oFigs,paste0("Powell_Flow_3Panel.png")), width= width, height= height)
+ggsave(filename = file.path(oFigs,paste0("Powell_Conc_2Panel.png")), width= width, height= height)
 
+################################################################################
+#############################  Mead  ##########################################
+################################################################################
 
+# Mead Flow 
+#-------------------------------------------------------------------------------------
 
+# variables = c("Mead.Inflow","Mead.Storage","Mead.Outflow"
+variable = "Mead.Inflow"
 
+df1 <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value)) 
 
-# NumCrit <- data.frame(yintercept=723)
-# variable = "AnnlSlntyHvr_FWAAC"
-# y_lab = "Salt Concentration (mg/l)"
-# title = "Colorado River below Hoover Dam" 
+df1$Value <- df1$Value/1000000
+
+variable = "Mead.Storage"
+
+df2 <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value)) 
+
+df2$Value <- df2$Value/1000000
+
+variable = "Mead.Outflow"
+df3 <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value)) 
+
+df3$Value <- df3$Value/1000000
+
+y_lab = "Inflow (million acre-ft/year)"
+title = "Lake Mead Average Annual Inflow" 
+ylims <- c(7,10)
+
+p1 <- df1 %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() + 
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+# print(p1)
+
+y_lab = "Storage (million acre-ft)"
+title = "Lake Mead Average Annual Storage" 
+# ylims <- c(0,20)
+
+p2 <- df2 %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() + 
+  # ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+# print(p2)
+
+y_lab = "Outflow (million acre-ft/year)"
+title = "Lake Mead Average Annual Outflow" 
 # subtitle = "Average Annual Concentration Comparision"
-# # subtitle = "Median Trace Annual Concentration Comparision"
-# ylims <- c(545,750)
+# ylims <- c(7,10)
 
-# df <- scen_res %>%
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value)) 
+
+df$Value <- df$Value/1000000
+
+ylims <- c(7,10)
+
+p3 <- df3 %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() + 
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+# print(p3)
+
+library(gridExtra)
+grid.arrange(p1,p2,p3,ncol=1)
+
+ggsave(filename = file.path(oFigs,paste0("Mead_Flow_3Panel.png")), width= width, height= height)
+
+#-------------------------------------------------------------------------------------
+# Mead Mass
+#-------------------------------------------------------------------------------------
+
+
+variable = "Mead.Inflow Salt Mass"
+
+df1 <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value)) 
+
+df1$Value <- df1$Value/1000000
+
+variable = "Mead.Reservoir Salt Mass"
+
+df2 <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value))
+
+df2$Value <- df2$Value/1000000
+
+variable = "Mead.Outflow Salt Mass"
+df3 <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value)) 
+
+df3$Value <- df3$Value/1000000
+
+y_lab = "Inflow Salt Mass (million tons/year)"
+title = "Lake Mead Average Annual Inflow Salt Mass" 
+
+ylims <- c(5,7)
+
+p1 <- df1 %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() + 
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+# print(p1)
+
+y_lab = "Storage (million acre-ft)"
+title = "Lake Mead Average Annual Storage"
+# ylims <- c(0,20)
+# 
+p2 <- df2 %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  #   
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() +
+  # ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+# print(p2)
+
+y_lab = "Outflow Salt Mass (million tons/year)"
+title = "Lake Mead Average Annual Outflow Salt Mass" 
+
+p3 <- df3 %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() + 
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+# print(p3)
+
+grid.arrange(p1,p2,p3,ncol=1)
+# grid.arrange(p1,p3,ncol=1) # if don't have latest control file won't have res.salt mass
+
+ggsave(filename = file.path(oFigs,paste0("Mead_Mass_3Panel.png")), width= width, height= height)
+
+
+#-------------------------------------------------------------------------------------
+# Mead Concentration 
+#-------------------------------------------------------------------------------------
+
+##############INFLOW FWA SLOT NEEDS BUILT IN ANNUAL SALINITY, Update control & rw_agg############ 
+
+variable = "AnnlSlntyMead_FWAAC"
+
+df1 <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value)) 
+
+### FOR WELL MIXED RES CONC = OUTFLOW CONC - do 2 panel for now
+# variable = "Mead.Reservoir Salt Concentration"
+# 
+# df2 <- scen_res %>%
 #   dplyr::filter(Variable == variable) %>%
 #   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
 #   dplyr::group_by(Scenario, Year) %>%
 #   dplyr::summarise(Value = mean(Value)) 
-# # dplyr::summarise(Value = median(Value)) 
+# 
+# df2$Value <- df2$Value/1000000
+
+variable = "AnnlSlntyHvr_FWAAC"
+df3 <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise(Value = mean(Value))
 
 
-variable = "Mead.Outflow"
-y_lab = "Outflow (million acre-ft/year)"
-title = "Lake Mead Average Annual Outflow" 
-# subtitle = "Average Annual Concentration Comparision"
-ylims <- c(7,10)
+y_lab = "Inflow Salt Concentration (million tons/year)"
+title = "Lake Mead FWA Inflow Salt Concentration" 
+
+p1 <- df1 %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() + 
+  # ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+# print(p1)
+
+# y_lab = "Storage (million acre-ft)"
+# title = "Lake Mead Average Annual Storage" 
+# # ylims <- c(0,20)
+# 
+# p2 <- df2 %>%
+#   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+#   
+#   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+#   geom_line() +
+#   geom_point() + 
+#   # ylim(ylims) +
+#   scale_linetype_manual(values = lt_scale) +
+#   scale_shape_manual(values = pt_scale) +
+#   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+#   labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+#   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+# # print(p2)
+
+y_lab = "Outflow Salt Concentration (million tons/year)"
+title = "Lake Mead FWA Reservoir/Outflow Salt Concentration" 
+
+p3 <- df3 %>%
+  ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() + 
+  # ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+# print(p3)
+
+grid.arrange(p1,p3,ncol=1) #no need for Res Conc while all are well mixed
 
 
-
-variable = "Mead.Outflow Salt Mass"
-y_lab = "Outflow Salt Mass (million tons/year)"
-title = "Lake Mead Average Annual Outflow Salt Mass" 
-# subtitle = "Average Annual Concentration Comparision"
-ylims <- c(0,10)
+ggsave(filename = file.path(oFigs,paste0("Mead_Conc_2Panel.png")), width= width, height= height)
 
 
-
+dev.off()
