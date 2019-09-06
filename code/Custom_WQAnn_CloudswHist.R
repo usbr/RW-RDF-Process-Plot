@@ -86,6 +86,10 @@ GridMin = .25
 LegendWidth = 1
 LegendHeight = 2.5
 
+# Set tick marks for x and y axis
+myXLabs <- seq(1990,3000,5)
+myYLabs <- seq(300,900,50)
+
 yrs <- startyr:endyr #simplify 
 
 cloudScen <- names(scens)
@@ -193,14 +197,13 @@ zz <- zz_all %>%
 
 gg <- ggplot(zz, aes(x=Year, y=Mean, color=Scenario, group=Scenario)) +  theme_light()  #this is just a blank grided plot
 
-#DEBUG ##### PLOTING ISSUE 
-gg + geom_line(size=Medians)
-gg + geom_ribbon(data = subset(zz,Scenario %in% cloudScen),aes(ymin=Min, ymax=Max, fill = Scenario),  #CF: need to subset so don't create for mean 
-                        alpha = 0.3, linetype = 2, size = 0.5*Medians) 
+# #DEBUG ##### PLOTING ISSUE 
+# gg + geom_line(size=Medians)
+# gg + geom_ribbon(data = subset(zz,Scenario %in% cloudScen),aes(ymin=Min, ymax=Max, fill = Scenario),  #CF: need to subset so don't create for mean 
+#                         alpha = 0.3, linetype = 2, size = 0.5*Medians) 
 
 # Generate plot a to make ribbon legend
 name <- str_wrap("10th, 90th percentile",20)
-# gga <- gg + geom_ribbon(data = zz,aes(ymin=Min, ymax=Max, fill = Scenario), 
 gga <- gg + geom_ribbon(data = subset(zz,Scenario %in% cloudScen),aes(ymin=Min, ymax=Max, fill = Scenario),  #CF: need to subset so don't create for mean 
                         alpha = 0.3, linetype = 2, size = 0.5*Medians) +
   scale_fill_manual(name, 
@@ -210,26 +213,27 @@ gga <- gg + geom_ribbon(data = subset(zz,Scenario %in% cloudScen),aes(ymin=Min, 
                                                                            labels = str_wrap(cloudLabs, 15))  +
   theme(legend.text = element_text(size=LegendText),legend.title = element_text(size=LegendLabText, face="bold"),
         legend.box.margin = margin(0,0,0,0)) 
-gga
+# gga
   legenda <- get_legend(gga)
 
 # # Generate plot b to take medians legend
-# if(med == F){
-  lengendtitle <- "Mean FWAAC"
-# } else {
-#   lengendtitle <- "Historical and Median Projected Pool Elevation"
-# }
+lengendtitle <- "Mean FWAAC"
 
 ggb <- gg + geom_line(size=Medians) + 
   scale_color_manual(name = str_wrap(lengendtitle,20),
                      values = plotColors, labels = str_wrap(histLab, 15)) +
   theme(legend.text = element_text(size=LegendText),legend.title = element_text(size=LegendLabText, face="bold"),
         legend.box.margin = margin(0,0,0,0)) 
-ggb
+# ggb
 legendb <- get_legend(ggb)
 
 # Make legend grob.  4 rows used to make legend close together and in the middle with respects to the vertical
 gglegend <- plot_grid(NULL, legenda,legendb, NULL, align = 'hv', nrow=4) #nrows=4
+
+
+ggmin <- ggplot(zz, aes(x=Year, y=MinOut, color=Scenario, group=Scenario)) +  theme_light()  #this is just a blank grided plot
+ggmax <- ggplot(zz, aes(x=Year, y=MaxOut, color=Scenario, group=Scenario)) +  theme_light()  #this is just a blank grided plot
+
 
 # Generate plot
 ggc <- gg + 
@@ -246,17 +250,25 @@ ggc <- gg +
                      values = plotColors, guide = FALSE,
                      labels = str_wrap(histLab, 15)) +
   labs(y = y_lab, title = title, x = '',subtitle = subtitle) + 
+  
+  scale_x_continuous(minor_breaks = 1990:3000, breaks = myXLabs,
+                     labels = myXLabs, expand = c(0,0)) +
+  scale_y_continuous(minor_breaks = seq(300,9000,25),
+                     breaks = myYLabs, labels = comma) +
+  
   theme(plot.title = element_text(size = TitleSize),
         ## axis.text.x = element_text(size = AxisLab),
         axis.text.y = element_text (size =AxisLab),
-        axis.title = element_text(size=AxisText) ) +
-        # panel.grid.minor = element_line(size = GridMin),
-        # panel.grid.major = element_line(size = GridMaj)) +
+        axis.title = element_text(size=AxisText),
+        panel.grid.minor = element_line(size = GridMin),
+        panel.grid.major = element_line(size = GridMaj)) +
   
   # Adding lines for numeric criteria
   # geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) #+
   
   guides(fill=FALSE) #+
+ggc
+
   
 #   # Add BOR Logo
 #   annotation_custom(im_rast, ymin = yaxmin, ymax = yaxmin + 12, xmin = 1999, xmax = 2006) 
