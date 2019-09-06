@@ -11,6 +11,8 @@
 # 
 # rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[2],"WQANN.rdf")))
 
+library('readxl')
+
 rw_agg_file <- "WQAnn.csv" #doesn't include outflow
 
 #read agg file specifying which slots
@@ -97,8 +99,57 @@ cloudLabs <- names(scens)
 colorNames <- unique(zz$Scenario)
 # colors from TriRvw_Master
 plotColors <- mycolors
+
+### Read Data ###
+
+
+zz <- scen_res %>%
+  dplyr::filter(Year %in% yrs, Variable %in% c("AnnlSlntyLsFrry_FWAAC",
+                                                "AnnlSlntyHvr_FWAAC",
+                                                "AnnlSlntyPrkr_FWAAC",
+                                                "AnnlSlntyImprl_FWAAC")) %>%
+  # compute the 10/50/90 and aggregate by start month
+  dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
+  dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
+                   'Min' = quantile(Value,.1),'Max' = quantile(Value,.9))
+
+head(zz)
+unique(zz$Variable)
+unique(zz$Year)
+
+#  Pulling historical SLOAD data
+hist <- read_xlsx(file.path(getwd(),'data/HistSLOAD.xlsx'))
+
+# Formatting data frame to match zz
+hist$Scenario <- 'Historical Elevation'
+hist$Mean <-hist$Med <- hist$Min <- hist$Max <- hist$Value
+hist <- within(hist, rm(Value))
+hist <- hist[c("Scenario","Year","Variable","Mean","Med","Min","Max")]
+
+# # # could use this same procedur to bring in prv TriRvw estimates of mean 
+# #  BUILD DATA SHEET IF WANT TO BRING in 2017 TriRvw Proj
+# TR17Proj <- read_xlsx(file.path(getwd(),'data/TR17Proj.xlsx'))
+# 
+# # Formatting data frame to match zz
+# TR17Proj$Scenario <- 'TR17Projorical Elevation'
+# TR17Proj$Mean <- TR17Proj$Med <- TR17Proj$Min <- TR17Proj$Max <- TR17Proj$Value
+# TR17Proj <- within(TR17Proj, rm(Value))
+# TR17Proj <- TR17Proj[c("Scenario","Year","Variable","Mean","Med","Min","Max")]
+
+
+# Appending historical data
+zz2 <- bind_rows(hist,zz)
+# zz <- bind_rows(zz,TR17Proj)
+
+
+head(hist)
+
+
+
+
 # Adding factors so ggplot does not alphebetize legend
 scen_res$Scenario = factor(scen_res$Scenario, levels=colorNames)
+
 
 ### Means ###
 
@@ -112,12 +163,11 @@ subtitle = "Average Annual Concentration Comparision"
 ylims <- c(350,550)
 
 
+
+
 zz <- scen_res %>%
   dplyr::filter(Year %in% yrs, Variable == variable) %>%
-  # compute the 10/50/90 and aggregate by start month
-  dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
-  dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
-                   'Min' = quantile(Value,.1),'Max' = quantile(Value,.9))
+  
 
 gg <- ggplot(zz, aes(x=Year, y=Med, color=Scenario, group=Scenario)) +  theme_light() #looks nice
 
