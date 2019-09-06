@@ -5,7 +5,7 @@ KeySlots.rdf,Powell.Outflow,cy,sum,NA,NA,Powell.Outflow
 Salt.rdf,Powell.Inflow Salt Mass,cy,sum,NA,NA,Powell.Inflow Salt Mass
 Salt.rdf,Powell.Reservoir Salt Mass,cy,mean,NA,NA,Powell.Reservoir Salt Mass
 Salt.rdf,Powell.Outflow Salt Mass,cy,sum,NA,NA,Powell.Outflow Salt Mass
-WQAnn.rdf,AnnualSalinity.LeesFerry_FWAAC,eocy,NA,NA,NA,AnnlSlntyPowell_FWAAC
+WQAnn.rdf,AnnualSalinity.PowellInflow_FWAAC,eocy,NA,NA,NA,AnnlSlnty_In_Powell_FWAAC
 WQAnn.rdf,AnnualSalinity.LeesFerry_FWAAC,eocy,NA,NA,NA,AnnlSlntyLsFrry_FWAAC
 Res.rdf,Mead.Inflow,cy,sum,NA,NA,Mead.Inflow
 Res.rdf,Mead.Storage,cy,mean,NA,NA,Mead.Storage
@@ -13,5 +13,5 @@ KeySlots.rdf,Mead.Outflow,cy,sum,NA,NA,Mead.Outflow
 Salt.rdf,Mead.Inflow Salt Mass,cy,sum,NA,NA,Mead.Inflow Salt Mass
 Salt.rdf,Mead.Reservoir Salt Mass,cy,mean,NA,NA,Mead.Reservoir Salt Mass
 Salt.rdf,Mead.Outflow Salt Mass,cy,sum,NA,NA,Mead.Outflow Salt Mass
-WQAnn.rdf,AnnualSalinity.Hoover_FWAAC,eocy,NA,NA,NA,AnnlSlntyHvr_FWAAC
+WQAnn.rdf,AnnualSalinity.MeadlInflow_FWAAC,eocy,NA,NA,NA,AnnlSlnty_In_Hvr_FWAAC
 WQAnn.rdf,AnnualSalinity.Hoover_FWAAC,eocy,NA,NA,NA,AnnlSlntyMead_FWAAC

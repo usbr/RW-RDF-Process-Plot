@@ -2,11 +2,11 @@
 #This script creates Flow, Mass and Concentration 3 Panel Figures to compare runs
 
 ##DEVELOPMENT UNDERWAY## 
-##############INFLOW FWA SLOT NEEDS BUILT IN ANNUAL SALINITY, Update control & rw_agg############ 
+##############INFLOW Average Annual SLOT NEEDS Moved into DEV CRSS Model############ 
 
 ##############################################################################
 
-#agg file specifying which slots
+library(gridExtra)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
@@ -15,6 +15,18 @@
 # 
 # rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[2],"WQANN.rdf")))
 
+
+# Parameters for cloud plot customization (line thicknesses, text size, etc.)
+# Have been pulled out for convenience
+#Text
+TitleSize =8
+AxisText = 7
+LegendLabText = 7
+
+AxisLab = 7
+LabSize = 7
+LegendText = 7
+
 rw_agg_file <- "PowellMeadInOut.csv" #doesn't include outflow
 
 #read agg file specifying which slots
@@ -22,10 +34,12 @@ rw_agg_file <- "PowellMeadInOut.csv" #doesn't include outflow
 rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE))
 # # # Old files from 2017 review are monthly so use EOCY 
 
-file.exists(file.path(scen_dir,scens[1],"Salt.rdf"))
-rdf_slot_names(rdf = read.rdf(iFile=file.path(scen_dir,scens[1],"Salt.rdf")))
-cbind(rwa1$variable, rwa1$file ,rwa1$variable %in% rdf_slot_names(rdf = read.rdf(iFile=file.path(scen_dir,scens[1],"Salt.rdf"))))
-#check to make sure you have latest TriRvw output.control. All slots should be true for Salt.rdf except res.In,Stor,Out
+## DEBUG: check to make sure you have latest TriRvw output.control. All slots should be true for Salt.rdf except res.In,Stor,Out
+# file.exists(file.path(scen_dir,scens[1],"Salt.rdf"))
+# rdf_slot_names(rdf = read.rdf(iFile=file.path(scen_dir,scens[1],"Salt.rdf")))
+# cbind(rwa1$variable, rwa1$file ,rwa1$variable %in% rdf_slot_names(rdf = read.rdf(iFile=file.path(scen_dir,scens[1],"Salt.rdf"))))
+# rdf_slot_names(rdf = read.rdf(iFile=file.path(scen_dir,scens[1],"WQAnn.rdf")))
+
 
 #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
 scen_res <- rw_scen_aggregate(
@@ -100,9 +114,9 @@ p1 <- df1 %>%
   ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p1)
 
 y_lab = "Storage (million acre-ft)"
@@ -118,9 +132,9 @@ p2 <- df2 %>%
   # ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p2)
 
 y_lab = "Outflow (million acre-ft/year)"
@@ -147,12 +161,11 @@ p3 <- df3 %>%
   ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p3)
 
-library(gridExtra)
 grid.arrange(p1,p2,p3,ncol=1)
 
 ggsave(filename = file.path(oFigs,paste0("Powell_Flow_3Panel.png")), width= width, height= height)
@@ -205,13 +218,13 @@ p1 <- df1 %>%
   ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p1)
 
-y_lab = "Storage (million acre-ft)"
-title = "Lake Powell Average Annual Storage"
+y_lab = "Reservoir Salt Mass (million tons/year)"
+title = "Lake Powell Average Annual Salt Mass" 
 # ylims <- c(0,20)
 # 
 p2 <- df2 %>%
@@ -223,9 +236,9 @@ p2 <- df2 %>%
   # ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p2)
 
 y_lab = "Outflow Salt Mass (million tons/year)"
@@ -240,9 +253,9 @@ p3 <- df3 %>%
   ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p3)
 
 grid.arrange(p1,p2,p3,ncol=1)
@@ -255,15 +268,15 @@ ggsave(filename = file.path(oFigs,paste0("Powell_Mass_3Panel.png")), width= widt
 # Powell Concentration 
 #-------------------------------------------------------------------------------------
 
-##############SLOT NEEDS BUILT IN ANNUAL SALINITY############ 
+##############Ensure Inflow Slots have been imported into latest CRSS############ 
 
-variable = "AnnlSlntyPowell_FWAAC"
+variable = "AnnlSlnty_In_Powell_FWAAC"
 
 df1 <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise(Value = mean(Value)) 
+  dplyr::summarise(Value = mean(Value))
 
 ### FOR WELL MIXED RES CONC = OUTFLOW CONC - do 2 panel for now
 # variable = "Powell.Reservoir Salt Concentration"
@@ -285,7 +298,7 @@ df3 <- scen_res %>%
 
 
 y_lab = "Inflow Salt Concentration (million tons/year)"
-title = "Lake Powell FWA Inflow Salt Concentration" 
+title = "Lake Powell Average Annual Inflow Salt Concentration" 
 
 p1 <- df1 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -296,9 +309,9 @@ p1 <- df1 %>%
   # ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p1)
 
 # y_lab = "Storage (million acre-ft)"
@@ -314,13 +327,13 @@ p1 <- df1 %>%
 #   # ylim(ylims) +
 #   scale_linetype_manual(values = lt_scale) +
 #   scale_shape_manual(values = pt_scale) +
-#   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-#   labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-#   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+#   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+#   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+#   theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # # print(p2)
 
 y_lab = "Outflow Salt Concentration (million tons/year)"
-title = "Lake Powell FWA Reservoir/Outflow Salt Concentration" 
+title = "Lake Powell Average Annual Reservoir/Outflow Salt Concentration" 
 
 p3 <- df3 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -331,9 +344,9 @@ p3 <- df3 %>%
   # ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p3)
 
 grid.arrange(p1,p3,ncol=1) #no need for Res Conc while all are well mixed
@@ -391,9 +404,9 @@ p1 <- df1 %>%
   ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p1)
 
 y_lab = "Storage (million acre-ft)"
@@ -409,9 +422,9 @@ p2 <- df2 %>%
   # ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p2)
 
 y_lab = "Outflow (million acre-ft/year)"
@@ -438,9 +451,9 @@ p3 <- df3 %>%
   ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p3)
 
 library(gridExtra)
@@ -485,7 +498,7 @@ df3$Value <- df3$Value/1000000
 y_lab = "Inflow Salt Mass (million tons/year)"
 title = "Lake Mead Average Annual Inflow Salt Mass" 
 
-ylims <- c(5,7)
+ylims <- c(7,9)
 
 p1 <- df1 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -496,13 +509,13 @@ p1 <- df1 %>%
   ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p1)
 
-y_lab = "Storage (million acre-ft)"
-title = "Lake Mead Average Annual Storage"
+y_lab = "Reservoir Salt Mass (million tons/year)"
+title = "Lake Mead Average Annual Salt Mass" 
 # ylims <- c(0,20)
 # 
 p2 <- df2 %>%
@@ -514,9 +527,9 @@ p2 <- df2 %>%
   # ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p2)
 
 y_lab = "Outflow Salt Mass (million tons/year)"
@@ -531,9 +544,9 @@ p3 <- df3 %>%
   ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p3)
 
 grid.arrange(p1,p2,p3,ncol=1)
@@ -546,9 +559,7 @@ ggsave(filename = file.path(oFigs,paste0("Mead_Mass_3Panel.png")), width= width,
 # Mead Concentration 
 #-------------------------------------------------------------------------------------
 
-##############INFLOW FWA SLOT NEEDS BUILT IN ANNUAL SALINITY, Update control & rw_agg############ 
-
-variable = "AnnlSlntyMead_FWAAC"
+variable = "AnnlSlnty_In_Hvr_FWAAC"
 
 df1 <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -567,7 +578,7 @@ df1 <- scen_res %>%
 # 
 # df2$Value <- df2$Value/1000000
 
-variable = "AnnlSlntyHvr_FWAAC"
+variable = "AnnlSlntyMead_FWAAC"
 df3 <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
@@ -576,7 +587,7 @@ df3 <- scen_res %>%
 
 
 y_lab = "Inflow Salt Concentration (million tons/year)"
-title = "Lake Mead FWA Inflow Salt Concentration" 
+title = "Lake Mead Average Annual Inflow Salt Concentration" 
 
 p1 <- df1 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -587,9 +598,9 @@ p1 <- df1 %>%
   # ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p1)
 
 # y_lab = "Storage (million acre-ft)"
@@ -605,13 +616,13 @@ p1 <- df1 %>%
 #   # ylim(ylims) +
 #   scale_linetype_manual(values = lt_scale) +
 #   scale_shape_manual(values = pt_scale) +
-#   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-#   labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-#   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+#   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+#   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+#   theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # # print(p2)
 
 y_lab = "Outflow Salt Concentration (million tons/year)"
-title = "Lake Mead FWA Reservoir/Outflow Salt Concentration" 
+title = "Lake Mead Average Annual Reservoir/Outflow Salt Concentration" 
 
 p3 <- df3 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -622,9 +633,15 @@ p3 <- df3 %>%
   # ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
-  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "Year")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(plot.title = element_text(size = TitleSize),
+        axis.text.x = element_text(size = AxisLab),
+        axis.text.y = element_text (size =AxisLab),
+        axis.title = element_text(size=AxisText), 
+        legend.text = element_text(size=LegendText),
+        legend.title = element_text(size=LegendLabText, face="bold"),
+        legend.box.margin = margin(0,0,0,0)) 
 # print(p3)
 
 grid.arrange(p1,p3,ncol=1) #no need for Res Conc while all are well mixed
