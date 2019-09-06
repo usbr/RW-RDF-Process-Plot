@@ -76,9 +76,9 @@ Figs <- '_ParadoxOnOff'  #[plot type] identifying name .pdf
 # Hydrologies: NFS full, binational and stress test records.Jun19/No Additional Controls 1.31M Tons 
 
 scens <- list(
-  "DNF" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug19,DCP_Cons",
-  "Binat" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug19,DCP_Cons",
-  "Stress" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug19,DCP_Cons"
+  "Full Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug19,DCP_Cons",
+  "Early Pluvial Removed Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug19,DCP_Cons",
+  "Stress Test Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug19,DCP_Cons"
 )
 
 
@@ -145,16 +145,21 @@ if(length(scens) == 6 | length(scens) == 4){ #3 colors, first scen is dashed (ol
 
 
 #WQAnn
-source("code/Custom_WQAnn.R")
+source("code/Custom_WQAnn.R") #means only w exceed
+source("code/Custom_WQAnn_Clouds.R") #clouds for FWAAC
+
 #SaltMassBal
 source("code/Custom_MassBalAnn.R")
 #FlowMassBal
 source("code/Custom_FlowBalAnn.R")
 
 #This script can only be used with data processed using the new output.control file 6/27/2019
-source("code/Custom_InOutMass.R")
+# source("code/Custom_InOutMass.R")
+source("code/Custom_PowellMead_3Panel.R") #still need to fix issues Jim suggested
+
 # Powell Mead PE
 source("code/Custom_ResPE.R")
+
 
 
 
