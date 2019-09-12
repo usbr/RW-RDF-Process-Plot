@@ -91,7 +91,7 @@ LegendHeight = 2.5
 
 # Set tick marks for x and y axis
 myXLabs <- seq(1990,3000,5)
-myYLabs <- seq(-500,1200,50)
+myYLabs <- seq(900,4000,50)
 
 yrs <- startyr:endyr #simplify 
 
@@ -100,17 +100,20 @@ cloudLabs <- names(scens)
 
 ### Read Data ###
 
+unique(scen_res$Variable)
 
 zz_all <- scen_res %>%
-  dplyr::filter(Year %in% yrs, Variable %in% c("AnnlSlntyLsFrry_FWAAC",
-                                                "AnnlSlntyHvr_FWAAC",
-                                                "AnnlSlntyPrkr_FWAAC",
-                                                "AnnlSlntyImprl_FWAAC")) %>%
+  dplyr::filter(Year %in% yrs, Variable %in% c("Powell.PoolElevation",
+                                               "Mead.PoolElevation"
+                                               )) %>%
   # compute the 10/50/90 and aggregate by start month
   dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
   dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
                    'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot 
+
+unique(zz_all$Variable)
+head(zz_all)
 
 # # debug
 # head(zz_all)
@@ -118,7 +121,7 @@ zz_all <- scen_res %>%
 # unique(zz_all$Year)
 
 #  Pulling historical SLOAD data
-hist <- read_xlsx(file.path(getwd(),'data/HistSLOAD.xlsx'))
+hist <- read_xlsx(file.path(getwd(),'data/HistPE.xlsx'))
 
 # Formatting data frame to match zz_all
 hist$Scenario <- 'Historical Elevation'
@@ -168,9 +171,9 @@ names(plotColors) <- colorNames
 zz_all$Scenario = factor(zz_all$Scenario, levels=colorNames)
 
 # Generating labels for the lines in ggplot
-histLab = "Historical SLOAD"
+histLab = "Historical PE"
 # PrvTRLab = "2017 TriRvw Projection (No Adtl Bynd 2020)"
-names(histLab) = "Historical SLOAD"
+names(histLab) = "Historical PE"
 # names(PrvTRLab) = "2017 TriRvw Projection (No Adtl Bynd 2020)"
 histLab = append(histLab, cloudLabs)
 # histLab = append(histLab, PrvTRLab)
@@ -181,7 +184,7 @@ histLab = append(histLab, cloudLabs)
 # im_rast <- grid::rasterGrob(im, interpolate = T)
 
 ## create a pdf  
-pdf(file.path(oFigs,paste0("WQAnnClouds_MinMaxLines=",MinMaxLines,"_",Figs,".pdf")), width= width, height= height)
+pdf(file.path(oFigs,paste0("PEClouds_MinMaxLines=",MinMaxLines,"_",Figs,".pdf")), width= width, height= height)
 
 ### Means ###
 
@@ -189,12 +192,12 @@ pdf(file.path(oFigs,paste0("WQAnnClouds_MinMaxLines=",MinMaxLines,"_",Figs,".pdf
 # ++++++++++++++++++++++++++Lees Ferry+++++++++++++++++++++++++++++++++++++
 #-------------------------------------------------------------------------------------
 
+variable = "Powell.PoolElevation"
+y_lab = "Pool Elevation (ft)"
+title = "Lake Powell Pool Elevation" 
+subtitle = ""
+ylims <- c(3490,3570)
 NumCrit <- NA
-variable = "AnnlSlntyLsFrry_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
-title = "Colorado River at Lees Ferry" 
-subtitle = "Average Annual Concentration Comparision"
-ylims <- c(350,550)
 
 source("code/Cloud_plot_wHist.R")
 
@@ -202,40 +205,12 @@ source("code/Cloud_plot_wHist.R")
 # ++++++++++++++++++++++++++Below Mead+++++++++++++++++++++++++++++++++++++
 #-------------------------------------------------------------------------------------
 
-
-NumCrit <- data.frame(yintercept=723)
-variable = "AnnlSlntyHvr_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
-title = "Colorado River below Hoover Dam" 
-subtitle = "Average Annual Concentration Comparision"
-ylims <- c(545,750)
-
-source("code/Cloud_plot_wHist.R")
-
-#-------------------------------------------------------------------------------------
-#------------------------------Below Parker-------------------------------------------------------
-#-------------------------------------------------------------------------------------
-
-
-NumCrit <- data.frame(yintercept=747)
-variable = "AnnlSlntyPrkr_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
-title = "Colorado River below Parker Dam" 
-subtitle = "Average Annual Concentration Comparision"
-ylims <- c(550,750)
-
-source("code/Cloud_plot_wHist.R")
-
-#-------------------------------------------------------------------------------------
-#-------------------------------At Imperial------------------------------------------------------
-#-------------------------------------------------------------------------------------
-
-NumCrit <- data.frame(yintercept=879)
-variable = "AnnlSlntyImprl_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
-title = "Colorado River above Imperial Dam" 
-subtitle = "Average Annual Concentration Comparision"
-ylims <- c(675,900)
+variable = "Mead.PoolElevation"
+y_lab = "Pool Elevation (ft)"
+title = "Lake Mead Pool Elevation" 
+ylims <- c(3490,3570)
+subtitle = ""
+NumCrit <- NA
 
 source("code/Cloud_plot_wHist.R")
 

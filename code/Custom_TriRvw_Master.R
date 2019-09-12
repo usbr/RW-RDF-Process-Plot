@@ -12,7 +12,9 @@ rm(list=ls()) #clear the enviornment
 
 ### Directory Set Up
 # CRSSDIR <- Sys.getenv("CRSS_DIR")
-CRSSDIR <- "C:/Users/cfelletter/Documents/crss.offc"
+# CRSSDIR <- "C:/Users/cfelletter/Documents/crss.offc"
+CRSSDIR <- "C:/Users/cfelletter/Documents/crss.trirvw2020"
+
 
 # where scenarios are folder are kept
 scen_dir <- file.path(CRSSDIR,"Scenario")
@@ -73,18 +75,33 @@ Figs <- '_ParadoxOnOff'  #[plot type] identifying name .pdf
 
 # # ##########################################################################
 
-# Hydrologies: NFS full, binational and stress test records.Jun19/No Additional Controls 1.31M Tons 
+# Hydrologies: NFS full, binational and stress test records,Jun19 mdl, Scen 2
 
 scens <- list(
-  "Full Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug19,DCP_Cons",
-  "Early Pluvial Removed Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug19,DCP_Cons",
-  "Stress Test Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug19,DCP_Cons"
+  "Full Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons",
+  "Early Pluvial Removed Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons",
+  "Stress Test Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons"
 )
 
 
 #file names
 Model.Step.Name <- "Hydrology Compare" #plot title and results/folder name
 Figs <- '_HydrologyCompare'  #[plot type] identifying name .pdf
+
+# # ##########################################################################
+
+# w vs wo Future Ag Salt PickUp 
+
+# scens <- list(
+#   "Baseline" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons",
+#   "FutureAggSaltConcRmvd" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9001,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons"
+# )
+# 
+# 
+# #file names
+# Model.Step.Name <- "FutureAggSaltConcRmvd" #plot title and results/folder name
+# Figs <- '_FutureAggSaltConcRmvd'  #[plot type] identifying name .pdf
+
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #                               END USER INPUT
@@ -146,10 +163,16 @@ if(length(scens) == 6 | length(scens) == 4){ #3 colors, first scen is dashed (ol
 
 #WQAnn
 source("code/Custom_WQAnn.R") #means only w exceed
-source("code/Custom_WQAnn_Clouds.R") #clouds for FWAAC
+source("code/Custom_WQAnn_CloudswHist.R") #clouds for FWAAC - UNDER DEVELOPMENT
+#MinMax must be run after a code has created scen_res but could work any scen_res
+source("code/MinMax_Check_NoFct.R")
+
 
 #SaltMassBal
 source("code/Custom_MassBalAnn.R")
+# #MinMax must be run after a code has created scen_res but could work any scen_res
+# source("code/MinMax_Check_NoFct.R")
+
 #FlowMassBal
 source("code/Custom_FlowBalAnn.R")
 
@@ -159,6 +182,7 @@ source("code/Custom_PowellMead_3Panel.R") #still need to fix issues Jim suggeste
 
 # Powell Mead PE
 source("code/Custom_ResPE.R")
+source("code/Custom_PE_CloudswHist.R") #clouds for PE - UNDER DEVELOPMENT
 
 
 
