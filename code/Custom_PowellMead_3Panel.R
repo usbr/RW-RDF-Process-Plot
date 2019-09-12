@@ -27,6 +27,14 @@ AxisLab = 7
 LabSize = 7
 LegendText = 7
 
+ylims_pow_inoutflow <- c(7,11)
+ylims_pow_inoutmass <- c(5,7)
+ylims_mead_inoutflow <- c(7,11)
+ylims_mead_inoutmass <- c(7,9)
+
+
+
+
 rw_agg_file <- "PowellMeadInOut.csv" #doesn't include outflow
 
 #read agg file specifying which slots
@@ -48,17 +56,13 @@ scen_res <- rw_scen_aggregate(
   scen_dir = scen_dir
 )
 
-unique(scen_res$Variable) #check variable names
-
-
+# unique(scen_res$Variable) #check variable names
 
 ## Divide Values by 1,000,000 to present data in Million of Tons/Year or MAF
 scen_res2$Value=(scen_res2$Value)/1000000
 
-#add scenario names to line, point and color scales
-names(lt_scale) <- unique(scen_res$Scenario)
-names(pt_scale) <- unique(scen_res$Scenario)
-names(mycolors) <- unique(scen_res$Scenario)
+# # Adding factors so ggplot does not alphebetize legend
+scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Plot Custom UB Figures 
@@ -103,7 +107,6 @@ df3$Value <- df3$Value/1000000
 
 y_lab = "Inflow (million acre-ft/year)"
 title = "Lake Powell Average Annual Inflow" 
-ylims <- c(7,10)
 
 p1 <- df1 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -111,7 +114,7 @@ p1 <- df1 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims) +
+  ylim(ylims_pow_inoutflow) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -121,7 +124,6 @@ p1 <- df1 %>%
 
 y_lab = "Storage (million acre-ft)"
 title = "Lake Powell Average Annual Storage" 
-# ylims <- c(0,20)
 
 p2 <- df2 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -139,18 +141,6 @@ p2 <- df2 %>%
 
 y_lab = "Outflow (million acre-ft/year)"
 title = "Lake Powell Average Annual Outflow" 
-# subtitle = "Average Annual Concentration Comparision"
-# ylims <- c(7,10)
-
-df <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise(Value = mean(Value)) 
-
-df$Value <- df$Value/1000000
-
-ylims <- c(7,10)
 
 p3 <- df3 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -158,7 +148,7 @@ p3 <- df3 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims) +
+  ylim(ylims_pow_inoutflow) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -207,7 +197,7 @@ df3$Value <- df3$Value/1000000
 y_lab = "Inflow Salt Mass (million tons/year)"
 title = "Lake Powell Average Annual Inflow Salt Mass" 
 
-ylims <- c(5,7)
+ylims_pow_inoutmass <- c(5,7)
 
 p1 <- df1 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -215,7 +205,7 @@ p1 <- df1 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims) +
+  ylim(ylims_pow_inoutmass) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -225,8 +215,7 @@ p1 <- df1 %>%
 
 y_lab = "Reservoir Salt Mass (million tons/year)"
 title = "Lake Powell Average Annual Salt Mass" 
-# ylims <- c(0,20)
-# 
+ 
 p2 <- df2 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
 #   
@@ -250,7 +239,7 @@ p3 <- df3 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims) +
+  ylim(ylims_pow_inoutmass) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -393,7 +382,6 @@ df3$Value <- df3$Value/1000000
 
 y_lab = "Inflow (million acre-ft/year)"
 title = "Lake Mead Average Annual Inflow" 
-ylims <- c(7,10)
 
 p1 <- df1 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -401,7 +389,7 @@ p1 <- df1 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims) +
+  ylim(ylims_mead_inoutflow) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -429,18 +417,6 @@ p2 <- df2 %>%
 
 y_lab = "Outflow (million acre-ft/year)"
 title = "Lake Mead Average Annual Outflow" 
-# subtitle = "Average Annual Concentration Comparision"
-# ylims <- c(7,10)
-
-df <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise(Value = mean(Value)) 
-
-df$Value <- df$Value/1000000
-
-ylims <- c(7,10)
 
 p3 <- df3 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -448,7 +424,7 @@ p3 <- df3 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims) +
+  ylim(ylims_mead_inoutflow) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -456,7 +432,6 @@ p3 <- df3 %>%
   theme(plot.title = element_text(size = TitleSize),         axis.text.x = element_text(size = AxisLab),         axis.text.y = element_text (size =AxisLab),         axis.title = element_text(size=AxisText),          legend.text = element_text(size=LegendText),         legend.title = element_text(size=LegendLabText, face="bold"),         legend.box.margin = margin(0,0,0,0)) 
 # print(p3)
 
-library(gridExtra)
 grid.arrange(p1,p2,p3,ncol=1)
 
 ggsave(filename = file.path(oFigs,paste0("Mead_Flow_3Panel.png")), width= width, height= height)
@@ -498,7 +473,6 @@ df3$Value <- df3$Value/1000000
 y_lab = "Inflow Salt Mass (million tons/year)"
 title = "Lake Mead Average Annual Inflow Salt Mass" 
 
-ylims <- c(7,9)
 
 p1 <- df1 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -506,7 +480,7 @@ p1 <- df1 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims) +
+  ylim(ylims_mead_inoutmass) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -516,7 +490,6 @@ p1 <- df1 %>%
 
 y_lab = "Reservoir Salt Mass (million tons/year)"
 title = "Lake Mead Average Annual Salt Mass" 
-# ylims <- c(0,20)
 # 
 p2 <- df2 %>%
   ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -541,7 +514,7 @@ p3 <- df3 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims) +
+  ylim(ylims_mead_inoutmass) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
