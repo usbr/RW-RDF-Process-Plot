@@ -90,11 +90,11 @@ Figs <- '_HydrologyCompare'  #[plot type] identifying name .pdf
 
 # # ##########################################################################
 
-# w vs wo Future Ag Salt PickUp 
+# # w vs wo Future Ag Salt PickUp 
 
 scens <- list(
   "Baseline" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons",
-  "FutureAggSaltConcRmvd" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9001,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons"
+  "No Future Ag Conc" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9001,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons"
 )
 
 
@@ -154,7 +154,7 @@ if(length(scens) == 6 | length(scens) == 4){ #3 colors, first scen is dashed (ol
   mycolors <- c("#1F78B4","#1F78B4")
 } else if (length(scens) == 3){ #3 colors, solid
   lt_scale <- rep(1, 3)
-  pt_scale <- rep(1, 3)
+  pt_scale <- rep(19, 3)
   mycolors <- c("#1F78B4","#33A02C","#E31A1C")
 } else {
   stop("Not setup for correct Scens Number (6, 3, 2)")
@@ -163,7 +163,7 @@ if(length(scens) == 6 | length(scens) == 4){ #3 colors, first scen is dashed (ol
 
 #WQAnn
 source("code/Custom_WQAnn.R") #means only w exceed
-# source("code/Custom_WQAnn_CloudswHist.R") #clouds for FWAAC - UNDER DEVELOPMENT
+source("code/Custom_WQAnn_CloudswHist.R") #clouds for FWAAC - UNDER DEVELOPMENT
 #MinMax must be run after a code has created scen_res but could work any scen_res
 source("code/MinMax_Check_NoFct.R")
 
@@ -182,7 +182,8 @@ source("code/Custom_PowellMead_3Panel.R") #still need to fix issues Jim suggeste
 
 # Powell Mead PE
 source("code/Custom_ResPE.R")
-# source("code/Custom_PE_CloudswHist.R") #clouds for PE - UNDER DEVELOPMENT
+source("code/Custom_PE_CloudswHist.R") #clouds for PE - UNDER DEVELOPMENT
+source("code/MinMax_Check_NoFct.R")
 
 
 

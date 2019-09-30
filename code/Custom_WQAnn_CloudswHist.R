@@ -14,19 +14,21 @@
 library('readxl') #read_xlsx()
 library('cowplot') #get_legend()
 
-rw_agg_file <- "WQAnn.csv" #doesn't include outflow
+######READ IN and make scen_res USING REGULAR WQAnn or PE code#######
 
-#read agg file specifying which slots
-# # NEW files are annual slots so use AsIs
-rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE))
-# # # Old files from 2017 review are monthly so use EOCY 
-
-#rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
-scen_res <- rw_scen_aggregate(
-  scens,
-  agg = rwa1,
-  scen_dir = scen_dir
-)
+# rw_agg_file <- "WQAnn.csv" #doesn't include outflow
+# 
+# #read agg file specifying which slots
+# # # NEW files are annual slots so use AsIs
+# rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE))
+# # # # Old files from 2017 review are monthly so use EOCY 
+# 
+# #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
+# scen_res <- rw_scen_aggregate(
+#   scens,
+#   agg = rwa1,
+#   scen_dir = scen_dir
+# )
 
 # unique(scen_res$Variable) #check variable names 
 
@@ -60,7 +62,9 @@ scen_res <- rw_scen_aggregate(
 MinMaxLines<-F # T is want dotted line as min max of any given trace 
 
 
-colorNames <- c("Historical Elevation","Full Hydrology","Early Pluvial Removed Hydrology","Stress Test Hydrology")  
+colorNames <- c("Historical SLOAD",names(scens))  
+# colorNames <- c("Historical Elevation","Full Hydrology","Early Pluvial Removed Hydrology","Stress Test Hydrology")  
+
 #####UPDATE THIS EVERY TIME #### OR UPDATE LATER IN DOCUMENT USING 
 
 # Parameters for cloud plot customization (line thicknesses, text size, etc.)
@@ -121,7 +125,7 @@ zz_all <- scen_res %>%
 hist <- read_xlsx(file.path(getwd(),'data/HistSLOAD.xlsx'))
 
 # Formatting data frame to match zz_all
-hist$Scenario <- 'Historical Elevation'
+hist$Scenario <- 'Historical SLOAD'
 hist$Mean <-hist$Med <- hist$Min <- hist$Max <- hist$MinOut <- hist$MaxOut <- hist$Value
 hist <- within(hist, rm(Value))
 hist <- hist[c("Scenario","Year","Variable","Mean","Med","Min","Max","MinOut","MaxOut")]

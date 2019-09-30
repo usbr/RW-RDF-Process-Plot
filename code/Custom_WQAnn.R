@@ -56,6 +56,10 @@ names(lt_scale) <- unique(scen_res$Scenario)
 names(pt_scale) <- unique(scen_res$Scenario)
 names(mycolors) <- unique(scen_res$Scenario)
 
+# # Adding factors so ggplot does not alphebetize legend
+scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
+scen_res2$Scenario = factor(scen_res2$Scenario, levels=names(scens))
+
 
 # The blue gradient background is "graph trash" 
 # # make custom axis shading, don't use for now doesn't look good with plotte pallette
@@ -511,7 +515,7 @@ p <- df %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), limits = ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -543,7 +547,7 @@ p <- df %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), limits = ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
@@ -574,8 +578,8 @@ p <- df %>%
 
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
-  geom_point() + 
-  ylim(ylims) +
+  geom_point() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), limits = ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
@@ -606,7 +610,7 @@ p <- df %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), limits = ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette

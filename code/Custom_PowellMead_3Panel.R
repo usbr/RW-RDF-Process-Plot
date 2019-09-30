@@ -58,9 +58,6 @@ scen_res <- rw_scen_aggregate(
 
 # unique(scen_res$Variable) #check variable names
 
-## Divide Values by 1,000,000 to present data in Million of Tons/Year or MAF
-scen_res2$Value=(scen_res2$Value)/1000000
-
 # # Adding factors so ggplot does not alphebetize legend
 scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
 
