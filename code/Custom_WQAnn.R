@@ -80,8 +80,8 @@ pdf(file.path(oFigs,paste0("WQAnn_",Figs,".pdf")), width= width, height= height)
 variable = "AnnlSlntyLsFrry_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River at Lees Ferry" 
-subtitle = "Average Annual Concentration Comparision"
-ylims <- c(350,550)
+subtitle = "Average Annual Concentration Comparison"
+ylims <- c(400,600)
 
 
 df <- scen_res %>%
@@ -114,7 +114,7 @@ write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 variable = "Powell.Outflow"
 y_lab = "Outflow (million acre-ft/year)"
 title = "Lake Powell Average Annual Outflow" 
-# subtitle = "Average Annual Concentration Comparision"
+# subtitle = "Average Annual Concentration Comparison"
 ylims <- c(7,10)
 
 
@@ -148,7 +148,7 @@ write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 variable = "Powell.Outflow Salt Mass"
 y_lab = "Outflow Salt Mass (million tons/year)"
 title = "Lake Powell Average Annual Outflow Salt Mass" 
-# subtitle = "Average Annual Concentration Comparision"
+# subtitle = "Average Annual Concentration Comparison"
 ylims <- c(0,10)
 
 
@@ -184,8 +184,8 @@ NumCrit <- data.frame(yintercept=723)
 variable = "AnnlSlntyHvr_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River below Hoover Dam" 
-subtitle = "Average Annual Concentration Comparision"
-# subtitle = "Median Trace Annual Concentration Comparision"
+subtitle = "Average Annual Concentration Comparison"
+# subtitle = "Median Trace Annual Concentration Comparison"
 ylims <- c(545,750)
 
 df <- scen_res %>%
@@ -226,8 +226,8 @@ NumCrit <- data.frame(yintercept=723)
 variable = "AnnlSlntyHvr_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River below Hoover Dam" 
-subtitle = "Average Annual Concentration Comparision"
-# subtitle = "Median Trace Annual Concentration Comparision"
+subtitle = "Average Annual Concentration Comparison"
+# subtitle = "Median Trace Annual Concentration Comparison"
 ylims <- c(545,750)
 
 df <- scen_res %>%
@@ -264,7 +264,7 @@ write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 variable = "Mead.Outflow"
 y_lab = "Outflow (million acre-ft/year)"
 title = "Lake Mead Average Annual Outflow" 
-# subtitle = "Average Annual Concentration Comparision"
+# subtitle = "Average Annual Concentration Comparison"
 ylims <- c(7,10)
 
 
@@ -298,7 +298,7 @@ write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 variable = "Mead.Outflow Salt Mass"
 y_lab = "Outflow Salt Mass (million tons/year)"
 title = "Lake Mead Average Annual Outflow Salt Mass" 
-# subtitle = "Average Annual Concentration Comparision"
+# subtitle = "Average Annual Concentration Comparison"
 ylims <- c(0,10)
 
 
@@ -333,7 +333,7 @@ NumCrit <- data.frame(yintercept=747)
 variable = "AnnlSlntyPrkr_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River below Parker Dam" 
-subtitle = "Average Annual Concentration Comparision"
+subtitle = "Average Annual Concentration Comparison"
 ylims <- c(550,750)
 
 df <- scen_res %>%
@@ -366,7 +366,7 @@ write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 variable = "Havasu.Outflow"
 y_lab = "Outflow (million acre-ft/year)"
 title = "Lake Havasu Average Annual Outflow" 
-# subtitle = "Average Annual Concentration Comparision"
+# subtitle = "Average Annual Concentration Comparison"
 ylims <- c(0,10)
 
 
@@ -399,7 +399,7 @@ ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height
 variable = "Havasu.Outflow Salt Mass"
 y_lab = "Outflow Salt Mass (million tons/year)"
 title = "Lake Havasu Average Annual Outflow Salt Mass" 
-# subtitle = "Average Annual Concentration Comparision"
+# subtitle = "Average Annual Concentration Comparison"
 ylims <- c(0,10)
 
 
@@ -432,7 +432,7 @@ NumCrit <- data.frame(yintercept=879)
 variable = "AnnlSlntyImprl_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River above Imperial Dam" 
-subtitle = "Average Annual Concentration Comparision"
+subtitle = "Average Annual Concentration Comparison"
 ylims <- c(675,900)
 
 df <- scen_res %>%
@@ -465,7 +465,7 @@ write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 variable = "AboveImperialDamColoradoR.Outflow"
 y_lab = "Outflow (million acre-ft/year)"
 title = "Imperial Dam Average Annual Outflow" 
-# subtitle = "Average Annual Concentration Comparision"
+# subtitle = "Average Annual Concentration Comparison"
 ylims <- c(0,10)
 
 
@@ -498,7 +498,7 @@ ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height
 variable = "AboveImperialDamColoradoR.Outflow Salt Mass"
 y_lab = "Outflow Salt Mass (million tons/year)"
 title = "Imperial Dam Average Annual Outflow Salt Mass" 
-# subtitle = "Average Annual Concentration Comparision"
+# subtitle = "Average Annual Concentration Comparison"
 ylims <- c(0,10)
 
 

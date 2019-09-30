@@ -55,7 +55,7 @@ pdf(file.path(oFigs,paste0("PE_",Figs,".pdf")), width= width, height= height)
 variable = "Powell.PoolElevation"
 y_lab = "Pool Elevation (ft)"
 title = "Lake Powell Pool Elevation" 
-# subtitle = "Average Annual Concentration Comparision"
+# subtitle = "Average Annual Concentration Comparison"
 ylims <- c(3490,3570)
 
 
@@ -89,7 +89,7 @@ write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 variable = "Mead.PoolElevation"
 y_lab = "Pool Elevation (ft)"
 title = "Lake Mead Pool Elevation" 
-# subtitle = "Average Annual Concentration Comparision"
+# subtitle = "Average Annual Concentration Comparison"
 ylims <- c(3490,3570)
 
 
@@ -123,7 +123,7 @@ write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 variable = "Havasu.PoolElevation"
 y_lab = "Pool Elevation (ft)"
 title = "Lake Havasu Pool Elevation" 
-# subtitle = "Average Annual Concentration Comparision"
+# subtitle = "Average Annual Concentration Comparison"
 ylims <- c(3490,3570)
 
 

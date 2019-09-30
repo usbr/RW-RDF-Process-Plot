@@ -197,8 +197,8 @@ NumCrit <- NA
 variable = "AnnlSlntyLsFrry_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River at Lees Ferry" 
-subtitle = "Average Annual Concentration Comparision"
-ylims <- c(350,550)
+subtitle = "Average Annual Concentration Comparison"
+ylims <- c(400,600)
 
 source("code/Cloud_plot_wHist.R")
 
@@ -211,7 +211,7 @@ NumCrit <- data.frame(yintercept=723)
 variable = "AnnlSlntyHvr_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River below Hoover Dam" 
-subtitle = "Average Annual Concentration Comparision"
+subtitle = "Average Annual Concentration Comparison"
 ylims <- c(545,750)
 
 source("code/Cloud_plot_wHist.R")
@@ -225,7 +225,7 @@ NumCrit <- data.frame(yintercept=747)
 variable = "AnnlSlntyPrkr_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River below Parker Dam" 
-subtitle = "Average Annual Concentration Comparision"
+subtitle = "Average Annual Concentration Comparison"
 ylims <- c(550,750)
 
 source("code/Cloud_plot_wHist.R")
@@ -238,7 +238,7 @@ NumCrit <- data.frame(yintercept=879)
 variable = "AnnlSlntyImprl_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River above Imperial Dam" 
-subtitle = "Average Annual Concentration Comparision"
+subtitle = "Average Annual Concentration Comparison"
 ylims <- c(675,900)
 
 source("code/Cloud_plot_wHist.R")
