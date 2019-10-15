@@ -154,17 +154,22 @@ zz_all <- bind_rows(hist,zz_all)
 #DCP colors (to match AZ Big Bang slides)"#54FF9F","#F4A460"
 #Grey for Interim Guidelines Projections (if included) #8B8682. Add to end.
 # plotColors <- c("#000000", "#00BFC4","#F8766D")
-if(length(scens) == 4){
-  plotColors <-   c("#000000", "#00BFC4","#329b20","#ede453","#F8766D","#8B8682")  #"#e553fc") #black, green blue yellow red grey  (other = purple
-} else if(length(scens) == 3){
-  plotColors <-   c("#000000", "#00BFC4","#329b20","#ede453","#8B8682")  #old yellow fcf353
-} else if(length(scens) == 2){
-  plotColors <-   c("#000000", "#00BFC4","#329b20","#8B8682")  # green = 54ef39, purple "#d442f4"
-} else if(length(scens) == 1){
-  plotColors <-   c("#000000", "#00BFC4","#8B8682")  
-} else {
-  stop("not set up for that scenario number")
-}
+
+#use mycolors defined by Master rather than old Cloud colors 
+plotColors <-   c("#000000", mycolors,"#8B8682")  # #black, my colors, grey  
+
+# 
+# if(length(scens) == 4){
+#   plotColors <-   c("#000000", "#00BFC4","#329b20","#ede453","#F8766D","#8B8682")  #"#e553fc") #black, green blue yellow red grey  (other = purple
+# } else if(length(scens) == 3){
+#   plotColors <-   c("#000000", "#00BFC4","#329b20","#ede453","#8B8682")  #old yellow fcf353
+# } else if(length(scens) == 2){
+#   plotColors <-   c("#000000", "#00BFC4","#329b20","#8B8682")  # green = 54ef39, purple "#d442f4"
+# } else if(length(scens) == 1){
+#   plotColors <-   c("#000000", "#00BFC4","#8B8682")  
+# } else {
+#   stop("not set up for that scenario number")
+# }
 
 names(plotColors) <- colorNames
 # 
