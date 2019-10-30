@@ -25,7 +25,7 @@ gga <- gg + geom_ribbon(data = subset(zz,Scenario %in% cloudScen),aes(ymin=Min, 
 legenda <- get_legend(gga)
 
 # # Generate plot b to take medians legend
-if (MinMaxLines = T ){ # T is want dotted line as min max of any given trace 
+if (MinMaxLines == T ){ # T is want dotted line as min max of any given trace 
   lengendtitle <- "Min, Mean, Max" #
 } else {
   lengendtitle <- "Mean"

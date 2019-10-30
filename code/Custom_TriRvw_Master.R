@@ -30,20 +30,39 @@ width=9# 10 #9
 height=6 #6.67 #6
 
 startyr <- 2020 #filter out all years > this year
-endyr <- 2060
+endyr <- 2040 #60
 
-# Scenarios ##
-# .Jun19/No Additional Controls 1.31M Tons change if Paradox is On (Aug15) vs Off (Aug19) for NFS full and stress test records
-scens <- list(
-  "Full Record w Paradox" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug15,DCP_Cons",
-  "Full Record wo Paradox" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug19,DCP_Cons",
-  "Stress Test w Paradox" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug15,DCP_Cons",
-  "Stress Test wo Paradox" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug19,DCP_Cons"
-)
+# # # ##########################################################################
+# # Scenarios ##
+# # # ##########################################################################
+# # # .Jun19/No Additional Controls 1.31M Tons change if Paradox is On (Aug15) vs Off (Aug19) for NFS full and stress test records
+# # scens <- list(
+# #   "Maintain Current Injection Rate, Full Record" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug15,DCP_Cons",
+# #   "Stop Injection, Full Record" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug19,DCP_Cons",
+# #   "Maintain Current Injection Rate, Stress Test" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug15,DCP_Cons",
+# #   "Stop Injection, Stress Test" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug19,DCP_Cons"
+# # )
+# 
+# #file names
+# Model.Step.Name <- "Paradox OnOff" #plot title and results/folder name
+# Figs <- '_ParadoxOnOff'  #[plot type] identifying name .pdf
+# #### Paired Scens #### - 4 colors, first scen is dashed (old), second solid
+# customcolorltpt <- T
+# lt_scale <- rep(c(2, 1), 4)
+# pt_scale <- rep(c(1, 19), 4)
+# mycolors <- c("#407ec9" ,"#407ec9", "#6b8f00","#6b8f00", "#9a3324" ,"#9a3324" ,"#FECB00","#FECB00") #Reclamation blue, green, red, yellow
+# 
+# 
+# scens <- list(
+#   # "Maintain Current Injection Rate" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug15,DCP_Cons",
+#   # "Stop Injection" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_2019Aug19,DCP_Cons"
+#   "Maintain Current Injection Rate" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons",
+#   "Stop Injection" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,NoParadox_WQIP_Scen3_2019Oct15,DCP_Cons"
+#   )
+# Model.Step.Name <- "Paradox OnOff Full Only" #plot title and results/folder name
+# Figs <- '_ParadoxOnOff_FullRecordOnly'  #[plot type] identifying name .pdf
+# customcolorltpt <- F
 
-#file names
-Model.Step.Name <- "Paradox OnOff" #plot title and results/folder name
-Figs <- '_ParadoxOnOff'  #[plot type] identifying name .pdf
 
 # # # ##########################################################################
 # # # # 2020 Scenarios for Aug 2019 MTG Preliminary Results 
@@ -75,33 +94,41 @@ Figs <- '_ParadoxOnOff'  #[plot type] identifying name .pdf
 
 # # ##########################################################################
 # 
-# # Hydrologies: NFS full, binational and stress test records,Jun19 mdl, Scen 2
-# 
+# Hydrologies: NFS full, binational and stress test records,Jun19 mdl, Scen 2
+
 # scens <- list(
-#   "Full Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons",
-#   "Early Pluvial Removed Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons",
-#   "Stress Test Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons"
-# )
+# #   "Full Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons",
+# #   "Early Pluvial Removed Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons",
+# #   "Stress Test Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons"
+#   "Full Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons",
+#   "Early Pluvial Removed Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons",
+#   "Stress Test Hydrology" = "2007Dems,MTOM_Most,DNF with Salinity Stress Test 88_17,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons"
+#   )
 # 
 # 
 # #file names
 # Model.Step.Name <- "Hydrology Compare" #plot title and results/folder name
 # Figs <- '_HydrologyCompare'  #[plot type] identifying name .pdf
+# customcolorltpt <- F
+
 # 
 # # # ##########################################################################
 # 
-# # # w vs wo Future Ag Salt PickUp 
-# 
+# # # # w vs wo Future Ag Salt PickUp
+# #
 # scens <- list(
-#   "Baseline" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons",
-#   "No Future Ag Conc" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9001,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons"
+#   # "Baseline" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons",
+#   # "No Future Ag Conc" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9001,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons"
+#   "Baseline" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons",
+#   "No Future Ag Conc" = "2007Dems,MTOM_Most,DNF with Salinity,NoFutureAgg_Jun2019_9002,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons"
 # )
-# 
 # 
 # #file names
 # Model.Step.Name <- "FutureAggSaltConcRmvd" #plot title and results/folder name
 # Figs <- '_FutureAggSaltConcRmvd'  #[plot type] identifying name .pdf
-# 
+# customcolorltpt <- F
+
+
 # # # ##########################################################################
 # 
 # #Moving to DCP model  
@@ -116,23 +143,12 @@ Figs <- '_ParadoxOnOff'  #[plot type] identifying name .pdf
 
 # # ##########################################################################
 
-# # RW 76 Snapshot Changes
-
-scens <- list(
-  "Baseline" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons",
-  "RW76 Snapshot Changes" = "2007Dems,MTOM_Most,DNF with Salinity,RW96_Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons"
-)
-
-
-#file names
-Model.Step.Name <- "RW76Snapshot" #plot title and results/folder name
-Figs <- '_RW76Snapshot'  #[plot type] identifying name .pdf
 
 # # ##########################################################################
 
 # # # 2020 Scenarios Oct 2019 MTG w/ Jun19 mdl and 4 Scens  (3-TriennialReviewScenarios_2019Oct15)
 scens <- list(
-  "No Additional Controls 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen1_2019Oct15,DCP_Cons",
+  "No Additional Beyond 2020 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen1_2019Oct15,DCP_Cons",
   "Limited Funding 1.58M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen2_2019Oct15,DCP_Cons",
   "Plan of Implementation 1.70M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons",
   "Max Potential Controls 2.34M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen4_2019Oct15,DCP_Cons"
@@ -141,6 +157,123 @@ scens <- list(
 #file names
 Model.Step.Name <- "Oct 4 Scen Results" #plot title and results/folder name
 Figs <- '_OctResults'  #[plot type] identifying name .pdf
+startyr <- 2020 #filter out all years > this year
+
+customcolorltpt <- F
+
+# # ##########################################################################
+
+# # # #Compare 2020 Scenarios Oct 2019 MTG w/ Aug 2019 MTG Scenarios
+
+
+# scens <- list(
+#   "Aug: No Additional Beyond 2020 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_20190908,DCP_Cons",
+#   "Oct: No Additional Beyond 2020 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen1_2019Oct15,DCP_Cons",
+#   "Aug: Limited Funding 1.58M Tons" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_20190908,DCP_Cons",
+#   "Oct: Limited Funding 1.58M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen2_2019Oct15,DCP_Cons",
+#   # "Plan of Implementation 1.70M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons",
+#   "Aug: Max Potential Controls 2.24M Tons" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario3_2020_20190908,DCP_Cons",
+#   "Oct: Max Potential Controls 2.34M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen4_2019Oct15,DCP_Cons"
+# )
+# 
+# #file names
+# Model.Step.Name <- "Oct vs Aug Results" #plot title and results/folder name
+# Figs <- '_OctvsAug'  #[plot type] identifying name .pdf
+# startyr <- 2020 #filter out all years > this year
+# 
+# 
+# ### Paired Scens #### - 4 colors, first scen is dashed (old), second solid
+# customcolorltpt <- T
+# lt_scale <- c(rep(c(2, 1), 3),1)
+# pt_scale <- c(rep(c(1, 19), 3),19)
+# mycolors <- c("#407ec9" ,"#407ec9", "#6b8f00","#6b8f00", "#9a3324" ,"#9a3324" ,"#FECB00","#FECB00") #Reclamation blue, green, red, yellow
+
+
+# # ##########################################################################
+
+# # # 2017 Only as dashed
+
+scens <- list(
+  "No Additional Beyond 2017 TriRvw17 1.33M Tons" = "DNF,Jan2017,WQIP_Senario1",
+  "Limited Funding TriRvw17 1.66M Tons" = "DNF,Jan2017,WQIP_Senario3",
+  "Expanded Funding TriRvw17 1.79M Tons" = "DNF,Jan2017,WQIP_Senario4"
+)
+
+#file names
+Model.Step.Name <- "2017 Scenarios Only" #plot title and results/folder name
+Figs <- '_2017final'  #[plot type] identifying name .pdf
+startyr <- 2017 #filter out all years > this year
+# 
+# #### Dashed Only for Old Scens #### - 4 colors, dashed (old)
+customcolorltpt <- T
+lt_scale <- rep(2, 4) #dashed
+pt_scale <- rep(1, 4) #open dot
+mycolors <- c("#407ec9" , "#6b8f00", "#9a3324" , "#FECB00") #Reclamation blue, green, red, yellow
+
+# ## Must run
+source("code/Custom_WQAnn_OldControl.R")
+
+
+# # ##########################################################################
+
+# # #Compare 2017 and 2020 Oct 2019 MTG Scenarios
+scens <- list(
+  "No Additional Beyond 2017 TriRvw17 1.33M Tons" = "DNF,Jan2017,WQIP_Senario1",
+  "No Additional Beyond 2020 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen1_2019Oct15,DCP_Cons",
+  "Limited Funding TriRvw17 1.66M Tons" = "DNF,Jan2017,WQIP_Senario3",
+  "Limited Funding 1.58M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen2_2019Oct15,DCP_Cons",
+  "Expanded Funding TriRvw17 1.79M Tons" = "DNF,Jan2017,WQIP_Senario4",
+  "Plan of Implementation 1.70M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons",
+  "Max Potential Controls 2.34M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen4_2019Oct15,DCP_Cons"
+)
+#
+#file names
+Model.Step.Name <- "2017 vs 2020 Oct 2019 MTG Control Scenarios" #plot title and results/folder name
+Figs <- '2017v2020Oct2019MTG'  #[plot type] identifying name .pdf
+startyr <- 2017 #filter out all years > this year
+# endyr <- 2040
+
+### Paired Scens #### - 4 colors, first scen is dashed (old), second solid
+customcolorltpt <- T
+lt_scale <- c(rep(c(2, 1), 3),1)
+pt_scale <- c(rep(c(1, 19), 3),19)
+mycolors <- c("#407ec9" ,"#407ec9", "#6b8f00","#6b8f00", "#9a3324" ,"#9a3324" ,"#FECB00","#FECB00") #Reclamation blue, green, red, yellow
+
+# ## Must run 
+# source("Custom_WQAnn_OldControl.R")
+
+# # ##########################################################################
+# # # RW 76 Snapshot Changes COMPLETE BUT NOT YET REVIEWED
+# 
+# scens <- list(
+#   "Baseline" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons",
+#   "RW76 Snapshot Changes" = "2007Dems,MTOM_Most,DNF with Salinity,RW96_Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons"
+# )
+# 
+# 
+# #file names
+# Model.Step.Name <- "RW76Snapshot" #plot title and results/folder name
+# Figs <- '_RW76Snapshot'  #[plot type] identifying name .pdf
+# 
+# customcolorltpt <- F
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+### Custom Color/Pt Types/Scales ### 
+
+#### Paired Scens #### - 4 colors, first scen is dashed (old), second solid
+#customcolorltpt <- T 
+# lt_scale <- rep(c(2, 1), 4)
+# pt_scale <- rep(c(1, 19), 4)
+# mycolors <- c("#407ec9" ,"#407ec9", "#6b8f00","#6b8f00", "#9a3324" ,"#9a3324" ,"#FECB00","#FECB00") #Reclamation blue, green, red, yellow
+
+#### Dashed Only for Old Scens #### - 4 colors, dashed (old)
+#customcolorltpt <- T 
+# lt_scale <- rep(1, 4)
+# pt_scale <- rep(19, 4) #dashed 
+# mycolors <- c("#407ec9" , "#6b8f00", "#9a3324" , "#FECB00") #Reclamation blue, green, red, yellow
+
+
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #                               END USER INPUT
@@ -182,31 +315,24 @@ message('Figures and tables will be saved to: ', oFigs)
 
 #colors taken from Reclamation visual identity https://intra.usbr.gov/vip/III-colors.html
 
-if(paired = T){ #4 colors, first scen is dashed (old), second solid
-  lt_scale <- rep(c(2, 1), 4)
-  pt_scale <- rep(c(1, 19), 4)
-  mycolors <- c("#407ec9" ,"#407ec9", "#6b8f00","#6b8f00", "#9a3324" ,"#9a3324" ,"#FECB00","#FECB00") #Reclamation blue, green, red, yellow
-  # mycolors <- c("#1F78B4","#1F78B4","#33A02C","#33A02C","#E31A1C","#E31A1C") # brewer.pal(6, "Paired") 1F78B4 = blue, 33A02C = green, E31A1C = red 
-  # #Replace  scale_color_brewer(palette=pallette) + with scale_color_manual(values = mycolors) +
-  # palette="Paired" #RColorBrewer https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf
-} else if (length(scens) == 2){ #1 color, first scen dashed, second solid 
+### Standard Color/Pt Types/Scales ### #customcolorltpt <- F 
+
+if(customcolorltpt == F && length(scens) == 2){ #1 color, first scen dashed, second solid 
   lt_scale <- rep(c(2, 1), 1)
   pt_scale <- rep(c(1, 19), 1)
-  # mycolors <- c("#1F78B4","#1F78B4")
   mycolors <- c("#ba9e66","#407ec9") #reclamation sand (old/baseline rslts), rec blue )
-  
-} else if (length(scens) <= 4){ #4 colors, solid
+
+} else if (customcolorltpt == F && length(scens) <= 4){ #4 colors, solid
   lt_scale <- rep(1, 4)
   pt_scale <- rep(19, 4)
-  # mycolors <- c("#1F78B4","#33A02C","#E31A1C") #1F78B4 = blue, 33A02C = green, E31A1C = red 
   mycolors <- c("#407ec9" , "#6b8f00", "#9a3324" , "#FECB00") #Reclamation blue, green, red, yellow
-} else {
-  stop("Not setup for correct Scens Number")
-}
-
+} else if (customcolorltpt == F && length(scens) > 4) {
+  stop("customcolorltpt not setup or too many Scens")
+} 
 
 #WQAnn
 source("code/Custom_WQAnn.R") #means only w exceed
+# source("Custom_WQAnn_OldControl.R")
 source("code/Custom_WQAnn_CloudswHist.R") #clouds for FWAAC - UNDER DEVELOPMENT
 #MinMax must be run after a code has created scen_res but could work any scen_res
 source("code/MinMax_Check_NoFct.R")
