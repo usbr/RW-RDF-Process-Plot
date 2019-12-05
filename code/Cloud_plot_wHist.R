@@ -82,8 +82,8 @@ ggc <- gg +
 
 if (MinMaxLines == T){
   ggc <- ggc + 
-    geom_line(data = zz, aes(x=Year, y=MinOut, color=Scenario, group=Scenario),linetype = "dotted") +  #this is just a blank grided plot
-    geom_line(data = zz, aes(x=Year, y=MaxOut, color=Scenario, group=Scenario),linetype = "dotted")   #this is just a blank grided plot
+    geom_line(data = zz, aes(x=Year, y=MinOut, color=Scenario, group=Scenario),linetype = "dotted") +  
+    geom_line(data = zz, aes(x=Year, y=MaxOut, color=Scenario, group=Scenario),linetype = "dotted")   
 }
 
 # ggc

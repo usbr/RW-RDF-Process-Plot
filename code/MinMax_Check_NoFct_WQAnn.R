@@ -18,7 +18,8 @@ years <- as.character(startyr:endyr)
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #this could be used to loop through multiple plots 
 
-for(i in 1:length(variables)){
+if (variables[1] == "AnnlSlntyLsFrry_FWAAC"){
+for(i in 1:4){ #length(variables)){
   ## Process Variables ##
   variable <- variables[i]  
  
@@ -94,3 +95,6 @@ for(i in 1:length(variables)){
   write.csv(minmaxchk,file = paste0(oFigs,'/minmaxchk_',var_nospacenocol,'.csv'))
   
 } #closes variable loop 
+} else {
+  warning("Run MinMax Script manually if want something other than FWAC")
+}

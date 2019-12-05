@@ -44,9 +44,67 @@ names(mycolors) <- unique(scen_res$Scenario)
 ## create a pdf  
 pdf(file.path(oFigs,paste0("SaltMassBalGrph",Figs,".pdf")), width=9, height=6)
 
-# ++++++++++++++++++++++++++DoloresExp_OutSaltMass+++++++++++++++++++++++++++++++++++++
 
 ### Means ###
+
+variable = "UpperBasinBalance"
+y_lab = "Salt Mass (million tons/yr)"
+title = "Upper Basin Salt Mass Balance"
+ylims <- c(-1,1)
+
+
+df_ub <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+p <- df_ub %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+  labs(title = paste(title,Model.Step.Name) , y = y_lab, x = "Year")+
+  geom_line(aes(x=factor(Year), y=MinOut, color=Scenario, group=Scenario),linetype = "dotted") +  #bound with min max
+  geom_line(aes(x=factor(Year), y=MaxOut, color=Scenario, group=Scenario),linetype = "dotted")  +
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df_ub,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+
+#-------------------------------------------------------------------------------------
+
+variable = "LowerBasinBalance"
+y_lab = "Salt Mass (million tons/yr)"
+title = "Lower Basin Salt Mass Balance"
+ylims <- c(-1,1)
+
+
+df_ub <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+p <- df_ub %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+  labs(title = paste(title,Model.Step.Name) , y = y_lab, x = "Year")+
+  geom_line(aes(x=factor(Year), y=MinOut, color=Scenario, group=Scenario),linetype = "dotted") +  #bound with min max
+  geom_line(aes(x=factor(Year), y=MaxOut, color=Scenario, group=Scenario),linetype = "dotted")  +
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df_ub,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+
+#-------------------------------------------------------------------------------------
 
 variable = "UB_Natural_Inflow"
 y_lab = "Salt Mass (million tons/yr)"
@@ -65,13 +123,13 @@ p <- df_ub %>%
   geom_point() +
   ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste("UB Natural Salt Loading",Model.Step.Name) , y = y_lab, x = "Year")+
+  labs(title = paste(title,Model.Step.Name) , y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
 ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df_ub,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+write.csv(df_ub,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
@@ -96,7 +154,7 @@ df2 <- scen_res %>%
 ##Subtracting out the UB portion of LB Natural Salt Load
 df_lb = df
 
-df_lb$Value <- df$Value - df2$Value #subtract off UB
+df_lb$Mean <- df$Mean - df2$Value #subtract off UB, used to be call $Value
 
 p <- df_lb %>%
   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -110,7 +168,7 @@ print(p)
 
 ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df_lb,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+write.csv(df_lb,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
@@ -137,7 +195,7 @@ print(p)
 
 ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
@@ -324,7 +382,7 @@ print(p)
 
 ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
+write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 # #custom scale for presentation
 # ylims <- c(0,3)

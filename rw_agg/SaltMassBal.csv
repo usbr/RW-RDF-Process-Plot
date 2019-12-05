@@ -18,3 +18,5 @@ SaltMassBalance.rdf,UB Salt Mass Balance.AgSaltLoadingExtra,cy,sum,NA,NA,UB_AgSa
 SaltMassBalance.rdf,UB Salt Mass Balance.AgSaltLoading,cy,sum,NA,NA,UB_AgSaltLoading
 SaltMassBalance.rdf,UB Salt Mass Balance.ExportSaltMassExtra,cy,sum,NA,NA,UB_ExportSaltMassExtra
 SaltMassBalance.rdf,UB Salt Mass Balance.ExportSaltMass,cy,sum,NA,NA,UB_ExportSaltMass
+SaltMassBalance.rdf,UB Salt Mass Balance.UpperBasinSaltMass_Upper Basin Balance,cy,sum,NA,NA,UpperBasinBalance
+SaltMassBalance.rdf,LB Salt Mass Balance.LowerBasinSaltMass_Lower Basin Balance,cy,sum,NA,NA,LowerBasinBalance

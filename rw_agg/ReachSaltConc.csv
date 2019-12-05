@@ -1,0 +1,21 @@
+file,slot,period,summary,eval,t_s,variable
+Gage.rdf,ColoradoBelowHoover.Salt Concentration,asis,NA,NA,NA,ColoradoBelowHoover_SaltConcentration
+Gage.rdf,ColoradoBelowParker.Salt Concentration,asis,NA,NA,NA,ColoradoBelowParker_SaltConcentration
+Gage.rdf,ColoradoAtImperialDam.Salt Concentration,asis,NA,NA,NA,ColoradoAtImperialDam_SaltConcentration
+Gage.rdf,ColoradoNearGlenwoodSprings.Salt Concentration,asis,NA,NA,NA,ColoradoNearGlenwoodSprings_SaltConcentration
+Gage.rdf,ColoradoNearCameo.Salt Concentration,asis,NA,NA,NA,ColoradoNearCameo_SaltConcentration
+Gage.rdf,GunnisonNearGrandJunction.Salt Concentration,asis,NA,NA,NA,GunnisonNearGrandJunction_SaltConcentration
+Gage.rdf,DoloresNearCisco.Salt Concentration,asis,NA,NA,NA,DoloresNearCisco_SaltConcentration
+Gage.rdf,ColoradoNearCisco.Salt Concentration,asis,NA,NA,NA,ColoradoNearCisco_SaltConcentration
+Gage.rdf,GreenAtGreenRiverWY.Salt Concentration,asis,NA,NA,NA,GreenAtGreenRiverWY_SaltConcentration
+Gage.rdf,GreenNearGreendale.Salt Concentration,asis,NA,NA,NA,GreenNearGreendale_SaltConcentration
+Gage.rdf,YampaNearMaybell.Salt Concentration,asis,NA,NA,NA,YampaNearMaybell_SaltConcentration
+Gage.rdf,DuchesneNearRandlett.Salt Concentration,asis,NA,NA,NA,DuchesneNearRandlett_SaltConcentration
+Gage.rdf,WhiteNearWatson.Salt Concentration,asis,NA,NA,NA,WhiteNearWatson_SaltConcentration
+Gage.rdf,GreenAtGreenRiverUT.Salt Concentration,asis,NA,NA,NA,GreenAtGreenRiverUT_SaltConcentration
+Gage.rdf,SanRafaelNearGreenRiverUT.Salt Concentration,asis,NA,NA,NA,SanRafaelNearGreenRiverUT_SaltConcentration
+Gage.rdf,SanJuanNearArchuleta.Salt Concentration,asis,NA,NA,NA,SanJuanNearArchuleta_SaltConcentration
+Gage.rdf,SanJuanNearBluff.Salt Concentration,asis,NA,NA,NA,SanJuanNearBluff_SaltConcentration
+Gage.rdf,ColoradoAtLeesFerry.Salt Concentration,asis,NA,NA,NA,ColoradoAtLeesFerry_SaltConcentration
+Gage.rdf,ColoradoNearGrandCanyon.Salt Concentration,asis,NA,NA,NA,ColoradoNearGrandCanyon_SaltConcentration
+Gage.rdf,VirginAtLittlefield.Salt Concentration,asis,NA,NA,NA,VirginAtLittlefield_SaltConcentration
