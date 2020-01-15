@@ -7,7 +7,8 @@
 # 
 # rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[2],"WQANN.rdf")))
 
-rw_agg_file <- "SaltStorage.csv" #doesn't include outflow
+rw_agg_file <- "SaltStorage.csv" 
+rw_agg_file <- "SaltStorage_wBlackFork.csv" #Runs with new control file after Dec 18 2019 should use this control file
 
 #read agg file specifying which slots
 # # NEW files are annual slots so use AsIs
@@ -30,7 +31,6 @@ names(mycolors) <- unique(scen_res$Scenario)
 
 # # Adding factors so ggplot does not alphebetize legend
 scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
-scen_res2$Scenario = factor(scen_res2$Scenario, levels=names(scens))
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

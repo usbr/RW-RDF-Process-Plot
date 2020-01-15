@@ -38,6 +38,10 @@ names(lt_scale) <- unique(scen_res$Scenario)
 names(pt_scale) <- unique(scen_res$Scenario)
 names(mycolors) <- unique(scen_res$Scenario)
 
+# # Adding factors so ggplot does not alphebetize legend
+scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
+scen_res2$Scenario = factor(scen_res2$Scenario, levels=names(scens))
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Plot Custom UB Figures 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
