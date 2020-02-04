@@ -419,3 +419,69 @@ csVarNames <- function() {
     "powellLt3525" = "Powell < 3,525' in Any Month"
   )
 }
+
+add_logo_vertical <- function(gg)
+{
+  # now uses cowplot::draw_image which relies on "magick"
+  logo_path <- "logo/BofR-vert-cmyk.png"
+  
+  ggdraw(gg) +
+    draw_image(
+      logo_path, 
+      x = 1.455, y = .13, 
+      hjust = 1, vjust = 1, 
+      width = 1, height = .12
+    )
+}
+
+add_logo_horiz <- function(gg)
+{
+  # arrange all 3 plots together
+  gg_grob <- ggplotGrob(gg)
+  
+  # logo -------------------------------
+  logo <- imager::load.image("logo/BofR-horiz-cmyk.png")
+  logo <- grid::rasterGrob(logo, interpolate = TRUE)
+  
+  l2 <- ggplot() +
+    geom_blank() + 
+    theme_minimal() +
+    annotation_custom(logo)
+  
+  gg <- grid.arrange(arrangeGrob(
+    gg_grob, nullGrob(), l2,
+    layout_matrix = matrix(c(1,1,2,3), ncol = 2, byrow = TRUE),
+    heights = c(.9, .1),
+    widths = c(.8, .2)
+    #bottom = cap_text
+  ))
+  
+  gg
+}
+
+add_logo_shield <- function(gg)
+{
+  # arrange all 3 plots together
+  gg_grob <- ggplotGrob(gg)
+  
+  # logo -------------------------------
+  #saved from the BOR page footer
+  logo <- imager::load.image("code/logo/seal-white.png") 
+  
+  logo <- grid::rasterGrob(logo, interpolate = TRUE)
+  
+  l2 <- ggplot() +
+    geom_blank() + 
+    theme_minimal() +
+    annotation_custom(logo)
+  
+  gg <- grid.arrange(arrangeGrob(
+    gg_grob, nullGrob(), l2,
+    layout_matrix = matrix(c(1,1,2,3), ncol = 2, byrow = TRUE),
+    heights = c(.9, .1),
+    widths = c(.9, .1)
+    #bottom = cap_text
+  ))
+  
+  gg
+}

@@ -158,9 +158,7 @@ df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-
-
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value))
 
 p <- df %>%
   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
@@ -197,16 +195,12 @@ df <- scen_res %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
   dplyr::summarise(Value = median(Value))
 
-
-
-
 p <- df %>%
   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  # ylim(ylims) +
+  ylim(ylims) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
@@ -217,7 +211,6 @@ print(p)
 
 ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 # ggsave(filename = file.path(oFigs,paste0(variable,"_Median.png")), width= width, height= height)
-
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 # write.csv(df,file = paste0(oFigs,'/','Median_',variable,'.csv'))
@@ -241,7 +234,6 @@ df <- scen_res %>%
 
 p <- df %>%
   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-  
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -257,7 +249,6 @@ print(p)
 ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 # ggsave(filename = file.path(oFigs,paste0(variable,"_Median.png")), width= width, height= height)
 
-
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 # write.csv(df,file = paste0(oFigs,'/','Median_',variable,'.csv'))
 
@@ -269,18 +260,14 @@ title = "Lake Mead Average Annual Outflow"
 # subtitle = "Average Annual Concentration Comparison"
 ylims <- c(7,10)
 
-
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
-
-
 p <- df %>%
   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
@@ -624,6 +611,8 @@ ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height
 
 write.csv(df,file = paste0(oFigs,'/',variable,'.csv'))
 
+#------------------------------------------------------------
+
 dev.off()
 
 
@@ -632,6 +621,6 @@ dev.off()
 # write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 write.csv(df,file = paste0(oFigs,'/','Median_',variable,'.csv'))
 
-#------------------------------------------------------------
+
 
 

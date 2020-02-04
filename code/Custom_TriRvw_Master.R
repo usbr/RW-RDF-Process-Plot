@@ -49,216 +49,116 @@ endyr <- 2040 #60
 
 # # ##########################################################################
 
-# # # 2020 Scenarios Oct 2019 MTG w/ Jun19 mdl and 4 Scens  (3-TriennialReviewScenarios_2019Oct15)
-# scens <- list(
-#   "No Additional Beyond 2020 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen1_2019Oct15,DCP_Cons",
-#   "Limited Funding 1.58M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen2_2019Oct15,DCP_Cons",
-#   "Plan of Implementation 1.70M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons",
-#   "Max Potential Controls 2.34M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen4_2019Oct15,DCP_Cons"
-# )
+# #### Compare Models for Feb WORKGROUP #### 
 # 
 # #file names
-# Model.Step.Name <- "Oct 4 Scen Results" #plot title and results/folder name
-# Figs <- '_OctResults'  #[plot type] identifying name .pdf
+# Model.Step.Name <- Figs <- "Oct19_vs_Feb2020" #plot title and results/folder name #[plot type] identifying name .pdf
+# customcolorltpt <- F
 # startyr <- 2020 #filter out all years > this year
 # 
-# customcolorltpt <- F
+# scens <- list(
+#   "Oct2019 Model 1.70M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons", #
+#   "Feb2020 1.69M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario3_2020_20200113"
+# )
 
 # # ##########################################################################
 
-# # # #Compare 2020 Scenarios Oct 2019 MTG w/ Aug 2019 MTG Scenarios
-
-
+# # # #Compare 2017 and 2020 Feb MTG Scenarios
 # scens <- list(
-#   "Aug: No Additional Beyond 2020 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario1_2020_20190908,DCP_Cons",
-#   "Oct: No Additional Beyond 2020 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen1_2019Oct15,DCP_Cons",
-#   "Aug: Limited Funding 1.58M Tons" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_20190908,DCP_Cons",
-#   "Oct: Limited Funding 1.58M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen2_2019Oct15,DCP_Cons",
-#   # "Plan of Implementation 1.70M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons",
-#   "Aug: Max Potential Controls 2.24M Tons" = "2007Dems,MTOM_Most,DNF with Salinity BLM,Jun2019_9000,IG_DCP,WQIP_Scenario3_2020_20190908,DCP_Cons",
-#   "Oct: Max Potential Controls 2.34M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen4_2019Oct15,DCP_Cons"
+#   "TriRvw17 Limited Funding 1.66M Tons" = "DNF,Jan2017,WQIP_Senario3",
+#   "Feb2020 Plan of Implemenation 1.69M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario3_2020_20200113"
 # )
 # 
-# #file names
-# Model.Step.Name <- "Oct vs Aug Results" #plot title and results/folder name
-# Figs <- '_OctvsAug'  #[plot type] identifying name .pdf
-# startyr <- 2020 #filter out all years > this year
-# 
-# 
-# ### Paired Scens #### - 4 colors, first scen is dashed (old), second solid
-# customcolorltpt <- T
-# lt_scale <- c(rep(c(2, 1), 3),1)
-# pt_scale <- c(rep(c(1, 19), 3),19)
-# # mycolors <- c("#407ec9" ,"#407ec9", "#6b8f00","#6b8f00", "#9a3324" ,"#9a3324" ,"#FECB00","#FECB00") #Reclamation blue, green, red, yellow
-# 
-# # # ##########################################################################
-# # # # RW 76 Snapshot Changes COMPLETE BUT NOT YET REVIEWED
-# # 
-# # scens <- list(
-# #   "Baseline" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons",
-# #   "RW76 Snapshot" = "2007Dems,MTOM_Most,DNF with Salinity,RW96_Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons"
-# #   #"RW8 Prerelease" = "2007Dems,MTOM_Most,DNF with Salinity,RW98_Jun2019_9000,IG_DCP,WQIP_Scenario2_2020_2019Sept6,DCP_Cons"
-# # )
-# # 
-# # #file names
-# # Model.Step.Name <- "RW78Snapshot" #plot title and results/folder name
-# # Figs <- '_RW76Snapshot'  #[plot type] identifying name .pdf
-# # # Model.Step.Name <- "RW76Snapshotvs78" #plot title and results/folder name
-# # # Figs <- '_RW76vs78'  #[plot type] identifying name .pdf
-# # 
-# # customcolorltpt <- F
-# # 
-# # # # ##########################################################################
-# # 
-# # 
-# # # # Aaron PUV Hydro Analysis
-# # scens <- list(
-# #   "Full w PUV" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons",
-# #   "Full wo PUV" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,NoParadox_WQIP_Scen3_2019Oct15,DCP_Cons",
-# #   "PulRmvd w PUV" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons",
-# #   "PulRmvd wo PUV" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Jun2019_9002_4Scens,IG_DCP,NoParadox_WQIP_Scen3_2019Oct15,DCP_Cons"
-# # )
-# # 
-# # #file names
-# # Model.Step.Name <- "PUV Hydro Results" #plot title and results/folder name
-# # Figs <- '_PUVHydro'  #[plot type] identifying name .pdf
-# # startyr <- 2020 #filter out all years > this year
-# # 
-# # customcolorltpt <- F
-# 
-# 
-# # # ##########################################################################
-# # # Min Max Updates (-2M and NaNs)
-# 
-# # scens <- list(
-# #   "Old Model" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_OldMinMax,IG_DCP,WQIP_Scenario1_2020_2019Sept6,DCP_Cons",
-# #   "Updated Min Max" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_UpdateMinMax,IG_DCP,WQIP_Scenario1_2020_2019Sept6,DCP_Cons"
-# # )
-# # 
-# # #file names
-# # Model.Step.Name <- "UpdateMinMaxConc" #plot title and results/folder name
-# # Figs <- '_UpdateMinMaxConc'  #[plot type] identifying name .pdf
-# # customcolorltpt <- F
-# # 
-# # # # ##########################################################################
-# # # # Powell Salt Model vs latest TriRvw
-# # 
-# # scens <- list(
-# #   # "Current TriRvw Dev Model" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_UpdateMinMax,IG_DCP,WQIP_Scenario1_2020_2019Sept6,DCP_Cons",
-# #   "Nov9001" = "2007Dems,MTOM_Most,DNF with Salinity,Nov2019_9001,IG_DCP_4.2.0,WQIP_Scenario3_2017",
-# #   "Nov9002_NoExportReturn" = "2007Dems,MTOM_Most,DNF with Salinity,Nov2019_9002_NoExportReturn,IG_DCP_4.2.0,WQIP_Scenario3_2017",
-# #   "Nov9003_MinMaxLocations" = "2007Dems,MTOM_Most,DNF with Salinity,Nov2019_9003_MinMaxLocations,IG_DCP_4.2.0,WQIP_Scenario3_2017"
-# # )
-# # 
-# # # # ##########################################################################
-# # 
-# # # # Alan's Updates to CRSS Nov Model for Heather including NA rls. Should be no salinity changes in UB, minimal in LB 
-# # 
-# # #file names
-# # Model.Step.Name <- "Nov19_DevUpdates" #plot title and results/folder name
-# # Figs <- '_Nov19_DevUpdates'  #[plot type] identifying name .pdf
-# # customcolorltpt <- F
-# # 
-# # startyr <- 2020 #filter out all years > this year
-# # 
-# # 
-# # 
-# # scens <- list(
-# #   # "Nov19_Stress_NA" = "Nov2019_2020_9005,ISM1988_2017,2007Dems,NA_v9002,Most", #no offical salts for ST
-# #   # "Nov19_Stress_IG4.2" = "Nov2019_2020_9005,ISM1988_2017,2007Dems,IG_DCP_v4.2.0.9000,Most",
-# #   "Current TriRvw Dev Model" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_UpdateMinMax,IG_DCP,WQIP_Scenario1_2020_2019Sept6,DCP_Cons",
-# #   "Nov19_DNF_NA" = "Nov2019_2020_9005,DNF,2007Dems,NA_v9002,Most",
-# #   "Nov19_DNF_IG4.2" = "Nov2019_2020_9005,DNF,2007Dems,IG_DCP_v4.2.0.9000,Most",
-# #   # "Nov9003_MinMaxLocations" = "2007Dems,MTOM_Most,DNF with Salinity,Nov2019_9003_MinMaxLocations,IG_DCP_4.2.0,WQIP_Scenario3_2017"
-# #   
-# # )
-# # 
-# # 
-# # #file names
-# # Model.Step.Name <- "Nov19_DNF" #plot title and results/folder name
-# # Figs <- '_Nov19_DNF'  #[plot type] identifying name .pdf
-# 
-# 
-# # # ##########################################################################
-# 
-# # # Alan's Updates to CRSS Nov Model for Heather including NA rls. Should be no salinity changes in UB, minimal in LB
-# #### THESE HAVE NOT BE PRESENTED TO THE WORKGROUP #### 
+# #### Compare Models for Feb WORKGROUP ####
 # 
 # #file names
-# Model.Step.Name <- "Nov19_DevUpdates" #plot title and results/folder name
-# Figs <- '_Nov19_DevUpdates'  #[plot type] identifying name .pdf
+# Model.Step.Name <- Figs <- "TriRvw17_vs_Feb2020" #plot title and results/folder name #[plot type] identifying name .pdf
 # customcolorltpt <- F
-# 
-# scens <- list(
-#   # "Nov19_Stress_NA" = "Nov2019_2020_9005,ISM1988_2017,2007Dems,NA_v9002,Most", #no offical salts for ST
-#   # "Nov19_Stress_IG4.2" = "Nov2019_2020_9005,ISM1988_2017,2007Dems,IG_DCP_v4.2.0.9000,Most",
-#   "CurTriRvwDev_DNF17_Reg8817" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_UpdateMinMax,IG_DCP,WQIP_Scenario1_2020_2019Sept6,DCP_Cons",
-#   "Nov19v9005_DNF17_Reg7117" = "Nov2019_2020_9005,DNF,2007Dems,IG_DCP_v4.2.0.9000,Most",
-#   "Nov19v9005_DNF18_Reg7117" = "2007Dems,MTOM_Most,DNF with Salinity,Nov2019_9003_MinMaxLocations,IG_DCP_4.2.0,WQIP_Scenario3_2017"
-# 
-# )
+# startyr <- 2017 #filter out all years > this year
 # 
 # 
-# #file names
-# Model.Step.Name <- "Nov19_DNF" #plot title and results/folder name
-# Figs <- '_Nov19_DNF'  #[plot type] identifying name .pdf
-
-
+  
 # # ##########################################################################
 
-#### Compare Models for Feb WORKGROUP #### 
-
-#file names
-Model.Step.Name <- Figs <- "Oct19_vs_Feb2020" #plot title and results/folder name #[plot type] identifying name .pdf
-customcolorltpt <- F
-startyr <- 2020 #filter out all years > this year
-
+# # # Feb MTG Hydrologies
 scens <- list(
-  "Oct2019 Model 1.70M Tons" = "2007Dems,MTOM_Most,DNF with Salinity,Jun2019_9002_4Scens,IG_DCP,WQIP_Scen3_2019Oct15,DCP_Cons", #
-  "Feb2020 1.69M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario3_2020_20200113"
+  "ISM 1906-2017" = "2007Dems,MTOM_Most,DNF with Salinity,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario3_2020_20200113",
+  "ISM 1931-2017" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario3_2020_20200113"
 )
 
-# # ##########################################################################
-
-# # #Compare 2017 and 2020 Feb MTG Scenarios
-scens <- list(
-  "TriRvw17 Limited Funding 1.66M Tons" = "DNF,Jan2017,WQIP_Senario3",
-  "Feb2020 Plan of Implemenation 1.69M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario3_2020_20200113"
-)
-  
-  #### Compare Models for Feb WORKGROUP #### 
-  
-  #file names
-  Model.Step.Name <- Figs <- "TriRvw17_vs_Feb2020" #plot title and results/folder name #[plot type] identifying name .pdf
-  customcolorltpt <- F
-  startyr <- 2017 #filter out all years > this year
-  
-  
-  
-  # # ##########################################################################
-
-
-
-# # ##########################################################################
-
-#### Final Scens PRESENT TO THE WORKGROUP #### 
 
 #file names
-Model.Step.Name <- "Feb2020_4Scens_BiNat" #plot title and results/folder name
-Figs <- '_Feb2020_4Scens_BiNat'  #[plot type] identifying name .pdf
+Model.Step.Name <- Figs <- "Feb2020_HydroCompare" #plot title and results/folder name #[plot type] identifying name .pdf
 customcolorltpt <- F
 startyr <- 2020 #filter out all years > this year
 
 
-scens <- list(
-  "No Additional Beyond 2020 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario1_2020_20200113",
-  "Limited Funding 1.58M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario2_2020_20200113",
-  "Plan of Implementation 1.69M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario3_2020_20200113",
-  "Max Potential Controls 2.34M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario4_2020_20200113"
-)
+# # ##########################################################################
+# 
+# #### Final Scens PRESENT TO THE WORKGROUP ####
+# 
+# #file names
+# Model.Step.Name <- "Feb2020_4Scens_BiNat" #plot title and results/folder name
+# Figs <- '_Feb2020_4Scens_BiNat'  #[plot type] identifying name .pdf
+# customcolorltpt <- F
+# startyr <- 2020 #filter out all years > this year
+# 
+# 
+# scens <- list(
+#   "No Additional Beyond 2020 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario1_2020_20200113",
+#   "Limited Funding 1.58M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario2_2020_20200113",
+#   "Plan of Implementation 1.69M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario3_2020_20200113",
+#   "Max Potential Controls 2.34M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario4_2020_20200113"
+# )
+
+# # ##########################################################################
+
+# #### Update to Jan 2020 CRSS and 2018 NFS - Not for Feb MTG####
+# 
+# #file names
+# Model.Step.Name <- Figs <- "Jan2020_NFS2018" #plot title and results/folder name
+# customcolorltpt <- F
+# startyr <- 2020 #filter out all years > this year
+# 
+# scens <- list(
+#     "Nov19 + ISM 1906-2017" = "2007Dems,MTOM_Most,DNF with Salinity,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario3_2020_20200113",
+#     "Jan20 + ISM 1906-2018" = "2007Dems,MTOM_Most,DNF with Salinity 19062018,Jan2020,IG_DCP_4.4.0,WQIP_Scenario3_2020_20200113",
+#     "Nov19 + ISM 1931-2017" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario3_2020_20200113",
+#     "Jan20 + ISM 1931-2018" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020,IG_DCP_4.4.0,WQIP_Scenario3_2020_20200113"
+# )
+# 
+# # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# 
+# #### Update to Jan 2020 CRSS and 2018 NFS - Not for Feb MTG####
+# 
+# #file names
+# Model.Step.Name <- Figs <- "Jan2020_NFS2018_RW75v8" #plot title and results/folder name
+# customcolorltpt <- F
+# startyr <- 2020 #filter out all years > this year
+# 
+# scens <- list(
+#   "RW8 + Nov19 + ISM 1931-2017" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario3_2020_20200113",
+#   "RW8 + Jan20 + ISM 1931-2018" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200113",
+#   "RW75 + Jan20 + ISM 1931-2018" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020,IG_DCP_4.4.0,WQIP_Scenario3_2020_20200113"
+# )
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#### Update to Jan 2020 CRSS and 2018 NFS - Not for Feb MTG####
+
+#file names
+customcolorltpt <- F
+startyr <- 2020 #filter out all years > this year
+
+scens <- list(
+  "2017Scen3_PowPipe_Nov19_2017NFS" = "Nov2019_2020_9005,DNF,2007Dems,IG_DCP_v4.2.0.9000,Most",
+  "2017Scen3_Jan19_2018NFS_OldBLMReg" = "2007Dems,MTOM_Most,DNF with Salinity 19062018 reg7118,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2017",
+  "2020Scen3_Jan19_2018NFS" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200113"
+)
+Model.Step.Name <- Figs <- "woBLM_2018Salts" #!!!!!UPDATE EVERY TIME!!!!!!!!!!!
+
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ### Custom Color/Pt Types/Scales ### 
@@ -326,7 +226,10 @@ if(customcolorltpt == F && length(scens) == 2){ #1 color, first scen dashed, sec
 #WQAnn
 source("code/Custom_WQAnn.R") #means only w exceed
 # source("code/Custom_WQAnn_OldControl.R") #for 2017 Review compare
-source("code/Custom_WQAnn_CloudswHist.R") #clouds for FWAAC - UNDER DEVELOPMENT
+# source("code/Custom_WQAnn_CloudswHist.R") #clouds for FWAAC - has titles
+source("code/Custom_WQAnn_CloudswHist_woTitles.R") #clouds for Review, no title and larger margins
+
+
 #MinMax must be run after a code has created scen_res but could work any scen_res
 source("code/MinMax_Check_NoFct.R")
 
@@ -340,20 +243,20 @@ source("code/Custom_MassBalAnn.R")
 #FlowMassBal
 source("code/Custom_FlowBalAnn.R")
 
-#This script can only be used with data processed using the new output.control file 6/27/2019
-# source("code/Custom_PowellMead_3Panel.R") #still need to fix issues Jim suggested 
-#need to add AnnualSalinity.PowellInflow_FWAAC to Nov 2019 model to use new (also add to WQAnn.rdf in output.control)
-source("code/Custom_PowellMead_3Panel_OldControlFile.R") 
-
-
-#Saltstorage
-source("code/Custom_SaltStorage.R")
-
-# Powell Mead PE
-source("code/Custom_ResPE.R")
-source("code/Custom_PE_CloudswHist.R") #clouds for PE - UNDER DEVELOPMENT
-source("code/MinMax_Check_NoFct.R")
-
+# #This script can only be used with data processed using the new output.control file 6/27/2019
+# # source("code/Custom_PowellMead_3Panel.R") #still need to fix issues Jim suggested 
+# #need to add AnnualSalinity.PowellInflow_FWAAC to Nov 2019 model to use new (also add to WQAnn.rdf in output.control)
+# source("code/Custom_PowellMead_3Panel_OldControlFile.R") 
+# 
+# 
+# #Saltstorage
+# source("code/Custom_SaltStorage.R")
+# 
+# # Powell Mead PE
+# source("code/Custom_ResPE.R")
+# source("code/Custom_PE_CloudswHist.R") #clouds for PE - UNDER DEVELOPMENT
+# source("code/MinMax_Check_NoFct.R")
+# 
 
 
 

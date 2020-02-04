@@ -36,6 +36,8 @@ ylims_mead_inoutmass <- c(7,9)
 
 
 rw_agg_file <- "PowellMeadInOut_OldControlFile.csv" #doesn't include outflow
+#need to add WQAnn.rdf	AnnualSalinity.PowellInflow_FWAAC	eocy to model to use new
+
 
 #read agg file specifying which slots
 # # NEW files are annual slots so use AsIs
