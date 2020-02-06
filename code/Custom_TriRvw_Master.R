@@ -94,22 +94,24 @@ startyr <- 2020 #filter out all years > this year
 
 
 # # ##########################################################################
-# 
-# #### Final Scens PRESENT TO THE WORKGROUP ####
-# 
-# #file names
-# Model.Step.Name <- "Feb2020_4Scens_BiNat" #plot title and results/folder name
-# Figs <- '_Feb2020_4Scens_BiNat'  #[plot type] identifying name .pdf
-# customcolorltpt <- F
-# startyr <- 2020 #filter out all years > this year
-# 
-# 
-# scens <- list(
-#   "No Additional Beyond 2020 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario1_2020_20200113",
-#   "Limited Funding 1.58M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario2_2020_20200113",
-#   "Plan of Implementation 1.69M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario3_2020_20200113",
-#   "Max Potential Controls 2.34M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario4_2020_20200113"
-# )
+
+#### Updated figure types to send to WORKGROUP before finalize ####
+
+#file names
+Model.Step.Name <- Figs <- "Draft_FigUpdates" #plot title and results/folder name
+customcolorltpt <- F
+startyr <- 2020 #filter out all years > this year
+
+
+scens <- list(
+  "Scenario 1 - 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario1_2020_20200113",
+  "Scenario 2 - 1.58M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario2_2020_20200113",
+  "Scenario 3 - 1.69M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario3_2020_20200113"#,
+  # "No Additional Beyond 2020 - 1.31M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario1_2020_20200113",
+  # "2019 Funding Levels - 1.58M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario2_2020_20200113",
+  # "Plan of Implementation - 1.69M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario3_2020_20200113"#,
+  # # "Max Potential Controls 2.34M Tons" = "2007Dems,MTOM_Most,DNF with Salinity Binational,Nov2019_9007,IG_DCP_4.3.0,WQIP_Scenario4_2020_20200113"
+)
 
 # # ##########################################################################
 
@@ -147,17 +149,17 @@ startyr <- 2020 #filter out all years > this year
 
 #### Update to Jan 2020 CRSS and 2018 NFS - Not for Feb MTG####
 
-#file names
-customcolorltpt <- F
-startyr <- 2020 #filter out all years > this year
-
-scens <- list(
-  "2017Scen3_PowPipe_Nov19_2017NFS" = "Nov2019_2020_9005,DNF,2007Dems,IG_DCP_v4.2.0.9000,Most",
-  "2017Scen3_Jan19_2018NFS_OldBLMReg" = "2007Dems,MTOM_Most,DNF with Salinity 19062018 reg7118,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2017",
-  "2020Scen3_Jan19_2018NFS" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200113"
-)
-Model.Step.Name <- Figs <- "woBLM_2018Salts" #!!!!!UPDATE EVERY TIME!!!!!!!!!!!
-
+# #file names
+# customcolorltpt <- F
+# startyr <- 2020 #filter out all years > this year
+# 
+# scens <- list(
+#   "2017Scen3_PowPipe_Nov19_2017NFS" = "Nov2019_2020_9005,DNF,2007Dems,IG_DCP_v4.2.0.9000,Most",
+#   "2017Scen3_Jan19_2018NFS_OldBLMReg" = "2007Dems,MTOM_Most,DNF with Salinity 19062018 reg7118,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2017",
+#   "2020Scen3_Jan19_2018NFS" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200113"
+# )
+# Model.Step.Name <- Figs <- "woBLM_2018Salts" #!!!!!UPDATE EVERY TIME!!!!!!!!!!!
+# 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -218,7 +220,10 @@ if(customcolorltpt == F && length(scens) == 2){ #1 color, first scen dashed, sec
 } else if (customcolorltpt == F && length(scens) <= 4){ #4 colors, solid
   lt_scale <- rep(1, 4)
   pt_scale <- rep(19, 4)
-  mycolors <- c("#407ec9" , "#6b8f00", "#9a3324" , "#FECB00") #Reclamation blue, green, red, yellow
+  # mycolors <- c("#407ec9" , "#6b8f00", "#9a3324" , "#FECB00") #Reclamation blue, green, red, yellow
+  # mycolors <- c("#9a3324" , "#FECB00", "#6b8f00" , "#407ec9") #TRY 1 red, yellow, red (stop light), blue
+  mycolors <- c("#D55E00" , "#F0E442", "#009E73" , "#407ec9") #TRY 2 - color blind red, yellow, red (stop light), blue
+  
 } else if (customcolorltpt == F && length(scens) > 4) {
   stop("customcolorltpt not setup or too many Scens")
 } 

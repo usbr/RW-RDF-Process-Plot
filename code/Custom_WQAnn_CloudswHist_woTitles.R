@@ -72,12 +72,12 @@ colorNames <- c("Historical SLOAD",names(scens))
 #Text
 TitleSize = 13
 AxisText = 11
-LegendLabText = 9.5
+LegendLabText = 9.5 #legend title text size
+AxisLab = 9 #axis text size
+LabSize = 2.9 #this doesn't appear to be called in Cloud_plot_wHist
+LegendText = 8 #controls the text size
 
-AxisLab = 9
-LabSize = 2.9
-LegendText = 8
-# 
+ 
 #Lines
 IGStartLine = .8
 OpsLines = 1
@@ -90,8 +90,8 @@ GridMin = .25
 # yaxmax = ceiling(max(zz$Max)/50)*50
 # 
 # #Other
-LegendWidth = 1
-LegendHeight = 2.5
+LegendWidth = 1 #this doesn't appear to be called in Cloud_plot_wHist
+LegendHeight = 2.5 #this doesn't appear to be called in Cloud_plot_wHist
 
 # Set tick marks for x and y axis
 myXLabs <- seq(1990,3000,5)
@@ -122,7 +122,7 @@ zz_all <- scen_res %>%
 # unique(zz_all$Year)
 
 #  Pulling historical SLOAD data
-hist <- read_xlsx(file.path(getwd(),'data/HistSLOAD.xlsx'))
+hist <- read_xlsx(file.path(getwd(),'data/HistSLOAD.xlsx')) #extended to 2019
 
 # Formatting data frame to match zz_all
 hist$Scenario <- 'Historical SLOAD'

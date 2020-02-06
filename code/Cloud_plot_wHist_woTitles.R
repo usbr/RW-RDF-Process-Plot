@@ -1,5 +1,6 @@
+#vars controling how many spaces before the string wrap occurs - not the overall width of the label those are in higher level script
 legend_title_width <- 25 #20 # = old value didn't fit #width positive integer giving target line width in characters
-legend_labels_width <- 20 #15 # = old value didn't fit
+legend_labels_width <- 25 #15 # = old value didn't fit
 
 zz <- zz_all %>%
   dplyr::filter(Variable == variable) 
@@ -31,9 +32,10 @@ legenda <- get_legend(gga)
 if (MinMaxLines == T ){ # T is want dotted line as min max of any given trace 
   lengendtitle <- "Min, Mean, Max" #
 } else {
-  lengendtitle <- "Mean"
+  # lengendtitle <- "Mean"
+  lengendtitle <- "Scenario"
+  
 }
-
 
 ggb <- gg + geom_line(size=Medians) + 
   scale_color_manual(name = str_wrap(lengendtitle,legend_title_width),
@@ -44,7 +46,8 @@ ggb <- gg + geom_line(size=Medians) +
 legendb <- get_legend(ggb)
 
 # Make legend grob.  4 rows used to make legend close together and in the middle with respects to the vertical
-gglegend <- plot_grid(NULL, legenda,legendb, NULL, align = 'hv', nrow=4) #nrows=4
+# gglegend <- plot_grid(NULL, legenda,legendb, NULL, align = 'hv', nrow=4) #nrows=4
+gglegend <- plot_grid(legendb, align = 'hv', nrow=1) #only 1 legend
 
 
 # Generate plot
@@ -94,7 +97,9 @@ if (MinMaxLines == T){
 # ggc
 
 #final plot configuration 
-gg <- plot_grid(ggc, gglegend, rel_widths = c(2,.4)) #this is not lever to make text fit on legend
+# gg <- plot_grid(ggc, gglegend, rel_widths = c(2,.4)) #old relative size of the plot vs legend
+gg <- plot_grid(ggc, gglegend, rel_widths = c(1.9,.5)) #this is how to adjust the relative size of the plot vs legend
+
 print(gg)
 
   # # Read in Reclamation logo png
