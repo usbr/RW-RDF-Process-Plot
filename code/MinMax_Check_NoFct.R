@@ -28,22 +28,35 @@ for(i in 1:length(variables)){
     min <- scen_res %>% 
       filter(Scenario == names(scens[i]))  %>%
       filter(Variable == variable) %>% # may need to replace this row wit Variable == "your variable"
-      group_by(Scenario, Year, TraceNumber) %>%
+      group_by(Scenario, Year, TraceNumber) %>% #THIS STEP TAKES FOREVER!
       summarise(min = min(Value)) %>% # can probably also add max = max(Value) to this row, and then to the summarise_at below
       spread(Year, min) %>%
-      arrange(TraceNumber)  %>%
-      summarise_at(
+      arrange(TraceNumber)  %>% #table is now Scenario, TraceNumber, Years as Cols
+      ungroup() %>% #use to get summarise_at which.min working 
+      summarise_at( #error
         years, 
-        .funs = funs(min_val = min, min_trace = which.min)
-      ) %>%
-      gather(Variable, Value, -Scenario) %>% 
-      # the rest just gets a little nicer looking table
-      mutate(
-        Year = stringr::str_split_fixed(Variable, "_", 2)[,1],
-        Variable = stringr::str_split_fixed(Variable, "_", 2)[,2]
-      ) %>%
-      spread(Variable, Value) %>%
-      slice(match(years, Year))
+        .funs = funs(min_val = min, #min_val works #funs() provides a flexible way to generate a named list of functions for input to other functions like summarise_at().
+                     min_trace = which.min) #error:  Column `2020_min_trace` must be length 1 (a summary value), not 0
+                    #which.min(min$`2020`) works
+      ) #%>%
+    
+    min_df <- cbind.data.frame(
+      t(min[1:length(years)]),
+      t(min[(length(years)+1):length(min)]))
+    
+    colnames(min_df) <- c("Min Val","Min Trace")
+    row.names(min_df) <- years
+    
+    # ?pivot_wider -- should be able to use this somehow with contains()
+            #Alans old Code 
+      # gather(Variable, Value, -Scenario) %>% 
+      # # the rest just gets a little nicer looking table
+      # mutate(
+      #   Year = stringr::str_split_fixed(Variable, "_", 2)[,1],
+      #   Variable = stringr::str_split_fixed(Variable, "_", 2)[,2]
+      # ) %>%
+      # spread(Variable, Value) %>%
+      # slice(match(years, Year))
     
     mean <- scen_res %>%
       filter(Scenario == names(scens[i]))  %>%
@@ -51,7 +64,7 @@ for(i in 1:length(variables)){
       dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
       dplyr::group_by(Scenario, Year) %>%
       dplyr::summarise(Value = mean(Value)) 
-    mean$ensemble_mean_val <- mean$Value  
+    colnames(mean) <- c("Scenario","Year","Mean Val")
     
     max <- scen_res %>% 
       filter(Scenario == names(scens[i]))  %>%
@@ -60,22 +73,31 @@ for(i in 1:length(variables)){
       summarise(max = max(Value)) %>% # can probably also add max = max(Value) to this row, and then to the summarise_at below
       spread(Year, max) %>%
       arrange(TraceNumber)  %>%
+      ungroup() %>% #use to get summarise_at which.min working 
       summarise_at(
         years, 
         .funs = funs(max_val = max, max_trace = which.max)
-      ) %>%
-      gather(Variable, Value, -Scenario) %>% 
-      # the rest just gets a little nicer looking table
-      mutate(
-        Year = stringr::str_split_fixed(Variable, "_", 2)[,1],
-        Variable = stringr::str_split_fixed(Variable, "_", 2)[,2]
-      ) %>%
-      spread(Variable, Value) %>%
-      slice(match(years, Year))  
+      ) 
     
-    df <- cbind.data.frame(min,
-                           mean[,"ensemble_mean_val"],
-                           max[,c("max_trace","max_val")])
+    max_df <- cbind.data.frame(
+      t(max[1:length(years)]),
+      t(max[(length(years)+1):length(max)]))
+    
+    colnames(max_df) <- c("Max Val","Max Trace")
+    row.names(max_df) <- years
+    
+      # gather(Variable, Value, -Scenario) #%>% 
+      # # the rest just gets a little nicer looking table
+      # mutate(
+      #   Year = stringr::str_split_fixed(Variable, "_", 2)[,1],
+      #   Variable = stringr::str_split_fixed(Variable, "_", 2)[,2]
+      # ) %>%
+      # spread(Variable, Value) %>%
+      # slice(match(years, Year))  
+    
+    df <- cbind.data.frame(mean,
+                           min_df,
+                           max_df)
     
     
     if (i == 1){
