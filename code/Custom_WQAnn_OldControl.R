@@ -34,9 +34,11 @@ scen_res <- rw_scen_aggregate(
 # #####################################################################################################################################################################
 # ## For old TriRvw 2017 Runs to plot you Outflow and Outflow Salt Mass you have to grab these slots from Salt.rdf since the output.control changed throughtout time#
 # ##################################################################################################################################################################
-rw_agg_file2 <- "PowellMeadInOut_OldControlFile.csv"
-rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"KeySlots.rdf")))
-rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"Salt.rdf")))
+# rw_agg_file2 <- "PowellMeadInOut_OldControlFile.csv" #why had I chaged to use this one? I should use the below
+rw_agg_file2 <- "Outflow&OutflowSaltMass_2017Control.csv"
+# rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"KeySlots.rdf"))) #no mead inflow 
+# rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"Res.rdf"))) #no mead inflow
+# rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"Salt.rdf")))
 rwa2 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file2), stringsAsFactors = FALSE))
 # # # Old files from 2017 review are monthly so use EOCY
 
@@ -111,72 +113,72 @@ write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
-# variable = "Powell.Outflow"
-# y_lab = "Outflow (million acre-ft/year)"
-# title = "Lake Powell Average Annual Outflow" 
-# # subtitle = "Average Annual Concentration Comparison"
-# ylims <- c(7,10)
-# 
-# 
-# df <- scen_res2 %>%
-#   dplyr::filter(Variable == variable) %>%
-#   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-#   dplyr::group_by(Scenario, Year) %>%
-#   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-# 
-# 
-# 
-# p <- df %>%
-#   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-# 
-#   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
-#   geom_line() +
-#   geom_point() + 
-#   ylim(ylims) +
-#   scale_linetype_manual(values = lt_scale) +
-#   scale_shape_manual(values = pt_scale) +
-#   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-#   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-#   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-# print(p)
-# 
-# ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
-# 
-# write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
-# #-------------------------------------------------------------------------------------
-# 
-# variable = "Powell.Outflow Salt Mass"
-# y_lab = "Outflow Salt Mass (million tons/year)"
-# title = "Lake Powell Average Annual Outflow Salt Mass" 
-# # subtitle = "Average Annual Concentration Comparison"
-# ylims <- c(0,10)
-# 
-# 
-# df <- scen_res2 %>%
-#   dplyr::filter(Variable == variable) %>%
-#   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-#   dplyr::group_by(Scenario, Year) %>%
-#   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-# 
-# 
-# 
-# p <- df %>%
-#   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-# 
-#   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
-#   geom_line() +
-#   geom_point() + 
-#   ylim(ylims) +
-#   scale_linetype_manual(values = lt_scale) +
-#   scale_shape_manual(values = pt_scale) +
-#   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-#   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-#   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-# print(p)
-# 
-# ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
-# 
-# write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+variable = "Powell.Outflow"
+y_lab = "Outflow (million acre-ft/year)"
+title = "Lake Powell Average Annual Outflow"
+# subtitle = "Average Annual Concentration Comparison"
+ylims <- c(7,10)
+
+
+df <- scen_res2 %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value))
+
+
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+#-------------------------------------------------------------------------------------
+
+variable = "Powell.Outflow Salt Mass"
+y_lab = "Outflow Salt Mass (million tons/year)"
+title = "Lake Powell Average Annual Outflow Salt Mass"
+# subtitle = "Average Annual Concentration Comparison"
+ylims <- c(0,10)
+
+
+df <- scen_res2 %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value))
+
+
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 # ++++++++++++++++++++++++++Below Mead+++++++++++++++++++++++++++++++++++++
 
@@ -256,37 +258,37 @@ write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 # write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
 
-# variable = "Mead.Outflow Salt Mass"
-# y_lab = "Outflow Salt Mass (million tons/year)"
-# title = "Lake Mead Average Annual Outflow Salt Mass" 
-# # subtitle = "Average Annual Concentration Comparison"
-# ylims <- c(0,10)
-# 
-# 
-# df <- scen_res2 %>%
-#   dplyr::filter(Variable == variable) %>%
-#   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-#   dplyr::group_by(Scenario, Year) %>%
-#   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-# 
-# 
-# p <- df %>%
-#   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-# 
-#   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
-#   geom_line() +
-#   geom_point() + 
-#   ylim(ylims) +
-#   scale_linetype_manual(values = lt_scale) +
-#   scale_shape_manual(values = pt_scale) +
-#   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-#   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-#   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-# print(p)
-# 
-# ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
-# 
-# write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+variable = "Mead.Outflow Salt Mass"
+y_lab = "Outflow Salt Mass (million tons/year)"
+title = "Lake Mead Average Annual Outflow Salt Mass"
+# subtitle = "Average Annual Concentration Comparison"
+ylims <- c(0,10)
+
+
+df <- scen_res2 %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value))
+
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 #------------------------------Below Parker-------------------------------------------------------
 
@@ -357,35 +359,35 @@ write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 # # write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
 
-# variable = "Havasu.Outflow Salt Mass"
-# y_lab = "Outflow Salt Mass (million tons/year)"
-# title = "Lake Havasu Average Annual Outflow Salt Mass" 
-# # subtitle = "Average Annual Concentration Comparison"
-# ylims <- c(0,10)
-# 
-# 
-# df <- scen_res2 %>%
-#   dplyr::filter(Variable == variable) %>%
-#   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-#   dplyr::group_by(Scenario, Year) %>%
-#   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-# 
-# 
-# p <- df %>%
-#   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-# 
-#   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
-#   geom_line() +
-#   geom_point() + 
-#   ylim(ylims) +
-#   scale_linetype_manual(values = lt_scale) +
-#   scale_shape_manual(values = pt_scale) +
-#   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-#   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-#   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-# print(p)
-# 
-# ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+variable = "Havasu.Outflow Salt Mass"
+y_lab = "Outflow Salt Mass (million tons/year)"
+title = "Lake Havasu Average Annual Outflow Salt Mass"
+# subtitle = "Average Annual Concentration Comparison"
+ylims <- c(0,10)
+
+
+df <- scen_res2 %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value))
+
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 #-------------------------------At Imperial------------------------------------------------------
 
@@ -456,35 +458,37 @@ write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 # # write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
 
-# variable = "AboveImperialDamColoradoR.Outflow Salt Mass"
-# y_lab = "Outflow Salt Mass (million tons/year)"
-# title = "Imperial Dam Average Annual Outflow Salt Mass" 
-# # subtitle = "Average Annual Concentration Comparison"
-# ylims <- c(0,10)
-# 
-# 
-# df <- scen_res2 %>%
-#   dplyr::filter(Variable == variable) %>%
-#   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-#   dplyr::group_by(Scenario, Year) %>%
-#   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-# 
-# 
-# p <- df %>%
-#   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-# 
-#   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
-#   geom_line() +
-#   geom_point() + 
-#   scale_y_continuous(labels = scales::percent_format(accuracy = 1), limits = ylims) +
-#   scale_linetype_manual(values = lt_scale) +
-#   scale_shape_manual(values = pt_scale) +
-#   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-#   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-#   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-# print(p)
-# 
-# ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+variable = "AboveImperialDamColoradoR.Outflow Salt Mass"
+y_lab = "Outflow Salt Mass (million tons/year)"
+title = "Imperial Dam Average Annual Outflow Salt Mass"
+# subtitle = "Average Annual Concentration Comparison"
+ylims <- c(0,10)
+
+
+df <- scen_res2 %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value))
+
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), limits = ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 ### Exceedence ###
@@ -588,8 +592,6 @@ dev.off()
 
 
 
-# write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
-write.csv(df,file = paste0(oFigs,'/','Median_',variable,'.csv'))
 
 #------------------------------------------------------------
 
