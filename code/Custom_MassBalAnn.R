@@ -48,7 +48,7 @@ scen_res2$Scenario = factor(scen_res2$Scenario, levels=names(scens))
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ## create a pdf  
-pdf(file.path(oFigs,paste0("SaltMassBalGrph",Figs,".pdf")), width=9, height=6)
+pdf(file.path(oFigs,paste0("SaltMassBalGrph_",Figs,".pdf")), width=9, height=6)
 
 
 ### Means ###
