@@ -10,3 +10,4 @@ KeySlots.rdf,Mead.Outflow,cy,sum,NA,NA,Mead.Outflow
 Salt.rdf,Mead.Inflow Salt Mass,cy,sum,NA,NA,Mead.Inflow Salt Mass
 Salt.rdf,Mead.Outflow Salt Mass,cy,sum,NA,NA,Mead.Outflow Salt Mass
 WQAnn.rdf,AnnualSalinity.Hoover_FWAAC,eocy,NA,NA,NA,AnnlSlntyMead_FWAAC
+Res.rdf,Mead.Inflow,cy,sum,NA,NA,Mead.Inflow

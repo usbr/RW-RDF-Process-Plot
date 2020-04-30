@@ -85,7 +85,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
@@ -190,7 +190,7 @@ print(p3)
 library(gridExtra)
 grid.arrange(p1,p2,p3,ncol=1)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -284,7 +284,7 @@ p3 <- df3 %>%
 grid.arrange(p1,p3,ncol=1)
 
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 
 #-------------------------------------------------------------------------------------
@@ -373,7 +373,7 @@ p3 <- df3 %>%
 grid.arrange(p1,p3,ncol=1)
 
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+#ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 
 
@@ -405,7 +405,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+#ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
@@ -440,7 +440,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+#ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
@@ -472,7 +472,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
@@ -506,7 +506,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
@@ -540,7 +540,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
@@ -580,8 +580,8 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
-# ggsave(filename = file.path(oFigs,paste0(variable,"_Median.png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,"_Median.png")), width= width, height= height)
 
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
@@ -619,8 +619,8 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
-# ggsave(filename = file.path(oFigs,paste0(variable,"_Median.png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,"_Median.png")), width= width, height= height)
 
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
@@ -657,7 +657,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -690,7 +690,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 
@@ -725,7 +725,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -758,7 +758,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 # write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -791,7 +791,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 #-------------------------------At Imperial------------------------------------------------------
 
@@ -824,7 +824,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -857,7 +857,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 # write.csv(df,file = paste0(oFigs,'/','Mean_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -890,7 +890,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 #-------------------------------------------------------------------------------------
 ### Exceedence ###
@@ -922,7 +922,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Exc_',variable,'.csv'))
 
@@ -954,7 +954,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Exc_',variable,'.csv'))
 
@@ -985,7 +985,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+#ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Exc_',variable,'.csv'))
 
@@ -1026,7 +1026,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-# ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 ggsave(filename = file.path(oFigs,paste0(variable,"_Median.png")), width= width, height= height)
 
 
