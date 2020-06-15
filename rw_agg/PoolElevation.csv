@@ -1,0 +1,4 @@
+file,slot,period,summary,eval,t_s,variable
+KeySlots.rdf,Powell.Pool Elevation,eocy,NA,NA,NA,Powell.PoolElevation
+KeySlots.rdf,Mead.Pool Elevation,eocy,NA,NA,NA,Mead.PoolElevation
+Res.rdf,Havasu.Pool Elevation,eocy,NA,NA,NA,Havasu.PoolElevation

@@ -1,0 +1,10 @@
+file,slot,period,summary,eval,t_s,variable
+DivSalt.rdf ,DoloresRiver:IntraBasinExportAndDoloresProject.Diversion Salt Concentration,asis,NA,NA,NA,DoloresExp_DivSaltConc
+DivSalt.rdf ,DuchesneAboveStarv:RRDuchesneRExports.Diversion Salt Concentration,asis,NA,NA,NA,DuchesneExp_DivSaltConc
+DivSalt.rdf ,GreenRAboveFontenelle:RRExportAboveFontenelle.Diversion Salt Concentration,asis,NA,NA,NA,FontExp_DivSaltConc
+DivSalt.rdf ,GreenRWhiteToSanRafael:RRPriceRiverExport.Diversion Salt Concentration,asis,NA,NA,NA,PriceExp_DivSaltConc
+DivSalt.rdf ,LittleSnakeRiver:RRLittleSnakeRExports.Diversion Salt Concentration,asis,NA,NA,NA,LilSnakeExp_DivSaltConc
+DivSalt.rdf ,SJAboveNavajo:ReachSJChamaExport.Diversion Salt Concentration,asis,NA,NA,NA,SJChamaExp_DivSaltConc
+DivSalt.rdf ,UpperColoradoAboveCameo:ExportsFromRoaringForkRiver.Diversion Salt Concentration,asis,NA,NA,NA,RoaringForkExp_DivSaltConc
+DivSalt.rdf ,UpperColoradoReach:ExportsAboveGlenwoodSprings.Diversion Salt Concentration,asis,NA,NA,NA,GlenwoodExp_DivSaltConc
+DivSalt.rdf ,AboveImperialDamColoradoR:RRNativeVegetation.Diversion Salt Concentration ,asis,,,,

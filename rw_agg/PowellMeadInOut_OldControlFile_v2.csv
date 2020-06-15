@@ -1,0 +1,13 @@
+file,slot,period,summary,eval,t_s,variable
+Res.rdf,Powell.Inflow,cy,sum,NA,NA,Powell.Inflow
+Res.rdf,Powell.Storage,cy,mean,NA,NA,Powell.Storage
+KeySlots.rdf,Powell.Outflow,cy,sum,NA,NA,Powell.Outflow
+Salt.rdf,Powell.Inflow Salt Mass,cy,sum,NA,NA,Powell.Inflow Salt Mass
+Salt.rdf,Powell.Outflow Salt Mass,cy,sum,NA,NA,Powell.Outflow Salt Mass
+WQAnn.rdf,AnnualSalinity.LeesFerry_FWAAC,eocy,NA,NA,NA,AnnlSlntyLsFrry_FWAAC
+Res.rdf,Mead.Storage,cy,mean,NA,NA,Mead.Storage
+KeySlots.rdf,Mead.Outflow,cy,sum,NA,NA,Mead.Outflow
+Salt.rdf,Mead.Inflow Salt Mass,cy,sum,NA,NA,Mead.Inflow Salt Mass
+Salt.rdf,Mead.Outflow Salt Mass,cy,sum,NA,NA,Mead.Outflow Salt Mass
+WQAnn.rdf,AnnualSalinity.Hoover_FWAAC,eocy,NA,NA,NA,AnnlSlntyMead_FWAAC
+Res.rdf,Mead.Inflow,cy,sum,NA,NA,Mead.Inflow

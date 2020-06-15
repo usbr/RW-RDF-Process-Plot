@@ -1,0 +1,9 @@
+file,slot,period,summary,eval,t_s,variable
+KeySlots.rdf,Powell.Outflow,cy,sum,NA,NA,Powell.Outflow
+Salt.rdf,Powell.Outflow Salt Mass,cy,sum,NA,NA,Powell.Outflow Salt Mass
+KeySlots.rdf,Mead.Outflow,cy,sum,NA,NA,Mead.Outflow
+Salt.rdf,Mead.Outflow Salt Mass,cy,sum,NA,NA,Mead.Outflow Salt Mass
+KeySlots.rdf,Havasu.Outflow,cy,sum,NA,NA,Havasu.Outflow
+Salt.rdf,Havasu.Outflow Salt Mass,cy,sum,NA,NA,Havasu.Outflow Salt Mass
+KeySlots.rdf,AboveImperialDamColoradoR.Outflow,cy,sum,NA,NA,AboveImperialDamColoradoR.Outflow
+Salt.rdf,AboveImperialDamColoradoR.Outflow Salt Mass,cy,sum,NA,NA,AboveImperialDamColoradoR.Outflow Salt Mass
