@@ -5,6 +5,7 @@
 
 #   Created by C. Felletter 8/2018
 #   Updated by CF on 10/2018 to be a function
+#  Updated on 6/15/2020 to filter varibiables for Generic_Scen_Process_2.R  
 ##############################################################################
 
 generic_monthly_plot <- function(scen_res) { 
@@ -60,6 +61,7 @@ generic_monthly_plot <- function(scen_res) {
   
   if (figuretype == 1){
     p <- scen_res %>%
+      dplyr::filter(Variable == variable) %>%
       dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
       dplyr::group_by(Scenario, MonthNum) %>%
       dplyr::summarise(Value = mean(Value)) %>%
@@ -78,6 +80,7 @@ generic_monthly_plot <- function(scen_res) {
   
   if (figuretype == 2){
     p <- scen_res %>%
+      dplyr::filter(Variable == variable) %>%
       dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
       dplyr::group_by(Scenario, MonthNum) %>%
       ggplot(aes(x = factor(MonthNum), y = Value, color = Scenario)) + 
@@ -93,6 +96,7 @@ generic_monthly_plot <- function(scen_res) {
   
   if (figuretype == 3){
     p <- scen_res %>%
+      dplyr::filter(Variable == variable) %>%
       dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
       dplyr::filter(MonthNum == exc_month) %>% #This is currently set to filter 
       #all but one month otherwise would lump all the months together
