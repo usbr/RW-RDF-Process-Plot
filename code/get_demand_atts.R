@@ -1,6 +1,6 @@
-library(xml2)
-library(dplyr)
-library(stringr)
+# library(xml2)
+# library(dplyr) #both are in tidyverse
+# library(stringr)
 dit_atts <- read_xml("Attributes.xml")
 
 # get all children
@@ -56,7 +56,7 @@ cc <- colnames(df)
 cc <- cc[cc != "object"]
 
 ##########
-View(df)
+# View(df)
 
 # need to filter off agg div 
 df2 <- df %>% 
@@ -68,3 +68,5 @@ df3 <- df %>%
   filter_at(vars("Sector"), any_vars(!is.na(.)))
 lookup_wu <- df3[,c("object","Depletion.Rate","Sector","State","Tribe" )]
 
+# only need lookup_div and lookup_wu 
+rm(df,df2,df3,tmp_atts,tmp_df,sim_objs,dit_atts,t2,obj_atts,Attributes)
