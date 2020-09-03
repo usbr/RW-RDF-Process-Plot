@@ -28,6 +28,8 @@ tmp2 <- str_split(allWU$ObjectSlot, ".D", n = 2, simplify = TRUE)
 
 allWU['object'] = tmp2[,1]
 
+allWU['Slot'] = paste0(rep("D",length(tmp2[,2])),tmp2[,2]) #fix the d 
+
 
 # test <- allWU[1:50,]
 # test %>% 
@@ -81,86 +83,45 @@ for (i in 1:length(nodes)) {
   #limit which sectors are plotted 
   sectors = sectors[which(sectors %in% onlythesesectors)]
   
+  test <- test %>%
+    #filter out all unused sectors and slots 
+    dplyr::filter(Sector %in% sectors) %>%
+    dplyr::filter(Slot %in% c("Depletion Requested","Depletion Shortage")) 
+    
+  
   if(length(sectors) > 0){ #have some sector of interest 
   for (j in 1:length(sectors)) {
     
     print(paste("Sector",sectors[j]))
     
     
-    x <- test %>%
-      #filter out all but one node
-      dplyr::filter(Sector == sectors[j]) 
+    x <- test %>% 
+      dplyr::filter(Sector == sectors[j]) %>%
+      group_by(Sector,Slot,Year,Date) %>%
+      summarise(Value = sum(Value))# %>% # summarize multiple users into one  
     
-    user <- unique(x$object)
+    # View(x)
     
-    ####what to do if user has multiple users? E.g. "EnergyAndMandIUsesAbvCameo:Energy"   "EnergyUsesShoshonePowerPlant:Energy"
-        ##### DEV IMPROVEMENT SUM UP across sector ##########
-    ##########
-    ##########
-    ##########
-    
-    if (length(user) != 1 ){
-      
-      for (k in 1:length(user)) {
-        
-        user1 = user[k]
-        
-        request <- paste0(user1,".Depletion Requested")
-        shortage <- paste0(user1,".Depletion Shortage")
-        
-        requested <- x %>%
-          dplyr::filter(ObjectSlot == request)
-        depleted <- x %>%
-          dplyr::filter(ObjectSlot == shortage)
-        
-        depleted$Value = requested$Value - depleted$Value   
-        depleted$ObjectSlot = rep(paste0(user1,".Depletion "),times = length(depleted$ObjectSlot))
-        
-        xx <- rbind.data.frame(requested,depleted)
-        
-        #annual  
-        p <- xx %>% 
-          group_by(ObjectSlot,Year) %>%
-          summarise(Value = sum(Value)) %>%
-          # group_by(ObjectSlot)  %>%
-          ggplot(aes(x = Year, y = Value, color = ObjectSlot)) +
-          geom_line() +
-          # geom_point() +
-          labs(title = paste(nodes[i],sectors[j]), y = "Depletions (AF/yr)")
-        print(p)
-        
-        #monthly 
-        p <- xx %>%
-          group_by(ObjectSlot,Date) %>%
-          ggplot(aes(x = Date, y = Value, color = ObjectSlot)) +
-          geom_line() +
-          labs(title = paste(nodes[i],sectors[j]), y = "Depletions (AF/mo)")
-        print(p)
-        
-      } #end if multiple users   
-
-      
-    } else {
-    
-    request <- paste0(user,".Depletion Requested")
-    shortage <- paste0(user,".Depletion Shortage")
-    
+    #create a depleted slot   
     requested <- x %>%
-      dplyr::filter(ObjectSlot == request)
-    depleted <- x %>%
-      dplyr::filter(ObjectSlot == shortage)
-    
+        dplyr::filter(Slot == "Depletion Requested")
+      depleted <- x %>%
+        dplyr::filter(Slot == "Depletion Shortage")
+      
     depleted$Value = requested$Value - depleted$Value   
-    depleted$ObjectSlot = rep(paste0(user,".Depletion "),times = length(depleted$ObjectSlot))
+    depleted$Slot = rep("Depletion",times = length(depleted$Slot))
     
     xx <- rbind.data.frame(requested,depleted)
     
+    # # Adding factors so ggplot does not alphebetize legend
+    xx$Slot = factor(xx$Slot, levels=c("Depletion Requested","Depletion"))
+      
     #annual  
     p <- xx %>% 
-      group_by(ObjectSlot,Year) %>%
+      group_by(Slot,Year) %>%
       summarise(Value = sum(Value)) %>%
       # group_by(ObjectSlot)  %>%
-      ggplot(aes(x = Year, y = Value, color = ObjectSlot)) +
+      ggplot(aes(x = Year, y = Value, color = Slot)) +
       geom_line() +
       # geom_point() +
       labs(title = paste(nodes[i],sectors[j]), y = "Depletions (AF/yr)")
@@ -168,13 +129,16 @@ for (i in 1:length(nodes)) {
     
     #monthly 
     p <- xx %>%
-      group_by(ObjectSlot,Date) %>%
-      ggplot(aes(x = Date, y = Value, color = ObjectSlot)) +
+      group_by(Slot,Date) %>%
+      ggplot(aes(x = Date, y = Value, color = Slot)) +
       geom_line() +
       labs(title = paste(nodes[i],sectors[j]), y = "Depletions (AF/mo)")
     print(p)
+      
+      
+
+      
     
-    } #end else one users 
     
   } #end if no data 
 
@@ -187,3 +151,12 @@ for (i in 1:length(nodes)) {
 } #end node loop
 
 dev.off()
+
+
+#### read demands #####
+library(openxlsx)
+CUL <- read.xlsx(xlsxFile = "C:/Users/cfelletter/Documents/natflowsaltmodel/results/Check/CULbySectorbyCP.xlsx",sheet = 'CULBySector')
+
+
+CUL <- pivot_longer(zz, cols = names(zz)[3:length(names(zz))],names_to = 'Date',values_to = "Value")
+head(CUL)
