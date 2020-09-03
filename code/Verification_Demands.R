@@ -165,9 +165,9 @@ for (i in 1:length(nodes)) {
       dplyr::filter(Sector == sectors[j]) %>%
       group_by(Sector,Slot,Year,MonthNum,Date) %>%
       summarise(Value = sum(Value))# %>% # summarize multiple users into one  
-    y <- CUL %>% 
+    uses <- CUL %>% 
       dplyr::filter(Sector == sectors[j]) 
-    y <- y[,names(x)]  #same column layout
+    uses <- uses[,names(x)]  #same column layout
     
     
     #create a depleted slot   
@@ -175,7 +175,12 @@ for (i in 1:length(nodes)) {
         dplyr::filter(Slot == "Depletion Requested")
       depleted <- x %>%
         dplyr::filter(Slot == "Depletion Shortage")
-      
+    
+    #for stats later  
+    precntshorted <- sum(depleted$Value)/sum(requested$Value)*100  
+    annrequest <- sum(requested$Value)/19 
+    
+        
     depleted$Value = requested$Value - depleted$Value   
     depleted$Slot = rep("Depletion",times = length(depleted$Slot))
     
@@ -184,8 +189,6 @@ for (i in 1:length(nodes)) {
     # # Adding factors so ggplot does not alphebetize legend
     xx$Slot = factor(xx$Slot, levels=c("Depletion Requested","Depletion","CUL"))
     
-    head(xx)
-    head(CUL)
     
       
     #annual  
@@ -206,8 +209,90 @@ for (i in 1:length(nodes)) {
       geom_line() +
       labs(title = paste(nodes[i],sectors[j]), y = "Depletions (AF/mo)")
     print(p)
-      
-      
+    
+    
+    # % monthly / annual distribution plot 
+    p <- xx %>% 
+      group_by(Slot,Year) %>%
+      mutate(Distirubtion = Value/sum(Value)) %>% 
+      group_by(Slot,MonthNum) %>%
+      summarise(Distirubtion = mean(Distirubtion)) %>% 
+      ggplot(aes(x = MonthNum, y = Distirubtion, color = Slot)) +
+      geom_line() +
+      labs(title = paste(nodes[i],sectors[j],"Distribution"), y = "Monthly Distribution",x="Month")
+    print(p)
+    
+    #overwrite this line if want to calculate MAE and BIAS as Depletion - CUL (credit for shortage)
+    depleted <- requested     #in my workbooks I calculted the MAE and BIAS as Requested - CUL 
+
+    
+    #monthly MAE and bias 
+    depleted$CUL <- uses$Value
+    
+    zz <- depleted %>% 
+      mutate(Diff = Value - CUL)  %>% 
+      mutate(absDiff = abs(Value - CUL))  
+    
+    monbias <- zz %>%
+      group_by(MonthNum) %>%
+      summarise(Bias = mean(Diff)) %>%
+      round()
+    
+    monMAE <- zz %>%
+      group_by(MonthNum) %>%
+      summarise(MAE = mean(absDiff)) %>%
+      round()
+    
+    #annual MAE and bias 
+    # THE ANNUAL is NOT the SUm of the Monthlys! 
+      # zz %>% 
+      # group_by(Year) %>%
+      # # summarise(Diff = mean(Diff)) %>% 
+      # summarise(absDiff = sum(absDiff)) #%>% 
+      # summarise(MAE = mean(absDiff)) #%>% 
+   
+    
+    #sum to annual 
+    anndepleted <- depleted %>% 
+      group_by(Year) %>%
+      summarise(Value = sum(Value)) #%>% 
+    annuses <- uses %>% 
+      group_by(Year) %>%
+      summarise(Value = sum(Value)) #%>% 
+    
+    anndepleted$CUL <- annuses$Value
+    
+    #compute 
+    anndepleted <- anndepleted %>% 
+      mutate(Diff = Value - CUL)  %>% 
+      mutate(absDiff = abs(Value - CUL)) 
+    
+    #mean
+    annbias <- anndepleted %>%
+      summarise(Bias = mean(Diff)) %>%
+      round()
+    annMAE <- anndepleted %>%
+    summarise(MAE = mean(absDiff)) %>%
+      round()
+    
+    error_prec_annual <- round(annMAE/annrequest*100)
+    
+    mystats <- rbind(cbind(monMAE[,2],monbias[,2]),
+            c(annMAE,annbias))
+   
+    #add off stats 
+    mystats <- rbind(mystats,mystats[1:2,])         
+    mystats[14,1] = error_prec_annual
+    mystats[14,2] = NA
+    mystats[15,1] = round(precntshorted)
+    mystats[15,2] = NA
+    
+    row.names(mystats) = c(month.abb,"Annual","% AnnMAE/AnnRequest","Total % Shorted")
+    mystats     
+    
+    write.csv(mystats,file = file.path(ofigs,paste0(nodes[i],sectors[j]," Stats.csv")))
+    
+
 
       
     
