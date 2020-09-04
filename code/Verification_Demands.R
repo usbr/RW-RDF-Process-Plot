@@ -94,7 +94,11 @@ onlythesesectors <- c("Agriculture","Evaporation","Energy","Exports","M & I")   
 #### read demands #####
 # library(openxlsx)
 # allCUL <- read.xlsx(xlsxFile = "C:/Users/cfelletter/Documents/natflowsaltmodel/results/Check/CULbySectorbyCP.xlsx",sheet = 'CULBySector')
-allCUL <- readxl::read_excel(path = "C:/Users/cfelletter/Documents/natflowsaltmodel/results/Check/CULbySectorbyCP.xlsx",sheet = 'CULBySector' )
+# allCUL <- readxl::read_excel(path = "C:/Users/cfelletter/Documents/natflowsaltmodel/results/Check/CULbySectorbyCP.xlsx",sheet = 'CULBySector' ) 
+#update sheet in Master instead so it doesn't break for new years 
+allCUL <- readxl::read_excel(path = "C:/Users/cfelletter/Documents/natflowsaltmodel/results/Check/HistoricCUL_MasterCheck.xlsx",sheet = 'CULBySector' )
+
+
 
 allCUL <- pivot_longer(allCUL, cols = names(allCUL)[3:length(names(allCUL))],names_to = 'Date',values_to = "Value")
 
@@ -129,10 +133,10 @@ i=1
 j=1
 
 
-# pdf(file.path(ofigs,"WUandCULbyCPbySector.pdf"), width=9, height=6)
+pdf(file.path(ofigs,"WUandCULbyCPbySector.pdf"), width=9, height=6)
 
 for (i in 1:length(nodes)) {
-# for (i in 2:4) {
+# for (i in 7:8) {
   
   print(paste("Node",nodes[i]))
   
@@ -160,7 +164,6 @@ for (i in 1:length(nodes)) {
     
     print(paste("Sector",sectors[j]))
     
-    
     x <- WU %>% 
       dplyr::filter(Sector == sectors[j]) %>%
       group_by(Sector,Slot,Year,MonthNum,Date) %>%
@@ -168,8 +171,7 @@ for (i in 1:length(nodes)) {
     uses <- CUL %>% 
       dplyr::filter(Sector == sectors[j]) 
     uses <- uses[,names(x)]  #same column layout
-    
-    
+  
     #create a depleted slot   
     requested <- x %>%
         dplyr::filter(Slot == "Depletion Requested")
@@ -179,18 +181,15 @@ for (i in 1:length(nodes)) {
     #for stats later  
     precntshorted <- sum(depleted$Value)/sum(requested$Value)*100  
     annrequest <- sum(requested$Value)/19 
-    
         
     depleted$Value = requested$Value - depleted$Value   
     depleted$Slot = rep("Depletion",times = length(depleted$Slot))
     
-    xx <- rbind.data.frame(requested,depleted,y)
+    xx <- rbind.data.frame(requested,depleted,uses)
     
     # # Adding factors so ggplot does not alphebetize legend
     xx$Slot = factor(xx$Slot, levels=c("Depletion Requested","Depletion","CUL"))
     
-    
-      
     #annual  
     p <- xx %>% 
       group_by(Slot,Year) %>%
@@ -223,9 +222,10 @@ for (i in 1:length(nodes)) {
     print(p)
     
     #overwrite this line if want to calculate MAE and BIAS as Depletion - CUL (credit for shortage)
-    depleted <- requested     #in my workbooks I calculted the MAE and BIAS as Requested - CUL 
+    # depleted <- requested     
+    #in my workbooks I calculted the MAE and BIAS as 
+    #All other sectors were Requested - CUL for 
 
-    
     #monthly MAE and bias 
     depleted$CUL <- uses$Value
     
@@ -242,15 +242,6 @@ for (i in 1:length(nodes)) {
       group_by(MonthNum) %>%
       summarise(MAE = mean(absDiff)) %>%
       round()
-    
-    #annual MAE and bias 
-    # THE ANNUAL is NOT the SUm of the Monthlys! 
-      # zz %>% 
-      # group_by(Year) %>%
-      # # summarise(Diff = mean(Diff)) %>% 
-      # summarise(absDiff = sum(absDiff)) #%>% 
-      # summarise(MAE = mean(absDiff)) #%>% 
-   
     
     #sum to annual 
     anndepleted <- depleted %>% 
@@ -288,21 +279,21 @@ for (i in 1:length(nodes)) {
     mystats[15,2] = NA
     
     row.names(mystats) = c(month.abb,"Annual","% AnnMAE/AnnRequest","Total % Shorted")
-    mystats     
+    # mystats     
     
-    write.csv(mystats,file = file.path(ofigs,paste0(nodes[i],sectors[j]," Stats.csv")))
+    colnames(mystats) = paste(sectors[j],colnames(mystats)) 
     
-
-
+    if (j == 1){
+      allstats <- mystats 
+    } else {
+      allstats <- cbind(allstats,mystats )
       
-    
+        } 
     
   } #end if no data 
+    write.csv(allstats,file = file.path(ofigs,paste0(nodes[i]," Stats.csv")))
 
-    
   } #end sector loop 
-    
-    
 
 
 } #end node loop
