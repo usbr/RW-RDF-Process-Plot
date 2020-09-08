@@ -1,4 +1,4 @@
-#### #Replaced by Verification_GageDemands.R ########
+#### Combined Gage and Use Verificaiton Script ########
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 1. Set Up ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -16,7 +16,6 @@ CRSSDIR <- Sys.getenv("CRSS_DIR")
 results_dir <- file.path(CRSSDIR,"results") 
 # # where rdf results folder is kept
 
-
 ### Fix this in Verification Demand code ########
 scen_dir <- file.path(CRSSDIR,"Scenario")
 # #containing the sub folders for each ensemble
@@ -33,7 +32,6 @@ if (!file.exists(ofigs)) {
   message(paste('Creating folder:', ofigs))
   dir.create(ofigs)
 }
-
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
@@ -96,14 +94,14 @@ tmp <- str_split(allWU$ObjectSlot, ":", n = 2, simplify = TRUE)
 allWU['agg_div'] = tmp[,1]
 
 #split off object.slot
-tmp2 <- str_split(allWU$ObjectSlot, ".D", n = 2, simplify = TRUE)
+tmp2 <- str_split(allWU$ObjectSlot, ".Deplet", n = 2, simplify = TRUE)
 #### this might be messing up some objects
 # unique(tmp2[,2])
 # head(tmp2)
 
 allWU['object'] = tmp2[,1]
 
-allWU['Slot'] = paste0(rep("D",length(tmp2[,2])),tmp2[,2]) #fix the d 
+allWU['Slot'] = paste0(rep("Deplet",length(tmp2[,2])),tmp2[,2]) #fix the d 
 
 rm(tmp,tmp2)
 
@@ -142,7 +140,6 @@ allCUL$Year = as.numeric(format.Date(allCUL$Date, format = "%Y"))
 #get a numeric month number - NOT SURE I NEED THIS 
 allCUL$MonthNum = as.numeric(format.Date(allCUL$Date, format = "%m"))
 allCUL$Slot = rep("CUL",times=length(allCUL$Date))
-head(allCUL)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Plot Figures 
@@ -161,14 +158,14 @@ if(!(length(outflows) == length(gages)))
   stop('Please ensure Nodes, Gages, Outflows are set correctly.')
 
 
-pdf(file.path(ofigs,"WUandCULbyCPbySector.pdf"), width=9, height=6)
+# pdf(file.path(ofigs,"WUandCULbyCPbySector.pdf"), width=9, height=6) #disable below if enable
 
 for (i in 1:length(nodes)) {
 # for (i in 7:8) {
   
   print(paste("Node",nodes[i]))
   
-  # pdf(file = file.path(ofigs,paste0(nodes[i]," Use.pdf"), width=9, height=6))
+  pdf(file = file.path(ofigs,paste0(nodes[i]," Use.pdf")), width=9, height=6)
   
   #### #### A. Gage vs Model Outflow  ####  ####
   
@@ -207,22 +204,18 @@ for (i in 1:length(nodes)) {
   print(p)
   
   #annual metrics 
-  mae <- sum(abs(diff$Value))/length(diff$Value)
-  bias <- sum(diff$Value)/length(diff$Value)
-  error_perc <- mae/mean(gage$Value)
-  ann_avgflow <- mean(gage$Value)
-  
-  
+  mae <- round(sum(abs(diff$Value))/length(diff$Value))
+  bias <- round(sum(diff$Value)/length(diff$Value))
+  error_perc <- round(mae/mean(gage$Value)*100)
+
   # print(paste(title,"mae",mae,"bais",bias,"error % of gage",error_perc*100))
-  
   
   #create a sperate matrix of annual stats to store the % of gage erorr 
   if(i==1){
-    annstats <- array(c(outflows[i],mae,bias,error_perc*100)) #c(outflows[i],mae,bias,error_perc*100)
+    annstats <- array(c(outflows[i],mae,bias,error_perc)) #c(outflows[i],mae,bias,error_perc*100)
   } else {
-    annstats <- rbind(annstats,c(outflows[i],mae,bias,error_perc*100))
+    annstats <- rbind(annstats,c(outflows[i],mae,bias,error_perc))
   }
-  
   
   #### monthly #####  
   
@@ -230,7 +223,6 @@ for (i in 1:length(nodes)) {
   p <- df_monthly %>%
     dplyr::filter(Variable == gages[i] | Variable == outflows[i]) %>%
     dplyr::group_by(Date, Variable) %>%
-    # dplyr::mutate(Value = Value/1000) %>% 
     ggplot(aes(x = Date, y = Value, color = Variable)) +
     geom_line() +
     theme_light() + 
@@ -263,18 +255,16 @@ for (i in 1:length(nodes)) {
   
   metrics <- diff %>%
     dplyr::group_by(MonthNum) %>%
-    summarise('MAE' = mean(abs(Value)),'Bias' = mean(Value)) #%>%
+    summarise('MAE' = round(mean(abs(Value))),'Bias' = round(mean(Value))) #%>%
   # metrics  
   
   ann_metrics <- metrics[1,] 
   ann_metrics[1,] = as.list(c(0,mae,bias))
   # ann_metrics
   
-  
-  metrics = rbind.data.frame(metrics,ann_metrics)
+  metrics = rbind.data.frame(metrics,ann_metrics,c(NA,error_perc,NA))
   
   # write.csv(metrics,file = file.path(results_dir,paste0(gages[i],".csv")))
-  
   
   #### #### B. Sector Plots   ####  ####
   
@@ -357,10 +347,15 @@ for (i in 1:length(nodes)) {
       group_by(Slot,MonthNum) %>%
       summarise(Distirubtion = mean(Distirubtion)) %>% 
       ggplot(aes(x = MonthNum, y = Distirubtion, color = Slot)) +
+      theme_light() + 
       scale_y_continuous(labels = scales::percent) + 
+      scale_x_continuous(breaks = 1:12,labels = month.abb) + 
       geom_line() +
       labs(title = paste(nodes[i],sectors[j],"Distribution"), y = "Monthly Distribution",x="Month")
     print(p)
+    
+    
+      
     
     #overwrite this line if want to calculate MAE and BIAS as Depletion - CUL (credit for shortage)
     # depleted <- requested     
@@ -434,16 +429,22 @@ for (i in 1:length(nodes)) {
     
   } #end for sectors loop
     
-    cbind(rbind(metrics,NA),mystats)
     
-    
-    write.csv(allstats,file = file.path(ofigs,paste0(nodes[i]," Stats.csv")))
+    # write.csv(allstats,file = file.path(ofigs,paste0(nodes[i]," Stats.csv")))
+    # cbind(rbind(metrics[,2:3],NA),allstats)
+    write.csv(cbind(rbind(metrics[,2:3],NA),allstats),
+              file = file.path(ofigs,paste0(nodes[i]," Stats.csv")))
 
   } #end if sectors > 0  
+  
+  dev.off()
 
 
 } #end node loop
 
-dev.off()
+# dev.off() #mega plot 
 
-
+colnames(annstats) <- c("Reach","MAE","Bais","Error % of gage")
+rownames(annstats) <- nodes
+annstats
+write.csv(annstats[,2:4],file = file.path(ofigs,paste0("AnnualVerificationStats.csv")))
