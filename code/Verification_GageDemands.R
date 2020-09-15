@@ -23,7 +23,7 @@ scens <- "DemandVerification" # file name for where results are stored and for f
 # scens <- "HistoricalModel_9010_VerificationRun"
 # scens <- "Verification_UpCO_TMD" # file name for where results are stored and for folder in /results/
 scens <- "Unlinked_NoRRNF"
-scens <- "Linked_NoRRNF"
+scens <- "Linked_NoRRNF" #### REMBMEBER VerificationGAGE.RDF doesn't change so don't copy
 
 file_dir <- file.path(scen_dir, scens[1])
 
@@ -131,7 +131,7 @@ nodes <- c("1 Glenwood","2 Cameo","4 Blue Mesa","6 Grand Junction","7 Dolores",
            "17 San Rafael","18 Archuleta","19 Bluff","20 Lee's Ferry")
 
 # sectors <- unique(allWU$Sector)
-onlythesesectors <- c("Agriculture","Evaporation","Energy","Exports","M & I")        #"Minerals", "Environmental","Lease" ,"Fish & Wildlife"
+onlythesesectors <- c("Agriculture","Evaporation","Energy","Exports","M & I","Minerals")        #"Minerals", "Environmental","Lease" ,"Fish & Wildlife"
     
 
 #### #### C. Read CU&L data  ####  ####
@@ -165,9 +165,9 @@ if(!(length(outflows) == length(gages)))
 
 # pdf(file.path(ofigs,"WUandCULbyCPbySector.pdf"), width=9, height=6) #disable below if enable
 
-for (i in 1:length(nodes)) {
+# for (i in 1:length(nodes)) {
 # for (i in 7:8) {
-# for (i in 1:1) {
+for (i in 1:2) {
 # for (i in c(1,12)) {
   
   
@@ -299,11 +299,28 @@ for (i in 1:length(nodes)) {
   print(p)
 
   
+  
+  # # what to do about sectors unique to CRSS?
+  # sct <- "Environmental" #"Lease" "Environmental" "Fish & Wildlife"  "Minerals"   #Fish & Wildlife only in LB                             
+  # sort(unique(allWU[which(allWU$Sector == sct),]$Node)) #some sectors have mineraals and some don't, they don't match up 
+  
+  # add CUL stockpond, livestock and minearls into sectors evap, ag, energy
+  CUL[which(CUL$Sector == "Evaporation"),]$Value = CUL[which(CUL$Sector == "Evaporation"),]$Value + CUL[which(CUL$Sector == "Stockpond"),]$Value
+  CUL[which(CUL$Sector == "Agriculture"),]$Value = CUL[which(CUL$Sector == "Agriculture"),]$Value + CUL[which(CUL$Sector == "Livestock"),]$Value
+  
+  unique(allCUL[which(allCUL$Sector == "Minerals"),]$Node)
+  sort(unique(allWU[which(allWU$Sector == "Minerals"),]$Node)) #some sectors have mineraals and some don't, they don't match up 
+  if (sum(WU[which(WU$Sector == "Minerals"),]$Value) == 0){
+    CUL[which(CUL$Sector == "Energy"),]$Value = CUL[which(CUL$Sector == "Energy"),]$Value + CUL[which(CUL$Sector == "Minerals"),]$Value
+    print("No Minerals in CRSS, combining CUL Mineral with CUL Energy")
+  } #some sectors have mineraals and some don't, they don't match up 
+  
   #limit which sectors are plotted 
   sectors <- unique(WU$Sector) #only plot sectors that exisit in CP
-  sectors = sectors[which(sectors %in% onlythesesectors)]
+  sectors = sectors[which(sectors %in% onlythesesectors)] #minearls is now included but only if exisits in WU 
   sectors = sectors[which(sectors %in% unique(CUL$Sector))]
   # sectors
+  
   
   #filter out all unused sectors and slots 
   WU <- WU %>%
@@ -407,7 +424,16 @@ for (i in 1:length(nodes)) {
       group_by(Slot,Year) %>%
       mutate(Distirubtion = Value/sum(Value)) %>% 
       group_by(Slot,MonthNum) %>%
-      summarise(Distirubtion = mean(Distirubtion)) %>% 
+      summarise(Distirubtion = mean(Distirubtion)) 
+    
+    #save the CUL distribution to apply as new distribution factor 
+    sctrdist<-p[which(p$Slot == "CUL"),] 
+    sctrdist <- cbind(sctrdist,p[which(p$Slot == "Depletion Requested"),]$Distirubtion)[,3:4]
+    colnames(sctrdist) = c(paste("CUL",sectors[j]),paste("CRSS",sectors[j]))
+    # sctrdist
+    
+    #finish distribution plot 
+    p <- p %>% 
       ggplot(aes(x = MonthNum, y = Distirubtion, color = Slot)) +
       theme_light() + 
       scale_y_continuous(labels = scales::percent) + 
@@ -417,10 +443,8 @@ for (i in 1:length(nodes)) {
       labs(title = paste(nodes[i],sectors[j],"Distribution"), y = "Monthly Distribution",x="Month")
     print(p)
     
-    #overwrite this line if want to calculate MAE and BIAS as Depletion - CUL (credit for shortage)
-    # depleted <- requested     
-    #in my workbooks I calculted the MAE and BIAS as 
-    #All other sectors were Requested - CUL for 
+    #enable the below line if want to calculate MAE and BIAS as Depletion Requested - CUL (credit for shortage)
+    # depleted <- requested # inccorrect method how I did other sectors beyond ag in my intial wbs    
 
     #monthly MAE and bias 
     depleted$CUL <- uses$Value
@@ -481,8 +505,10 @@ for (i in 1:length(nodes)) {
     
     if (j == 1){
       allstats <- mystats 
+      allsctrdist <- sctrdist 
     } else {
       allstats <- cbind(allstats,mystats )
+      allsctrdist <- cbind(allsctrdist,sctrdist )
       
     } 
     
@@ -491,6 +517,10 @@ for (i in 1:length(nodes)) {
     #combine metrics from out-gage with allstats from demands analysis 
     write.csv(cbind(rbind(metrics[,2:3],NA),allstats),
               file = file.path(ofigs,paste0(nodes[i]," Stats.csv")))
+    
+    #write sector monthly distributions 
+    write.csv(allsctrdist,
+              file = file.path(ofigs,paste0(nodes[i]," SectorMonthlyDistribution.csv")))
 
   } #end if sectors > 0  
   
