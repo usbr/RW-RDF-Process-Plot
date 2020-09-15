@@ -17,21 +17,21 @@ Verification.rdf,SanRafaelRiver.Outflow,cy,sum,NA,NA,17_Simulated_SanRafaelRiver
 Verification.rdf,SJAboveNavajo.Outflow,cy,sum,NA,NA,18_Simulated_SJAboveNavajo
 Verification.rdf,LowerSanJuanRiver.Outflow,cy,sum,NA,NA,19_Simulated_LowerSanJuanRiver
 Verification.rdf,SanJuanPowell.Outflow,cy,sum,NA,NA,20_Simulated_SanJuanPowell
-Verification.rdf,ColoradoNearGlenwoodSprings.Gage Outflow,cy,sum,NA,NA,1_Gage_ColoradoNearGlenwoodSprings
-Verification.rdf,ColoradoNearCameo.Gage Outflow,cy,sum,NA,NA,2_Gage_ColoradoNearCameo
-Verification.rdf,BlueMesa.Inflow,cy,sum,NA,NA,3_Gage_BlueMesa
-Verification.rdf,GunnisonNearGrandJunction.Gage Outflow,cy,sum,NA,NA,6_Gage_GunnisonNearGrandJunction
-Verification.rdf,DoloresNearCisco.Gage Outflow,cy,sum,NA,NA,7_Gage_DoloresNearCisco
-Verification.rdf,ColoradoNearCisco.Gage Outflow,cy,sum,NA,NA,8_Gage_ColoradoNearCisco
-Verification.rdf,Fontenelle.Inflow,cy,sum,NA,NA,9_Gage_Fontenelle
-Verification.rdf,GreenAtGreenRiverWY.Gage Outflow,cy,sum,NA,NA,10_Gage_GreenAtGreenRiverWY
-Verification.rdf,FlamingGorge.Inflow,cy,sum,NA,NA,11_Gage_FlamingGorge
-Verification.rdf,LittleSnakeNearLily.Gage Outflow,cy,sum,NA,NA,12_Gage_LittleSnakeNearLily
-Verification.rdf,YampaNearMaybell.Gage Outflow,cy,sum,NA,NA,13_Gage_YampaNearMaybell
-Verification.rdf,DuchesneNearRandlett.Gage Outflow,cy,sum,NA,NA,14_Gage_DuchesneNearRandlett
-Verification.rdf,WhiteNearWatson.Gage Outflow,cy,sum,NA,NA,15_Gage_WhiteNearWatson
-Verification.rdf,GreenAtGreenRiverUT.Gage Outflow,cy,sum,NA,NA,16_Gage_GreenAtGreenRiverUT
-Verification.rdf,SanRafaelNearGreenRiverUT.Gage Outflow,cy,sum,NA,NA,17_Gage_SanRafaelNearGreenRiverUT
-Verification.rdf,SanJuanNearArchuleta.Gage Outflow,cy,sum,NA,NA,18_Gage_SanJuanNearArchuleta
-Verification.rdf,SanJuanNearBluff.Gage Outflow,cy,sum,NA,NA,19_Gage_SanJuanNearBluff
-Verification.rdf,Powell.Inflow,cy,sum,NA,NA,20_Gage_Powell
+VerificationGage.rdf,ColoradoNearGlenwoodSprings.Gage Outflow,cy,sum,NA,NA,1_Gage_ColoradoNearGlenwoodSprings
+VerificationGage.rdf,ColoradoNearCameo.Gage Outflow,cy,sum,NA,NA,2_Gage_ColoradoNearCameo
+VerificationGage.rdf,BlueMesa.Inflow,cy,sum,NA,NA,3_Gage_BlueMesa
+VerificationGage.rdf,GunnisonNearGrandJunction.Gage Outflow,cy,sum,NA,NA,6_Gage_GunnisonNearGrandJunction
+VerificationGage.rdf,DoloresNearCisco.Gage Outflow,cy,sum,NA,NA,7_Gage_DoloresNearCisco
+VerificationGage.rdf,ColoradoNearCisco.Gage Outflow,cy,sum,NA,NA,8_Gage_ColoradoNearCisco
+VerificationGage.rdf,Fontenelle.Inflow,cy,sum,NA,NA,9_Gage_Fontenelle
+VerificationGage.rdf,GreenAtGreenRiverWY.Gage Outflow,cy,sum,NA,NA,10_Gage_GreenAtGreenRiverWY
+VerificationGage.rdf,FlamingGorge.Inflow,cy,sum,NA,NA,11_Gage_FlamingGorge
+VerificationGage.rdf,LittleSnakeNearLily.Gage Outflow,cy,sum,NA,NA,12_Gage_LittleSnakeNearLily
+VerificationGage.rdf,YampaNearMaybell.Gage Outflow,cy,sum,NA,NA,13_Gage_YampaNearMaybell
+VerificationGage.rdf,DuchesneNearRandlett.Gage Outflow,cy,sum,NA,NA,14_Gage_DuchesneNearRandlett
+VerificationGage.rdf,WhiteNearWatson.Gage Outflow,cy,sum,NA,NA,15_Gage_WhiteNearWatson
+VerificationGage.rdf,GreenAtGreenRiverUT.Gage Outflow,cy,sum,NA,NA,16_Gage_GreenAtGreenRiverUT
+VerificationGage.rdf,SanRafaelNearGreenRiverUT.Gage Outflow,cy,sum,NA,NA,17_Gage_SanRafaelNearGreenRiverUT
+VerificationGage.rdf,SanJuanNearArchuleta.Gage Outflow,cy,sum,NA,NA,18_Gage_SanJuanNearArchuleta
+VerificationGage.rdf,SanJuanNearBluff.Gage Outflow,cy,sum,NA,NA,19_Gage_SanJuanNearBluff
+VerificationGage.rdf,Powell.Inflow,cy,sum,NA,NA,20_Gage_Powell
