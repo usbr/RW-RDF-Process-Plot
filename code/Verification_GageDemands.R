@@ -22,8 +22,8 @@ scen_dir <- file.path(CRSSDIR,"Scenario")
 scens <- "DemandVerification" # file name for where results are stored and for folder in /results/
 # scens <- "HistoricalModel_9010_VerificationRun"
 # scens <- "Verification_UpCO_TMD" # file name for where results are stored and for folder in /results/
-scens <- "Unlinked_NoRRNF"
-scens <- "Linked_NoRRNF" #### REMBMEBER VerificationGAGE.RDF doesn't change so don't copy
+# scens <- "Linked_NoRRNF" #"Unlinked_NoRRNF"
+# scens <- "Linked_NoRRNF_TMD_AgGRWYGdale" #"Linked_NoRRNF" #### REMBMEBER VerificationGAGE.RDF doesn't change so don't copy
 
 file_dir <- file.path(scen_dir, scens[1])
 
@@ -37,6 +37,9 @@ if (!file.exists(ofigs)) {
   message(paste('Creating folder:', ofigs))
   dir.create(ofigs)
 }
+
+
+
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
@@ -156,8 +159,24 @@ y_lab_mon = "Flow (ac-ft/mo)"
 mycolors <- c("#009E73","#6bbd28","#0072B2") #for Sector plots dark green, light green, blue 
 mylinetypes <- c("dashed","solid","solid")
 
+printfigs<-T#make png figures 
+widthfull<-9.5
+heightfull<-7
+
+w_ansector<-5
+h_ansector<-3
+
+w_monsector<-6.5
+h_monsector<-4.2
+
+
+
 i=1
 j=1
+
+
+
+
 
 if(!(length(outflows) == length(gages)))
   stop('Please ensure Nodes, Gages, Outflows are set correctly.')
@@ -166,10 +185,17 @@ if(!(length(outflows) == length(gages)))
 # pdf(file.path(ofigs,"WUandCULbyCPbySector.pdf"), width=9, height=6) #disable below if enable
 
 # for (i in 1:length(nodes)) {
-# for (i in 7:8) {
-for (i in 1:2) {
+for (i in 12:12) {
+# for (i in 1:2) {
 # for (i in c(1,12)) {
   
+  #create a figure folder
+  if(printfigs==T){
+    if (!file.exists(file.path(ofigs,nodes[i]))) {
+    message(paste('Creating folder:',nodes[i]))
+    dir.create(file.path(ofigs,nodes[i]))
+    }
+  }
   
   print(paste("Node",nodes[i]))
   
@@ -178,9 +204,12 @@ for (i in 1:2) {
   #### #### A. Gage vs Model Outflow  ####  ####
   
   #annual plot
-  p <- df_annual %>%
+  df <- df_annual %>%
     dplyr::filter(Variable == gages[i] | Variable == outflows[i]) %>%
-    dplyr::group_by(Year, Variable) %>%
+    dplyr::group_by(Year, Variable) 
+  
+  
+  p <- df %>%
     ggplot(aes(x = Year, y = Value, color = Variable)) +
     geom_line() +
     theme_light() + 
@@ -191,7 +220,9 @@ for (i in 1:2) {
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(nodes[i],"Annual Flow"), y = y_lab_yr)
   print(p)
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Gage.png")), width = widthfull ,height =  heightfull)}
   
+
   #calculate residual
   gage <- df_annual %>%
     dplyr::filter(Variable == gages[i])
@@ -202,15 +233,19 @@ for (i in 1:2) {
   diff$Variable = rep("Residual",times = length(diff$Variable))
   
   #annual residual
+  diff <- diff %>%
+    dplyr::group_by(Year, Variable) 
   p <- diff %>%
-    dplyr::group_by(Year, Variable) %>%
     ggplot(aes(x = Year, y = Value, color = Variable)) +
     geom_line() +
     theme_light() + 
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste(nodes[i],"Annual Residual"), y = y_lab_yr)
   print(p)
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Resid.png")), width = widthfull ,height =  heightfull)}
   
+  # print(paste(cor(df[which(df$Variable == outflows[i]),]$Value,diff$Value),"Annual Correlation between Flow and Residual"))
+
   #annual metrics 
   mae <- round(sum(abs(diff$Value))/length(diff$Value))
   bias <- round(sum(diff$Value)/length(diff$Value))
@@ -219,7 +254,7 @@ for (i in 1:2) {
   # print(paste(title,"mae",mae,"bais",bias,"error % of gage",error_perc*100))
   
   #create a sperate matrix of annual stats to store the % of gage erorr 
-  if(i==1){
+  if(!exists("annstats") | i==1){
     annstats <- array(c(outflows[i],mae,bias,error_perc,ann_avgflow)) #c(outflows[i],mae,bias,error_perc*100)
   } else {
     annstats <- rbind(annstats,c(outflows[i],mae,bias,error_perc,ann_avgflow))
@@ -241,6 +276,7 @@ for (i in 1:2) {
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(nodes[i],"Monthly Flow"), y = y_lab_mon)
   print(p)
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Gage.png")), width = widthfull ,height =  heightfull)}
   
   #calculate residual
   gage <- df_monthly %>%
@@ -260,6 +296,7 @@ for (i in 1:2) {
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste(nodes[i],"Monthly Residual"), y = y_lab_mon)
   print(p)
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Resid.png")), width = widthfull ,height =  heightfull)}
   
   metrics <- diff %>%
     dplyr::group_by(MonthNum) %>%
@@ -297,8 +334,7 @@ for (i in 1:2) {
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(nodes[i],"Total Annual Demand"), y = "Depletions (AF/yr)")
   print(p)
-
-  
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Total Demand.png")), width = widthfull ,height =  heightfull)}
   
   # # what to do about sectors unique to CRSS?
   # sct <- "Environmental" #"Lease" "Environmental" "Fish & Wildlife"  "Minerals"   #Fish & Wildlife only in LB                             
@@ -373,6 +409,24 @@ for (i in 1:2) {
       labs(title = paste(nodes[i],sectors[j],"Annual"), y = "Depletions (AF/yr)")
     print(p)
     
+    #print small annual plot 
+    if(printfigs==T){ 
+      px <- xx %>% 
+        group_by(Slot,Year) %>%
+        summarise(Value = sum(Value)) %>%
+        # group_by(ObjectSlot)  %>%
+        ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() + 
+        geom_line(aes(linetype=Slot)) +
+        scale_linetype_manual(values = mylinetypes) +
+        scale_color_manual(values = mycolors) + 
+        scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
+        labs(title = sectors[j]) +
+        theme(legend.position = "none", axis.title.x = element_blank(),axis.title.y= element_blank()) 
+      print(px)
+      # ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(nodes[i],sectors[j]," Ann.png")), width = w_ansector,height = h_ansector)
+      ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste(j,sectors[j],"Ann.png")), width = w_ansector,height = h_ansector)
+      }
+    
     #calculate residual
     diff <- xx[which(xx$Slot == "Depletion"),]
     diff$Value = diff$Value - xx[which(xx$Slot == "CUL"),]$Value
@@ -408,6 +462,21 @@ for (i in 1:2) {
     }
     print(p)
     
+    if(printfigs==T){ #print figure of monthly agg
+      px <- xx %>% 
+        group_by(Slot,Date) %>%
+        ggplot(aes(x = Date, y = Value, color = Slot)) +
+        theme_light() + 
+        geom_line(aes(linetype=Slot)) +
+        scale_linetype_manual(values = mylinetypes) +
+        scale_color_manual(values = mycolors) + 
+        scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
+        labs(y = "Depletions (AF/mo)") +
+        theme(legend.position = "none", axis.title.x = element_blank())#,axis.title.y= element_blank())
+      print(px)
+      ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(j,sectors[j]," Mon.png")), width = w_monsector,height = h_monsector)
+      }
+    
    #monthly residual
     p <- diff %>%
       dplyr::group_by(Date, Slot) %>%
@@ -419,21 +488,21 @@ for (i in 1:2) {
     print(p)
     
     # % monthly / annual distribution plot 
-    p <- xx %>% 
+    xx <- xx %>% 
       filter(Slot == "Depletion Requested" | Slot == "CUL") %>%  
       group_by(Slot,Year) %>%
-      mutate(Distirubtion = Value/sum(Value)) %>% 
+      mutate(Distirubtion = Value/sum(Value)) %>%
       group_by(Slot,MonthNum) %>%
       summarise(Distirubtion = mean(Distirubtion)) 
     
     #save the CUL distribution to apply as new distribution factor 
-    sctrdist<-p[which(p$Slot == "CUL"),] 
-    sctrdist <- cbind(sctrdist,p[which(p$Slot == "Depletion Requested"),]$Distirubtion)[,3:4]
+    sctrdist<-xx[which(xx$Slot == "CUL"),] 
+    sctrdist <- cbind(sctrdist,xx[which(xx$Slot == "Depletion Requested"),]$Distirubtion)[,3:4]
     colnames(sctrdist) = c(paste("CUL",sectors[j]),paste("CRSS",sectors[j]))
     # sctrdist
     
     #finish distribution plot 
-    p <- p %>% 
+    p <- xx %>% 
       ggplot(aes(x = MonthNum, y = Distirubtion, color = Slot)) +
       theme_light() + 
       scale_y_continuous(labels = scales::percent) + 
@@ -442,6 +511,19 @@ for (i in 1:2) {
       geom_line() +
       labs(title = paste(nodes[i],sectors[j],"Distribution"), y = "Monthly Distribution",x="Month")
     print(p)
+    
+    if(printfigs==T){ #print figure of monthly agg
+      px <- xx %>% 
+        ggplot(aes(x = MonthNum, y = Distirubtion, color = Slot)) +
+        theme_light() + 
+        scale_y_continuous(labels = scales::percent) + 
+        scale_x_continuous(breaks = 1:12,labels = month.abb) + 
+        scale_color_manual(values = c(mycolors[1],mycolors[3])) + 
+        geom_line() +
+        theme(legend.position = "none", axis.title.x = element_blank(),axis.title.y= element_blank())
+      print(px)
+      ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste(j,sectors[j],"Mon Dist.png")), width = w_ansector,height = h_ansector)
+    }
     
     #enable the below line if want to calculate MAE and BIAS as Depletion Requested - CUL (credit for shortage)
     # depleted <- requested # inccorrect method how I did other sectors beyond ag in my intial wbs    
@@ -512,8 +594,6 @@ for (i in 1:2) {
       
     } 
     
-  } #end for sectors loop
-  
     #combine metrics from out-gage with allstats from demands analysis 
     write.csv(cbind(rbind(metrics[,2:3],NA),allstats),
               file = file.path(ofigs,paste0(nodes[i]," Stats.csv")))
@@ -521,6 +601,8 @@ for (i in 1:2) {
     #write sector monthly distributions 
     write.csv(allsctrdist,
               file = file.path(ofigs,paste0(nodes[i]," SectorMonthlyDistribution.csv")))
+    
+  } #end for sectors loop
 
   } #end if sectors > 0  
   
