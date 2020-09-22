@@ -44,8 +44,9 @@ if (!file.exists(ofigs)) {
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+################################################################################
 #### #### A. Read flow data  ####  ####
+################################################################################
 
 #agg file specifying which slots
 rw_agg_file <- "VerificationRun_rwagg.csv"
@@ -80,10 +81,12 @@ gages <- c("1_Gage_ColoradoNearGlenwoodSprings","2_Gage_ColoradoNearCameo","3_Ga
            "9_Gage_Fontenelle","10_Gage_GreenAtGreenRiverWY","11_Gage_FlamingGorge",
            "12_Gage_LittleSnakeNearLily","13_Gage_YampaNearMaybell","14_Gage_DuchesneNearRandlett",
            "15_Gage_WhiteNearWatson", "16_Gage_GreenAtGreenRiverUT","17_Gage_SanRafaelNearGreenRiverUT",
-           "18_Gage_SanJuanNearArchuleta","19_Gage_SanJuanNearBluff","20_Gage_Powell")   
+           "18_Gage_Navajo","19_Gage_SanJuanNearBluff","20_Gage_Powell")  #"18_Gage_SanJuanNearArchuleta"   
 
 
+################################################################################
 #### #### B. Read water use data  ####  ####
+################################################################################
 
 #### read attributes data to make key ####
 Attributes <- read_xml(x="C:/Users/cfelletter/Documents/CRSS working/DemandUseVerificationRun/Attributes.xml")
@@ -131,13 +134,15 @@ allWU$MonthNum = as.numeric(format.Date(allWU$Date, format = "%m"))
 nodes <- c("1 Glenwood","2 Cameo","4 Blue Mesa","6 Grand Junction","7 Dolores",
            "8 CO River at Cisco","9 Fontenelle","10 Green River WY","11 Greendale",
            "12 Yampa","13 Little Snake","14 Duchesne","15 White River","16 Green River UT",
-           "17 San Rafael","18 Archuleta","19 Bluff","20 Lee's Ferry")
+           "17 San Rafael","18 Archuleta","19 Bluff","20 Lee's Ferry") 
+#even though we are comparing outflow to Navajo.In and FG.In we need node name to be Arch and Greendale to match attributes
 
 # sectors <- unique(allWU$Sector)
 onlythesesectors <- c("Agriculture","Evaporation","Energy","Exports","M & I","Minerals")        #"Minerals", "Environmental","Lease" ,"Fish & Wildlife"
-    
 
+################################################################################
 #### #### C. Read CU&L data  ####  ####
+################################################################################
 allCUL <- readxl::read_excel(path = "C:/Users/cfelletter/Documents/natflowsaltmodel/results/Check/HistoricCUL_MasterCheck.xlsx",sheet = 'CULBySector' )
 
 allCUL <- pivot_longer(allCUL, cols = names(allCUL)[3:length(names(allCUL))],names_to = 'Date',values_to = "Value")
@@ -169,14 +174,8 @@ h_ansector<-3
 w_monsector<-6.5
 h_monsector<-4.2
 
-
-
 i=1
 j=1
-
-
-
-
 
 if(!(length(outflows) == length(gages)))
   stop('Please ensure Nodes, Gages, Outflows are set correctly.')
@@ -185,7 +184,7 @@ if(!(length(outflows) == length(gages)))
 # pdf(file.path(ofigs,"WUandCULbyCPbySector.pdf"), width=9, height=6) #disable below if enable
 
 # for (i in 1:length(nodes)) {
-for (i in 12:12) {
+for (i in 16:16) {
 # for (i in 1:2) {
 # for (i in c(1,12)) {
   
@@ -201,28 +200,37 @@ for (i in 12:12) {
   
   pdf(file = file.path(ofigs,paste0(nodes[i]," Use.pdf")), width=9, height=6)
   
+  ##############################################################################
   #### #### A. Gage vs Model Outflow  ####  ####
+  ##############################################################################
   
   #annual plot
   df <- df_annual %>%
     dplyr::filter(Variable == gages[i] | Variable == outflows[i]) %>%
     dplyr::group_by(Year, Variable) 
   
+  #custom plot parameters for those areas that are compared to Reservoir Inflow rather than gage 
+  if (i %in% c(3,7,9,16)){ #"4 Blue Mesa"  "9 Fontenelle" "11 Greendale" "18 Archuleta"
+    legend_labs <- c("Res Inflow", "Model")
+    node_title <- paste("Above",nodes[i])
+  } else {
+    legend_labs <- c("Gage", "Model")
+    node_title <- nodes[i]
+  }
   
   p <- df %>%
     ggplot(aes(x = Year, y = Value, color = Variable)) +
     geom_line() +
     theme_light() + 
     scale_colour_discrete(#name  ="Legend",  #change legend 
-                            type= c(mycolors[3],mycolors[1]), # customcolors 
-                            breaks=c(gages[i], outflows[i]),
-                            labels=c("Gage", "Model"))  + 
+      type= c(mycolors[3],mycolors[1]), # customcolors 
+      breaks=c(gages[i], outflows[i]),
+      labels=legend_labs)  + 
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
-    labs(title = paste(nodes[i],"Annual Flow"), y = y_lab_yr)
+    labs(title = paste(node_title,"Annual Flow"), y = y_lab_yr)
   print(p)
   if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Gage.png")), width = widthfull ,height =  heightfull)}
   
-
   #calculate residual
   gage <- df_annual %>%
     dplyr::filter(Variable == gages[i])
@@ -240,7 +248,7 @@ for (i in 12:12) {
     geom_line() +
     theme_light() + 
     scale_y_continuous(labels = scales::comma) +
-    labs(title = paste(nodes[i],"Annual Residual"), y = y_lab_yr)
+    labs(title = paste(node_title,"Annual Residual"), y = y_lab_yr)
   print(p)
   if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Resid.png")), width = widthfull ,height =  heightfull)}
   
@@ -272,9 +280,9 @@ for (i in 12:12) {
     scale_colour_discrete(#name  ="Legend",  #change legend 
       type= c(mycolors[3],mycolors[1]), # customcolors 
       breaks=c(gages[i], outflows[i]),
-      labels=c("Gage", "Model"))  + 
+      labels=legend_labs)  + 
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
-    labs(title = paste(nodes[i],"Monthly Flow"), y = y_lab_mon)
+    labs(title = paste(node_title,"Monthly Flow"), y = y_lab_mon)
   print(p)
   if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Gage.png")), width = widthfull ,height =  heightfull)}
   
@@ -294,7 +302,7 @@ for (i in 12:12) {
     geom_line() +
     theme_light() + 
     scale_y_continuous(labels = scales::comma) +
-    labs(title = paste(nodes[i],"Monthly Residual"), y = y_lab_mon)
+    labs(title = paste(node_title,"Monthly Residual"), y = y_lab_mon)
   print(p)
   if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Resid.png")), width = widthfull ,height =  heightfull)}
   
@@ -308,10 +316,11 @@ for (i in 12:12) {
   # ann_metrics
   
   metrics = rbind.data.frame(metrics,ann_metrics,c(NA,error_perc,NA))
-  
   # write.csv(metrics,file = file.path(results_dir,paste0(gages[i],".csv")))
   
-  #### #### B. Sector Plots   ####  ####
+  ##############################################################################
+  #### #### B. Filter Sector ####  ####
+  ##############################################################################
   
   #filter out all but one node
   WU <- allWU %>%
@@ -325,14 +334,13 @@ for (i in 12:12) {
   
   p <- zz %>% 
     dplyr::filter(Slot %in% c("Depletion Requested","CUL")) %>% 
-  
     group_by(Slot,Year) %>%
     summarise(Value = sum(Value))  %>%
     ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() + 
     geom_line() +
     scale_color_manual(values = c(mycolors[3],mycolors[1])) +
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
-    labs(title = paste(nodes[i],"Total Annual Demand"), y = "Depletions (AF/yr)")
+    labs(title = paste(node_title,"Total Annual Demand"), y = "Depletions (AF/yr)")
   print(p)
   if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Total Demand.png")), width = widthfull ,height =  heightfull)}
   
@@ -344,8 +352,7 @@ for (i in 12:12) {
   CUL[which(CUL$Sector == "Evaporation"),]$Value = CUL[which(CUL$Sector == "Evaporation"),]$Value + CUL[which(CUL$Sector == "Stockpond"),]$Value
   CUL[which(CUL$Sector == "Agriculture"),]$Value = CUL[which(CUL$Sector == "Agriculture"),]$Value + CUL[which(CUL$Sector == "Livestock"),]$Value
   
-  unique(allCUL[which(allCUL$Sector == "Minerals"),]$Node)
-  sort(unique(allWU[which(allWU$Sector == "Minerals"),]$Node)) #some sectors have mineraals and some don't, they don't match up 
+  # sort(unique(allWU[which(allWU$Sector == "Minerals"),]$Node)) #some sectors have mineraals and some don't, they don't match up 
   if (sum(WU[which(WU$Sector == "Minerals"),]$Value) == 0){
     CUL[which(CUL$Sector == "Energy"),]$Value = CUL[which(CUL$Sector == "Energy"),]$Value + CUL[which(CUL$Sector == "Minerals"),]$Value
     print("No Minerals in CRSS, combining CUL Mineral with CUL Energy")
@@ -357,7 +364,6 @@ for (i in 12:12) {
   sectors = sectors[which(sectors %in% unique(CUL$Sector))]
   # sectors
   
-  
   #filter out all unused sectors and slots 
   WU <- WU %>%
     dplyr::filter(Sector %in% sectors) %>%
@@ -365,6 +371,10 @@ for (i in 12:12) {
   CUL <- CUL %>%
     dplyr::filter(Sector %in% sectors) 
 
+##############################################################################
+#### #### C. Sector Plots   ####  ####
+##############################################################################  
+  
   if(length(sectors) > 0){ #have some sector of interest 
   for (j in 1:length(sectors)) {
     
@@ -400,13 +410,12 @@ for (i in 12:12) {
     p <- xx %>% 
       group_by(Slot,Year) %>%
       summarise(Value = sum(Value)) %>%
-      # group_by(ObjectSlot)  %>%
       ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() + 
       geom_line(aes(linetype=Slot)) +
       scale_linetype_manual(values = mylinetypes) +
       scale_color_manual(values = mycolors) + 
       scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
-      labs(title = paste(nodes[i],sectors[j],"Annual"), y = "Depletions (AF/yr)")
+      labs(title = paste(node_title,sectors[j],"Annual"), y = "Depletions (AF/yr)")
     print(p)
     
     #print small annual plot 
@@ -414,7 +423,6 @@ for (i in 12:12) {
       px <- xx %>% 
         group_by(Slot,Year) %>%
         summarise(Value = sum(Value)) %>%
-        # group_by(ObjectSlot)  %>%
         ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() + 
         geom_line(aes(linetype=Slot)) +
         scale_linetype_manual(values = mylinetypes) +
@@ -422,7 +430,7 @@ for (i in 12:12) {
         scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
         labs(title = sectors[j]) +
         theme(legend.position = "none", axis.title.x = element_blank(),axis.title.y= element_blank()) 
-      print(px)
+      # print(px)
       # ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(nodes[i],sectors[j]," Ann.png")), width = w_ansector,height = h_ansector)
       ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste(j,sectors[j],"Ann.png")), width = w_ansector,height = h_ansector)
       }
@@ -436,11 +444,10 @@ for (i in 12:12) {
     p <- diff %>% 
       group_by(Slot,Year) %>%
       summarise(Value = sum(Value)) %>%
-      # group_by(ObjectSlot)  %>%
       ggplot(aes(x = Year, y = Value, color = Slot)) +  theme_light() + 
       geom_line() +
       scale_y_continuous(labels = scales::comma) +
-      labs(title = paste(nodes[i],sectors[j],"Annual Residual"), y = "Depletions (AF/yr)")
+      labs(title = paste(node_title,sectors[j],"Annual Residual"), y = "Depletions (AF/yr)")
     print(p)
     
     #monthly 
@@ -451,7 +458,7 @@ for (i in 12:12) {
       geom_line(aes(linetype=Slot)) +
       scale_linetype_manual(values = mylinetypes) +
       scale_color_manual(values = mycolors) + 
-      labs(title = paste(nodes[i],sectors[j],"Monthly"), y = "Depletions (AF/mo)")
+      labs(title = paste(node_title,sectors[j],"Monthly"), y = "Depletions (AF/mo)")
     if (min(xx$Value) < 0) {
       #don't limit y to 0 
       p <- p + 
@@ -473,7 +480,7 @@ for (i in 12:12) {
         scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
         labs(y = "Depletions (AF/mo)") +
         theme(legend.position = "none", axis.title.x = element_blank())#,axis.title.y= element_blank())
-      print(px)
+      # print(px)
       ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(j,sectors[j]," Mon.png")), width = w_monsector,height = h_monsector)
       }
     
@@ -484,7 +491,7 @@ for (i in 12:12) {
       geom_line() +
       theme_light() + 
       scale_y_continuous(labels = scales::comma) +
-      labs(title = paste(nodes[i],sectors[j],"Monthly Residual"), y = "Depletions (AF/mon)")
+      labs(title = paste(node_title,sectors[j],"Monthly Residual"), y = "Depletions (AF/mon)")
     print(p)
     
     # % monthly / annual distribution plot 
@@ -509,7 +516,7 @@ for (i in 12:12) {
       scale_x_continuous(breaks = 1:12,labels = month.abb) + 
       scale_color_manual(values = c(mycolors[1],mycolors[3])) + 
       geom_line() +
-      labs(title = paste(nodes[i],sectors[j],"Distribution"), y = "Monthly Distribution",x="Month")
+      labs(title = paste(node_title,sectors[j],"Distribution"), y = "Monthly Distribution",x="Month")
     print(p)
     
     if(printfigs==T){ #print figure of monthly agg
@@ -521,7 +528,7 @@ for (i in 12:12) {
         scale_color_manual(values = c(mycolors[1],mycolors[3])) + 
         geom_line() +
         theme(legend.position = "none", axis.title.x = element_blank(),axis.title.y= element_blank())
-      print(px)
+      # print(px)
       ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste(j,sectors[j],"Mon Dist.png")), width = w_ansector,height = h_ansector)
     }
     
