@@ -16,14 +16,43 @@ CRSSDIR <- Sys.getenv("CRSS_DIR")
 results_dir <- file.path(CRSSDIR,"results") 
 # # where rdf results folder is kept
 
-### Fix this in Verification Demand code ########
 scen_dir <- file.path(CRSSDIR,"Scenario")
 # #containing the sub folders for each ensemble
 scens <- "DemandVerification" # file name for where results are stored and for folder in /results/
 # scens <- "HistoricalModel_9010_VerificationRun"
 # scens <- "Verification_UpCO_TMD" # file name for where results are stored and for folder in /results/
 # scens <- "Linked_NoRRNF" #"Unlinked_NoRRNF"
-# scens <- "Linked_NoRRNF_TMD_AgGRWYGdale" #"Linked_NoRRNF" #### REMBMEBER VerificationGAGE.RDF doesn't change so don't copy
+# scens <- "Unlinked_NoRRNF" #"Linked_NoRRNF" #### REMBMEBER VerificationGAGE.RDF doesn't change so don't copy
+# scens <- "Unlinked_NoRRNF_NoStarv"# "Unlinked_NewCoeff4States" #  
+
+#### Plot Controls #####
+
+printfigs<-F#T#make png figures 
+
+y_lab_yr = "Flow (ac-ft/yr)"
+y_lab_mon = "Flow (ac-ft/mo)"
+
+mycolors <- c("#009E73","#6bbd28","#0072B2") #for Sector plots dark green, light green, blue 
+mylinetypes <- c("dashed","solid","solid")
+
+#standard powerpoint figure sizes 
+# gage an, an gage resid, gage mon, mon gage resid, total use  
+gage_widths <- c(9.5,9.5,9.5,9.5,9.5)
+gage_heights <- c(7,7,7,7,7)
+# sect an, sect mon, mon sect dist  
+sect_widths <- c(5,6.5,5)
+sect_heights <- c(3,4.2,3)
+
+# #whole basin experiment figure sizes 
+# # sect an, sect mon, mon sect dist  
+# sect_widths <- c(3.33,5,3.33)
+# sect_heights <- c(2,3,2)
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## 3. Process Results 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#### File Checks #####
+
 
 file_dir <- file.path(scen_dir, scens[1])
 
@@ -38,12 +67,6 @@ if (!file.exists(ofigs)) {
   dir.create(ofigs)
 }
 
-
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 3. Process Results 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ################################################################################
 #### #### A. Read flow data  ####  ####
 ################################################################################
@@ -158,35 +181,20 @@ allCUL$Slot = rep("CUL",times=length(allCUL$Date))
 ## 4. Plot Figures 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-y_lab_yr = "Flow (ac-ft/yr)"
-y_lab_mon = "Flow (ac-ft/mo)"
-
-mycolors <- c("#009E73","#6bbd28","#0072B2") #for Sector plots dark green, light green, blue 
-mylinetypes <- c("dashed","solid","solid")
-
-printfigs<-T#make png figures 
-widthfull<-9.5
-heightfull<-7
-
-w_ansector<-5
-h_ansector<-3
-
-w_monsector<-6.5
-h_monsector<-4.2
-
 i=1
 j=1
 
 if(!(length(outflows) == length(gages)))
   stop('Please ensure Nodes, Gages, Outflows are set correctly.')
 
-
 # pdf(file.path(ofigs,"WUandCULbyCPbySector.pdf"), width=9, height=6) #disable below if enable
 
-# for (i in 1:length(nodes)) {
-for (i in 16:16) {
+for (i in 1:length(nodes)) {
+# for (i in 12:12) {
 # for (i in 1:2) {
-# for (i in c(1,12)) {
+# for (i in c(1,2,8,9)) {
+# for (i in c(12,16)) {
+    
   
   #create a figure folder
   if(printfigs==T){
@@ -229,7 +237,7 @@ for (i in 16:16) {
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Annual Flow"), y = y_lab_yr)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Gage.png")), width = widthfull ,height =  heightfull)}
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Gage.png")), width = gage_widths[1],height = gage_heights[1])}
   
   #calculate residual
   gage <- df_annual %>%
@@ -250,7 +258,7 @@ for (i in 16:16) {
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste(node_title,"Annual Residual"), y = y_lab_yr)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Resid.png")), width = widthfull ,height =  heightfull)}
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Resid.png")), width = gage_widths[2],height = gage_heights[2])}
   
   # print(paste(cor(df[which(df$Variable == outflows[i]),]$Value,diff$Value),"Annual Correlation between Flow and Residual"))
 
@@ -284,7 +292,7 @@ for (i in 16:16) {
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Monthly Flow"), y = y_lab_mon)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Gage.png")), width = widthfull ,height =  heightfull)}
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Gage.png")), width = gage_widths[3],height = gage_heights[3])}
   
   #calculate residual
   gage <- df_monthly %>%
@@ -304,7 +312,7 @@ for (i in 16:16) {
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste(node_title,"Monthly Residual"), y = y_lab_mon)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Resid.png")), width = widthfull ,height =  heightfull)}
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Resid.png")), width = gage_widths[4],height = gage_heights[4])}
   
   metrics <- diff %>%
     dplyr::group_by(MonthNum) %>%
@@ -326,7 +334,8 @@ for (i in 16:16) {
   WU <- allWU %>%
     dplyr::filter(Node == nodes[i])
   CUL <- allCUL %>%
-    dplyr::filter(Node == nodes[i])
+    dplyr::filter(Node == nodes[i]) %>%
+    dplyr::filter(Sector != "ResReg") #remove from total demands  
   
   #plot total demand and total CUL 
   zz <- rbind(WU[,c("Date","Value","Year","Slot")], 
@@ -342,7 +351,26 @@ for (i in 16:16) {
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Total Annual Demand"), y = "Depletions (AF/yr)")
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Total Demand.png")), width = widthfull ,height =  heightfull)}
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Total Demand.png")), width = gage_widths[5],height = gage_heights[5])}
+  
+  #plot shortage with flow  
+  xxx <- df_monthly %>%
+    dplyr::filter(Variable == gages[i] | Variable == outflows[i]) %>%
+    mutate(Slot = Variable)
+  flowuse <- rbind.data.frame(zz,xxx[,c("Date","Value","Year","Slot" )])
+  # "Depletion" %in% unique(zz$Slot)  # we don't have a depletion slot yet, I build it later
+  p <- flowuse %>% 
+    dplyr::filter(Slot %in% c("Depletion Requested",outflows[i],"Depletion Shortage","CUL")) %>%
+    # dplyr::filter(Slot %in% c("Depletion Requested","CUL",gages[i],outflows[i],"Depletion Shortage")) %>%
+    group_by(Slot,Year) %>%
+    summarise(Value = sum(Value))  %>%
+    ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() + 
+    geom_line() +
+    scale_color_manual(values = c(mycolors[3],"#eb34de",mycolors[1],mycolors[2])) +
+    # scale_color_manual(values = c(mycolors[3],mycolors[1],mycolors[2])) + #if don't have CUL 
+    scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
+    labs(title = paste(node_title,"Annual Flow-Shortage Relationship"), y = "(AF/yr)")
+  print(p)
   
   # # what to do about sectors unique to CRSS?
   # sct <- "Environmental" #"Lease" "Environmental" "Fish & Wildlife"  "Minerals"   #Fish & Wildlife only in LB                             
@@ -432,7 +460,7 @@ for (i in 16:16) {
         theme(legend.position = "none", axis.title.x = element_blank(),axis.title.y= element_blank()) 
       # print(px)
       # ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(nodes[i],sectors[j]," Ann.png")), width = w_ansector,height = h_ansector)
-      ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste(j,sectors[j],"Ann.png")), width = w_ansector,height = h_ansector)
+      ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste(j,sectors[j],"Ann.png")), width = sect_widths[1],height = sect_heights[1])
       }
     
     #calculate residual
@@ -481,7 +509,7 @@ for (i in 16:16) {
         labs(y = "Depletions (AF/mo)") +
         theme(legend.position = "none", axis.title.x = element_blank())#,axis.title.y= element_blank())
       # print(px)
-      ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(j,sectors[j]," Mon.png")), width = w_monsector,height = h_monsector)
+      ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(j,sectors[j]," Mon.png")), width = sect_widths[2],height = sect_heights[2])
       }
     
    #monthly residual
@@ -529,7 +557,7 @@ for (i in 16:16) {
         geom_line() +
         theme(legend.position = "none", axis.title.x = element_blank(),axis.title.y= element_blank())
       # print(px)
-      ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste(j,sectors[j],"Mon Dist.png")), width = w_ansector,height = h_ansector)
+      ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste(j,sectors[j],"Mon Dist.png")), width = sect_widths[3],height = sect_heights[3])
     }
     
     #enable the below line if want to calculate MAE and BIAS as Depletion Requested - CUL (credit for shortage)
@@ -620,6 +648,17 @@ for (i in 16:16) {
 
 dev.off() #mega plot 
 
-colnames(annstats) <- c("Reach","MAE","Bais","Error % of gage","AA Gage Flow")
-rownames(annstats) <- nodes
-write.csv(annstats[,2:5],file = file.path(ofigs,paste0("AnnualVerificationStats.csv")))
+
+
+#make row names then don't print reach 
+if (dim(annstats)[1]==length(nodes)) { #this should mean you ran all of the traces
+  colnames(annstats) <- c("Reach","MAE","Bais","Error % of gage","AA Gage Flow")
+  annstats <- annstats[,c("Reach","MAE","Bais","AA Gage Flow","Error % of gage")]
+  rownames(annstats) <- nodes
+  write.csv(annstats[,2:5],file = file.path(ofigs,paste0("AnnualVerificationStats.csv")))
+} else {
+  write.csv(annstats,file = file.path(ofigs,paste0("Partial_AnnualVerificationStats.csv")))
+}
+
+
+
