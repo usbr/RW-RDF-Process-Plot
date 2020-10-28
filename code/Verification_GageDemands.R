@@ -18,12 +18,12 @@ results_dir <- file.path(CRSSDIR,"results")
 
 scen_dir <- file.path(CRSSDIR,"Scenario")
 # #containing the sub folders for each ensemble
-scens <- "DemandVerification" # file name for where results are stored and for folder in /results/
-# scens <- "HistoricalModel_9010_VerificationRun"
-# scens <- "Verification_UpCO_TMD" # file name for where results are stored and for folder in /results/
-# scens <- "Linked_NoRRNF" #"Unlinked_NoRRNF"
-# scens <- "Unlinked_NoRRNF" #"Linked_NoRRNF" #### REMBMEBER VerificationGAGE.RDF doesn't change so don't copy
-# scens <- "Unlinked_NoRRNF_NoStarv"# "Unlinked_NewCoeff4States" #  
+# scens <- "DemandVerification" # file name for where results are stored and for folder in /results/
+# scens <- "2007UCRC_Linked" #"2007UCRC_Linked"  #"Linked_RR" #old name HistoricalModel_9010_VerificationRun"
+# scens <-  "NewCoeffv2_Linked_RR" #"NewCoeff4States_Linked_RR"  #"NewCoeff4States_Linked_RR" # file name for where results are stored and for folder in /results/
+# scens <- "Linked_RR" #"Unlinked_NoRRNF"
+scens <- "AllCUL_Linked_RR" # "AllCULExCO_Linked_RR" #"Linked_NoRRNF" #### REMBMEBER VerificationGAGE.RDF doesn't change so don't copy
+# scens <- "AllCULExCO_Linked_RR"# "Unlinked_NewCoeff4States" #
 
 #### Plot Controls #####
 
@@ -110,9 +110,10 @@ gages <- c("1_Gage_ColoradoNearGlenwoodSprings","2_Gage_ColoradoNearCameo","3_Ga
 ################################################################################
 #### #### B. Read water use data  ####  ####
 ################################################################################
-
 #### read attributes data to make key ####
-Attributes <- read_xml(x="C:/Users/cfelletter/Documents/CRSS working/DemandUseVerificationRun/Attributes.xml")
+Attributes <- read_xml(x="C:/Users/cfelletter/Documents/CRSS working/DemandUseVerificationRun/2016_Attributes.xml")
+# Attributes <- read_xml(x="C:/Users/cfelletter/Documents/CRSS working/DemandUseVerificationRun/2007_Attributes.xml")
+
 source("code/get_demand_atts.R") 
 # summary(df)
 
@@ -160,6 +161,9 @@ nodes <- c("1 Glenwood","2 Cameo","4 Blue Mesa","6 Grand Junction","7 Dolores",
            "17 San Rafael","18 Archuleta","19 Bluff","20 Lee's Ferry") 
 #even though we are comparing outflow to Navajo.In and FG.In we need node name to be Arch and Greendale to match attributes
 
+allWU <- allWU %>%
+  dplyr::filter(Node %in% nodes) #filter out LB nodes 
+
 # sectors <- unique(allWU$Sector)
 onlythesesectors <- c("Agriculture","Evaporation","Energy","Exports","M & I","Minerals")        #"Minerals", "Environmental","Lease" ,"Fish & Wildlife"
 
@@ -177,6 +181,9 @@ allCUL$Year = as.numeric(format.Date(allCUL$Date, format = "%Y"))
 allCUL$MonthNum = as.numeric(format.Date(allCUL$Date, format = "%m"))
 allCUL$Slot = rep("CUL",times=length(allCUL$Date))
 
+allCUL <- allCUL %>%
+  dplyr::filter(Sector != "ResReg") #remove from total demands  
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Plot Figures 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -187,13 +194,13 @@ j=1
 if(!(length(outflows) == length(gages)))
   stop('Please ensure Nodes, Gages, Outflows are set correctly.')
 
-# pdf(file.path(ofigs,"WUandCULbyCPbySector.pdf"), width=9, height=6) #disable below if enable
+# pdf(file.path(ofigs,"WUandCULbyCPbySector.pdf"), width=9, height=6) #disable below pdf if enabled
 
-for (i in 1:length(nodes)) {
+# for (i in 1:length(nodes)) {
 # for (i in 12:12) {
-# for (i in 1:2) {
+# for (i in 8:9) {
 # for (i in c(1,2,8,9)) {
-# for (i in c(12,16)) {
+for (i in c(18)) {
     
   
   #create a figure folder
@@ -204,9 +211,36 @@ for (i in 1:length(nodes)) {
     }
   }
   
+  #### DON"T Need to repeat these steps in later code ### 
+  
+  # #plot total demand and total CUL 
+  # zz <- rbind(allWU[,c("Date","Value","Year","Slot")],
+  #             allCUL[,c("Date","Value","Year","Slot")])
+
+  # #create a depleted slot   
+  # requested <- zz %>%
+  #   dplyr::filter(Slot == "Depletion Requested")
+  # depleted <- zz %>%
+  #   dplyr::filter(Slot == "Depletion Shortage")
+  # depleted$Value = requested$Value - depleted$Value   
+  # depleted$Slot = rep("Depletion",times = length(depleted$Slot))
+  # xx <- rbind.data.frame(zz,depleted)
+  # #
+  # p <- xx %>% 
+  #   dplyr::filter(Slot %in% c("Depletion Requested","Depletion","CUL"))  %>% 
+  #   group_by(Slot,Year) %>%
+  #   summarise(Value = sum(Value))  %>%
+  #   ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() + 
+  #   geom_line() +
+  #   scale_color_manual(values = c(mycolors[3],mycolors[2],mycolors[1])) +
+  #   scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
+  #   labs(title = paste("UB Total Annual Demand"), y = "Depletions (AF/yr)")
+  # print(p)
+  # if(printfigs==T){ ggsave(filename = file.path(ofigs,paste0("UB Ann Total Demand",scens,".png")), width = gage_widths[5],height = gage_heights[5])}
+  
   print(paste("Node",nodes[i]))
   
-  pdf(file = file.path(ofigs,paste0(nodes[i]," Use.pdf")), width=9, height=6)
+  pdf(file = file.path(ofigs,paste(nodes[i],scens,"Use.pdf")), width=9, height=6) ### disable if running one big plot including earlier dev.off
   
   ##############################################################################
   #### #### A. Gage vs Model Outflow  ####  ####
@@ -237,7 +271,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Annual Flow"), y = y_lab_yr)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Gage.png")), width = gage_widths[1],height = gage_heights[1])}
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Gage",scens,".png")), width = gage_widths[1],height = gage_heights[1])}
   
   #calculate residual
   gage <- df_annual %>%
@@ -258,7 +292,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste(node_title,"Annual Residual"), y = y_lab_yr)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Resid.png")), width = gage_widths[2],height = gage_heights[2])}
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Resid",scens,".png")), width = gage_widths[2],height = gage_heights[2])}
   
   # print(paste(cor(df[which(df$Variable == outflows[i]),]$Value,diff$Value),"Annual Correlation between Flow and Residual"))
 
@@ -267,7 +301,7 @@ for (i in 1:length(nodes)) {
   bias <- round(sum(diff$Value)/length(diff$Value))
   error_perc <- round(mae/mean(gage$Value)*100)
   ann_avgflow <- round(mean(gage$Value))
-  # print(paste(title,"mae",mae,"bais",bias,"error % of gage",error_perc*100))
+  # print(paste(title,"mae",mae,"bias",bias,"error % of gage",error_perc*100))
   
   #create a sperate matrix of annual stats to store the % of gage erorr 
   if(!exists("annstats") | i==1){
@@ -292,7 +326,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Monthly Flow"), y = y_lab_mon)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Gage.png")), width = gage_widths[3],height = gage_heights[3])}
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Gage",scens,".png")), width = gage_widths[3],height = gage_heights[3])}
   
   #calculate residual
   gage <- df_monthly %>%
@@ -312,7 +346,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste(node_title,"Monthly Residual"), y = y_lab_mon)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Resid.png")), width = gage_widths[4],height = gage_heights[4])}
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Resid",scens,".png")), width = gage_widths[4],height = gage_heights[4])}
   
   metrics <- diff %>%
     dplyr::group_by(MonthNum) %>%
@@ -351,7 +385,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Total Annual Demand"), y = "Depletions (AF/yr)")
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Total Demand.png")), width = gage_widths[5],height = gage_heights[5])}
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Total Demand",scens,".png")), width = gage_widths[5],height = gage_heights[5])}
   
   #plot shortage with flow  
   xxx <- df_monthly %>%
@@ -370,12 +404,10 @@ for (i in 1:length(nodes)) {
     # scale_color_manual(values = c(mycolors[3],mycolors[1],mycolors[2])) + #if don't have CUL 
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Annual Flow-Shortage Relationship"), y = "(AF/yr)")
-  print(p)
+  # print(p)
   
-  # # what to do about sectors unique to CRSS?
-  # sct <- "Environmental" #"Lease" "Environmental" "Fish & Wildlife"  "Minerals"   #Fish & Wildlife only in LB                             
-  # sort(unique(allWU[which(allWU$Sector == sct),]$Node)) #some sectors have mineraals and some don't, they don't match up 
-  
+  # # what to do about sectors unique to CRSS? "Environmental" and "Lease". Fish & Wildlife only in LB                             
+
   # add CUL stockpond, livestock and minearls into sectors evap, ag, energy
   CUL[which(CUL$Sector == "Evaporation"),]$Value = CUL[which(CUL$Sector == "Evaporation"),]$Value + CUL[which(CUL$Sector == "Stockpond"),]$Value
   CUL[which(CUL$Sector == "Agriculture"),]$Value = CUL[which(CUL$Sector == "Agriculture"),]$Value + CUL[which(CUL$Sector == "Livestock"),]$Value
@@ -459,8 +491,8 @@ for (i in 1:length(nodes)) {
         labs(title = sectors[j]) +
         theme(legend.position = "none", axis.title.x = element_blank(),axis.title.y= element_blank()) 
       # print(px)
-      # ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(nodes[i],sectors[j]," Ann.png")), width = w_ansector,height = h_ansector)
-      ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste(j,sectors[j],"Ann.png")), width = sect_widths[1],height = sect_heights[1])
+      # ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(nodes[i],sectors[j]," Ann",scens,".png")), width = w_ansector,height = h_ansector)
+      ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste(j,sectors[j],"Ann",scens,".png")), width = sect_widths[1],height = sect_heights[1])
       }
     
     #calculate residual
@@ -509,7 +541,7 @@ for (i in 1:length(nodes)) {
         labs(y = "Depletions (AF/mo)") +
         theme(legend.position = "none", axis.title.x = element_blank())#,axis.title.y= element_blank())
       # print(px)
-      ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(j,sectors[j]," Mon.png")), width = sect_widths[2],height = sect_heights[2])
+      ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(j,sectors[j]," Mon",scens,".png")), width = sect_widths[2],height = sect_heights[2])
       }
     
    #monthly residual
@@ -631,11 +663,11 @@ for (i in 1:length(nodes)) {
     
     #combine metrics from out-gage with allstats from demands analysis 
     write.csv(cbind(rbind(metrics[,2:3],NA),allstats),
-              file = file.path(ofigs,paste0(nodes[i]," Stats.csv")))
+              file = file.path(ofigs,paste(nodes[i],scens,"Stats.csv")))
     
     #write sector monthly distributions 
     write.csv(allsctrdist,
-              file = file.path(ofigs,paste0(nodes[i]," SectorMonthlyDistribution.csv")))
+              file = file.path(ofigs,paste(nodes[i],scens,"SectorMonthlyDistribution.csv")))
     
   } #end for sectors loop
 
@@ -644,21 +676,19 @@ for (i in 1:length(nodes)) {
   dev.off()
 
 
+#make row names then don't print reach 
+if (dim(annstats)[1]==length(nodes)) { #this should mean you ran all of the traces
+  colnames(annstats) <- c("Reach","MAE","Bias","Error % of gage","AA Gage Flow")
+  annstats <- annstats[,c("Reach","MAE","Bias","AA Gage Flow","Error % of gage")] 
+  rownames(annstats) <- nodes
+  rownames(annstats)[18] <- "Lees Ferry"
+  write.csv(annstats[,2:5],file = file.path(ofigs,paste0("AnnualVerificationStats",scens,".csv")))
+} else {
+  write.csv(annstats,file = file.path(ofigs,paste0("Partial_AnnualVerificationStats",scens,".csv")))
+}
+
 } #end node loop
 
 dev.off() #mega plot 
-
-
-
-#make row names then don't print reach 
-if (dim(annstats)[1]==length(nodes)) { #this should mean you ran all of the traces
-  colnames(annstats) <- c("Reach","MAE","Bais","Error % of gage","AA Gage Flow")
-  annstats <- annstats[,c("Reach","MAE","Bais","AA Gage Flow","Error % of gage")]
-  rownames(annstats) <- nodes
-  write.csv(annstats[,2:5],file = file.path(ofigs,paste0("AnnualVerificationStats.csv")))
-} else {
-  write.csv(annstats,file = file.path(ofigs,paste0("Partial_AnnualVerificationStats.csv")))
-}
-
 
 

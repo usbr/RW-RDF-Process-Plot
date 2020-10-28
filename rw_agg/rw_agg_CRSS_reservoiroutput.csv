@@ -1,0 +1,33 @@
+file,slot,period,summary,eval,t_s,variable
+Res.rdf,Powell.Inflow,asis,NA,NA,NA,Powell.Inflow
+Res.rdf,Powell.Pool Elevation,asis,NA,NA,NA,Powell.Pool Elevation
+Res.rdf,Powell.Outflow,asis,NA,NA,NA,Powell.Outflow
+Res.rdf,Powell.Storage,asis,NA,NA,NA,Powell.Storage
+Res.rdf,Mead.Inflow,asis,NA,NA,NA,Mead.Inflow
+Res.rdf,Mead.Pool Elevation,asis,NA,NA,NA,Mead.Pool Elevation
+Res.rdf,Mead.Outflow,asis,NA,NA,NA,Mead.Outflow
+Res.rdf,Mead.Storage,asis,NA,NA,NA,Mead.Storage
+xtraRes.rdf,Havasu.Inflow,asis,NA,NA,NA,Havasu.Inflow
+Res.rdf,Havasu.Pool Elevation,asis,NA,NA,NA,Havasu.Pool Elevation
+Res.rdf,Havasu.Outflow,asis,NA,NA,NA,Havasu.Outflow
+Res.rdf,Havasu.Storage,asis,NA,NA,NA,Havasu.Storage
+xtraRes.rdf,Mohave.Inflow,asis,NA,NA,NA,Mohave.Inflow
+Res.rdf,Mohave.Pool Elevation,asis,NA,NA,NA,Mohave.Pool Elevation
+Res.rdf,Mohave.Outflow,asis,NA,NA,NA,Mohave.Outflow
+Res.rdf,Mohave.Storage,asis,NA,NA,NA,Mohave.Storage
+UBRes.rdf,FlamingGorge.Inflow,asis,NA,NA,NA,FlamingGorge.Inflow
+UBRes.rdf,FlamingGorge.Pool Elevation,asis,NA,NA,NA,FlamingGorge.Pool Elevation
+UBRes.rdf,FlamingGorge.Outflow,asis,NA,NA,NA,FlamingGorge.Outflow
+UBRes.rdf,FlamingGorge.Storage,asis,NA,NA,NA,FlamingGorge.Storage
+UBRes.rdf,Fontenelle.Inflow,asis,NA,NA,NA,Fontenelle.Inflow
+UBRes.rdf,Fontenelle.Pool Elevation,asis,NA,NA,NA,Fontenelle.Pool Elevation
+UBRes.rdf,Fontenelle.Outflow,asis,NA,NA,NA,Fontenelle.Outflow
+UBRes.rdf,Fontenelle.Storage,asis,NA,NA,NA,Fontenelle.Storage
+UBRes.rdf,BlueMesa.Inflow,asis,NA,NA,NA,BlueMesa.Inflow
+UBRes.rdf,BlueMesa.Pool Elevation,asis,NA,NA,NA,BlueMesa.Pool Elevation
+UBRes.rdf,BlueMesa.Outflow,asis,NA,NA,NA,BlueMesa.Outflow
+UBRes.rdf,BlueMesa.Storage,asis,NA,NA,NA,BlueMesa.Storage
+UBRes.rdf,Navajo.Inflow,asis,NA,NA,NA,Navajo.Inflow
+UBRes.rdf,Navajo.Pool Elevation,asis,NA,NA,NA,Navajo.Pool Elevation
+UBRes.rdf,Navajo.Outflow,asis,NA,NA,NA,Navajo.Outflow
+UBRes.rdf,Navajo.Storage,asis,NA,NA,NA,Navajo.Storage

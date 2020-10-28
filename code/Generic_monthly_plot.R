@@ -103,10 +103,9 @@ generic_monthly_plot <- function(scen_res) {
       dplyr::group_by(Scenario, MonthNum) %>%
       ggplot(aes(Value, color = Scenario)) +
       stat_eexccrv() +
-      scale_x_discrete("Month",labels = month.abb) + #display abb. month names
       labs(title = paste(variable,month.abb[exc_month],"Trace Exceedance",startyr,"-",endyr),
            y = y_lab, caption = caption) +
-      scale_x_continuous("Year",labels = scales::percent) + 
+      scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
       theme(plot.caption = element_text(hjust = 0)) #left justify 
     print(p)
   }
