@@ -1,7 +1,7 @@
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 1. Set Up ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# rm(list=ls()) #clear the enviornment 
+rm(list=ls()) #clear the enviornment
 # 
 # ### Directory Set Up
 # # where scenarios are folder are kept
@@ -18,6 +18,7 @@ results_dir <- file.path(CRSSDIR,"results")
 source('C:/Users/cfelletter/Documents/RW-RDF-Process-Plot/code/Stat_emp_ExcCrv.r')
 source('C:/Users/cfelletter/Documents/RW-RDF-Process-Plot/code/stat-boxplot-custom.r')
 
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -26,12 +27,13 @@ source('C:/Users/cfelletter/Documents/RW-RDF-Process-Plot/code/stat-boxplot-cust
 
 #Font Forecast Model 
 scens <- list(
-  "Offc CRSS" = "Baseline,DNF,2007Dems,IG_DCP,MTOM_Most",
-  "Baseline" = "Base_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
-  "CPM" = "CPM_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
-  "SMB" = "SMB_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
+  # "Offc CRSS" = "Baseline,DNF,2007Dems,IG_DCP,MTOM_Most",
+  "Basecase" = "Base_7001,DNF,2007Dems,IG_Offc,MTOM_Most",  #"Base_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
   "LTSP" = "LTSP_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
-  "All GREAT" = "All_7001,DNF,2007Dems,GREAT_7001,MTOM_Most"
+  "LTSP & SMB" = "LTSP_SMB_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
+  # "CPMBF" = "CPM_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
+  # "SMB" = "SMB_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
+  "LTSP,SMB & CPMBF" = "All_7001,DNF,2007Dems,GREAT_7001,MTOM_Most"
 )
 
 mainScenGroup <- names(scens)[2] #name of the subfolder this analysis will be stored
@@ -45,6 +47,12 @@ Figs <- "7001.pdf"#paste0('FGDev_MonthlyFigs_',startyr,endyr,'.pdf')
 printfigs_monthly<-F#T#make png figures 
 printfigs_daily<-T#T#make png figures since pdfs take FOREVER to open
 printfigs_exceed<-F#T#make png figures 
+
+
+# mycolors <- c("#00ffff","#000076","#FFFF00","#ff0bff","#49ff49") #alphabetical scens
+mycolors <- c("#000076","#ff0bff","#49ff49","#00ffff") #match heather Base, LTSP, LTSP SMB, All
+# heathers color #00ffff - cyan - , #49ff49 green  , #ff0bff purple , #000076 dark blue baseline
+
 
 # mycolors <- c("#009E73","#6bbd28","#0072B2") #for Sector plots dark green, light green, blue 
 # mylinetypes <- c("dashed","solid","solid")
@@ -64,7 +72,6 @@ library(RWDataPlyr)
 #see RWDATPlyr Workflow for more information
 library(CRSSIO)
 # plotEOCYElev() and csVarNames()
-source('Output Data/RDF Process/plottingFunctions.R')
 
 # check folders
 if(!file.exists(file.path(scen_dir, scens[1]))
@@ -142,10 +149,13 @@ scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
 # head(scen_res)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 4. Plot Custom UB Figures 
+## 4. Plot monthly figures  
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 scen_res_monthly <- scen_res
-scen_res <- scen_res_monthly
+# scen_res <- scen_res_monthly
+saveRDS(scen_res_monthly,file = file.path(ofigs,paste0("scen_res_monthly.RDS")))
+# scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
+         
 
 
 ## create a pdf  
@@ -266,246 +276,6 @@ if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste(title,variable
 dev.off()
 
 
-#    -------------------        Percent Exceedance of Traces       ----------------------
-
-
-if (T) { #set true for easy running all plots 
-  ## create a pdf  
-  pdf(file.path(ofigs,paste("Exceedance",Figs)), width=9, height=6)
-  
-  variable = "FlamingGorge.Pool Elevation"
-  var_title_alt_name <- "Flaming Gorge Elevation"
-  y_lab = "Water Surface Elevation (ft)"
-  
-  mycolors <- c("#009E73","#6bbd28","#0072B2","#6bbd28","#0072B2") #for Sector plots dark green, light green, blue
-  mycolors <- c("#00ffff","#000076","#FFFF00","#ff0bff","#49ff49") #alphabetical scens 
-  
-  # heathers color #00ffff - cyan - , #49ff49 green  , #ff0bff purple , #000076 dark blue baseline
-  
-  
-  #all PE Exceed
-  title <- paste(var_title_alt_name)
-  ylims <- c(5840,6060) # heathers GREAT report limits 
-  p <- scen_res_monthly %>%
-    dplyr::filter(Variable == variable) %>%
-    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-    dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-    #all but one month otherwise would lump all the months together
-    dplyr::group_by(Scenario, TraceNumber) %>%
-    mutate(Value = max(Value)) %>%
-    dplyr::group_by(Scenario) %>%
-    ggplot(aes(Value, color = Scenario)) +
-    stat_eexccrv() +
-    scale_color_manual(values = mycolors) +
-    ylim(ylims) +
-    # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
-    labs(title = title,
-         y = y_lab, caption = caption) +
-    scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
-    theme(plot.caption = element_text(hjust = 0)) #left justify 
-  print(p)
-  if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
-  
-  #EOCY PE only
-  title <- paste('EOCY',var_title_alt_name)
-  ylims <- c(5840,6060) # heathers GREAT report limits 
-  exc_month = 12
-  p <- scen_res_monthly %>%
-    dplyr::filter(Variable == variable) %>%
-    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-    dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-    #all but one month otherwise would lump all the months together
-    dplyr::group_by(Scenario) %>%
-    ggplot(aes(Value, color = Scenario)) +
-    stat_eexccrv() +
-    scale_color_manual(values = mycolors) +
-    ylim(ylims) +# geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
-    labs(title = title,
-         y = y_lab, caption = caption) +
-    scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
-    theme(plot.caption = element_text(hjust = 0)) #left justify 
-  print(p)
-  if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
-  
-  #May 1 PE only
-  title <- paste('May 1',var_title_alt_name)
-  exc_month = 4
-  p <- scen_res_monthly %>%
-    dplyr::filter(Variable == variable) %>%
-    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-    dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-    #all but one month otherwise would lump all the months together
-    dplyr::group_by(Scenario) %>%
-    ggplot(aes(Value, color = Scenario)) +
-    stat_eexccrv() +
-    scale_color_manual(values = mycolors) +
-    ylim(ylims) +    # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
-    labs(title = title,
-         y = y_lab, caption = caption) +
-    scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
-    theme(plot.caption = element_text(hjust = 0)) #left justify 
-  print(p)
-  if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
-  
-  
-  caption <- ''
-  y_lab = "Monthly Flow (cfs)"
-  
-  variables = c("FlamingGorge.Outflow","GreenNearJensen.Gage Inflow")
-  var_title_alt_names <- c("Flaming Gorge Monthly Release","Jensen Monthly Flows")
-  # Muth_Avg <- data.frame(yintercept=2000) #could use this but wouldn't be able to loop through 
-  
-  #monthly flow exceed loops
-  for (j in 1:2) {
-    variable = variables[j]
-    var_title_alt_name <- var_title_alt_names[j]
-    
-    #maximum annual release april - july by Trace 
-    exc_month <- c(4,5,6,7) # April - July
-    title <- paste('Maximum Annual',var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
-    ymin <- c(0,0) ; ymax <- c(10000,50000)#old GREAT 
-    p <- scen_res_monthly %>%
-      dplyr::filter(Variable == variable) %>%
-      dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-      dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-      #all but one month otherwise would lump all the months together
-      dplyr::group_by(Scenario, TraceNumber) %>%
-      mutate(Value = max(Value)) %>%
-      dplyr::group_by(Scenario) %>%
-      ggplot(aes(Value, color = Scenario)) +
-      stat_eexccrv() +
-      scale_color_manual(values = mycolors) +
-      # ylim(c(ymin[j],ymax[j])) +
-      coord_cartesian(xlim =c(0,1), ylim = c(ymin[j],ymax[j])) + #don't drop data 
-      labs(title = title,
-           y = y_lab, caption = caption) +
-      scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
-      theme(plot.caption = element_text(hjust = 0)) #left justify 
-    print(p)
-    if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
-    
-    #release april - july  
-    exc_month <- c(4,5,6,7) # April - July
-    title <- paste(var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
-    ymin <- c(0,0) ; ymax <- c(10000,50000)#old GREAT 
-    p <- scen_res_monthly %>%
-      dplyr::filter(Variable == variable) %>%
-      dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-      dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-      #all but one month otherwise would lump all the months together
-      dplyr::group_by(Scenario) %>%
-      ggplot(aes(Value, color = Scenario)) +
-      stat_eexccrv() +
-      # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
-      labs(title = title,
-           y = y_lab, caption = caption) +
-      scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
-      theme(plot.caption = element_text(hjust = 0)) #left justify 
-    print(p)
-    if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
-    
-    exc_month <- c(6) # June
-    title = paste(var_title_alt_name,month.name[exc_month])
-    ymin <- c(0,0) ; ymax <- c(10000,45000)#old GREAT 
-    p <- scen_res_monthly %>%
-      dplyr::filter(Variable == variable) %>%
-      dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-      dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-      #all but one month otherwise would lump all the months together
-      dplyr::group_by(Scenario) %>%
-      ggplot(aes(Value, color = Scenario)) +
-      stat_eexccrv() +
-      # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
-      labs(title = title,
-           y = y_lab, caption = caption) +
-      scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
-      theme(plot.caption = element_text(hjust = 0)) #left justify 
-    print(p)
-    if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
-    
-    exc_month <- c(7) # July
-    title = paste(var_title_alt_name,month.name[exc_month])
-    ymin <- c(0,0) ; ymax <- c(3000,30000)#old GREAT 
-    p <- scen_res_monthly %>%
-      dplyr::filter(Variable == variable) %>%
-      dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-      dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-      #all but one month otherwise would lump all the months together
-      dplyr::group_by(Scenario) %>%
-      ggplot(aes(Value, color = Scenario)) +
-      stat_eexccrv() +
-      # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
-      labs(title = title,
-           y = y_lab, caption = caption) +
-      scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
-      theme(plot.caption = element_text(hjust = 0)) #left justify 
-    print(p)
-    if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
-    
-    exc_month <- c(8,9) # Aug - Sept
-    title <- paste(var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
-    ymin <- c(0,0) ; ymax <- c(3000,6000)#old GREAT 
-    p <- scen_res_monthly %>%
-      dplyr::filter(Variable == variable) %>%
-      dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-      dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-      #all but one month otherwise would lump all the months together
-      dplyr::group_by(Scenario) %>%
-      ggplot(aes(Value, color = Scenario)) +
-      stat_eexccrv() +
-      # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
-      # multi month title
-      labs(title = title,
-           y = y_lab, caption = caption) +
-      scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
-      theme(plot.caption = element_text(hjust = 0)) #left justify 
-    print(p)
-    if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
-    
-    exc_month <- c(10,11) # Oct - Nov
-    title <- paste(var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
-    ymin <- c(0,0) ; ymax <- c(3000,4500)#old GREAT 
-    p <- scen_res_monthly %>%
-      dplyr::filter(Variable == variable) %>%
-      dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-      dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-      #all but one month otherwise would lump all the months together
-      dplyr::group_by(Scenario) %>%
-      ggplot(aes(Value, color = Scenario)) +
-      stat_eexccrv() +  
-      # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
-      # multi month title
-      labs(title = title,
-           y = y_lab, caption = caption) +
-      scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
-      theme(plot.caption = element_text(hjust = 0)) #left justify 
-    print(p)
-    if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste(title,".png")), width = widths[1],height = heights[1])}
-    
-    exc_month <- c(12,1,2) # Dec - Feb
-    title <- paste(var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
-    ymin <- c(0,0) ; ymax <- c(3000,4500)#old GREAT 
-    p <- scen_res_monthly %>%
-      dplyr::filter(Variable == variable) %>%
-      dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-      dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-      #all but one month otherwise would lump all the months together
-      dplyr::group_by(Scenario) %>%
-      ggplot(aes(Value, color = Scenario)) +
-      stat_eexccrv() +
-      # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
-      # multi month title
-      labs(title = title,
-           y = y_lab, caption = caption) +
-      scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
-      theme(plot.caption = element_text(hjust = 0)) #left justify 
-    print(p)
-    if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
-    
-  } #end exceed vars loop
-  
-  dev.off()
-}
 
 #### WORK ON THIS ##### 
 
@@ -525,17 +295,6 @@ if (T) { #set true for easy running all plots
 #   summarise(Value = sum(Value))
 # df
 
-  dplyr::group_by(Scenario, MonthNum) %>%
-  
-  ggplot(aes(x = factor(MonthNum), y = Value, color = Scenario)) +
-  geom_boxplot() +
-  geom_hline(aes(yintercept=yintercept), data=target) +
-  scale_x_discrete("Month",labels = month.abb) + #display abb. month names
-  labs(title = title, y = y_lab)
-print(p)
-
-
-
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -543,22 +302,16 @@ print(p)
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 3. Process Results - Daily ----- NOT TESTED
+## 5. Process and plot Results - Daily ----- NOT TESTED
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-variables <<- c("DailyFlows.FlamingGorgeDaily","DailyFlows.JensenDaily") 
+variables_daily <<- c("DailyFlows.FlamingGorgeDaily","DailyFlows.JensenDaily") 
 rdffile <-  "DailyFlows.rdf"
-# rdffiles <- rep("DailyFlows.rdf",times = length(variables))  #rdf file with slot you want
-startyrs <<- rep(2040,times = length(variables)) #c(2019,2019,2019,2019,2019) #filter out all years > this year # NOT enabled in plot
-endyrs <<- rep(2040,times = length(variables)) #Note: start year same as end year for Daily
-# customcaptions <- rep(NA,times = length(variables)) #c(NA,NA,"Inflow Exceedance",NA) #NA or this will over write the default caption on boxplots
-# custom_y_labs <- rep(NA,times = length(variables)) #c(NA,NA,"Inflow Exceedance",NA) #NA gives defaults, enter if want soemthing different
-# Note: use of custom caption and labels
 
 #Special rw scen agg since RWDataPlyr doesn't support daily
 for (i in 1:length(scens)) {
   
-  # for (j in 1:length(variables)) {
-  # variable <- variables[j]
+  # for (j in 1:length(variables_daily)) {
+  # variable <- variables_daily[j]
   # rdffile <- rdffiles[j]
   
   scen_res_x <- file.path(scen_dir,scens[i],rdffile) %>% #this means "pipe" the data to the next function
@@ -600,6 +353,8 @@ scen_res$JDay = as.numeric(format.Date(scen_res$Timestep, format = "%j"))
 scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
 
 scen_res_daily <- scen_res #save off so don't over write with monthly data 
+saveRDS(scen_res_daily,file = file.path(ofigs,paste0("scen_res_daily.RDS")))
+# scen_res_daily <- readsaveRDS(file = file.path(ofigs,paste0("scen_res_daily.RDS")))
 
 y_lab <- "Daily Flow (cfs)" #default
 caption <- NA
@@ -613,11 +368,9 @@ j=1
 pdf(file.path(ofigs,paste0("Zoom_Daily",Figs)), width=9, height=6)
 
  
-for (j in 1:length(variables)) {
-  variable <- variables[j]
-  title <- variable
-  # startyr <- startyrs[j] 
-  # endyr <- endyrs[j]
+for (j in 1:length(variables_daily)) {
+  variable <- variables_daily[j]
+  title <- var_title_alt_names_daily[j]
   # customcaption <- customcaptions[j]
   # custom_y_lab <- custom_y_labs[j]
     
@@ -698,21 +451,366 @@ dev.off()
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## 7. Process Results - Percent Exceedance of Traces  ----- 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#    ------------------- Requires monthly and daily have ran ----------------------
+# if (!(exists(scen_res_monthly) & exists(scen_res_daily))){warning('monthly & daily need to be processed first')}
+
+
+if (T) { #set true for easy running all plots 
+  ## create a pdf  
+  pdf(file.path(ofigs,paste("Exceedance",Figs)), width=9, height=6)
+  
+  variable = "FlamingGorge.Pool Elevation"
+  var_title_alt_name <- "Flaming Gorge Elevation"
+  y_lab = "Water Surface Elevation (ft)"
+  
+  #all PE Exceed
+  title <- paste(var_title_alt_name)
+  ylims <- c(5840,6060) # heathers GREAT report limits 
+  p <- scen_res_monthly %>%
+    dplyr::filter(Variable == variable) %>%
+    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+    dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+    #all but one month otherwise would lump all the months together
+    dplyr::group_by(Scenario, TraceNumber) %>%
+    mutate(Value = max(Value)) %>%
+    dplyr::group_by(Scenario) %>%
+    ggplot(aes(Value, color = Scenario)) +
+    theme_light() + 
+    stat_eexccrv() +
+    scale_color_manual(values = mycolors) +
+    ylim(ylims) +
+    # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
+    labs(title = title,
+         y = y_lab, caption = caption) +
+    scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
+    theme(plot.caption = element_text(hjust = 0)) #left justify 
+  print(p)
+  if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
+  
+  #EOCY PE only
+  title <- paste('EOCY',var_title_alt_name)
+  ylims <- c(5840,6060) # heathers GREAT report limits 
+  exc_month = 12
+  p <- scen_res_monthly %>%
+    dplyr::filter(Variable == variable) %>%
+    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+    dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+    #all but one month otherwise would lump all the months together
+    dplyr::group_by(Scenario) %>%
+    ggplot(aes(Value, color = Scenario)) +
+    theme_light() + 
+    stat_eexccrv() +
+    scale_color_manual(values = mycolors) +
+    ylim(ylims) +# geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
+    labs(title = title,
+         y = y_lab, caption = caption) +
+    scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
+    theme(plot.caption = element_text(hjust = 0)) #left justify 
+  print(p)
+  if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
+  
+  #May 1 PE only
+  title <- paste('May 1',var_title_alt_name)
+  exc_month = 4
+  p <- scen_res_monthly %>%
+    dplyr::filter(Variable == variable) %>%
+    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+    dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+    #all but one month otherwise would lump all the months together
+    dplyr::group_by(Scenario) %>%
+    ggplot(aes(Value, color = Scenario)) +
+    theme_light() + 
+    stat_eexccrv() +
+    scale_color_manual(values = mycolors) +
+    ylim(ylims) +    # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
+    labs(title = title,
+         y = y_lab, caption = caption) +
+    scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
+    theme(plot.caption = element_text(hjust = 0)) #left justify 
+  print(p)
+  if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
+  
+  
+  caption <- ''
+  
+  variables = c("FlamingGorge.Outflow","GreenNearJensen.Gage Inflow")
+  var_title_alt_names <- c("Flaming Gorge Monthly Release","Jensen Monthly Flows")
+  variables_daily = c("DailyFlows.FlamingGorgeDaily", "DailyFlows.JensenDaily")
+  var_title_alt_names_daily <- c("Flaming Gorge Daily Release","Jensen Daily Flows")
+  # Muth_Avg <- data.frame(yintercept=2000) #could use this but wouldn't be able to loop through
+  j=1
+  ### flow exceed loop ###
+  for (j in 1:2) {
+    
+   
+    # Muth_Avg <- data.frame(yintercept=2000) #could use this but wouldn't be able to loop through 
+    
+    ####  daily  flow April-July ####  
+    
+    y_lab = "Daily Flow (cfs)"
+    variable = variables_daily[j]
+    var_title_alt_name <- var_title_alt_names_daily[j]
+    
+    #maximum annual release april - july by Trace 
+    exc_month <- c(4,5,6,7) # April - July
+    title <- paste('Maximum Annual',var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
+    ymin <- c(0,0) ; ymax <- c(10000,50000)#old GREAT 
+    p <- scen_res_daily %>%
+      dplyr::filter(ObjectSlot == variable) %>% 
+      dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+      dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+      dplyr::group_by(Scenario,Year,TraceNumber) %>% #now I need to get this to summarize one max for the 4 months
+      summarize(Value = max(Value)) %>%  # this works I just am picking monthly so its a avg of the daily. Need max daily 
+      theme_light() + 
+      dplyr::group_by(Scenario) %>% 
+      ggplot(aes(Value, color = Scenario)) +
+      stat_eexccrv() +
+      scale_color_manual(values = mycolors) +
+      # ylim(c(ymin[j],ymax[j])) +
+      coord_cartesian(xlim =c(0,1), ylim = c(ymin[j],ymax[j]), expand = F) + #don't drop data 
+      labs(title = title,
+           y = y_lab, caption = caption) +
+      scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
+      theme(plot.caption = element_text(hjust = 0)) #left justify 
+    print(p)
+    if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
+    
+    
+    #release april - july  
+    exc_month <- c(4,5,6,7) # April - July
+    title <- paste(var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
+    ymin <- c(0,0) ; ymax <- c(10000,50000)#old GREAT 
+    p <- scen_res_daily %>%
+      dplyr::filter(ObjectSlot == variable) %>% 
+      dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+      dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+      #all but one month otherwise would lump all the months together
+      dplyr::group_by(Scenario) %>%
+      ggplot(aes(Value, color = Scenario)) +
+      theme_light() + 
+      stat_eexccrv() +
+      # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
+      labs(title = title,
+           y = y_lab, caption = caption) +
+      scale_x_continuous("Percent Exceedance",labels = scales::percent, expand = c(0,0)) + 
+      scale_y_continuous(limits = c(ymin[j], ymax[j]), expand = c(0,0)) + 
+      theme(plot.caption = element_text(hjust = 0)) #left justify 
+    print(p)
+    if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
+    
+    exc_month <- c(6) # June
+    title = paste(var_title_alt_name,month.name[exc_month])
+    ymin <- c(0,0) ; ymax <- c(10000,45000)#old GREAT 
+    p <- scen_res_daily %>%
+      dplyr::filter(ObjectSlot == variable) %>% 
+      dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+      dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+      #all but one month otherwise would lump all the months together
+      dplyr::group_by(Scenario) %>%
+      ggplot(aes(Value, color = Scenario)) +
+      theme_light() + 
+      stat_eexccrv() +
+      # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
+      labs(title = title,
+           y = y_lab, caption = caption) +
+      scale_x_continuous("Percent Exceedance",labels = scales::percent, expand = c(0,0)) + 
+      scale_y_continuous(limits = c(ymin[j], ymax[j]), expand = c(0,0)) +  
+      theme(plot.caption = element_text(hjust = 0)) #left justify 
+    print(p)
+    if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
+    
+    exc_month <- c(7) # July
+    title = paste(var_title_alt_name,month.name[exc_month])
+    ymin <- c(0,0) ; ymax <- c(3000,30000)#old GREAT 
+    p <- scen_res_daily %>%
+      dplyr::filter(ObjectSlot == variable) %>% 
+      dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+      dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+      #all but one month otherwise would lump all the months together
+      dplyr::group_by(Scenario) %>%
+      ggplot(aes(Value, color = Scenario)) +
+      theme_light() + 
+      stat_eexccrv() +
+      # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
+      labs(title = title,
+           y = y_lab, caption = caption) +
+      scale_x_continuous("Percent Exceedance",labels = scales::percent, expand = c(0,0)) + 
+      scale_y_continuous(limits = c(ymin[j], ymax[j]), expand = c(0,0)) + 
+      theme(plot.caption = element_text(hjust = 0)) #left justify 
+    print(p)
+    if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
+    
+    ####  monthly  flow August-December ####  
+    variable = variables[j]
+    var_title_alt_name <- var_title_alt_names[j]
+    y_lab = "Monthly Flow (cfs)"
+    
+    #   NO LONGER USING MONTHLY FOR APRIL - JULY #maximum annual release april - july by Trace 
+    #   exc_month <- c(4,5,6,7) # April - July
+    #   title <- paste('Maximum Annual',var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
+    #   ymin <- c(0,0) ; ymax <- c(10000,50000)#old GREAT 
+    #   p <- scen_res_monthly %>%
+    #     dplyr::filter(Variable == variable) %>%
+    #     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+    #     dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+    #     #all but one month otherwise would lump all the months together
+    #     # dplyr::group_by(Scenario, TraceNumber) %>%
+    #     # mutate(Value = max(Value)) %>% #confirmed this works to find max value
+    #     dplyr::group_by(Scenario,Year,TraceNumber) %>% #now I need to get this to summarize one max for the 4 months
+    #     summarize(Value = max(Value)) %>%  # this works I just am picking monthly so its a avg of the daily. Need max daily 
+    #     dplyr::group_by(Scenario) %>%
+    #     ggplot(aes(Value, color = Scenario)) +
+    #     stat_eexccrv() +
+    #     scale_color_manual(values = mycolors) +
+    #     # ylim(c(ymin[j],ymax[j])) +
+    #     coord_cartesian(xlim =c(.1,.99), ylim = c(ymin[j],ymax[j])) + #don't drop data 
+    #     labs(title = title,
+    #          y = y_lab, caption = caption) +
+    #     scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
+    #     theme(plot.caption = element_text(hjust = 0)) #left justify 
+    #   print(p)
+    #   if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
+    # 
+    # 
+    #     #release april - july  
+    #     exc_month <- c(4,5,6,7) # April - July
+    #     title <- paste(var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
+    #     ymin <- c(0,0) ; ymax <- c(10000,50000)#old GREAT 
+    #     p <- scen_res_monthly %>%
+    #       dplyr::filter(Variable == variable) %>%
+    #       dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+    #       dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+    #       #all but one month otherwise would lump all the months together
+    #       dplyr::group_by(Scenario) %>%
+    #       ggplot(aes(Value, color = Scenario)) +
+    #       stat_eexccrv() +
+    #       # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
+    #       labs(title = title,
+    #            y = y_lab, caption = caption) +
+    #       scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
+    #       theme(plot.caption = element_text(hjust = 0)) #left justify 
+    #     print(p)
+    #     if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
+    #     
+    #     exc_month <- c(6) # June
+    #     title = paste(var_title_alt_name,month.name[exc_month])
+    #     ymin <- c(0,0) ; ymax <- c(10000,45000)#old GREAT 
+    #     p <- scen_res_monthly %>%
+    #       dplyr::filter(Variable == variable) %>%
+    #       dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+    #       dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+    #       #all but one month otherwise would lump all the months together
+    #       dplyr::group_by(Scenario) %>%
+    #       ggplot(aes(Value, color = Scenario)) +
+    #       stat_eexccrv() +
+    #       # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
+    #       labs(title = title,
+    #            y = y_lab, caption = caption) +
+    #       scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
+    #       theme(plot.caption = element_text(hjust = 0)) #left justify 
+    #     print(p)
+    #     if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
+    #     
+    #     exc_month <- c(7) # July
+    #     title = paste(var_title_alt_name,month.name[exc_month])
+    #     ymin <- c(0,0) ; ymax <- c(3000,30000)#old GREAT 
+    #     p <- scen_res_monthly %>%
+    #       dplyr::filter(Variable == variable) %>%
+    #       dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+    #       dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+    #       #all but one month otherwise would lump all the months together
+    #       dplyr::group_by(Scenario) %>%
+    #       ggplot(aes(Value, color = Scenario)) +
+    #       stat_eexccrv() +
+    #       # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
+    #       labs(title = title,
+    #            y = y_lab, caption = caption) +
+    #       scale_x_continuous("Percent Exceedance",labels = scales::percent) + 
+    #       theme(plot.caption = element_text(hjust = 0)) #left justify 
+    #     print(p)
+    #     if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
+    
+    
+    exc_month <- c(8,9) # Aug - Sept
+    title <- paste(var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
+    ymin <- c(0,0) ; ymax <- c(3000,6000)#old GREAT 
+    p <- scen_res_monthly %>%
+      dplyr::filter(Variable == variable) %>%
+      dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+      dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+      #all but one month otherwise would lump all the months together
+      dplyr::group_by(Scenario) %>%
+      ggplot(aes(Value, color = Scenario)) +
+      theme_light() + 
+      stat_eexccrv() +
+      # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
+      # multi month title
+      labs(title = title,
+           y = y_lab, caption = caption) +
+      scale_x_continuous("Percent Exceedance",labels = scales::percent, expand = c(0,0)) + 
+      scale_y_continuous(limits = c(ymin[j], ymax[j]), expand = c(0,0)) + 
+      theme(plot.caption = element_text(hjust = 0)) #left justify 
+    print(p)
+    if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
+    
+    exc_month <- c(10,11) # Oct - Nov
+    title <- paste(var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
+    ymin <- c(0,0) ; ymax <- c(3000,4500)#old GREAT 
+    p <- scen_res_monthly %>%
+      dplyr::filter(Variable == variable) %>%
+      dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+      dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+      #all but one month otherwise would lump all the months together
+      dplyr::group_by(Scenario) %>%
+      ggplot(aes(Value, color = Scenario)) +
+      theme_light() + 
+      stat_eexccrv() +  
+      # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
+      # multi month title
+      labs(title = title,
+           y = y_lab, caption = caption) +
+      scale_x_continuous("Percent Exceedance",labels = scales::percent, expand = c(0,0)) + 
+      scale_y_continuous(limits = c(ymin[j], ymax[j]), expand = c(0,0)) + 
+      theme(plot.caption = element_text(hjust = 0)) #left justify 
+    print(p)
+    if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste(title,".png")), width = widths[1],height = heights[1])}
+    
+    exc_month <- c(12,1,2) # Dec - Feb
+    title <- paste(var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
+    ymin <- c(0,0) ; ymax <- c(3000,4500)#old GREAT 
+    p <- scen_res_monthly %>%     theme_light() + 
+      dplyr::filter(Variable == variable) %>%
+      dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+      dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+      #all but one month otherwise would lump all the months together
+      dplyr::group_by(Scenario) %>%
+      ggplot(aes(Value, color = Scenario)) +
+      stat_eexccrv() +
+      # geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
+      # multi month title
+      labs(title = title,
+           y = y_lab, caption = caption) +
+      scale_x_continuous("Percent Exceedance",labels = scales::percent, expand = c(0,0)) + 
+      scale_y_continuous(limits = c(ymin[j], ymax[j]), expand = c(0,0)) +       
+      theme(plot.caption = element_text(hjust = 0)) #left justify 
+    print(p)
+    if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Exceed',title,".png")), width = widths[1],height = heights[1])}
+    
+  } #end exceed vars loop
+  
+  dev.off()
+}
+
+
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 6. Process Results - Expression Slots ----- NOT TESTED
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-scens <- list(
-  # "Offc CRSS" = "Baseline,DNF,2007Dems,IG_DCP,MTOM_Most",
-  "Baseline" = "Base_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
-  "CPM" = "CPM_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
-  "SMB" = "SMB_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
-  "LTSP" = "LTSP_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
-  "All GREAT" = "All_7001,DNF,2007Dems,GREAT_7001,MTOM_Most"
-)
-
 
 #agg file specifying which slots
 rw_agg_file <- "rw_agg_GREATExp.csv"
