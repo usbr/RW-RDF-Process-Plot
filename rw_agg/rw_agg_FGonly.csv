@@ -1,6 +1,7 @@
 file,slot,period,summary,eval,t_s,variable
 UBres.rdf,FlamingGorge.Pool Elevation,asis,NA,NA,NA,FlamingGorge.Pool Elevation
-UBres.rdf,FlamingGorge.Outflow,asis,NA,NA,NA,FlamingGorge.Outflow
+Streamgages.rdf,GreenNearGreendale.Gage Inflow,asis,NA,NA,NA,FlamingGorge.Outflow
 Streamgages.rdf,GreenNearJensen.Gage Inflow,asis,NA,NA,NA,GreenNearJensen.Gage Inflow
 Streamgages.rdf,YampaAtDeerlodge.Gage Inflow,asis,NA,NA,NA,YampaAtDeerlodge.Gage Inflow
 Res.rdf,Powell.Inflow,asis,NA,NA,NA,Powell.Inflow
+UBres.rdf,FlamingGorge.Inflow,asis,NA,NA,NA,FlamingGorge.Inflow
