@@ -18,16 +18,15 @@ results_dir <- file.path(CRSSDIR,"results")
 
 scen_dir <- file.path(CRSSDIR,"Scenario")
 # #containing the sub folders for each ensemble
-# scens <- "DemandVerification" # file name for where results are stored and for folder in /results/
-# scens <- "2007UCRC_Linked" #"2007UCRC_Linked"  #"Linked_RR" #old name HistoricalModel_9010_VerificationRun"
-# scens <-  "NewCoeffv2_Linked_RR" #"NewCoeff4States_Linked_RR"  #"NewCoeff4States_Linked_RR" # file name for where results are stored and for folder in /results/
 # scens <- "Linked_RR" #"Unlinked_NoRRNF"
 scens <- "AllCUL_Linked_RR" # "AllCULExCO_Linked_RR" #"Linked_NoRRNF" #### REMBMEBER VerificationGAGE.RDF doesn't change so don't copy
-# scens <- "AllCULExCO_Linked_RR"# "Unlinked_NewCoeff4States" #
+scens <- "COExps_AllCUL_Linked_RR"# "Unlinked_NewCoeff4States" #
+scens <- "COExps_NoLimit"# "Unlinked_NewCoeff4States" #
+
 
 #### Plot Controls #####
 
-printfigs<-F#T#make png figures 
+printfigs<-T#T#make png figures 
 
 y_lab_yr = "Flow (ac-ft/yr)"
 y_lab_mon = "Flow (ac-ft/mo)"
@@ -45,8 +44,8 @@ sect_heights <- c(3,4.2,3)
 
 # #whole basin experiment figure sizes 
 # # sect an, sect mon, mon sect dist  
-# sect_widths <- c(3.33,5,3.33)
-# sect_heights <- c(2,3,2)
+sect_widths <- c(3.33,5,3.33)
+sect_heights <- c(2,3,2)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
@@ -198,9 +197,9 @@ if(!(length(outflows) == length(gages)))
 
 # for (i in 1:length(nodes)) {
 # for (i in 12:12) {
-# for (i in 8:9) {
+# for (i in 8) {
 # for (i in c(1,2,8,9)) {
-for (i in c(18)) {
+for (i in c(1:2)) {
     
   
   #create a figure folder

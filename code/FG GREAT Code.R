@@ -22,51 +22,40 @@ source('C:/Users/cfelletter/Documents/RW-RDF-Process-Plot/code/stat-boxplot-cust
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+
+# Figs <- "7002_Heather.pdf"#paste0('FGDev_MonthlyFigs_',startyr,endyr,'.pdf')
+mycolors <- c("#f8766d","#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
+# # red,gold, Heathers: dark blue (base), pink, lime green , cyan 
+# keepscens <- c("IG_NoLTSP,NoDO","IG_NoLTSP,DO","Basecase,NoDO","Basecase,DO","LTSP,SMB,CPMBF,NoDO","LTSP,SMB,CPMBF,DO")
+
+
+#all scens 
 scens <- list( ### don't comment these out use keepscens variabile #### 
-  "Offc CRSS" = "Base_7001,DNF,2007Dems,IG_Offc,MTOM_Most", #"Baseline,DNF,2007Dems,IG_DCP,MTOM_Most",
-  "Basecase" = "Base_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
-  "LTSP" = "LTSP_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
-  "LTSP & SMB" = "LTSP_SMB_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
-  "CPMBF" = "CPM_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
-  "SMB" = "SMB_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
-  "LTSP,SMB & CPMBF" = "All_7001,DNF,2007Dems,GREAT_7001,MTOM_Most"
+               "IG_NoLTSP,NoDO" = "NoDO_NoLTSPBase_Base_7001,DNF,2007Dems,NoDO_IG,MTOM_Most", #this one is good to go, dont need it to be 7002
+               # "IG_NoLTSP,DO" = "Offc_NoLTSPBase_7001,DNF,2007Dems,IG_Offc,MTOM_Most", #Basecase2019: - old downramp
+               # "IG_Offc,NoDO" = "NoDO_Base_7001,DNF,2007Dems,NoDO_IG,MTOM_Most", - old
+               # "IG_Offc,DO" = "Base_7001,DNF,2007Dems,IG_Offc,MTOM_Most", #"Baseline,DNF,2007Dems,IG_DCP,MTOM_Most",
+               "Basecase,NoDO" = "NoDO_Base_7002,DNF,2007Dems,NoDO_GREAT_7001,MTOM_Most",
+               "Basecase,DO" = "Base_7002,DNF,2007Dems,GREAT_7001,MTOM_Most",
+               "LTSP,DO" = "LTSP_7002,DNF,2007Dems,GREAT_7001,MTOM_Most", ### these need rerun
+               "LTSP&SMB,DO" = "LTSP_SMB_7002,DNF,2007Dems,GREAT_7001,MTOM_Most",
+               "LTSP,SMB,CPMBF,NoDO" = "NoDO_All_7002,DNF,2007Dems,NoDO_GREAT_7001,MTOM_Most",
+               "LTSP,SMB,CPMBF,DO" = "All_7002,DNF,2007Dems,GREAT_7001,MTOM_Most",
+               "CPMBF,DO" = "CPM_7002,DNF,2007Dems,GREAT_7001,MTOM_Most",
+               "SMB,DO" = "SMB_7002,DNF,2007Dems,GREAT_7001,MTOM_Most"
 )
-Figs <- "7001.pdf"#paste0('FGDev_MonthlyFigs_',startyr,endyr,'.pdf')
-keepscens <- c("Offc CRSS", "Basecase","LTSP","LTSP & SMB","LTSP,SMB & CPMBF")
-mycolors <- c("#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
+Figs <- "7002.pdf"#paste0('FGDev_MonthlyFigs_',startyr,endyr,'.pdf')
 
-# mycolors <- c("#00ffff","#000076","#FFFF00","#ff0bff","#49ff49") #alphabetical scens
-
-# mycolors <- c("#000076","#ff0bff","#49ff49","#00ffff") #match heather Base, LTSP, LTSP SMB, All
-
-# #CRSS offical + match heather Base, LTSP, LTSP SMB, All
-# keepscens <- c("Offc CRSS", "Basecase","LTSP","LTSP & SMB","CPMBF","SMB","LTSP,SMB & CPMBF")
-# mycolors <- c("#fcbe03","#000076","#ff0bff","#49ff49","#d4d2cb","#bdb9ae","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
-
-# keepscens <- c("Offc CRSS", "Basecase","LTSP","CPMBF","SMB","LTSP,SMB & CPMBF")
-# heathers color #00ffff - cyan - , #49ff49 green  , #ff0bff purple , #000076 dark blue baseline
-
-# mycolors <- c("#009E73","#6bbd28","#0072B2") #for Sector plots dark green, light green, blue
-
-
-scens <- list( ### don't comment these out use keepscens variabile #### 
-               "Offc NoLTSP" = "Offc_NoLTSPBase_7001,DNF,2007Dems,IG_Offc,MTOM_Most",
-               "NoDO Offce NoLTSP" = "NoDO_NoLTSPBase_Base_7001,DNF,2007Dems,NoDO_IG,MTOM_Most",
-               "Offc CRSS wLTSP" = "Base_7001,DNF,2007Dems,IG_Offc,MTOM_Most", #"Baseline,DNF,2007Dems,IG_DCP,MTOM_Most",
-               "NoDO Offc CRSS wLTSP" = "NoDO_Base_7001,DNF,2007Dems,NoDO_IG,MTOM_Most",
-               "Basecase 2.0" = "Base_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
-               "NoDO Basecase 2.0" = "NoDO_Base_7001,DNF,2007Dems,NoDO_GREAT_7001,MTOM_Most",
-               "DO LTSP,SMB & CPMBF" = "All_7001,DNF,2007Dems,GREAT_7001,MTOM_Most",
-               "NoDO LTSP,SMB & CPMBF" = "NoDO_All_7001,DNF,2007Dems,NoDO_GREAT_7001,MTOM_Most"
-)
-Figs <- "DO_Compare2.pdf"#paste0('FGDev_MonthlyFigs_',startyr,endyr,'.pdf')
-
-library(RColorBrewer)
-mycolors <- brewer.pal(n = 8, name = "Paired")
 keepscens <- names(scens)
 
-keepscens <- c("NoDO Offce NoLTSP","Offc NoLTSP","NoDO Basecase 2.0","Basecase 2.0","NoDO LTSP,SMB & CPMBF","DO LTSP,SMB & CPMBF")
-
+Noscens <- length(keepscens)
+# library(RColorBrewer)
+# mycolors <- brewer.pal(n = Noscens, name = "Paired")
+# mycolors <- brewer.pal(n = Noscens, name = "Set1")
+library(scales)
+show_col(hue_pal()(8))
+mycolors <- hue_pal()(Noscens) # standard r colors 
 
 mainScenGroup <- names(scens)[2] #name of the subfolder this analysis will be stored
 
@@ -115,23 +104,30 @@ message('Figures will be saved to: ', ofigs)
 
 # # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ## Skip Process Results - Load RDS 
+
+
 scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
 scen_res_monthly <- scen_res_monthly %>% #filter out scens you don't want to keep for plots
   dplyr::filter(Scenario %in% keepscens)
 unique(scen_res_monthly$Scenario)
+scen_res_monthly$Scenario = factor(scen_res_monthly$Scenario, levels=names(scens))
+
 
 scen_res_daily <- readRDS(file = file.path(ofigs,paste0("scen_res_daily.RDS")))
 scen_res_daily <- scen_res_daily %>% #filter out scens you don't want to keep for plots
   dplyr::filter(Scenario %in% keepscens)
 unique(scen_res_daily$Scenario)
+scen_res_daily$Scenario = factor(scen_res_daily$Scenario, levels=names(scens))
 
-gage <- df_monthly %>%
-  dplyr::filter(Variable == gages[i])
-simulated <- df_monthly %>%
-  dplyr::filter(Variable == outflows[i])
-diff <- gage
-diff$Value = simulated$Value - gage$Value
-diff$Variable = rep("Residual",times = length(diff$Variable))
+
+# #do i need this? 
+# gage <- df_monthly %>%
+#   dplyr::filter(Variable == gages[i])
+# simulated <- df_monthly %>%
+#   dplyr::filter(Variable == outflows[i])
+# diff <- gage
+# diff$Value = simulated$Value - gage$Value
+# diff$Variable = rep("Residual",times = length(diff$Variable))
 
 # # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -141,8 +137,8 @@ diff$Variable = rep("Residual",times = length(diff$Variable))
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #file names 
 
-# rdf <- "Streamgages.rdf"
-# rdf_slot_names(read.rdf(iFile = file.path(scen_dir,scens[1],rdf)))
+rdf <- "UBDO.rdf"
+rdf_slot_names(read.rdf(iFile = file.path(scen_dir,scens[1],rdf)))
 
 #agg file specifying which slots
 rw_agg_file <- "rw_agg_FGonly.csv"
@@ -232,9 +228,7 @@ if (T) {
     dplyr::summarise(Value = sum(Value)) %>%
     ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
     geom_line() +
-    # geom_boxplot() +
-    # scale_x_continuous(breaks = 1:12,labels = month.abb) + 
-    # scale_x_discrete("Month",labels = month.abb) + #display abb. month names
+    scale_color_manual(values = mycolors) +
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste("Average Annual",title), y = y_lab, x = "Year")
   print(p)
@@ -249,6 +243,7 @@ if (T) {
     dplyr::group_by(Scenario, MonthNum) %>%
     ggplot(aes(x = factor(MonthNum), y = Value, color = Scenario)) +
     geom_boxplot() +
+    scale_color_manual(values = mycolors) +
     geom_hline(aes(yintercept=yintercept), data=target) +
     scale_x_discrete("Month",labels = month.abb) + #display abb. month names
     labs(title = title, y = y_lab)
@@ -271,6 +266,7 @@ if (T) {
     dplyr::summarise(Value = mean(Value)) %>%
     ggplot(aes(x = factor(Year), y = Value, color = Scenario, group = Scenario)) +
     geom_line() +
+    scale_color_manual(values = mycolors) +
     labs(title = paste("Mean EOCY",title), y = y_lab, x = "Year")
   print(p)
   if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste("Mean EOCY",variable,".png")), width = widths[1],height = heights[1])}
@@ -283,6 +279,7 @@ if (T) {
     dplyr::group_by(Scenario, MonthNum) %>%
     ggplot(aes(x = factor(MonthNum), y = Value, color = Scenario)) +
     geom_boxplot() +
+    scale_color_manual(values = mycolors) +
     scale_x_discrete("Month",labels = month.abb) + #display abb. month names
     labs(title = title, y = y_lab)
   print(p)
@@ -298,37 +295,59 @@ if (T) {
     dplyr::group_by(Scenario, MonthNum) %>%
     ggplot(aes(x = factor(MonthNum), y = Value, color = Scenario)) +
     geom_boxplot() +
+    scale_color_manual(values = mycolors) +
     scale_x_discrete("Month",labels = month.abb) + #display abb. month names
     coord_cartesian(ylim = c(ylims[1],ylims[2]), expand = F) + #don't drop data 
     labs(title = title, y = y_lab)
   print(p)
   if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste('Zoom',title,variable,".png")), width = widths[1],height = heights[1])}
   
+  #monthly boxplot of inflow vs month
+  variable = "YampaAtDeerlodge.Gage Inflow"
+  y_lab = "Monthly Flow (cfs)"
+  title = paste(variable,first(yrs2show),"-",last(yrs2show))
+  
+  p <- scen_res_monthly %>%
+    dplyr::filter(Variable == variable) %>%
+    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+    # mutate(Value = Value/1000)# %>% #convert to KAF
+    # summary(p)
+    # p %>%
+    dplyr::group_by(Scenario, MonthNum) %>%
+    ggplot(aes(x = factor(MonthNum), y = Value, color = Scenario)) +
+    geom_boxplot() +
+    scale_color_manual(values = mycolors) +
+    scale_x_discrete("Month",labels = month.abb) + #display abb. month names
+    labs(title = title, y = y_lab)
+  print(p)
+  if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste(title,variable,".png")), width = widths[1],height = heights[1])}
+  
+  #monthly boxplot of inflow vs month
+  variable = "GreenNearJensen.Gage Inflow"
+  y_lab = "Monthly Flow (cfs)"
+  title = paste(variable,first(yrs2show),"-",last(yrs2show))
+  
+  p <- scen_res_monthly %>%
+    dplyr::filter(Variable == variable) %>%
+    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+    # mutate(Value = Value/1000)# %>% #convert to KAF
+    # summary(p)
+    # p %>%
+    dplyr::group_by(Scenario, MonthNum) %>%
+    ggplot(aes(x = factor(MonthNum), y = Value, color = Scenario)) +
+    geom_boxplot() +
+    scale_color_manual(values = mycolors) +
+    scale_x_discrete("Month",labels = month.abb) + #display abb. month names
+    labs(title = title, y = y_lab)
+  print(p)
+  if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste(title,variable,".png")), width = widths[1],height = heights[1])}
+  
+  
+  
   dev.off()
 }
 
-
-#monthly boxplot of inflow vs month
-variable = "YampaAtDeerlodge.Gage Inflow"
-y_lab = "Monthly Flow (ac-ft/mo)"
-title = paste(variable,first(yrs2show),"-",last(yrs2show))
-
-p <- scen_res_monthly %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-# mutate(Value = Value/1000)# %>% #convert to KAF
-# summary(p)
-# p %>%
-  dplyr::group_by(Scenario, MonthNum) %>%
-  ggplot(aes(x = factor(MonthNum), y = Value, color = Scenario)) +
-  geom_boxplot() +
-  scale_x_discrete("Month",labels = month.abb) + #display abb. month names
-  labs(title = title, y = y_lab)
-print(p)
-if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste(title,variable,".png")), width = widths[1],height = heights[1])}
-
 #### WORK ON THIS ##### 
-
 # #figure out which months are releasing minimum flow
 # variable = "FlamingGorge.Outflow"
 # y_lab = "Monthly Flow (cfs)"
@@ -424,6 +443,7 @@ for (j in 1:length(variables_daily)) {
     dplyr::summarise(Value = mean(Value)) %>%
     ggplot(aes(JDay, Value, color = Scenario)) + 
     geom_line() +
+    scale_color_manual(values = mycolors) +
     # scale_y_continuous(labels = scales::comma) + #add commas to axis 
     # scale_y_continuous(limits = c(ylimlow[j],ylimup[j]), labels = scales::comma) + #### ZOOM ####
     labs(title = paste("Mean",variable), y = y_lab) 
@@ -445,6 +465,7 @@ for (j in 1:length(variables_daily)) {
     dplyr::group_by(Scenario, MonthNum) %>% 
     ggplot(aes(x = factor(MonthNum), y = Value, color = Scenario)) +
     geom_boxplot() +
+    scale_color_manual(values = mycolors) +
     # stat_boxplot_custom(qs = c(0.1, 0.25, 0.5, 0.75, 0.9)) + #too hard to render use generic 
     scale_x_discrete("Month",labels = month.abb) + #display abb. month names
     scale_y_continuous(labels = scales::comma) + #add commas to axis
@@ -473,6 +494,7 @@ for (j in 1:length(variables_daily)) {
     dplyr::group_by(Scenario, MonthNum) %>% 
     ggplot(aes(x = factor(MonthNum), y = Value, color = Scenario)) +
     geom_boxplot() +
+    scale_color_manual(values = mycolors) +
     # stat_boxplot_custom(qs = c(0.1, 0.25, 0.5, 0.75, 0.9)) + #too hard to render use generic 
     scale_x_discrete("Month",labels = month.abb) + #display abb. month names
     scale_y_continuous(labels = scales::comma) + #add commas to axis
@@ -564,6 +586,33 @@ if (T) { #set true for easy running all plots
   if(no_legend){p <- p + theme(legend.position="none")}
   print(p)
   if(printfigs_exceed==T){ ggsave(filename = file.path(ofigs,paste('Exceed 2',title,".png")), width = widths[1],height = heights[1])}
+  
+  
+  #April-July PE only
+  title <- paste('April-July',var_title_alt_name)
+  ylims <- c(5840,6060) # heathers GREAT report limits 
+  exc_month <- c(4,5,6,7) # April - July
+  p <- scen_res_monthly %>%
+    dplyr::filter(Variable == variable) %>%
+    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+    dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
+    #all but one month otherwise would lump all the months together
+    dplyr::group_by(Scenario) %>%
+    ggplot(aes(Value, color = Scenario)) +
+    theme_light() + 
+    stat_eexccrv() +
+    scale_color_manual(values = mycolors) +
+    # coord_cartesian(xlim =c(0,1), ylim = c(ylims[1],ylims[2]), expand = expand) + #don't drop data
+    scale_y_continuous(breaks=seq(ylims[1],ylims[2],40)) +
+    scale_x_continuous("Percent Exceedance",labels = scales::percent,breaks=seq(0,1,.2)) + 
+    # ylim(ylims) +# geom_hline(aes(yintercept=yintercept), data=Muth_Avg) +
+    labs(title = title,
+         y = y_lab, caption = caption) +
+    theme(plot.caption = element_text(hjust = 0)) #left justify 
+  if(no_legend){p <- p + theme(legend.position="none")}
+  print(p)
+  # if(printfigs_exceed==T){ ggsave(filename = file.path(ofigs,paste('Exceed 2',title,".png")), width = widths[1],height = heights[1])}
+  
   
   #May 1 PE only
   title <- paste('May 1',var_title_alt_name)
@@ -786,22 +835,21 @@ rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFact
 #vignette("rwdataplyr-workflow", package = "RWDataPlyr") # SHOULD i create custom winter agg? jsut do with dplyr
 
 #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
-scen_res <- rw_scen_aggregate(
+scen_res_exp <- rw_scen_aggregate(
   scens,
   agg = rwa1,
   scen_dir = scen_dir
 ) 
 
-scen_stats <- scen_res #save off so don't over write with monthly data 
-
-unique(scen_res$Variable) #check variable names 
+# unique(scen_res_exp$Variable) #check variable names 
 
 variables_mon <- c("Meet_JensenLL_EIS","Meet_JensenLL_CPMBF","Winter25" )
 variables_ann <- c("Have_Spike","Winter_Volume" )
 variables_mon <- c("Meet_JensenLL_EIS","Meet_JensenLL_CPMBF" )
 
 #how often is each scenario meeting the EIS and CPMBF targets for reach 2 LL?
-df <- scen_res %>%
+#1 if Jensen flow greater than CPMBF[Hclass] or EIS lower limit, any month 
+df1 <- scen_res_exp %>%
   dplyr::filter(Variable %in% variables_mon) %>%
   dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
   # dplyr::filter(Month %in% month.name[c(1,2,12)]) %>% #only look a winter months 
@@ -809,33 +857,39 @@ df <- scen_res %>%
   # dplyr::group_by(Scenario,Variable,Year) %>%
   # summarise(Value = sum(Value)) %>% #stop here if only want year
   dplyr::group_by(Scenario,Variable) %>%
-  summarise(Value = sum(Value))
-df
+  # summarise(Value = sum(Value))
+  summarise(Value = mean(Value))
+
+df1
 #WHY MEET CPMBF much more often in July-Sept than EIS in All GREAT? In ModWet and Wet the requirement is less for CPMBF vs EIS so can that explain why there is 
 #work on this part
 
 
-#check winter request - 1 if Dec-Jan FG.Outflow is either AvgRelease * 1.25 OR Jensen LL *1.25 - Yampa
-df <- scen_res %>%
+##1 for any Dec-Feb with release 800, 0 else ##slot miss named should be Flow800orless 
+df2 <- scen_res_exp %>%
   dplyr::filter(Variable == "Winter25") %>%
   dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
   # dplyr::filter(Month %in% month.name[c(1,2,12)]) %>%
   dplyr::group_by(Scenario,Variable) %>%
-  summarise(Value = sum(Value))
-df 
-print('1 = got extra winter water, probably Jensen LL *1.25 - Yampa (or min Avg*1.25). 0 = something else controls either 800 or Jensen UP (max) ')
+  # summarise(Value = sum(Value))
+  summarise(Value = mean(Value))
+df2$Variable = rep("WinterFlow800",times=length(df2$Variable))
+df2
+#rename! 
 
-#winter volume 
-df <- scen_res %>%
+
+#winter volume sum of FG release December-Feb by year
+df3 <- scen_res_exp %>%
   dplyr::filter(Variable  == "Winter_Volume") %>%
   dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
   # dplyr::group_by(Scenario,Variable,Year) %>%
   # summarise(Value = sum(Value)) %>% #stop here if only want year
   dplyr::group_by(Scenario,Variable) %>%
-  summarise(Value = sum(Value))
-df # winter volume is most in LTSP since less of the summer baseflow requests since the peak is later! 
+  # summarise(Value = sum(Value))
+  summarise(Value = mean(Value))
+df3 # winter volume is most in LTSP since less of the summer baseflow requests since the peak is later! 
 
-p <- scen_res %>%
+p <- scen_res_exp %>%
   dplyr::filter(Variable  == "Winter_Volume") %>%
   dplyr::filter(Year <= 2040) %>% 
   dplyr::filter(Year > 2020) %>% #2020 only has December
@@ -846,30 +900,82 @@ p <- scen_res %>%
     geom_line() +
     labs(title = "Mean Winter Volume Delivered", y = "AF/yr")
 p  
-
+if(printfigs_exceed==T){ ggsave(filename = file.path(ofigs,paste('Mean Winter Volume.png')), width = widths[1],height = heights[1])}
+dev.off()
 #WHY MEET CPMBF much more often in July-Sept than EIS in All GREAT? In ModWet and Wet the requirement is less for CPMBF vs EIS so can that explain why there is 
 #work on this part
 
-#check SPIKE - 1 if does
-df <- scen_res %>%
+#check SPIKE - 1 if does by year
+df4 <- scen_res_exp %>%
   dplyr::filter(Variable == "Have_Spike") %>%
   dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
   # dplyr::filter(Month %in% month.name[c(1,2,12)]) %>%
   dplyr::group_by(Scenario,Variable) %>%
+  # summarise(Value = sum(Value))
+  summarise(Value = mean(Value))
+df4 #SMB is working, less spikes in All GREAT as expected 
+
+write.csv(rbind(df1,df2,df3,df4), file.path(ofigs,paste('ExpressionSlots.csv'))) #uncomment Value = sum(Value) for all instances across all traces 
+write.csv(rbind(df1,df2,df3,df4), file.path(ofigs,paste('ExpressionSlots_average.csv')))
+
+saveRDS(scen_res_exp,file = file.path(ofigs,paste0("scen_res_exp.RDS")))
+
+##### UB DO stats #####
+
+rdf <- "UBDO.rdf"
+noslots<-4
+rwa1 <- rwd_agg(data.frame(
+  file = c(rep(rdf, noslots)),
+  slot = c("ExtendedOperations.PowellForecastDeficitFlag","ExtendedOperations.PowellForecastDeficit",
+           "ExtendedOperations.FlamingGorgeNormalRelease","ExtendedOperations.FlamingGorgeReleaseDifference"
+  ), 
+  period = rep("asis", noslots), #c("cy", "eocy", "djf", "July", "wy", "asis"),
+  summary = rep(NA, noslots),#c("min", NA, "sum", NA, "sum", NA),
+  eval = rep(NA, noslots),#c("<=", rep(NA, 5)),
+  t_s = rep(NA, noslots),#c(1060, NA, 0.001, NA, 0.000001, NA),
+  variable = c("ExtendedOperations.PowellForecastDeficitFlag","ExtendedOperations.PowellForecastDeficit",
+               "ExtendedOperations.FlamingGorgeNormalRelease","ExtendedOperations.FlamingGorgeReleaseDifference"),
+  stringsAsFactors = FALSE
+))
+
+#rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
+scen_res_DO <- rw_scen_aggregate(
+  scens,
+  agg = rwa1,
+  scen_dir = scen_dir
+) 
+
+df <- scen_res_DO %>%
+  dplyr::filter(Variable == "ExtendedOperations.PowellForecastDeficitFlag") %>%
+  dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+  # dplyr::filter(Month %in% month.name[c(1,2,12)]) %>%
+  dplyr::group_by(Scenario,Variable) %>%
+  # summarise(Value = sum(Value))
   summarise(Value = sum(Value))
-df #SMB is working, less spikes in All GREAT as expected 
+df 
+
+# df <- scen_res_DO %>%
+#   dplyr::filter(Variable == "ExtendedOperations.PowellForecastDeficit") %>%
+#   dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+#   # dplyr::filter(Month %in% month.name[c(1,2,12)]) %>%
+#   dplyr::group_by(Scenario,Variable) %>%
+#   # summarise(Value = sum(Value))
+#   summarise(Value = sum(Value))
+# df 
+
+trace_no <- 63 #81 wet #97 dry #63 avg
+df1 <- scen_res_DO %>% 
+  dplyr::filter(TraceNumber %in% trace_no) %>%
+  dplyr::filter(Variable %in% "ExtendedOperations.PowellForecastDeficitFlag") %>%
+  pivot_wider(names_from = Scenario,values_from = Value)
+# View(df1)
+df2 <- scen_res_DO %>% 
+  dplyr::filter(TraceNumber %in% trace_no) %>%
+  dplyr::filter(Variable %in% "ExtendedOperations.PowellForecastDeficit") %>%
+  pivot_wider(names_from = Scenario,values_from = Value)
+# View(df2)
 
 
-head(df)
-# # Adding factors so ggplot does not alphebetize legend
-scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
-head(scen_res)
-# 
-
-
-
-
-
-
-
-
+df <- cbind(df1,df2)
+# head(df)
+write.csv(df,file = file.path(ofigs,paste("Trace",trace_no,"DO_Stats.csv")))
