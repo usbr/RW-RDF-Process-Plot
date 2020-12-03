@@ -5,3 +5,5 @@ Streamgages.rdf,GreenNearJensen.Gage Inflow,asis,NA,NA,NA,GreenNearJensen.Gage I
 Streamgages.rdf,YampaAtDeerlodge.Gage Inflow,asis,NA,NA,NA,YampaAtDeerlodge.Gage Inflow
 Res.rdf,Powell.Inflow,asis,NA,NA,NA,Powell.Inflow
 UBres.rdf,FlamingGorge.Inflow,asis,NA,NA,NA,FlamingGorge.Inflow
+UBres.rdf,FlamingGorge.Storage,asis,NA,NA,NA,FlamingGorge.Storage
+Res.rdf,Powell.Pool Elevation,asis,NA,NA,NA,Powell.Pool Elevation
