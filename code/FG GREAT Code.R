@@ -55,6 +55,19 @@ Figs <- "7003_NoDOvDO.pdf"#paste0('FGDev_MonthlyFigs_',startyr,endyr,'.pdf')
 mycolors <- c("#f8766d","#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
 keepscens <- c("NoRequests,NoDO","NoRequests,DO")
 
+#New no 800 scens 
+scens <- list( ### don't comment these out use keepscens variabile #### 
+               "Basecase,DO" = "Base_7003,DNF,2007Dems,GREAT_7001,MTOM_Most", #reran formerly - Base_7002,DNF,2007Dems,GREAT_7001,MTOM_Most",
+               "Basecase_no800M-A,DO" = "No800_Base_7003,DNF,2007Dems,GREAT_7001,MTOM_Most", 
+               "no800M-A,LTSP,SMB,CPMBF,DO" = "No800_All_7003,DNF,2007Dems,GREAT_7001,MTOM_Most",
+               "LTSP,SMB,CPMBF,DO" = "All_7002,DNF,2007Dems,GREAT_7001,MTOM_Most"#,
+               
+)
+Figs <- "7003_No800.pdf"#paste0('FGDev_MonthlyFigs_',startyr,endyr,'.pdf')
+mycolors <- c("#f8766d","#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
+keepscens <- names(scens)
+
+
 
 # Noscens <- length(keepscens)
 # library(RColorBrewer)
@@ -143,8 +156,8 @@ scen_res_DO <- scen_res_DO %>% #filter out scens you don't want to keep for plot
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 if (T) {
 #file names 
-rdf <- "UBDO.rdf"
-rdf_slot_names(read.rdf(iFile = file.path(scen_dir,scens[1],rdf)))
+# rdf <- "UBDO.rdf"
+# rdf_slot_names(read.rdf(iFile = file.path(scen_dir,scens[1],rdf)))
 
 #agg file specifying which slots
 rw_agg_file <- "rw_agg_FGonly.csv"
@@ -174,24 +187,6 @@ scen_res$MonthNum = as.numeric(format.Date(scen_res$MonthNum, format = "%m"))
 AFMonCFS <- c(61.48760331,55.53719008,61.48760331,59.50413223,61.48760331,59.50413223,61.48760331,
   61.48760331,59.50413223,61.48760331,59.50413223,61.48760331)
 CFSAFMon <- 1/AFMonCFS  
-
-#### don't need to do this since change to using Greendale.Gage Inflow all ascens re in cfs ####
-# warning('converting AFM to CFS for CRSS Offc run - ensure this is what you want')  
-# convert <- scen_res %>%
-#   dplyr::filter(Variable == "FlamingGorge.Outflow") %>%
-#   dplyr::filter(Scenario == "Offc CRSS") #%>%
-# convert <- scen_res[which(scen_res$Variable == "FlamingGorge.Outflow" && scen_res$Scenario == "Offc CRSS"),] # doesn't work for some reason 
-#gotta be a better way than the below but it works... 
-# convert == scen_res[changeslots,] #just a check 
-# convert$Value = convert$Value*rep(CFSAFMon,times = length(convert$Value)/12)
-# scen_res[changeslots,] = convert # - don't need to do this since change to using Greendale.Gage Inflow all ascens re in cfs
-# head(convert)
-# summary(convert)
-
-# #change a individual scenario name afte the fact 
-# changeslots <- which(scen_res$Scenario == "Max Constrained")
-# scen_res[changeslots,"Scenario"] = rep("800<=Max(Min(+25))",times = length(changeslots))
-# unique(scen_res$Scenario)
 
 # # Adding factors so ggplot does not alphebetize legend
 scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
@@ -1033,7 +1028,7 @@ if (T) { #set true for easy running all plots
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 8. Plot Results - Expression Slots ----- NOT TESTED
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+if(T){
 #agg file specifying which slots
 rw_agg_file <- "rw_agg_GREATExp.csv"
 #read agg file specifying which slots
@@ -1126,41 +1121,41 @@ write.csv(rbind(df1,df2,df3,df4), file.path(ofigs,paste('ExpressionSlots_average
 
 saveRDS(scen_res_exp,file = file.path(ofigs,paste0("scen_res_exp.RDS")))
 
-
+}
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 9. Plot Results - Drought Operations Slots ----- NOT TESTED
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ##### UB DO stats #####  #####  #####  #####  #####  #####  #####  #####  #####
 
-rdf <- "UBDO.rdf"
-noslots<-4
-rwa1 <- rwd_agg(data.frame(
-  file = c(rep(rdf, noslots)),
-  slot = c("ExtendedOperations.PowellForecastDeficitFlag","ExtendedOperations.PowellForecastDeficit",
-           "ExtendedOperations.FlamingGorgeNormalRelease","ExtendedOperations.FlamingGorgeReleaseDifference"
-  ), 
-  period = rep("asis", noslots), #c("cy", "eocy", "djf", "July", "wy", "asis"),
-  summary = rep(NA, noslots),#c("min", NA, "sum", NA, "sum", NA),
-  eval = rep(NA, noslots),#c("<=", rep(NA, 5)),
-  t_s = rep(NA, noslots),#c(1060, NA, 0.001, NA, 0.000001, NA),
-  variable = c("ExtendedOperations.PowellForecastDeficitFlag","ExtendedOperations.PowellForecastDeficit",
-               "ExtendedOperations.FlamingGorgeNormalRelease","ExtendedOperations.FlamingGorgeReleaseDifference"),
-  stringsAsFactors = FALSE
-))
-
-#rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
-scen_res_DO <- rw_scen_aggregate(
-  scens,
-  agg = rwa1,
-  scen_dir = scen_dir
-) 
-
-#save RDS and filter to keepscens 
-saveRDS(scen_res_DO,file=file.path(ofigs,paste0("scen_res_DO.RDS"))) #prevent neeed to reprocess
-scen_res_DO <- scen_res_DO %>% #filter out scens you don't want to keep for plots
-  dplyr::filter(Scenario %in% keepscens)
-unique(scen_res_DO$Scenario)
-scen_res_DO$Scenario = factor(scen_res_DO$Scenario, levels=names(scens))
+# rdf <- "UBDO.rdf"
+# noslots<-4
+# rwa1 <- rwd_agg(data.frame(
+#   file = c(rep(rdf, noslots)),
+#   slot = c("ExtendedOperations.PowellForecastDeficitFlag","ExtendedOperations.PowellForecastDeficit",
+#            "ExtendedOperations.FlamingGorgeNormalRelease","ExtendedOperations.FlamingGorgeReleaseDifference"
+#   ), 
+#   period = rep("asis", noslots), #c("cy", "eocy", "djf", "July", "wy", "asis"),
+#   summary = rep(NA, noslots),#c("min", NA, "sum", NA, "sum", NA),
+#   eval = rep(NA, noslots),#c("<=", rep(NA, 5)),
+#   t_s = rep(NA, noslots),#c(1060, NA, 0.001, NA, 0.000001, NA),
+#   variable = c("ExtendedOperations.PowellForecastDeficitFlag","ExtendedOperations.PowellForecastDeficit",
+#                "ExtendedOperations.FlamingGorgeNormalRelease","ExtendedOperations.FlamingGorgeReleaseDifference"),
+#   stringsAsFactors = FALSE
+# ))
+# 
+# #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
+# scen_res_DO <- rw_scen_aggregate(
+#   scens,
+#   agg = rwa1,
+#   scen_dir = scen_dir
+# ) 
+# 
+# #save RDS and filter to keepscens 
+# saveRDS(scen_res_DO,file=file.path(ofigs,paste0("scen_res_DO.RDS"))) #prevent neeed to reprocess
+# scen_res_DO <- scen_res_DO %>% #filter out scens you don't want to keep for plots
+#   dplyr::filter(Scenario %in% keepscens)
+# unique(scen_res_DO$Scenario)
+# scen_res_DO$Scenario = factor(scen_res_DO$Scenario, levels=names(scens))
 
 
 df <- scen_res_DO %>%
@@ -1324,19 +1319,13 @@ df
 #   summarise(Value = sum(Value))
 # df 
 
-trace_no <- 63 #81 wet #97 dry #63 avg
-df1 <- scen_res_DO %>% 
-  dplyr::filter(TraceNumber %in% trace_no) %>%
-  dplyr::filter(Variable %in% "ExtendedOperations.PowellForecastDeficitFlag") %>%
-  pivot_wider(names_from = Scenario,values_from = Value)
-# View(df1)
-df2 <- scen_res_DO %>% 
-  dplyr::filter(TraceNumber %in% trace_no) %>%
-  dplyr::filter(Variable %in% "ExtendedOperations.PowellForecastDeficit") %>%
-  pivot_wider(names_from = Scenario,values_from = Value)
-# View(df2)
+
+
+
 
 
 df <- cbind(df1,df2)
 # head(df)
 write.csv(df,file = file.path(ofigs,paste("Trace",trace_no,"DO_Stats.csv")))
+
+dev.off()
