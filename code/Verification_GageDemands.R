@@ -20,13 +20,13 @@ scen_dir <- file.path(CRSSDIR,"Scenario")
 # #containing the sub folders for each ensemble
 # scens <- "Linked_RR" #"Unlinked_NoRRNF"
 scens <- "AllCUL_Linked_RR" # "AllCULExCO_Linked_RR" #"Linked_NoRRNF" #### REMBMEBER VerificationGAGE.RDF doesn't change so don't copy
-scens <- "COExps_AllCUL_Linked_RR"# "Unlinked_NewCoeff4States" #
-scens <- "COExps_NoLimit"# "Unlinked_NewCoeff4States" #
+# scens <- "COExps_AllCUL_Linked_RR"# "Unlinked_NewCoeff4States" #
+# scens <- "COExps_NoLimit"# "Unlinked_NewCoeff4States" #
 
 
 #### Plot Controls #####
 
-printfigs<-T#T#make png figures 
+printfigs<-F#T#make png figures 
 
 y_lab_yr = "Flow (ac-ft/yr)"
 y_lab_mon = "Flow (ac-ft/mo)"
@@ -195,11 +195,11 @@ if(!(length(outflows) == length(gages)))
 
 # pdf(file.path(ofigs,"WUandCULbyCPbySector.pdf"), width=9, height=6) #disable below pdf if enabled
 
-# for (i in 1:length(nodes)) {
+for (i in 1:length(nodes)) {
 # for (i in 12:12) {
 # for (i in 8) {
 # for (i in c(1,2,8,9)) {
-for (i in c(1:2)) {
+# for (i in c(1:2)) {
     
   
   #create a figure folder

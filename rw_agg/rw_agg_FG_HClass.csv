@@ -1,0 +1,4 @@
+file,slot,period,summary,eval,t_s,variable
+Drought.rdf,FlamingGorgeData.BaseFlowHClass,asis,NA,NA,NA,FlamingGorgeData.BaseFlowHClass
+Drought.rdf,FlamingGorgeData.SpringHClass,asis,NA,NA,NA,FlamingGorgeData.SpringHClass
+Drought.rdf,FlamingGorgeData.YampaHClass,asis,NA,NA,NA,FlamingGorgeData.YampaHClass
