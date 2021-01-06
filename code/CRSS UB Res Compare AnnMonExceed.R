@@ -28,13 +28,21 @@ results_dir <- file.path(CRSSDIR,"results")
 
 #Demand Redesign Model 
 scens <- list(
-  "v1_FGhistoricalfct_Full" = "FebRedesign9013,DNF,2016Dems,IG_DCP.9005,MTOM_Most - 1.FGhistoricalfct",
+  # "v1_FGhistoricalfct_Full" = "FebRedesign9013,DNF,2016Dems,IG_DCP.9005,MTOM_Most - 1.FGhistoricalfct",
   # "v1_FGhistoricalfct_Stress" = "FebRedesign9013,ISM1988_2018,2016Dems,IG_DCP.9005,MTOM_Most - 1.FGhistoricalfct",
-  "v2_RW81_Full" = "FebRedesign9013,DNF,2016Dems,IG_DCP.9006,MTOM_Most - 2.RW 8.1")
+  # "v2_RW81_Full" = "FebRedesign9013,DNF,2016Dems,IG_DCP.9006,MTOM_Most - 2.RW 8.1")
   # "v2_RW81_Stress" = "FebRedesign9013,ISM1988_2018,2016Dems,IG_DCP.9006,MTOM_Most - 2.RW 8.1"),
   # "v3_UBRes_Stress" = "FebRedesign9013_v3,ISM1988_2018,2016Dems,IG_DCP.9006_v3,MTOM_Most - 3.UBRes",
-  # "v3_UBRes_Full" = "FebRedesign9013_v3,DNF,2016Dems,IG_DCP.9006_v3,MTOM_Most - 3.UBRes")#,
-  # "v4_PowMon_Full" = "FebRedesign9013_v4,DNF,2016Dems,IG_DCP.9006_v3,MTOM_Most -4.PowMon")
+  "v3_UBRes_Full" = "FebRedesign9013_v3,DNF,2016Dems,IG_DCP.9006_v3,MTOM_Most - 3.UBRes",#,
+  # "v4_PowMon_Full" = "FebRedesign9013_v4,DNF,2016Dems,IG_DCP.9006_v3,MTOM_Most -4.PowMon",
+  # "v4_PowMon_Stress" = "FebRedesign9013_v4,ISM1988_2018,2016Dems,IG_DCP.9006_v3,MTOM_Most -4.PowMon")
+  # "v5_Converg_Full" = "FebRedesign9013_v5,DNF,2016Dems,IG_DCP.9006_v3,MTOM_Most -5.Converg",
+  # "v5_Stress_Full" = "FebRedesign9013_v5,ISM1988_2018,2016Dems,IG_DCP.9006_v3,MTOM_Most -5.Converg")
+  # "" = "FebRedesign9013_v6,ISM1988_2018,2016Dems,IG_DCP.9006_v3,MTOM_Most -6.BMbath")
+  # "v6_BMbath_Full" = "FebRedesign9013_v6,DNF,2016Dems,IG_DCP.9006_v3,MTOM_Most -6.BMbath",
+  "v7_PowFix_Full" = "FebRedesign9013_v7,DNF,2016Dems,IG_DCP.9006_v3,MTOM_Most -7.PowFix")
+
+
 
 mainScenGroup <<- names(scens)[2] #name of the subfolder this analysis will be stored
 
@@ -107,6 +115,8 @@ if (any(list.files(ofigs) == "res.feather")){   #exists(file.path(ofigs,"res.fea
 }
 
 unique(scen_res$Variable) #check variable names 
+unique(scen_res$Scenario) #check scen names 
+
 
 #get everything on a date 
 scen_res$MonthNum = as.Date(paste0(scen_res$Year,scen_res$Month,"01"), format = "%Y%B%d")
@@ -402,6 +412,7 @@ print(p)
 variable = "Powell.Outflow"
 y_lab = "Monthly Flow (ac-ft/mo)"
 title = paste(variable,first(yrs2show),"-",last(yrs2show))
+# ylims <- c(0,1000000)
 
 p <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -410,6 +421,7 @@ p <- scen_res %>%
   ggplot(aes(x = factor(MonthNum), y = Value, color = Scenario)) +
   geom_boxplot() +
   scale_x_discrete("Month",labels = month.abb) + #display abb. month names
+  # scale_y_continuous(breaks=seq(ylims[1],ylims[2])) +
   labs(title = title, y = y_lab)
 print(p)  
 
@@ -858,8 +870,6 @@ if(T){
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::group_by(Scenario,TraceNumber,Year) %>%
     summarise(Value = sum(Value)) %>% #first sum by year, keeping scens, traces, and years together
-    dplyr::group_by(Scenario,Year)  %>%
-    summarise(Value = mean(Value)) %>% #then avg all traces, keeping scens and years together 
     dplyr::group_by(Scenario) %>% 
     ggplot(aes(Value, color = Scenario)) +
     stat_eexccrv() +  
@@ -906,8 +916,6 @@ if(T){
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::group_by(Scenario,TraceNumber,Year) %>%
     summarise(Value = sum(Value)) %>% #first sum by year, keeping scens, traces, and years together
-    dplyr::group_by(Scenario,Year)  %>%
-    summarise(Value = mean(Value)) %>% #then avg all traces, keeping scens and years together 
     dplyr::group_by(Scenario) %>% 
     ggplot(aes(Value, color = Scenario)) +
     stat_eexccrv() +  
@@ -954,8 +962,6 @@ if(T){
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::group_by(Scenario,TraceNumber,Year) %>%
     summarise(Value = sum(Value)) %>% #first sum by year, keeping scens, traces, and years together
-    dplyr::group_by(Scenario,Year)  %>%
-    summarise(Value = mean(Value)) %>% #then avg all traces, keeping scens and years together 
     dplyr::group_by(Scenario) %>% 
     ggplot(aes(Value, color = Scenario)) +
     stat_eexccrv() +  
@@ -1002,8 +1008,6 @@ if(T){
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::group_by(Scenario,TraceNumber,Year) %>%
     summarise(Value = sum(Value)) %>% #first sum by year, keeping scens, traces, and years together
-    dplyr::group_by(Scenario,Year)  %>%
-    summarise(Value = mean(Value)) %>% #then avg all traces, keeping scens and years together 
     dplyr::group_by(Scenario) %>% 
     ggplot(aes(Value, color = Scenario)) +
     stat_eexccrv() +  
@@ -1050,8 +1054,6 @@ if(T){
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::group_by(Scenario,TraceNumber,Year) %>%
     summarise(Value = sum(Value)) %>% #first sum by year, keeping scens, traces, and years together
-    dplyr::group_by(Scenario,Year)  %>%
-    summarise(Value = mean(Value)) %>% #then avg all traces, keeping scens and years together 
     dplyr::group_by(Scenario) %>% 
     ggplot(aes(Value, color = Scenario)) +
     stat_eexccrv() +  
@@ -1098,8 +1100,6 @@ if(T){
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::group_by(Scenario,TraceNumber,Year) %>%
     summarise(Value = sum(Value)) %>% #first sum by year, keeping scens, traces, and years together
-    dplyr::group_by(Scenario,Year)  %>%
-    summarise(Value = mean(Value)) %>% #then avg all traces, keeping scens and years together 
     dplyr::group_by(Scenario) %>% 
     ggplot(aes(Value, color = Scenario)) +
     stat_eexccrv() +  
@@ -1146,8 +1146,6 @@ if(T){
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::group_by(Scenario,TraceNumber,Year) %>%
     summarise(Value = sum(Value)) %>% #first sum by year, keeping scens, traces, and years together
-    dplyr::group_by(Scenario,Year)  %>%
-    summarise(Value = mean(Value)) %>% #then avg all traces, keeping scens and years together 
     dplyr::group_by(Scenario) %>% 
     ggplot(aes(Value, color = Scenario)) +
     stat_eexccrv() +  
@@ -1171,8 +1169,7 @@ if(T){
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::group_by(Scenario,TraceNumber,Year) %>%
     summarise(Value = sum(Value)) %>% #first sum by year, keeping scens, traces, and years together
-    dplyr::group_by(Scenario,Year)  %>%
-    summarise(Value = mean(Value)) %>% #then avg all traces, keeping scens and years together 
+    ## don't average over traces, just plot all annual outflows together  
     dplyr::group_by(Scenario) %>% 
     ggplot(aes(Value, color = Scenario)) +
     stat_eexccrv() +  
@@ -1212,19 +1209,21 @@ if(T){
   variable = "Powell.Outflow"
   title = paste(variable,first(yrs2show),"-",last(yrs2show))
   y_lab = "Annual Flow (1,000 ac-ft/yr)"
+  ylims <- c(0,1000000)
+  
   p <- scen_res %>%
     dplyr::filter(Variable == variable) %>%
     mutate(Value = Value/1000) %>% #convert to KAF after we convert to AF  
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::group_by(Scenario,TraceNumber,Year) %>%
     summarise(Value = sum(Value)) %>% #first sum by year, keeping scens, traces, and years together
-    dplyr::group_by(Scenario,Year)  %>%
-    summarise(Value = mean(Value)) %>% #then avg all traces, keeping scens and years together 
+    ## don't average over traces, just plot all monthly outflows together  
     dplyr::group_by(Scenario) %>% 
     ggplot(aes(Value, color = Scenario)) +
     stat_eexccrv() +  
     theme_light() + 
-    scale_y_continuous(labels = scales::comma) +
+    # scale_y_continuous(breaks=seq(ylims[1],ylims[2],40)) +
+    # scale_y_continuous(labels = scales::comma) +
     scale_x_continuous("Percent Exceedance",labels = scales::percent,breaks=seq(0,1,.2)) + 
     labs(title = title,
          y = y_lab, caption = caption) +
@@ -1261,8 +1260,7 @@ if(T){
       mutate(Value = Value/1000) %>% #convert to KAF after we convert to AF  
       dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
       dplyr::filter(MonthNum%in%exc_month) %>% #filter month 
-      dplyr::group_by(Scenario,Year)  %>%
-      summarise(Value = mean(Value)) %>% #then avg all traces, keeping scens and years together 
+      ## don't average over traces, just plot all monthly outflows together  
       dplyr::group_by(Scenario) %>% 
       ggplot(aes(Value, color = Scenario)) +
       stat_eexccrv() +  
@@ -1282,10 +1280,10 @@ if(T){
 
 
 
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ############## H Class ########
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 startyr = 2021 #filter out all years > this year
 endyr = 2060 #2060
