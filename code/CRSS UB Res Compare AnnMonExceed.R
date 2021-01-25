@@ -33,14 +33,15 @@ scens <- list(
   # "v2_RW81_Full" = "FebRedesign9013,DNF,2016Dems,IG_DCP.9006,MTOM_Most - 2.RW 8.1")
   # "v2_RW81_Stress" = "FebRedesign9013,ISM1988_2018,2016Dems,IG_DCP.9006,MTOM_Most - 2.RW 8.1"),
   # "v3_UBRes_Stress" = "FebRedesign9013_v3,ISM1988_2018,2016Dems,IG_DCP.9006_v3,MTOM_Most - 3.UBRes",
-  "v3_UBRes_Full" = "FebRedesign9013_v3,DNF,2016Dems,IG_DCP.9006_v3,MTOM_Most - 3.UBRes",#,
+  # "v3_UBRes_Full" = "FebRedesign9013_v3,DNF,2016Dems,IG_DCP.9006_v3,MTOM_Most - 3.UBRes",#,
   # "v4_PowMon_Full" = "FebRedesign9013_v4,DNF,2016Dems,IG_DCP.9006_v3,MTOM_Most -4.PowMon",
   # "v4_PowMon_Stress" = "FebRedesign9013_v4,ISM1988_2018,2016Dems,IG_DCP.9006_v3,MTOM_Most -4.PowMon")
   # "v5_Converg_Full" = "FebRedesign9013_v5,DNF,2016Dems,IG_DCP.9006_v3,MTOM_Most -5.Converg",
   # "v5_Stress_Full" = "FebRedesign9013_v5,ISM1988_2018,2016Dems,IG_DCP.9006_v3,MTOM_Most -5.Converg")
   # "" = "FebRedesign9013_v6,ISM1988_2018,2016Dems,IG_DCP.9006_v3,MTOM_Most -6.BMbath")
   # "v6_BMbath_Full" = "FebRedesign9013_v6,DNF,2016Dems,IG_DCP.9006_v3,MTOM_Most -6.BMbath",
-  "v7_PowFix_Full" = "FebRedesign9013_v7,DNF,2016Dems,IG_DCP.9006_v3,MTOM_Most -7.PowFix")
+  "v7_PowFix_Full" = "FebRedesign9013_v7,DNF,2016Dems,IG_DCP.9006_v3,MTOM_Most -7.PowFix",
+  "v8_NavajoEvap" = "FebRedesign9013,DNF,2016Dems,IG_DCP.9006,MTOM_Most -v8.NavEvap")
 
 
 

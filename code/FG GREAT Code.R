@@ -8,6 +8,8 @@ rm(list=ls()) #clear the enviornment
 # #containing the sub folders for each ensemble
 
 CRSSDIR <- Sys.getenv("CRSS_DIR")
+CRSSDIR <- "C:\\Users\\cfelletter\\Documents\\CRSS.Offc" #results in old model dir
+
 
 # # where scenarios are folder are kept
 scen_dir <- file.path(CRSSDIR,"Scenario")
@@ -144,6 +146,13 @@ scen_res_exp <- readRDS(file = file.path(ofigs,paste0("scen_res_exp.RDS")))
 scen_res_DO <- readRDS(file = file.path(ofigs,paste0("scen_res_DO.RDS")))
 scen_res_DO <- scen_res_DO %>% #filter out scens you don't want to keep for plots
   dplyr::filter(Scenario %in% keepscens)
+
+scen_res_hclass <- readRDS(file = file.path(ofigs,paste0("scen_res_hclass.RDS")))
+scen_res_hclass <- scen_res_hclass %>% #filter out scens you don't want to keep for plots
+  dplyr::filter(Scenario %in% keepscens)
+
+
+
 
 # keepscens <- c("NoRequests,NoDO","NoRequests,DO","Basecase,DO","LTSP,DO","LTSP&SMB,DO","LTSP,SMB,CPMBF,DO")
 # scen_res_monthly <- scen_res_monthly %>% #filter out scens you don't want to keep for plots
@@ -1278,3 +1287,102 @@ if(T){
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ##############  ########
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
+scen_res_daily <- readRDS(file = file.path(ofigs,paste0("scen_res_daily.RDS")))
+scen_res_exp <- readRDS(file = file.path(ofigs,paste0("scen_res_exp.RDS")))
+scen_res_DO <- readRDS(file = file.path(ofigs,paste0("scen_res_DO.RDS")))
+scen_res_hclass <- readRDS(file = file.path(ofigs,paste0("scen_res_hclass.RDS")))
+
+unique(scen_res_hclass$Scenario)
+unique(scen_res_monthly$Scenario)
+
+unique(scen_res_hclass$Variable)
+hclass <- unique(scen_res_hclass$Variable) #base,spring,yampa
+dim(scen_res_hclass)
+dim(scen_res_hclass)
+dim(df)
+# 
+
+class <- pivot_wider(scen_res_hclass,names_from = Variable,values_from = Value)
+
+out <- scen_res_monthly %>%
+  dplyr::filter(Variable == "FlamingGorge.Outflow")
+
+df <- cbind.data.frame(out,BaseFlowHClass = class$FlamingGorgeData.BaseFlowHClass, SpringFlowHClass = class$FlamingGorgeData.SpringHClass)
+tail(df)
+
+df_filter <- df %>%
+  dplyr::filter(df$SpringFlowHClass == 0 | df$SpringFlowHClass == 1 ) #%>%
+df_filter <- df_filter %>%
+  dplyr::filter(df_filter$BaseFlowHClass == 0 | df_filter$BaseFlowHClass == 1 ) 
+head(df_filter)
+
+y_lab = "Monthly Flow (cfs)"
+title = "Dry OR ModDry Spring AND Baseflow H Class FG.Outflow Exceedance "
+caption = "Only Spring & Baseflow H Class = Dry OR ModDry"
+p <- df_filter %>% 
+  dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+  dplyr::group_by(Scenario) %>% 
+  ggplot(aes(Value, color = Scenario)) +
+  theme_light() + 
+  stat_eexccrv() +
+  scale_color_manual(values = mycolors) +
+  # coord_cartesian(xlim =c(0,1), ylim = c(ymin[j],ymax[j]), expand = expand) + #don't drop data
+  scale_x_continuous("Percent Exceedance",labels = scales::percent,breaks=seq(0,1,.2)) + 
+  labs(title = title,
+       y = y_lab, caption = caption) +
+  theme(plot.caption = element_text(hjust = 0)) #left justify 
+print(p)
+ggsave(filename = file.path(ofigs,paste(title,".png")), width = widths[1],height = heights[1])
+
+summary(p)
+
+# df2 <- out %>% ### this isn't working for finding the bypass only - just process the spill slot
+#   mutate(Value = max(Value-4600,0)) %>% 
+#   dplyr::filter(Value > 0) 
+# p <- df2 %>%
+#   dplyr::group_by(Scenario) %>% 
+#   ggplot(aes(Value, color = Scenario)) +
+#   theme_light() + 
+#   stat_eexccrv() +
+#   scale_color_manual(values = mycolors) +
+#   # coord_cartesian(xlim =c(0,1), ylim = c(ymin[j],ymax[j]), expand = expand) + #don't drop data
+#   scale_x_continuous("Percent Exceedance",labels = scales::percent,breaks=seq(0,1,.2)) + 
+#   labs(title = title,
+#        y = y_lab, caption = caption) +
+#   theme(plot.caption = element_text(hjust = 0)) #left justify 
+# print(p)
+
+# test1 <- df2 %>% #fails, gives same values 
+#   dplyr::filter(Scenario == names(scens[1])) 
+# test2 <- df2 %>%
+#   dplyr::filter(Scenario == names(scens[4])) 
+# mean(test1$Value)
+# mean(test2$Value)
+
+# test1 <- df_filter %>% #works 
+#   dplyr::filter(Scenario == names(scens[1])) 
+# test2 <- df_filter %>%
+#   dplyr::filter(Scenario == names(scens[4])) 
+# mean(test1$Value)
+# mean(test2$Value)
+
+
+# test1 <- out %>% #works 
+#   dplyr::filter(Scenario == names(scens[1])) 
+# test2 <- out %>%
+#   dplyr::filter(Scenario == names(scens[4])) 
+# mean(test1$Value)
+# mean(test2$Value)
+# 
+# 
+# test1 <- scen_res_monthly %>%
+#   dplyr::filter(Scenario == names(scens[1])) 
+# test2 <- scen_res_monthly %>%
+#   dplyr::filter(Scenario == names(scens[4]))
+# head(test1)
+# head(test2)
+# mean(test1$Value)
+# mean(test2$Value)
+
