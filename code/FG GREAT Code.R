@@ -2,14 +2,9 @@
 ## 1. Set Up ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 rm(list=ls()) #clear the enviornment
-# 
-# ### Directory Set Up
-# # where scenarios are folder are kept
-# #containing the sub folders for each ensemble
 
 CRSSDIR <- Sys.getenv("CRSS_DIR")
-CRSSDIR <- "C:\\Users\\cfelletter\\Documents\\CRSS.Offc" #results in old model dir
-
+# CRSSDIR <- "C:\\Users\\cfelletter\\Documents\\CRSS.Offc" #results in old model dir
 
 # # where scenarios are folder are kept
 scen_dir <- file.path(CRSSDIR,"Scenario")
@@ -17,78 +12,47 @@ scen_dir <- file.path(CRSSDIR,"Scenario")
 
 results_dir <- file.path(CRSSDIR,"results") 
 
-
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-# Figs <- "7002_Heather.pdf"#paste0('FGDev_MonthlyFigs_',startyr,endyr,'.pdf')
-mycolors <- c("#f8766d","#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
-# # red,gold, Heathers: dark blue (base), pink, lime green , cyan 
-# keepscens <- c("IG_NoLTSP,NoDO","IG_NoLTSP,DO","Basecase,NoDO","Basecase,DO","LTSP,SMB,CPMBF,NoDO","LTSP,SMB,CPMBF,DO")
-
-
 #all scens 
 scens <- list( ### don't comment these out use keepscens variabile #### 
-               # "NoRequests,NoDO" = "NoDO_Base_7003,DNF,2007Dems,NoAdaptive_GREAT_7001,MTOM_Most", # aka "IG_NoLTSP,NoDO" #this one is good to go, dont need it to be 7002
-               # "NoRequests" = "Base_7003,DNF,2007Dems,NoAdaptive_GREAT_7001,MTOM_Most", #don't have Drought.rdf for this
-               # "IG_Offc,NoDO" = "NoDO_Base_7001,DNF,2007Dems,NoDO_IG,MTOM_Most", - old
-               # "IG_Offc,DO" = "Base_7001,DNF,2007Dems,IG_Offc,MTOM_Most", #"Baseline,DNF,2007Dems,IG_DCP,MTOM_Most",
-               # "Basecase,NoDO" = "NoDO_Base_7002,DNF,2007Dems,NoDO_GREAT_7001,MTOM_Most",
-               # "Basecase_No800,DO" = "No800_Base_7003,DNF,2007Dems,GREAT_7001,MTOM_Most", 
-               "Basecase" = "Base_7004,DNF,2007Dems,GREAT_7001,MTOM_Most", #reran formerly - Base_7002,DNF,2007Dems,GREAT_7001,MTOM_Most",
-               "LTSP" = "LTSP_7004,DNF,2007Dems,GREAT_7001,MTOM_Most", ### these need rerun
-               "LTSP&SMB" = "LTSP_SMB_7004,DNF,2007Dems,GREAT_7001,MTOM_Most",
-               # "LTSP,SMB,CPMBF,NoDO" = "NoDO_All_7002,DNF,2007Dems,NoDO_GREAT_7001,MTOM_Most",
-               "LTSP,SMB,CPMBF" = "All_7004,DNF,2007Dems,GREAT_7001,MTOM_Most"#,
-               # "CPMBF,DO" = "CPM_7002,DNF,2007Dems,GREAT_7001,MTOM_Most",
-               # "SMB,DO" = "SMB_7002,DNF,2007Dems,GREAT_7001,MTOM_Most"
+               "Basecase_7001" = "Base_7004,DNF,2007Dems,GREAT_7001,MTOM_Most",
+               "Basecase" = "Base_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
+               "LTSP" = "LTSP_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
+               "CPMBF" = "CPM_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+               "SMB" = "SMB_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+               "LTSP&SMB" = "LTSP_SMB_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+               "LTSP,SMB,CPMBF_7001" = "All_7004,DNF,2007Dems,GREAT_7001,MTOM_Most",
+               "LTSP,SMB,CPMBF" = "All_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most"#,
+               
 )
-Figs <- "7004.pdf"#paste0('FGDev_MonthlyFigs_',startyr,endyr,'.pdf')
-mycolors <- c("#f8766d","#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
 
+## pick which scens to plot from larger group to process and save as RDS files for later analysis 
 keepscens <- names(scens)
-# keepscens <- c("NoRequests,NoDO","NoRequests,DO","Basecase,DO","LTSP,DO","LTSP&SMB,DO","LTSP,SMB,CPMBF,DO")
-# 
-# Figs <- "7003_NoDOvDO.pdf"#paste0('FGDev_MonthlyFigs_',startyr,endyr,'.pdf')
-# mycolors <- c("#f8766d","#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
-# keepscens <- c("NoRequests,NoDO","NoRequests,DO")
-# 
-# #New no 800 scens 
-# scens <- list( ### don't comment these out use keepscens variabile #### 
-#                "Basecase,DO" = "Base_7003,DNF,2007Dems,GREAT_7001,MTOM_Most", #reran formerly - Base_7002,DNF,2007Dems,GREAT_7001,MTOM_Most",
-#                "Basecase_no800M-A,DO" = "No800_Base_7003,DNF,2007Dems,GREAT_7001,MTOM_Most", 
-#                "no800M-A,LTSP,SMB,CPMBF,DO" = "No800_All_7003,DNF,2007Dems,GREAT_7001,MTOM_Most",
-#                "LTSP,SMB,CPMBF,DO" = "All_7002,DNF,2007Dems,GREAT_7001,MTOM_Most"#,
-#                
-# )
-# Figs <- "7003_No800.pdf"#paste0('FGDev_MonthlyFigs_',startyr,endyr,'.pdf')
-# mycolors <- c("#f8766d","#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
-# keepscens <- names(scens)
+keepscens <- names(scens)[c(1,2,7,8)] #compare base and all w/wo new 7002 rls 
+keepscens <- names(scens)[c(2:6,8)] #compare base and all w/wo new 7002 rls 
 
 
+Figs <- "7004mdl_7002rls.pdf"
 
-# Noscens <- length(keepscens)
-# library(RColorBrewer)
+mycolors <- c("#f8766d","#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
+Noscens <- length(keepscens)
+library(RColorBrewer)
 # mycolors <- brewer.pal(n = Noscens, name = "Paired")
-# mycolors <- brewer.pal(n = Noscens, name = "Set1")
+mycolors <- brewer.pal(n = Noscens, name = "Set1")
 # library(scales)
 # show_col(hue_pal()(8))
 # mycolors <- hue_pal()(Noscens) # standard r colors 
-
-mainScenGroup <- names(scens)[2] #name of the subfolder this analysis will be stored
 
 startyr = 2021 #filter out all years > this year
 endyr = 2040 #2060 has a bad year of data
 yrs2show <- startyr:endyr # can't use this until your run extends to end of 2023
 
 #### Plot Controls #####
-printfigs_monthly<-T#T#make png figures 
-printfigs_daily<-T#T#make png figures since pdfs take FOREVER to open
-printfigs_exceed<-T#T#make png figures 
+printfigs_monthly<-F#T#make png figures 
+printfigs_daily<-F#T#make png figures since pdfs take FOREVER to open
+printfigs_exceed<-F#T#make png figures 
  
 # mylinetypes <- c("dashed","solid","solid")
 #standard powerpoint figure sizes 
@@ -107,8 +71,8 @@ library(RWDataPlyr)
 #see RWDATPlyr Workflow for more information
 library(CRSSIO)
 # plotEOCYElev() and csVarNames()
-source('C:/Users/cfelletter/Documents/RW-RDF-Process-Plot/code/Stat_emp_ExcCrv.r')
-source('C:/Users/cfelletter/Documents/RW-RDF-Process-Plot/code/stat-boxplot-custom.r')
+source('code/Stat_emp_ExcCrv.r')
+source('code/stat-boxplot-custom.r')
 
 # check folders
 if(!file.exists(file.path(scen_dir, scens[1]))
@@ -129,36 +93,32 @@ message('Figures will be saved to: ', ofigs)
 # # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ## Skip Process Results - Load RDS 
 
-scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
-scen_res_monthly <- scen_res_monthly %>% #filter out scens you don't want to keep for plots
-  dplyr::filter(Scenario %in% keepscens)
-unique(scen_res_monthly$Scenario)
-scen_res_monthly$Scenario = factor(scen_res_monthly$Scenario, levels=names(scens))
+if(any(list.files(ofigs) == "scen_res_monthly.RDS")){ 
+  #exists(file.path(ofigs,paste0("scen_res_monthly.RDS")))
+  
+  scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
+  scen_res_monthly <- scen_res_monthly %>% #filter out scens you don't want to keep for plots
+    dplyr::filter(Scenario %in% keepscens)
+  unique(scen_res_monthly$Scenario)
+  scen_res_monthly$Scenario = factor(scen_res_monthly$Scenario, levels=names(scens))
 
-scen_res_daily <- readRDS(file = file.path(ofigs,paste0("scen_res_daily.RDS")))
-scen_res_daily <- scen_res_daily %>% #filter out scens you don't want to keep for plots
-  dplyr::filter(Scenario %in% keepscens)
-unique(scen_res_daily$Scenario)
-scen_res_daily$Scenario = factor(scen_res_daily$Scenario, levels=names(scens))
-
-scen_res_exp <- readRDS(file = file.path(ofigs,paste0("scen_res_exp.RDS")))
-
-scen_res_DO <- readRDS(file = file.path(ofigs,paste0("scen_res_DO.RDS")))
-scen_res_DO <- scen_res_DO %>% #filter out scens you don't want to keep for plots
-  dplyr::filter(Scenario %in% keepscens)
-
-scen_res_hclass <- readRDS(file = file.path(ofigs,paste0("scen_res_hclass.RDS")))
-scen_res_hclass <- scen_res_hclass %>% #filter out scens you don't want to keep for plots
-  dplyr::filter(Scenario %in% keepscens)
-
-
-
-
-# keepscens <- c("NoRequests,NoDO","NoRequests,DO","Basecase,DO","LTSP,DO","LTSP&SMB,DO","LTSP,SMB,CPMBF,DO")
-# scen_res_monthly <- scen_res_monthly %>% #filter out scens you don't want to keep for plots
-#   dplyr::filter(Scenario %in% keepscens)
-# scen_res_daily <- scen_res_daily %>% #filter out scens you don't want to keep for plots
-#   dplyr::filter(Scenario %in% keepscens)
+  scen_res_daily <- readRDS(file = file.path(ofigs,paste0("scen_res_daily.RDS")))
+  scen_res_daily <- scen_res_daily %>% #filter out scens you don't want to keep for plots
+    dplyr::filter(Scenario %in% keepscens)
+  unique(scen_res_daily$Scenario)
+  scen_res_daily$Scenario = factor(scen_res_daily$Scenario, levels=names(scens))
+  
+  # scen_res_exp <- readRDS(file = file.path(ofigs,paste0("scen_res_exp.RDS")))
+  
+  scen_res_DO <- readRDS(file = file.path(ofigs,paste0("scen_res_DO.RDS")))
+  scen_res_DO <- scen_res_DO %>% #filter out scens you don't want to keep for plots
+    dplyr::filter(Scenario %in% keepscens)
+  
+  scen_res_hclass <- readRDS(file = file.path(ofigs,paste0("scen_res_hclass.RDS")))
+  scen_res_hclass <- scen_res_hclass %>% #filter out scens you don't want to keep for plots
+    dplyr::filter(Scenario %in% keepscens)
+  
+}
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results - monthly 
@@ -212,9 +172,8 @@ scen_res_monthly <- scen_res_monthly %>% #filter out scens you don't want to kee
 unique(scen_res_monthly$Scenario)
 }
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 9. Plot Results - Drought Operations Slots ----- NOT TESTED
+## 4. Process Results - UB Drought Operations 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-##### UB DO stats #####  #####  #####  #####  #####  #####  #####  #####  #####
 if(T){
 rdf <- "UBDO.rdf"
 noslots<-4
@@ -248,9 +207,8 @@ scen_res_DO$Scenario = factor(scen_res_DO$Scenario, levels=names(scens))
 
 }
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 4. Plot monthly figures  
+## 5. Plot monthly figures  
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#all Monthly plots 
 if (T) {
   pdf(file.path(ofigs,paste("Monthly",Figs)), width=9, height=6)
   
@@ -287,9 +245,7 @@ if (T) {
 
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # ++++++++++++++++ DO vs year plots  +++++++++++++++++++++++++++++++++++++++++++++++++++
-  # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  
-  
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   ## DO Occurances ##
 p <- 
  scen_res_DO %>%
@@ -308,7 +264,6 @@ p <-
    labs(title = paste("DO Average Annual Occurance"), y = "Mean Precent Of Months In DO", x = "Year")
 print(p)
 if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste("Average Annual Precent Of Months In DO.png")), width = widths[1],height = heights[1])}
-
 
 ### Normal Release 
 variable = "ExtendedOperations.FlamingGorgeNormalRelease"
@@ -361,10 +316,8 @@ p <- convert %>%
   labs(title = paste("Average Annual Additional Release For DO"), y = y_lab, x = "Year")
 print(p)
 if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste("Average Annual",variable,".png")), width = widths[1],height = heights[1])}
-
  
-  ### end DO ####
-  
+### end DO ###
 
 variable = "FlamingGorge.Storage"
 title = paste(variable,first(yrs2show),"-",last(yrs2show))
@@ -386,7 +339,6 @@ p <- scen_res_monthly %>%
 print(p)
 if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste("Mean EOCY",variable,".png")), width = widths[1],height = heights[1])}
 
-  
   variable = "FlamingGorge.Pool Elevation"
   title = paste(variable,first(yrs2show),"-",last(yrs2show))
   y_lab = "EOCY Water Surface Elevation (ft)"
@@ -404,8 +356,6 @@ if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste("Mean EOCY",va
     labs(title = paste("Average EOCY",title), y = y_lab, x = "Year")
   print(p)
   if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste("Mean EOCY",variable,".png")), width = widths[1],height = heights[1])}
-  
-  
   
   #powell.pe vs time  
   variable = "Powell.Pool Elevation"
@@ -425,7 +375,6 @@ if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste("Mean EOCY",va
     labs(title = paste("Average EOCY",title), y = y_lab, x = "Year")
   print(p)
   if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste("Average Annual",variable,".png")), width = widths[1],height = heights[1])}
-  
   
   #powell.inflow vs time  
   variable = "Powell.Inflow"
@@ -473,7 +422,6 @@ if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste("Mean EOCY",va
     labs(title = title, y = y_lab)
   print(p)
   if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste(title,variable,".png")), width = widths[1],height = heights[1])}
-  
   
   # monthly box plot of PE 
   variable = "FlamingGorge.Pool Elevation"
@@ -564,9 +512,8 @@ if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste("Mean EOCY",va
   dev.off()
 }
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 5. Process Daily 
+## 6. Process Daily 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#Daily plots process 
 if (T) {
 rdffile <-  "DailyFlows.rdf"
 
@@ -614,9 +561,8 @@ scen_res_daily <- scen_res_daily %>% #filter out scens you don't want to keep fo
 unique(scen_res_daily$Scenario)
 }
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 6.  Daily plot 
+## 7.  Daily plot 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#Daily plots  
 if (T) {
 y_lab <- "Daily Flow (cfs)" #default
 caption <- NA
@@ -731,13 +677,11 @@ dev.off()
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 7. Plot Results - Percent Exceedance of Traces  ----- 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-#    ------------------- Requires monthly and daily have ran ----------------------
-# if (!(exists(scen_res_monthly) & exists(scen_res_daily))){warning('monthly & daily need to be processed first')}
-
-
 #all Exceedance plots 
 if (T) { #set true for easy running all plots 
+  #    ------------------- Requires monthly and daily have ran ----------------------
+  # if (!(exists(scen_res_monthly) & exists(scen_res_daily))){warning('monthly & daily need to be processed first')}
+  
   ## create a pdf  
   pdf(file.path(ofigs,paste("Exceedance",Figs)), width=9, height=6)
   
@@ -1057,7 +1001,6 @@ if (T) { #set true for easy running all plots
   
   dev.off()
 }
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 8. Plot Results - Expression Slots ----- NOT TESTED
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1285,14 +1228,14 @@ if(T){
 }
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-##############  ########
+##############  Filter Out All Except Dry and Mod Dry H Class  ########
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
-scen_res_daily <- readRDS(file = file.path(ofigs,paste0("scen_res_daily.RDS")))
-scen_res_exp <- readRDS(file = file.path(ofigs,paste0("scen_res_exp.RDS")))
-scen_res_DO <- readRDS(file = file.path(ofigs,paste0("scen_res_DO.RDS")))
-scen_res_hclass <- readRDS(file = file.path(ofigs,paste0("scen_res_hclass.RDS")))
+# 
+# scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
+# scen_res_daily <- readRDS(file = file.path(ofigs,paste0("scen_res_daily.RDS")))
+# scen_res_exp <- readRDS(file = file.path(ofigs,paste0("scen_res_exp.RDS")))
+# scen_res_DO <- readRDS(file = file.path(ofigs,paste0("scen_res_DO.RDS")))
+# scen_res_hclass <- readRDS(file = file.path(ofigs,paste0("scen_res_hclass.RDS")))
 
 unique(scen_res_hclass$Scenario)
 unique(scen_res_monthly$Scenario)
