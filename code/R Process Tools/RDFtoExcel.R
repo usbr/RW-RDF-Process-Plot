@@ -14,20 +14,35 @@ scen <- "NF_pluvialRem_2000,2016Dems_v1.6,CRSS_VerificationModel_9015,IGDCP.v4.4
 scen <- c("NF_pluvialRem_2000,2016Dems_v1.6,CRSS_VerificationModel_9015,IGDCP.v4.4.0.9004",
           "NF_StressTest_2000,2016Dems_v1.6,CRSS_VerificationModel_9015,IGDCP.v4.4.0.9004",
           "NF_Full_2000,2016Dems_v1.6,CRSS_VerificationModel_9015,IGDCP.v4.4.0.9004")
+
 ### if you previously ran Move and Rename
 folderpath <- current.folder
 ### from BA CRSS results 
 folderpath <- "C:/Users/fellette/Documents/GIT/CRSS/Scenario" #BA
 scen <- list.files(folderpath) #only if want all scenarios 
 
+###if you have a scens list from other code 
+scen <- scens 
+
+###always check this before proceeding 
+
+scen 
+
 ## which rdf files 
-rdfs <- rdf #if you previously ran Move and Rename.R
-rdfs <- c('SystemConditions') #c('UBRch')
+rdf <- c('SystemConditions') #c('UBRch')
+## CRSS-MTOM files
+rdf <- c("SystemConditions","Res","UBRes","xtraRes")  #"UBRch.rdf"
+
+## GREAT files
+rdf <- c("DailyFlows","Res","UBRes","UBDO","Drought")  #"UBRch.rdf"
 
 ### setup files 
+rdfs <- rdf #if you previously ran Move and Rename.R
 xlsx <- rdfs
 rdfs <- paste0(rdfs, ".rdf")
 xlsx <- paste0(xlsx, ".xlsx")
+rdfs
+xlsx
 
 # Run RdfToExcelExecutable -----------------------------------
 
@@ -37,6 +52,7 @@ for(j in 1:length(scen)){
   
   # j=1
   fpath <- file.path(folderpath,scen[j])
+  message("Starting: ", scen[j])
   
   for (i in seq_along(rdfs)) {
     ifile <- file.path(fpath, rdfs[i])

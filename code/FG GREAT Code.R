@@ -32,9 +32,29 @@ scens <- list( ### don't comment these out use keepscens variabile ####
 keepscens <- names(scens)
 keepscens <- names(scens)[c(1,2,7,8)] #compare base and all w/wo new 7002 rls 
 keepscens <- names(scens)[c(2:6,8)] #compare base and all w/wo new 7002 rls 
-
-
 Figs <- "7004mdl_7002rls.pdf"
+
+#stress test compare
+scens <- list( ### don't comment these out use keepscens variabile #### 
+               "Basecase_Full" = "Base_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
+               "Basecase_Stress" = "Base_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
+               "LTSP_Stress" = "LTSP_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+               # "CPMBF_Stress" = "CPM_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+               # "SMB_Stress" = "SMB_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+               "LTSP&SMB_Stress" = "LTSP_SMB_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+               "LTSP,SMB,CPMBF_Full" = "All_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+               "LTSP,SMB,CPMBF_Stress" = "All_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most"#,
+               
+)
+
+
+
+
+## pick which scens to plot from larger group to process and save as RDS files for later analysis 
+keepscens <- names(scens)
+# keepscens <- names(scens)[c(1,2,3,6,7,8)] #all but  
+
+Figs <- "Stress_7004mdl_7002rls.pdf"
 
 mycolors <- c("#f8766d","#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
 Noscens <- length(keepscens)
