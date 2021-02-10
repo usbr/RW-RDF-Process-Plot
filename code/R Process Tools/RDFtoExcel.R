@@ -22,7 +22,7 @@ folderpath <- "C:/Users/fellette/Documents/GIT/CRSS/Scenario" #BA
 scen <- list.files(folderpath) #only if want all scenarios 
 
 ###if you have a scens list from other code 
-scen <- scens 
+# scen <- scens 
 
 ###always check this before proceeding 
 

@@ -23,6 +23,9 @@ for (dir_check in folders.needed) {
 ## CRSS-MTOM files
 rdf <- c("SystemConditions","Res","UBRes","xtraRes")  #"UBRch.rdf"
 
+## required for Process CRSS tool 
+rdf <- c("KeySlots","Check","MPPE","MWDICS","SystemConditions","Res","CSD_ann","CSD_mon")  
+
 ## GREAT files
 rdf <- c("DailyFlows","Res","UBRes","UBDO","Drought")  #"UBRch.rdf"
 
