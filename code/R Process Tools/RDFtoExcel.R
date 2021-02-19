@@ -17,6 +17,10 @@ scen <- c("NF_pluvialRem_2000,2016Dems_v1.6,CRSS_VerificationModel_9015,IGDCP.v4
 
 ### if you previously ran Move and Rename
 folderpath <- current.folder
+
+### on my comp
+folderpath <- "C:/Users/cfelletter/Documents/CRSS/Scenario" #BA
+scen <- list.files(folderpath)
 ### from BA CRSS results 
 folderpath <- "C:/Users/fellette/Documents/GIT/CRSS/Scenario" #BA
 scen <- list.files(folderpath) #only if want all scenarios 

@@ -15,46 +15,13 @@ results_dir <- file.path(CRSSDIR,"results")
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#all scens 
-scens <- list( ### don't comment these out use keepscens variabile #### 
-               "Basecase_7001" = "Base_7004,DNF,2007Dems,GREAT_7001,MTOM_Most",
-               "Basecase" = "Base_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
-               "LTSP" = "LTSP_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
-               "CPMBF" = "CPM_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "SMB" = "SMB_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP&SMB" = "LTSP_SMB_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP,SMB,CPMBF_7001" = "All_7004,DNF,2007Dems,GREAT_7001,MTOM_Most",
-               "LTSP,SMB,CPMBF" = "All_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most"#,
-               
-)
-
-## pick which scens to plot from larger group to process and save as RDS files for later analysis 
-keepscens <- names(scens)
-keepscens <- names(scens)[c(1,2,7,8)] #compare base and all w/wo new 7002 rls 
-keepscens <- names(scens)[c(2:6,8)] #compare base and all w/wo new 7002 rls 
-Figs <- "7004mdl_7002rls.pdf"
-
 #stress test compare
 scens <- list( ### don't comment these out use keepscens variabile #### 
-               "Basecase_Full" = "Base_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
-               "Basecase_Stress" = "Base_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
-               "LTSP_Stress" = "LTSP_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               # "CPMBF_Stress" = "CPM_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               # "SMB_Stress" = "SMB_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP&SMB_Stress" = "LTSP_SMB_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP,SMB,CPMBF_Full" = "All_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP,SMB,CPMBF_Stress" = "All_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most"#,
-               
+               "Full" = "Jan2021_2022,DNF,2016Dems,IG_DCP,MTOM_Most", 
+               "Stress" = "Jan2021_2022,ISM1988_2018,2016Dems,IG_DCP,MTOM_Most" 
 )
 
-
-
-
-## pick which scens to plot from larger group to process and save as RDS files for later analysis 
-keepscens <- names(scens)
-# keepscens <- names(scens)[c(1,2,3,6,7,8)] #all but  
-
-Figs <- "Stress_7004mdl_7002rls.pdf"
+Figs <- "Jan21Offc_UBDO"
 
 mycolors <- c("#f8766d","#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
 Noscens <- length(keepscens)
@@ -65,8 +32,8 @@ mycolors <- brewer.pal(n = Noscens, name = "Set1")
 # show_col(hue_pal()(8))
 # mycolors <- hue_pal()(Noscens) # standard r colors 
 
-startyr = 2021 #filter out all years > this year
-endyr = 2040 #2060 has a bad year of data
+startyr = 2022 #filter out all years > this year
+endyr = 2060 #2060 has a bad year of data
 yrs2show <- startyr:endyr # can't use this until your run extends to end of 2023
 
 #### Plot Controls #####
@@ -114,44 +81,30 @@ message('Figures will be saved to: ', ofigs)
 # ## Skip Process Results - Load RDS 
 
 if(any(list.files(ofigs) == "scen_res_monthly.RDS")){ 
-  #exists(file.path(ofigs,paste0("scen_res_monthly.RDS"))) # this only works for an object, so if was loaded could do exists("scen_res_monthly")
+  #exists(file.path(ofigs,paste0("scen_res_monthly.RDS")))
   
   scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
-  scen_res_monthly <- scen_res_monthly %>% #filter out scens you don't want to keep for plots
-    dplyr::filter(Scenario %in% keepscens)
+  # scen_res_monthly <- scen_res_monthly %>% #filter out scens you don't want to keep for plots
+  #   dplyr::filter(Scenario %in% keepscens)
   unique(scen_res_monthly$Scenario)
   scen_res_monthly$Scenario = factor(scen_res_monthly$Scenario, levels=names(scens))
-
-  scen_res_daily <- readRDS(file = file.path(ofigs,paste0("scen_res_daily.RDS")))
-  scen_res_daily <- scen_res_daily %>% #filter out scens you don't want to keep for plots
-    dplyr::filter(Scenario %in% keepscens)
-  unique(scen_res_daily$Scenario)
-  scen_res_daily$Scenario = factor(scen_res_daily$Scenario, levels=names(scens))
-  
-  # scen_res_exp <- readRDS(file = file.path(ofigs,paste0("scen_res_exp.RDS")))
   
   scen_res_DO <- readRDS(file = file.path(ofigs,paste0("scen_res_DO.RDS")))
-  scen_res_DO <- scen_res_DO %>% #filter out scens you don't want to keep for plots
-    dplyr::filter(Scenario %in% keepscens)
-  
-  scen_res_hclass <- readRDS(file = file.path(ofigs,paste0("scen_res_hclass.RDS")))
-  scen_res_hclass <- scen_res_hclass %>% #filter out scens you don't want to keep for plots
-    dplyr::filter(Scenario %in% keepscens)
-  
+  # scen_res_DO <- scen_res_DO %>% #filter out scens you don't want to keep for plots
+  #   dplyr::filter(Scenario %in% keepscens)
 }
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 3. Process Results - monthly 
+## 3. Process Results - monthly  
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 if (T) {
-#file names 
-# rdf <- "UBDO.rdf"
-# rdf_slot_names(read.rdf(iFile = file.path(scen_dir,scens[1],rdf)))
-
-#agg file specifying which slots
-rw_agg_file <- "rw_agg_FGonly.csv"
+ 
+rw_agg_file <- "rw_agg_CRSS_reservoiroutput.csv"
+# rw_agg_file <- "PowellAnnSlots.csv"
 #read agg file specifying which slots
-rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) #ubres.rdf res.rdf
+mypath <- "C:/Users/cfelletter/Documents/RW-RDF-Process-Plot/rw_agg"
+rwa1 <- rwd_agg(read.csv(file.path(mypath,rw_agg_file),stringsAsFactors = FALSE))#ubres.rdf res.rdf
+# rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) #ubres.rdf res.rdf
 
 #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
 scen_res <- rw_scen_aggregate(
@@ -162,52 +115,56 @@ scen_res <- rw_scen_aggregate(
 
 # unique(scen_res$Variable) #check variable names 
 
-#get everything on a date 
-scen_res$MonthNum = as.Date(paste0(scen_res$Year,scen_res$Month,"01"), format = "%Y%B%d") #this takes so long! 
-#get a numeric month number
-scen_res$MonthNum = as.numeric(format.Date(scen_res$MonthNum, format = "%m"))
-
-
-#filter out incomplete years
-# scen_res <- scen_res %>%
-#     dplyr::filter(Year >= first(yrs2show)) %>%
-#     dplyr::filter(Year <= last(yrs2show))
-
-AFMonCFS <- c(61.48760331,55.53719008,61.48760331,59.50413223,61.48760331,59.50413223,61.48760331,
-  61.48760331,59.50413223,61.48760331,59.50413223,61.48760331)
-CFSAFMon <- 1/AFMonCFS  
+# #get everything on a date 
+# scen_res$MonthNum = as.Date(paste0(scen_res$Year,scen_res$Month,"01"), format = "%Y%B%d") #this takes so long! 
+# #get a numeric month number
+# scen_res$MonthNum = as.numeric(format.Date(scen_res$MonthNum, format = "%m"))
+# 
+# 
+# #filter out incomplete years
+# # scen_res <- scen_res %>%
+# #     dplyr::filter(Year >= first(yrs2show)) %>%
+# #     dplyr::filter(Year <= last(yrs2show))
+# 
+# AFMonCFS <- c(61.48760331,55.53719008,61.48760331,59.50413223,61.48760331,59.50413223,61.48760331,
+#   61.48760331,59.50413223,61.48760331,59.50413223,61.48760331)
+# CFSAFMon <- 1/AFMonCFS  
 
 # # Adding factors so ggplot does not alphebetize legend
 scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
 # head(scen_res)
-
 
 scen_res_monthly <- scen_res
 scen_res <- scen_res_monthly
 saveRDS(scen_res_monthly,file = file.path(ofigs,paste0("scen_res_monthly.RDS")))
 # scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
          
-scen_res_monthly <- scen_res_monthly %>% #filter out scens you don't want to keep for plots
-  dplyr::filter(Scenario %in% keepscens)
-unique(scen_res_monthly$Scenario)
+# scen_res <- scen_res %>% #filter out scens you don't want to keep for plots
+#   dplyr::filter(Scenario %in% keepscens)
+# unique(scen_res$Scenario)
+
 }
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Process Results - UB Drought Operations 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 if(T){
 rdf <- "UBDO.rdf"
-noslots<-4
+# rdf_slot_names(file.path(scen_dir,scens[1],rdf))
+noslots<-6
 rwa1 <- rwd_agg(data.frame(
   file = c(rep(rdf, noslots)),
   slot = c("ExtendedOperations.PowellForecastDeficitFlag","ExtendedOperations.PowellForecastDeficit",
-           "ExtendedOperations.FlamingGorgeNormalRelease","ExtendedOperations.FlamingGorgeReleaseDifference"
+           "ExtendedOperations.FlamingGorgeNormalRelease","ExtendedOperations.FlamingGorgeReleaseDifference",
+           "ExtendedOperations.AdditionalBlueMesaRelease","ExtendedOperations.Navajo_TotalAdditionalRelease"
   ), 
   period = rep("asis", noslots), #c("cy", "eocy", "djf", "July", "wy", "asis"),
   summary = rep(NA, noslots),#c("min", NA, "sum", NA, "sum", NA),
   eval = rep(NA, noslots),#c("<=", rep(NA, 5)),
   t_s = rep(NA, noslots),#c(1060, NA, 0.001, NA, 0.000001, NA),
-  variable = c("ExtendedOperations.PowellForecastDeficitFlag","ExtendedOperations.PowellForecastDeficit",
-               "ExtendedOperations.FlamingGorgeNormalRelease","ExtendedOperations.FlamingGorgeReleaseDifference"),
+  variable =c("ExtendedOperations.PowellForecastDeficitFlag","ExtendedOperations.PowellForecastDeficit",
+              "ExtendedOperations.FlamingGorgeNormalRelease","ExtendedOperations.FlamingGorgeReleaseDifference",
+              "ExtendedOperations.AdditionalBlueMesaRelease","ExtendedOperations.Navajo_TotalAdditionalRelease"
+  ),
   stringsAsFactors = FALSE
 ))
 
@@ -220,8 +177,8 @@ scen_res_DO <- rw_scen_aggregate(
 
 #save RDS and filter to keepscens 
 saveRDS(scen_res_DO,file=file.path(ofigs,paste0("scen_res_DO.RDS"))) #prevent neeed to reprocess
-scen_res_DO <- scen_res_DO %>% #filter out scens you don't want to keep for plots
-  dplyr::filter(Scenario %in% keepscens)
+# scen_res_DO <- scen_res_DO %>% #filter out scens you don't want to keep for plots
+#   dplyr::filter(Scenario %in% keepscens)
 unique(scen_res_DO$Scenario)
 scen_res_DO$Scenario = factor(scen_res_DO$Scenario, levels=names(scens))
 
@@ -230,7 +187,146 @@ scen_res_DO$Scenario = factor(scen_res_DO$Scenario, levels=names(scens))
 ## 5. Plot monthly figures  
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 if (T) {
-  pdf(file.path(ofigs,paste("Monthly",Figs)), width=9, height=6)
+  # pdf(file.path(ofigs,paste("UBDO",Figs)), width=9, height=6)
+  
+  
+  unique(scen_res_DO$Variable)
+  PowellForecastDeficit <- scen_res_DO %>% #filter out scens you don't want to keep for plots
+    dplyr::filter(Variable %in% "ExtendedOperations.PowellForecastDeficit")
+  head(PowellForecastDeficit)
+  Flag <- scen_res_DO %>% #filter out scens you don't want to keep for plots
+    dplyr::filter(Variable %in% "ExtendedOperations.PowellForecastDeficitFlag")
+  
+  PowellForecastDeficit = pivot_wider(PowellForecastDeficit,names_from = Variable,values_from = Value)
+  Flag = pivot_wider(Flag,names_from = Variable,values_from = Value)
+  
+  UBResVol <- scen_res_monthly %>% #filter out scens you don't want to keep for plots
+    dplyr::filter(Variable %in% c("FlamingGorge.Storage","BlueMesa.Storage","Navajo.Storage"))
+  UBResVol = pivot_wider(UBResVol,names_from = Variable,values_from = Value)
+  
+  UBResVol <- UBResVol %>% 
+    mutate(FlamingGorge.StorageAv = max(FlamingGorge.Storage-365100,0)) %>% #  FG > 5890 - 365100 AF
+    mutate(Navajo.StorageAv = max(Navajo.Storage-930550,0)) %>%#    Navajo > 6022 - 930550 
+    mutate(BlueMesa.StorageAv = max(BlueMesa.Storage-129260,0))#  BM > 7409 - 129260
+  
+  #sum total UB Vol for meeting deficit
+  # UBResVol$UBResVolTotal <- UBResVol$FlamingGorge.Storage + UBResVol$BlueMesa.Storage + UBResVol$Navajo.Storage
+  # UBResVol$UBResVolAvailable <- UBResVol$FlamingGorge.StorageAv + UBResVol$BlueMesa.StorageAv + UBResVol$Navajo.StorageAv
+  PowellForecastDeficit$UBResVolTotal <- UBResVol$FlamingGorge.Storage + UBResVol$BlueMesa.Storage + UBResVol$Navajo.Storage
+  PowellForecastDeficit$UBResVolAvailable <- UBResVol$FlamingGorge.StorageAv + UBResVol$BlueMesa.StorageAv + UBResVol$Navajo.StorageAv
+  PowellForecastDeficit$DeficitFlag <- Flag$ExtendedOperations.PowellForecastDeficitFlag
+  
+  # do a pivot wider above 
+  # names(PowellForecastDeficit)[6] = "PowellForecastDeficit" #c("UBResVolAvailable","PowellForecastDeficit") #c("Variable","Value" )
+  names(PowellForecastDeficit)
+  head(PowellForecastDeficit)
+  
+  
+  PowellForecastDeficit <- PowellForecastDeficit %>% #filter out scens you don't want to keep for plots
+    dplyr::filter(Month %in% c("April","August") ) #only these months have calculated DV
+  
+  AllPowellForecastDeficit <- PowellForecastDeficit
+  
+  #filter out all > 0 deficit volumes (only < 0 is a deficit)
+  PowellForecastDeficit <- PowellForecastDeficit %>% #filter out scens you don't want to keep for plots 
+    dplyr::filter(ExtendedOperations.PowellForecastDeficit < 0 ) 
+  
+  ### What % of traces have actual DV? 12% 
+  length(PowellForecastDeficit$ExtendedOperations.PowellForecastDeficit)/length(AllPowellForecastDeficit$ExtendedOperations.PowellForecastDeficit)*100 
+  
+  PowellForecastDeficit$PowellForecastDeficit = PowellForecastDeficit$ExtendedOperations.PowellForecastDeficit * -1
+  
+  ### here we could plot a year vs # of traces in DO graph by annualizing them and grouping by trace
+  
+  # df <- PowellForecastDeficit %>% 
+  #   pivot_longer(names_to = "Value",cols = c("PowellForecastDeficit","UBResVolAvailable")) 
+  
+  ### Plot available volume vs deficit
+  PowellForecastDeficit %>% ggplot(aes(x = UBResVolAvailable, y = PowellForecastDeficit)) +
+    geom_point() + 
+    geom_abline(mapping = NULL, data = NULL, color = "red", slope = 1, intercept = 0,
+      show.legend = NA)
+  ggsave(filename = file.path(ofigs,paste("UBAvStorvsPowellDefVol.png")), width = widths[1],height = heights[1])
+
+  #postive means deficit > av volume in UB 
+  PowellForecastDeficit$Shortage <- PowellForecastDeficit$PowellForecastDeficit - PowellForecastDeficit$UBResVolAvailable
+  
+  PowellForecastDeficit <- PowellForecastDeficit %>% 
+    mutate(Shortage = max(Shortage,0)) 
+  
+  ### HOW OFTEN IS DV > AVAILABLE IN STORAGE ? = 33% of times have a defecit 
+  length(which(PowellForecastDeficit$Shortage > 0))/length(PowellForecastDeficit$Shortage) *100
+
+  
+  PowellForecastDeficit %>% ggplot(aes(x = Year, y = Shortage)) +
+    geom_point() 
+   
+  ggsave(filename = file.path(ofigs,paste("InstanceofShortage.png")), width = widths[1],height = heights[1])
+  
+  # Would be good to break that up by first time and subsequent times.
+  # this is hard - what if you had one time in 2025, then none for 20 years, then more. Do those count as first or subsequent. I think first, but need a "refresh" threshold. 
+  
+  ### Jim wants to add PE - but not immediately sure how to do this. How do you translate volume above threshold to PE?
+  #    Maybe it's as easy as StorageToElevation(ElevationToStorage(5990) + volume_above_5990)
+		
+		### Plot Analysis TO MAKE: How often does DO help? 
+ 
+
+
+  
+  
+
+ 
+    
+
+ 
+    # A handful of single trace plots
+			
+### Plot Analysis TO MAKE:  % of time DO in effect and still below 3490 or 3525
+  # ------------ MAKE ME -----------------#
+  
+		
+### Plot:	Frequency of months DO is in place
+	# Maybe a cdf, histogram, or boxplot of consecutive months in DO
+		# ------------ MAKE ME -----------------#
+  # pick which scen to do the frequence analysis
+  usehydro <- "Stress"
+  
+  ### whats the longest sequence any trace in is DO? 
+  AllPowellForecastDeficit %>%
+    filter(Scenario == usehydro) %>% #filter out so only have one hydrology
+    group_by(TraceNumber) %>%
+    do({tmp <- with(rle(.$DeficitFlag==1), lengths[values])
+    data.frame(TraceNumber= .$TraceNumber, Max=if(length(tmp)==0) 0 
+               else max(tmp)) }) %>% 
+    slice(1L)
+  
+  
+  
+  # The script can take any values of DeficitFlag column and count the maximum consecutive days of having the same value. 
+  df <- AllPowellForecastDeficit %>%
+    filter(Scenario == usehydro) %>% #filter out so only have one hydrology
+    group_by(TraceNumber) %>%
+    # check if there is any value change
+    # if yes, a new sequence id is generated through cumsum
+    mutate(last_one = lag(DeficitFlag, 1, default = 100), 
+           not_eq = last_one != DeficitFlag, 
+           seq = cumsum(not_eq)) %>%  #seq is just a ID number for a unique sequence of consecutive 1 or 0 values 
+    # the following is just to find the largest sequence
+    count(TraceNumber, DeficitFlag, seq) %>% 
+    filter(DeficitFlag == 1) 
+  
+  ### plot the lengths of consecutive timesteps in DO as a histogram 
+  df %>% ggplot(aes(x = n)) +
+    geom_histogram() + 
+    labs(title = paste("Consecutive Forecasts of Powell Defecit"),
+         x = "Consecutive Defecit Forecasts", subtitle = usehydro)
+  ggsave(filename = file.path(ofigs,paste("FrequencyConsecutiveDO",usehydro,".png")), width = widths[1],height = heights[1])
+  
+  
+  ### Plot Analysis TO MAKE: Plot of Powell storage before and after DO
+# scatter plot? 
+  # ------------ MAKE ME -----------------#
   
   
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -532,168 +628,6 @@ if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste("Mean EOCY",va
   dev.off()
 }
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 6. Process Daily 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-if (T) {
-rdffile <-  "DailyFlows.rdf"
-
-#Special rw scen agg since RWDataPlyr doesn't support daily
-for (i in 1:length(scens)) {
-  
-  scen_res_x <- file.path(scen_dir,scens[i],rdffile) %>% #this means "pipe" the data to the next function
-    rdf_to_rwtbl2() 
-  # unique(scen_res_x$ObjectSlot)
-  scen_res_x <- scen_res_x %>%
-    filter(ObjectSlot == "DailyFlows.FlamingGorgeDaily" | ObjectSlot == "DailyFlows.JensenDaily")
-  
-  #add on Scenario since rdf_to_rwtbl2 doesn't add it
-  scen_res_x <- cbind.data.frame(
-    scen_res_x,
-    Scenario = rep(names(scens)[i], Times = length(scen_res_x$Timestep))
-  )
-  scen_res_x$Timestep <- as.POSIXct(strptime(scen_res_x$Timestep,"%Y-%m-%d %H:%M"))
-  scen_res_x$Timestep <- as.Date(scen_res_x$Timestep) - 1 # fix first entry -  first entry is 2019-1-31 24:00 which gets converted to 2019-02-01
-  # does rdf output not give Jan 1-30 for first month of daily slot? Seems like it 
-  
-  if(i == 1){
-    scen_res = scen_res_x
-  } else {
-    scen_res = rbind.data.frame(scen_res,scen_res_x)
-  }
-} #close i Scenario loop
-
-#get everything on a date
-scen_res$MonthNum = as.Date(paste0(scen_res$Year,scen_res$Month,"01"), format = "%Y%B%d")
-#get a numeric month number
-scen_res$MonthNum = as.numeric(format.Date(scen_res$Timestep, format = "%m"))
-scen_res$DayNum = as.numeric(format.Date(scen_res$Timestep, format = "%d"))
-scen_res$JDay = as.numeric(format.Date(scen_res$Timestep, format = "%j"))
-
-# # Adding factors so ggplot does not alphebetize legend
-scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
-
-scen_res_daily <- scen_res #save off so don't over write with monthly data 
-saveRDS(scen_res_daily,file = file.path(ofigs,paste0("scen_res_daily.RDS")))
-# scen_res_daily <- readRDS(file = file.path(ofigs,paste0("scen_res_daily.RDS")))
-
-scen_res_daily <- scen_res_daily %>% #filter out scens you don't want to keep for plots
-  dplyr::filter(Scenario %in% keepscens)
-unique(scen_res_daily$Scenario)
-}
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 7.  Daily plot 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-if (T) {
-y_lab <- "Daily Flow (cfs)" #default
-caption <- NA
-JensenTarget <- data.frame(yintercept=2000)
-zoom <- T #if true zoom to 0 - 10kfs 
-variables_daily <<- c("DailyFlows.FlamingGorgeDaily","DailyFlows.JensenDaily") 
-var_title_alt_names_daily <- c("Flaming Gorge Daily Release","Jensen Daily Flows")
-
-ylimlow <- c(1000,0)
-ylimup <- c(3000,5000)
-
-j=1
-## create a pdf  
-# pdf(file.path(ofigs,paste0("Daily",Figs)), width=9, height=6)
-pdf(file.path(ofigs,paste0("Zoom_Daily",Figs)), width=9, height=6)
-
-for (j in 1:length(variables_daily)) {
-  variable <- variables_daily[j]
-  title <- var_title_alt_names_daily[j]
-  # customcaption <- customcaptions[j]
-  # custom_y_lab <- custom_y_labs[j]
-    
-  #    -------------------        All Trace Mean Daily        ----------------------
-  
-#plot the dailys average by scenario and by Julian Day (all traces)
-   p <- scen_res_daily %>%
-    dplyr::filter(ObjectSlot == variable) %>% 
-    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-    dplyr::group_by(Scenario, JDay) %>% 
-    dplyr::summarise(Value = mean(Value)) %>%
-    ggplot(aes(JDay, Value, color = Scenario)) + 
-    geom_line() +
-    theme_light() + 
-    scale_color_manual(values = mycolors) +
-    # scale_y_continuous(labels = scales::comma) + #add commas to axis 
-    # scale_y_continuous(limits = c(ylimlow[j],ylimup[j]), labels = scales::comma) + #### ZOOM ####
-    labs(title = paste("Mean",variable), y = y_lab) 
-     # labs(caption = caption) +
-    # theme(plot.caption = element_text(hjust = 0)) #left justify 
-  if (variable == "DailyFlows.JensenDaily"){
-    p <- p + 
-      geom_hline(aes(yintercept=yintercept), data=JensenTarget) 
-      # scale_y_continuous(limits = c(0,10000), labels = scales::comma) 
-  } 
-  
-  print(p)
-  if(printfigs_daily==T){ ggsave(filename = file.path(ofigs,paste("Mean",variable,".png")), width = widths[2],height = heights[2])}
-
-#    -------------------        All Trace Boxplot        ----------------------
-  p <- scen_res_daily %>%
-    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-    dplyr::filter(ObjectSlot == variable) %>% 
-    dplyr::group_by(Scenario, MonthNum) %>% 
-    ggplot(aes(x = factor(MonthNum), y = Value, color = Scenario)) +
-    geom_boxplot() +
-    theme_light() + 
-    scale_color_manual(values = mycolors) +
-    # stat_boxplot_custom(qs = c(0.1, 0.25, 0.5, 0.75, 0.9)) + #too hard to render use generic 
-    scale_x_discrete("Month",labels = month.abb) + #display abb. month names
-    scale_y_continuous(labels = scales::comma) + #add commas to axis
-    # coord_cartesian(ylim = c(ylimlow[j],ylimup[j]), expand = F) + #don't drop data !!! important when setting limits 
-    labs(title = paste(title), y = y_lab) +
-    # labs(caption = caption) +
-    theme(plot.caption = element_text(hjust = 0)) #left justify 
-  #Jensen add hline 
-  if (variable == "DailyFlows.FlamingGorgeDaily"){
-    p <- p + 
-      geom_hline(aes(yintercept=yintercept), data=target) 
-  } 
-  if (variable == "DailyFlows.JensenDaily"){
-    p <- p + 
-      geom_hline(aes(yintercept=yintercept), data=JensenTarget) 
-  } 
-  print(p)
-  if(printfigs_daily==T){ ggsave(filename = file.path(ofigs,paste(variable,".png")), width = widths[2],height = heights[2])}
-
-  
-  title <- paste('Zoom',var_title_alt_names_daily[j])
-  #    -------------------        All Trace Boxplot        ----------------------
-  p <- scen_res_daily %>%
-    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-    dplyr::filter(ObjectSlot == variable) %>% 
-    dplyr::group_by(Scenario, MonthNum) %>% 
-    ggplot(aes(x = factor(MonthNum), y = Value, color = Scenario)) +
-    geom_boxplot() +
-    theme_light() + 
-    scale_color_manual(values = mycolors) +
-    # stat_boxplot_custom(qs = c(0.1, 0.25, 0.5, 0.75, 0.9)) + #too hard to render use generic 
-    scale_x_discrete("Month",labels = month.abb) + #display abb. month names
-    scale_y_continuous(labels = scales::comma) + #add commas to axis
-    coord_cartesian(ylim = c(ylimlow[j],ylimup[j]), expand = F) + #don't drop data !!! important when setting limits 
-    labs(title = paste(title), y = y_lab) +
-    # labs(caption = caption) +
-    theme(plot.caption = element_text(hjust = 0)) #left justify 
-  #Jensen add hline 
-  if (variable == "DailyFlows.FlamingGorgeDaily"){
-    p <- p + 
-      geom_hline(aes(yintercept=yintercept), data=target) 
-  } 
-  if (variable == "DailyFlows.JensenDaily"){
-    p <- p + 
-      geom_hline(aes(yintercept=yintercept), data=JensenTarget) 
-  } 
-  print(p)
-  if(printfigs_daily==T){ ggsave(filename = file.path(ofigs,paste('Zoom',variable,".png")), width = widths[2],height = heights[2])}
-  
-  
-} # end j variables loop 
-
-dev.off()
-}
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 7. Plot Results - Percent Exceedance of Traces  ----- 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -703,7 +637,7 @@ if (T) { #set true for easy running all plots
   # if (!(exists(scen_res_monthly) & exists(scen_res_daily))){warning('monthly & daily need to be processed first')}
   
   ## create a pdf  
-  pdf(file.path(ofigs,paste("Exceedance",Figs)), width=9, height=6)
+  pdf(file.path(ofigs,paste("Powell_Exceedance",Figs)), width=9, height=6)
   
   no_legend <- F
   expand <- F
@@ -1022,330 +956,4 @@ if (T) { #set true for easy running all plots
   dev.off()
 }
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 8. Plot Results - Expression Slots ----- NOT TESTED
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-if(T){
-#agg file specifying which slots
-rw_agg_file <- "rw_agg_GREATExp.csv"
-#read agg file specifying which slots
-rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) #ubres.rdf res.rdf
-#vignette("rwdataplyr-workflow", package = "RWDataPlyr") # SHOULD i create custom winter agg? jsut do with dplyr
-
-#rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
-scen_res_exp <- rw_scen_aggregate(
-  scens,
-  agg = rwa1,
-  scen_dir = scen_dir
-) 
-
-# unique(scen_res_exp$Variable) #check variable names 
-
-variables_mon <- c("Meet_JensenLL_EIS","Meet_JensenLL_CPMBF","Winter25" )
-variables_ann <- c("Have_Spike","Winter_Volume" )
-variables_mon <- c("Meet_JensenLL_EIS","Meet_JensenLL_CPMBF" )
-
-#how often is each scenario meeting the EIS and CPMBF targets for reach 2 LL?
-#1 if Jensen flow greater than CPMBF[Hclass] or EIS lower limit, any month 
-df1 <- scen_res_exp %>%
-  dplyr::filter(Variable %in% variables_mon) %>%
-  dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-  # dplyr::filter(Month %in% month.name[c(1,2,12)]) %>% #only look a winter months 
-  dplyr::filter(Month %in% month.name[c(7,8,9)]) %>% #only look a July-Sept 
-  # dplyr::group_by(Scenario,Variable,Year) %>%
-  # summarise(Value = sum(Value)) %>% #stop here if only want year
-  dplyr::group_by(Scenario,Variable) %>%
-  # summarise(Value = sum(Value))
-  summarise(Value = mean(Value))
-
-df1
-#WHY MEET CPMBF much more often in July-Sept than EIS in All GREAT? In ModWet and Wet the requirement is less for CPMBF vs EIS so can that explain why there is 
-#work on this part
-
-
-##1 for any Dec-Feb with release 800, 0 else ##slot miss named should be Flow800orless 
-df2 <- scen_res_exp %>%
-  dplyr::filter(Variable == "Winter25") %>%
-  dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-  # dplyr::filter(Month %in% month.name[c(1,2,12)]) %>%
-  dplyr::group_by(Scenario,Variable) %>%
-  # summarise(Value = sum(Value))
-  summarise(Value = mean(Value))
-df2$Variable = rep("WinterFlow800",times=length(df2$Variable))
-df2
-#rename! 
-
-
-#winter volume sum of FG release December-Feb by year
-df3 <- scen_res_exp %>%
-  dplyr::filter(Variable  == "Winter_Volume") %>%
-  dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-  # dplyr::group_by(Scenario,Variable,Year) %>%
-  # summarise(Value = sum(Value)) %>% #stop here if only want year
-  dplyr::group_by(Scenario,Variable) %>%
-  # summarise(Value = sum(Value))
-  summarise(Value = mean(Value))
-df3 # winter volume is most in LTSP since less of the summer baseflow requests since the peak is later! 
-
-p <- scen_res_exp %>%
-  dplyr::filter(Variable  == "Winter_Volume") %>%
-  dplyr::filter(Year <= 2040) %>% 
-  dplyr::filter(Year > 2020) %>% #2020 only has December
-  dplyr::group_by(Scenario,Year) %>% 
-  summarise(Value = mean(Value)) %>% 
-  ggplot(aes(x = Year, y = Value, color = Scenario)) +
-    # geom_boxplot() +
-    geom_line() +
-    labs(title = "Mean Winter Volume Delivered", y = "AF/yr")
-p  
-if(printfigs_exceed==T){ ggsave(filename = file.path(ofigs,paste('Mean Winter Volume.png')), width = widths[1],height = heights[1])}
-dev.off()
-#WHY MEET CPMBF much more often in July-Sept than EIS in All GREAT? In ModWet and Wet the requirement is less for CPMBF vs EIS so can that explain why there is 
-#work on this part
-
-#check SPIKE - 1 if does by year
-df4 <- scen_res_exp %>%
-  dplyr::filter(Variable == "Have_Spike") %>%
-  dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-  # dplyr::filter(Month %in% month.name[c(1,2,12)]) %>%
-  dplyr::group_by(Scenario,Variable) %>%
-  # summarise(Value = sum(Value))
-  summarise(Value = mean(Value))
-df4 #SMB is working, less spikes in All GREAT as expected 
-
-write.csv(rbind(df1,df2,df3,df4), file.path(ofigs,paste('ExpressionSlots.csv'))) #uncomment Value = sum(Value) for all instances across all traces 
-write.csv(rbind(df1,df2,df3,df4), file.path(ofigs,paste('ExpressionSlots_average.csv')))
-
-saveRDS(scen_res_exp,file = file.path(ofigs,paste0("scen_res_exp.RDS")))
-
-}
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 9. Plot Results - H Class
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-if(T){
-  
-  rw_agg_file <- "rw_agg_FG_HClass.csv" # HClass 
-  
-  rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) 
-  
-  #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
-  scen_res <- rw_scen_aggregate(
-    scens,
-    agg = rwa1,
-    scen_dir = scen_dir
-  ) #%>% 
-  
-  unique(scen_res$Variable) #check variable names 
-  #get everything on a date 
-  scen_res$MonthNum = as.Date(paste0(scen_res$Year,scen_res$Month,"01"), format = "%Y%B%d")
-  #get a numeric month number
-  scen_res$MonthNum = as.numeric(format.Date(scen_res$MonthNum, format = "%m"))
-  
-  scen_res_hclass <- scen_res
-  saveRDS(scen_res_hclass,file = file.path(ofigs,paste0("scen_res_hclass.RDS")))
-  
-  pdf(file.path(ofigs,paste0("FGAsp_HClass_",startyr,endyr,'.pdf')), width=9, height=6)
-  
-  variable = "FlamingGorgeData.BaseFlowHClass" #1] "FlamingGorgeData.BaseFlowHClass" "FlamingGorgeData.SpringHClass"  
-  y_lab = "H Class"
-  var_title_alt_name = "BaseFlowHClass"  
-  
-  
-  exc_month <- 1:12 # Dec - Feb
-  title <- paste(var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
-  p <- scen_res %>%     
-    dplyr::filter(Variable == variable) %>%
-    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-    # dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-    dplyr::group_by(Scenario) %>%
-    ggplot(aes(Value, color = Scenario)) +
-    theme_light() + 
-    stat_eexccrv() + 
-    scale_color_manual(values = mycolors) +
-    # coord_cartesian(xlim =c(0,1), ylim = c(ymin[j],ymax[j]), expand = expand) + #don't drop data 
-    # scale_y_continuous(breaks=seq(ymin[j],ymax[j],mybreaks[j])) + 
-    scale_x_continuous("Percent Exceedance",labels = scales::percent,breaks=seq(0,1,.2)) + 
-    labs(title = title,
-         y = y_lab, caption = caption) +
-    theme(plot.caption = element_text(hjust = 0)) #left justify 
-  if(no_legend){p <- p + theme(legend.position="none")}
-  print(p)
-  if(printfigs_exceed==T){ ggsave(filename = file.path(ofigs,paste('Exceed ',title,".png")), width = widths[1],height = heights[1])}
-  
-  
-  
-  exc_month <- c(8,12,1,11,10,9,2) # Dec - Feb
-  title <- paste(var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
-  p <- scen_res %>%     
-    dplyr::filter(Variable == variable) %>%
-    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-    dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-    dplyr::group_by(Scenario) %>%
-    ggplot(aes(Value, color = Scenario)) +
-    theme_light() + 
-    stat_eexccrv() + 
-    scale_color_manual(values = mycolors) +
-    # coord_cartesian(xlim =c(0,1), ylim = c(ymin[j],ymax[j]), expand = expand) + #don't drop data 
-    # scale_y_continuous(breaks=seq(ymin[j],ymax[j],mybreaks[j])) + 
-    scale_x_continuous("Percent Exceedance",labels = scales::percent,breaks=seq(0,1,.2)) + 
-    labs(title = title,
-         y = y_lab, caption = caption) +
-    theme(plot.caption = element_text(hjust = 0)) #left justify 
-  if(no_legend){p <- p + theme(legend.position="none")}
-  print(p)
-  if(printfigs_exceed==T){ ggsave(filename = file.path(ofigs,paste('Exceed ',title,".png")), width = widths[1],height = heights[1])}
-  
-  
-  variable = "FlamingGorgeData.SpringHClass"  
-  var_title_alt_name = "SpringHClass"
-  exc_month <- c(4,5,6,7) # Apr - Jul
-  title <- paste(var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
-  p <- scen_res %>%     
-    dplyr::filter(Variable == variable) %>%
-    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-    dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-    dplyr::group_by(Scenario) %>%
-    ggplot(aes(Value, color = Scenario)) +
-    theme_light() + 
-    stat_eexccrv() + 
-    scale_color_manual(values = mycolors) +
-    # coord_cartesian(xlim =c(0,1), ylim = c(ymin[j],ymax[j]), expand = expand) + #don't drop data 
-    # scale_y_continuous(breaks=seq(ymin[j],ymax[j],mybreaks[j])) + 
-    scale_x_continuous("Percent Exceedance",labels = scales::percent,breaks=seq(0,1,.2)) + 
-    labs(title = title,
-         y = y_lab, caption = caption) +
-    theme(plot.caption = element_text(hjust = 0)) #left justify 
-  if(no_legend){p <- p + theme(legend.position="none")}
-  print(p)
-  if(printfigs_exceed==T){ ggsave(filename = file.path(ofigs,paste('Exceed ',title,".png")), width = widths[1],height = heights[1])}
-  
-  
-  variable = "FlamingGorgeData.YampaHClass"  
-  var_title_alt_name = "YampaHClass"
-  exc_month <- c(4,5,6,7) # Apr - Jul
-  title <- paste(var_title_alt_name,month.name[first(exc_month)],'-',month.name[last(exc_month)])
-  p <- scen_res %>%     
-    dplyr::filter(Variable == variable) %>%
-    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-    dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-    dplyr::group_by(Scenario) %>%
-    ggplot(aes(Value, color = Scenario)) +
-    theme_light() + 
-    stat_eexccrv() + 
-    scale_color_manual(values = mycolors) +
-    # coord_cartesian(xlim =c(0,1), ylim = c(ymin[j],ymax[j]), expand = expand) + #don't drop data 
-    # scale_y_continuous(breaks=seq(ymin[j],ymax[j],mybreaks[j])) + 
-    scale_x_continuous("Percent Exceedance",labels = scales::percent,breaks=seq(0,1,.2)) + 
-    labs(title = title,
-         y = y_lab, caption = caption) +
-    theme(plot.caption = element_text(hjust = 0)) #left justify 
-  if(no_legend){p <- p + theme(legend.position="none")}
-  print(p)
-  if(printfigs_exceed==T){ ggsave(filename = file.path(ofigs,paste('Exceed ',title,".png")), width = widths[1],height = heights[1])}
-  
-  dev.off()
-  
-  
-}
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-##############  Filter Out All Except Dry and Mod Dry H Class  ########
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# 
-# scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
-# scen_res_daily <- readRDS(file = file.path(ofigs,paste0("scen_res_daily.RDS")))
-# scen_res_exp <- readRDS(file = file.path(ofigs,paste0("scen_res_exp.RDS")))
-# scen_res_DO <- readRDS(file = file.path(ofigs,paste0("scen_res_DO.RDS")))
-# scen_res_hclass <- readRDS(file = file.path(ofigs,paste0("scen_res_hclass.RDS")))
-
-unique(scen_res_hclass$Scenario)
-unique(scen_res_monthly$Scenario)
-
-unique(scen_res_hclass$Variable)
-hclass <- unique(scen_res_hclass$Variable) #base,spring,yampa
-dim(scen_res_hclass)
-dim(scen_res_hclass)
-dim(df)
-# 
-
-class <- pivot_wider(scen_res_hclass,names_from = Variable,values_from = Value)
-
-out <- scen_res_monthly %>%
-  dplyr::filter(Variable == "FlamingGorge.Outflow")
-
-df <- cbind.data.frame(out,BaseFlowHClass = class$FlamingGorgeData.BaseFlowHClass, SpringFlowHClass = class$FlamingGorgeData.SpringHClass)
-tail(df)
-
-df_filter <- df %>%
-  dplyr::filter(df$SpringFlowHClass == 0 | df$SpringFlowHClass == 1 ) #%>%
-df_filter <- df_filter %>%
-  dplyr::filter(df_filter$BaseFlowHClass == 0 | df_filter$BaseFlowHClass == 1 ) 
-head(df_filter)
-
-y_lab = "Monthly Flow (cfs)"
-title = "Dry OR ModDry Spring AND Baseflow H Class FG.Outflow Exceedance "
-caption = "Only Spring & Baseflow H Class = Dry OR ModDry"
-p <- df_filter %>% 
-  dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-  dplyr::group_by(Scenario) %>% 
-  ggplot(aes(Value, color = Scenario)) +
-  theme_light() + 
-  stat_eexccrv() +
-  scale_color_manual(values = mycolors) +
-  # coord_cartesian(xlim =c(0,1), ylim = c(ymin[j],ymax[j]), expand = expand) + #don't drop data
-  scale_x_continuous("Percent Exceedance",labels = scales::percent,breaks=seq(0,1,.2)) + 
-  labs(title = title,
-       y = y_lab, caption = caption) +
-  theme(plot.caption = element_text(hjust = 0)) #left justify 
-print(p)
-ggsave(filename = file.path(ofigs,paste(title,".png")), width = widths[1],height = heights[1])
-
-summary(p)
-
-# df2 <- out %>% ### this isn't working for finding the bypass only - just process the spill slot
-#   mutate(Value = max(Value-4600,0)) %>% 
-#   dplyr::filter(Value > 0) 
-# p <- df2 %>%
-#   dplyr::group_by(Scenario) %>% 
-#   ggplot(aes(Value, color = Scenario)) +
-#   theme_light() + 
-#   stat_eexccrv() +
-#   scale_color_manual(values = mycolors) +
-#   # coord_cartesian(xlim =c(0,1), ylim = c(ymin[j],ymax[j]), expand = expand) + #don't drop data
-#   scale_x_continuous("Percent Exceedance",labels = scales::percent,breaks=seq(0,1,.2)) + 
-#   labs(title = title,
-#        y = y_lab, caption = caption) +
-#   theme(plot.caption = element_text(hjust = 0)) #left justify 
-# print(p)
-
-# test1 <- df2 %>% #fails, gives same values 
-#   dplyr::filter(Scenario == names(scens[1])) 
-# test2 <- df2 %>%
-#   dplyr::filter(Scenario == names(scens[4])) 
-# mean(test1$Value)
-# mean(test2$Value)
-
-# test1 <- df_filter %>% #works 
-#   dplyr::filter(Scenario == names(scens[1])) 
-# test2 <- df_filter %>%
-#   dplyr::filter(Scenario == names(scens[4])) 
-# mean(test1$Value)
-# mean(test2$Value)
-
-
-# test1 <- out %>% #works 
-#   dplyr::filter(Scenario == names(scens[1])) 
-# test2 <- out %>%
-#   dplyr::filter(Scenario == names(scens[4])) 
-# mean(test1$Value)
-# mean(test2$Value)
-# 
-# 
-# test1 <- scen_res_monthly %>%
-#   dplyr::filter(Scenario == names(scens[1])) 
-# test2 <- scen_res_monthly %>%
-#   dplyr::filter(Scenario == names(scens[4]))
-# head(test1)
-# head(test2)
-# mean(test1$Value)
-# mean(test2$Value)
 
