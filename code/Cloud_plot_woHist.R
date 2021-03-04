@@ -1,6 +1,14 @@
 zz <- zz_all %>%
   dplyr::filter(Variable == variable) 
 
+# write.csv(zz,file.path(ofigs,paste0(variable,"_stats.csv")))
+write.csv(zz,file.path(ofigs,paste0(title,"_stats.csv")))
+
+
+if (powtiers){
+  powelltiers <- read.csv(file.path(getwd(),"data", "PowellTiers.csv"),header = T)
+}
+
 gg <- ggplot(zz, aes(x=Year, y=Mean, color=Scenario, group=Scenario)) +  theme_light()  #this is just a blank grided plot
 
 # #DEBUG ##### PLOTING ISSUE 
@@ -60,8 +68,8 @@ ggc <- gg +
                      # labels = str_wrap(histLab, 15)) +
   labs(y = y_lab, title = title, x = 'Year') +# +,subtitle = subtitle) + 
   
-  scale_x_continuous(minor_breaks = 1990:3000, breaks = myXLabs,
-                     labels = myXLabs, expand = c(0,0)) +
+  # scale_x_continuous(minor_breaks = 1990:3000, breaks = myXLabs,
+  #                    labels = myXLabs, expand = c(0,0)) +
   # scale_y_continuous(minor_breaks = seq(300,9000,25),
   #                    breaks = myYLabs, labels = comma) +
   
@@ -72,13 +80,28 @@ ggc <- gg +
         panel.grid.minor = element_line(size = GridMin),
         panel.grid.major = element_line(size = GridMaj)) +
   
-  if (!is.na(NumCrit)){
-    #Adding lines for numeric criteria
-    geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) #+
-  }
-  
-  
   guides(fill=FALSE) #+
+
+  
+  if (powtiers){
+    ggc <-       ggc + 
+    geom_hline(aes(yintercept=UEB), data=powelltiers, color = "black", lty = 3,size = 1) +
+    geom_abline(slope = 1.2542,intercept = 1124.4,color = "black", lty = 3,size = 1) + #this is linear reg for 2020-2040 line, R2 = .99
+    # geom_line(aes(x=Year,y=EQ), data=powelltiers, color = "red", lty = 2) +
+    geom_hline(aes(yintercept=MER), data=powelltiers, color = "black", lty = 3,size = 1) +
+      # annotate("text", x = 2030, y = 3600, label = "italic(Upper Elevation Balancing Tier)",parse = TRUE,size = 6) +
+      # annotate("text", x = 2030, y = 3550, label = "italic(Lower Elevation Release Tier)",parse = TRUE,size = 6) 
+    annotate("text", x = 2022, y = 3600, label = "Upper Elevation Balancing Tier",size = 3,hjust = 0) +
+      annotate("text", x = 2022, y = 3550, label = "Lower Elevation Release Tier",size = 3,hjust = 0)
+      
+  }
+
+if (!is.na(NumCrit)){
+  ggc <- ggc + 
+  #Adding lines for numeric criteria
+  geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) #+
+}  
+
 
 if (MinMaxLines == T){
   ggc <- ggc + 
@@ -107,4 +130,5 @@ print(gg)
 # source("code/add_logo.R") #alan's way, bottom right corner
 # add_logo_horiz(gg)
 
-ggsave(filename = file.path(ofigs,paste0(variable,"_Cloud.png")), width = widths[1],height = heights[1])#width= width, height= height)
+# ggsave(filename = file.path(ofigs,paste0(variable,"_Cloud.png")), width = widths[1],height = heights[1])#width= width, height= height)
+ggsave(filename = file.path(ofigs,paste0(title,"_Cloud.png")), width = widths[1],height = heights[1])#width= width, height= height)

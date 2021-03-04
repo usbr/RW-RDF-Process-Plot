@@ -19,7 +19,7 @@ library(patchwork)
 
 # scen_dir <- "M:/Shared/CRSS/2021/Scenario_dev/"
 
-if (TRUE) {
+if (any(list.files(ofigs) == "lf_dnf.RDS")) {
 
   rwa <- read_rwd_agg("rw_agg/lf_flow_rwa.csv")
   
@@ -27,7 +27,8 @@ if (TRUE) {
     scens,
     agg = rwa, 
     scen_dir = scen_dir,
-    file = "data/lf_dnf.feather"
+    file = "data/lf_dnf.feather" #Optionally save the tbl_df of aggregated scenario data as a .txt, .csv, or .feather file. If file is specified, then the data are saved in the specified output format.
+    #### should really be saving feathers for each of my scens rather than RDS
   )
   
   # st <- rw_scen_aggregate(
@@ -38,7 +39,7 @@ if (TRUE) {
   # )
 } else {
   dnf <- readRDS(file.path(ofigs,paste0("lf_dnf.RDS")))
-  # st <- feather::read_feather("data/lf_st.feather")
+  # dnf <- feather::read_feather("data/lf_st.feather")
 }
 
 saveRDS(dnf,file=file.path(ofigs,paste0("lf_dnf.RDS"))) #prevent neeed to reprocess

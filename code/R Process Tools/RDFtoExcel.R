@@ -19,7 +19,8 @@ scen <- c("NF_pluvialRem_2000,2016Dems_v1.6,CRSS_VerificationModel_9015,IGDCP.v4
 folderpath <- current.folder
 
 ### on my comp
-folderpath <- "C:/Users/cfelletter/Documents/CRSS/Scenario" #BA
+folderpath <- "C:/Users/cfelletter/Documents/CRSS_MTOM/testbedanalysis/data/Scenario" #testbed scens
+folderpath <- "C:/Users/cfelletter/Documents/CRSS/Scenario" #CRSS scens
 scen <- list.files(folderpath)
 ### from BA CRSS results 
 folderpath <- "C:/Users/fellette/Documents/GIT/CRSS/Scenario" #BA
