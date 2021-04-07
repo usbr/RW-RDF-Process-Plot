@@ -89,18 +89,18 @@ ggc <- gg +
     geom_abline(slope = 1.2542,intercept = 1124.4,color = "black", lty = 3,size = 1) + #this is linear reg for 2020-2040 line, R2 = .99
     # geom_line(aes(x=Year,y=EQ), data=powelltiers, color = "red", lty = 2) +
     geom_hline(aes(yintercept=MER), data=powelltiers, color = "black", lty = 3,size = 1) +
-      # annotate("text", x = 2030, y = 3600, label = "italic(Upper Elevation Balancing Tier)",parse = TRUE,size = 6) +
-      # annotate("text", x = 2030, y = 3550, label = "italic(Lower Elevation Release Tier)",parse = TRUE,size = 6) 
     annotate("text", x = 2022, y = 3600, label = "Upper Elevation Balancing Tier",size = 3,hjust = 0) +
-      annotate("text", x = 2022, y = 3550, label = "Lower Elevation Release Tier",size = 3,hjust = 0)
+      annotate("text", x = 2022, y = 3550, label = "Mid Elevation Release Tier",size = 3,hjust = 0) + 
+    annotate("text", x = 2022, y = 3450, label = "Lower Elevation Balancing Tier",size = 3,hjust = 0)
+    
       
   }
 
 if (!is.na(NumCrit)){
-  ggc <- ggc + 
+  ggc <- ggc +
   #Adding lines for numeric criteria
   geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) #+
-}  
+}
 
 
 if (MinMaxLines == T){

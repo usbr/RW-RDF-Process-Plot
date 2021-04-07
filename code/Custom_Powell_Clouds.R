@@ -90,7 +90,7 @@ pdf(file.path(ofigs,paste0("PowellClouds_",Figs,".pdf")), width = widths[1],heig
 #-------------------------------------------------------------------------------------
 # ++++++++++++++++++++++++++Lees Ferry+++++++++++++++++++++++++++++++++++++
 #-------------------------------------------------------------------------------------
-
+NumCrit <- NA
 powtiers <- F
 variable = "Powell.InflowCY"
 y_lab = "Inflow (MAF/yr)"
@@ -113,6 +113,7 @@ subtitle = ""
 
 source("code/Cloud_plot_woHist.R")
 
+NumCrit <- NA
 powtiers <- T
 variable = "Powell.EOCYPoolElevation"
 y_lab = "EOCY Elevation (ft)"

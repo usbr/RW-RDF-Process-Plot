@@ -47,6 +47,18 @@ scens <- list( ### don't comment these out use keepscens variabile ####
 )
 
 
+scens <- list( ### don't comment these out use keepscens variabile #### 
+               # "Basecase_Full" = "Base_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+               "Baseline" = "Base_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
+               # "LTSP_Stress" = "LTSP_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+               # "CPMBF_Stress" = "CPM_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most", #don't seem to have these results
+               # "SMB_Stress" = "SMB_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+               # "LTSP&SMB_Stress" = "LTSP_SMB_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+               # "LTSP,SMB,CPMBF_Full" = "All_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+               "LTSP_SMB_CPMBF" = "All_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most"#,
+               
+)
+
 
 
 ## pick which scens to plot from larger group to process and save as RDS files for later analysis 
@@ -68,8 +80,8 @@ Figs <- "Stress_7004mdl_7002rls.pdf"
 
 #only two scens use CRSS Process Colors 
 mycolors <- c("#F8766D","#00BFC4") # Process CRSS Res plotColors red then blue 
-keepscens <- names(scens)[1:2]
-keepscens <- c("Basecase_Stress","LTSP,SMB,CPMBF_Stress")
+# keepscens <- names(scens)[1:2]
+# keepscens <- c("Basecase_Stress","LTSP,SMB,CPMBF_Stress")
 
 
 
@@ -148,7 +160,6 @@ if (T) {
 
 #agg file specifying which slots
 rw_agg_file <- "PowellAnnSlots.csv"
-# rw_agg_file <- "FGAnnSlots.csv"
 
 #read agg file specifying which slots
 rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) #ubres.rdf res.rdf
@@ -168,10 +179,10 @@ scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
 
 scen_res_annual <- scen_res
 scen_res <- scen_res_annual
-saveRDS(scen_res,file = file.path(ofigs,paste0("scen_res_annual.RDS")))
-# saveRDS(scen_res,file = file.path(ofigs,paste0("scen_res_annual_FG.RDS")))
-
-scen_res <- readRDS(file=file.path(ofigs,paste0("scen_res_annual.RDS"))) #prevent neeed to reprocess
+# saveRDS(scen_res,file = file.path(ofigs,paste0("scen_res_annual.RDS")))
+# # saveRDS(scen_res,file = file.path(ofigs,paste0("scen_res_annual_FG.RDS")))
+# 
+# scen_res <- readRDS(file=file.path(ofigs,paste0("scen_res_annual.RDS"))) #prevent neeed to reprocess
          
 scen_res <- scen_res %>% #filter out scens you don't want to keep for plots
   dplyr::filter(Scenario %in% keepscens)
@@ -182,14 +193,6 @@ unique(scen_res$Variable)
 source("code/Custom_Powell_Clouds.R")
 
 source("code/lee_ferry_volume_plot.R")
-
-
-##############
-
-
-
-
-
 }
 
 

@@ -88,7 +88,7 @@ source("code/Cloud_plot_woHist.R")
 
 NumCrit <- NA
 variable = "GreenNearJensen.Gage Inflow"
-y_lab = "Outflow (KAF/yr)"
+y_lab = "Outflow (MAF/yr)"
 title = "Jensen CY Outflow" 
 subtitle = ""
 
@@ -112,7 +112,7 @@ zz_all$Scenario = factor(zz_all$Scenario, levels=colorNames)
 
 NumCrit <- NA
 variable = "FlamingGorge.Outflow" #this slot was in CFS so didn't work to use rw_agg. had to build CY from monthly
-y_lab = "Outflow (KAF/yr)"
+y_lab = "Outflow (MAF/yr)"
 title = "Flaming Gorge WY Outflow"
 subtitle = ""
 
