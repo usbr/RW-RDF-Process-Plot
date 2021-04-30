@@ -15,56 +15,41 @@ results_dir <- file.path(CRSSDIR,"results")
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#all scens full hydro 
-scens <- list( ### don't comment these out use keepscens variabile #### 
-               "Basecase" = "Base_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
-               "LTSP" = "LTSP_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
-               "CPMBF" = "CPM_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "SMB" = "SMB_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP&SMB" = "LTSP_SMB_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP,SMB,CPMBF" = "All_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most"#,
-               
-)
-
-## pick which scens to plot from larger group to process and save as RDS files for later analysis 
-keepscens <- names(scens)
-keepscens <- c("Basecase","LTSP","LTSP&SMB","LTSP,SMB,CPMBF") #names(scens)[c(1,2,7,8)] #compare base and all w/wo new 7002 rls
-keepscens <- c("Basecase","LTSP,SMB,CPMBF") #names(scens)[c(1,2,7,8)] #compare base and all w/wo new 7002 rls
-
-Figs <- "Full_7004mdl_7002rls.pdf"
-
-#stress test compare
-scens <- list( ### don't comment these out use keepscens variabile #### 
+# #all scens full hydro 
+# scens <- list( ### don't comment these out use keepscens variabile #### 
+#                "Basecase" = "Base_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
+#                "LTSP" = "LTSP_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
+#                "CPMBF" = "CPM_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+#                "SMB" = "SMB_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+#                "LTSP&SMB" = "LTSP_SMB_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+#                "LTSP,SMB,CPMBF" = "All_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most"#,
+#                
+# )
+# 
+# ## pick which scens to plot from larger group to process and save as RDS files for later analysis 
+# keepscens <- names(scens)
+# keepscens <- c("Basecase","LTSP","LTSP&SMB","LTSP,SMB,CPMBF") #names(scens)[c(1,2,7,8)] #compare base and all w/wo new 7002 rls
+# keepscens <- c("Basecase","LTSP,SMB,CPMBF") #names(scens)[c(1,2,7,8)] #compare base and all w/wo new 7002 rls
+# 
+# Figs <- "Full_7004mdl_7002rls.pdf"
+# 
+# #stress test compare
+scens <- list( ### don't comment these out use keepscens variabile ####
                # "Basecase_Full" = "Base_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "Basecase_Stress" = "Base_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
-               "LTSP_Stress" = "LTSP_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "CPMBF_Stress" = "CPM_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most", #don't seem to have these results
-               "SMB_Stress" = "SMB_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP&SMB_Stress" = "LTSP_SMB_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               # "LTSP,SMB,CPMBF_Full" = "All_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP,SMB,CPMBF_Stress" = "All_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most"#,
-               
-)
-
-
-scens <- list( ### don't comment these out use keepscens variabile #### 
-               # "Basecase_Full" = "Base_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "Baseline" = "Base_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
+               "Basecase" = "Base_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
                # "LTSP_Stress" = "LTSP_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
                # "CPMBF_Stress" = "CPM_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most", #don't seem to have these results
                # "SMB_Stress" = "SMB_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
                # "LTSP&SMB_Stress" = "LTSP_SMB_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
                # "LTSP,SMB,CPMBF_Full" = "All_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP_SMB_CPMBF" = "All_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most"#,
-               
+               "LTSP,SMB,CPMBF" = "All_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most"#,
+
 )
-
-
-
-## pick which scens to plot from larger group to process and save as RDS files for later analysis 
+# 
+# ## pick which scens to plot from larger group to process and save as RDS files for later analysis 
 keepscens <- names(scens)
-# keepscens <- names(scens)[c(1,2,3,6,7,8)] #all but
-
+# # keepscens <- names(scens)[c(1,2,3,6,7,8)] #all but
+# 
 Figs <- "Stress_7004mdl_7002rls.pdf"
 
 # mycolors <- c("#f8766d","#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
@@ -78,12 +63,20 @@ Figs <- "Stress_7004mdl_7002rls.pdf"
 # # show_col(hue_pal()(8))
 # # mycolors <- hue_pal()(Noscens) # standard r colors 
 
+# scens <- list(
+#   "Jan21 Offc" = "Jan2021_2022,ISM1988_2018,2016Dems,IG_DCP,MTOM_Most", #what I compared in my first anlysis
+#   "9000" = "Jan2021_9000,ISM1988_2018,2016Dems,IG_DCP,MTOM_Most" #Verify 
+# )
+# 
+# keepscens <- names(scens)
+# 
+# Figs <- "Jan21_9000_CFChanges"
+# 
+
 #only two scens use CRSS Process Colors 
 mycolors <- c("#F8766D","#00BFC4") # Process CRSS Res plotColors red then blue 
 # keepscens <- names(scens)[1:2]
 # keepscens <- c("Basecase_Stress","LTSP,SMB,CPMBF_Stress")
-
-
 
 startyr = 2021 #filter out all years > this year
 endyr = 2040 #2060 has a bad year of data
@@ -135,15 +128,24 @@ message('Figures will be saved to: ', ofigs)
 # # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ## Skip Process Results - Load RDS 
 
-if(any(list.files(ofigs) == "scen_res_monthly.RDS")){ 
-  #exists(file.path(ofigs,paste0("scen_res_monthly.RDS")))
-  # 
-  # scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
-  # scen_res_monthly <- scen_res_monthly %>% #filter out scens you don't want to keep for plots
-  #   dplyr::filter(Scenario %in% keepscens)
-  # unique(scen_res_monthly$Scenario)
-  # scen_res_monthly$Scenario = factor(scen_res_monthly$Scenario, levels=names(scens))
-  # 
+if(any(list.files(ofigs) == "scen_res_annual.RDS")){ 
+  exists(file.path(ofigs,paste0("scen_res_monthly.RDS")))
+
+  scen_res_FG <- readRDS(file=file.path(ofigs,paste0("scen_res_FG.RDS"))) #prevent neeed to reprocess
+  # scen_res_FG <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #old file name 
+  scen_res_FG <- scen_res_FG %>% #filter out scens you don't want to keep for plots
+    dplyr::filter(Scenario %in% keepscens)
+  unique(scen_res_FG$Scenario)
+  unique(scen_res_FG$Variable)
+  scen_res_FG$Scenario = factor(scen_res_FG$Scenario, levels=names(scens))
+
+  scen_res_annual <- readRDS(file=file.path(ofigs,paste0("scen_res_annual.RDS"))) #prevent neeed to reprocess
+  scen_res_annual <- scen_res_annual %>% #filter out scens you don't want to keep for plots
+    dplyr::filter(Scenario %in% keepscens)
+  unique(scen_res_annual$Scenario)
+  unique(scen_res_annual$Variable)
+  scen_res_annual$Scenario = factor(scen_res_annual$Scenario, levels=names(scens))
+
   # scen_res_DO <- readRDS(file = file.path(ofigs,paste0("scen_res_DO.RDS")))
   # scen_res_DO <- scen_res_DO %>% #filter out scens you don't want to keep for plots
   #   dplyr::filter(Scenario %in% keepscens)
@@ -165,29 +167,29 @@ rw_agg_file <- "PowellAnnSlots.csv"
 rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) #ubres.rdf res.rdf
 
 #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
-scen_res <- rw_scen_aggregate(
+scen_res_annual <- rw_scen_aggregate(
   scens,
   agg = rwa1,
-  scen_dir = "C:/Users/cfelletter/Documents/CRSS working/GREAT/GREAT Scens"
+  scen_dir = scen_dir
+  # scen_dir = "C:/Users/cfelletter/Documents/CRSS working/GREAT/GREAT Scens"
+  
 ) 
 
-# unique(scen_res$Variable) #check variable names 
+# unique(scen_res_annual$Variable) #check variable names 
 
 # # Adding factors so ggplot does not alphebetize legend
-scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
-# head(scen_res)
+scen_res_annual$Scenario = factor(scen_res_annual$Scenario, levels=names(scens))
+# head(scen_res_annual)
 
 scen_res_annual <- scen_res
 scen_res <- scen_res_annual
-# saveRDS(scen_res,file = file.path(ofigs,paste0("scen_res_annual.RDS")))
-# # saveRDS(scen_res,file = file.path(ofigs,paste0("scen_res_annual_FG.RDS")))
-# 
-# scen_res <- readRDS(file=file.path(ofigs,paste0("scen_res_annual.RDS"))) #prevent neeed to reprocess
+saveRDS(scen_res_annual,file = file.path(ofigs,paste0("scen_res_annual.RDS")))
+# scen_res_annual <- readRDS(file=file.path(ofigs,paste0("scen_res_annual.RDS"))) #prevent neeed to reprocess
          
-scen_res <- scen_res %>% #filter out scens you don't want to keep for plots
+scen_res_annual <- scen_res_annual %>% #filter out scens you don't want to keep for plots
   dplyr::filter(Scenario %in% keepscens)
-unique(scen_res$Scenario)
-unique(scen_res$Variable)
+unique(scen_res_annual$Scenario)
+unique(scen_res_annual$Variable)
 
 
 source("code/Custom_Powell_Clouds.R")
@@ -206,27 +208,27 @@ if (T) {
   # rdf_slot_names(read.rdf(iFile = file.path(scen_dir,scens[1],rdf)))
   
   #agg file specifying which slots
-  rw_agg_file <- "rw_agg_FGonly.csv"
+  rw_agg_file <- "rw_agg_FGonly.csv" #includes Powell inflow and PE
   #read agg file specifying which slots
   rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) #ubres.rdf res.rdf
   
   #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
-  scen_res <- rw_scen_aggregate(
+  scen_res_FG <- rw_scen_aggregate(
     scens,
     agg = rwa1,
     scen_dir = scen_dir
   ) 
   
-  # unique(scen_res$Variable) #check variable names 
+  # unique(scen_res_FG$Variable) #check variable names 
   
   #get everything on a date 
-  scen_res$MonthNum = as.Date(paste0(scen_res$Year,scen_res$Month,"01"), format = "%Y%B%d") #this takes so long! 
+  scen_res_FG$MonthNum = as.Date(paste0(scen_res_FG$Year,scen_res_FG$Month,"01"), format = "%Y%B%d") #this takes so long! 
   #get a numeric month number
-  scen_res$MonthNum = as.numeric(format.Date(scen_res$MonthNum, format = "%m"))
+  scen_res_FG$MonthNum = as.numeric(format.Date(scen_res_FG$MonthNum, format = "%m"))
   
   
   #filter out incomplete years
-  # scen_res <- scen_res %>%
+  # scen_res_FG <- scen_res_FG %>%
   #     dplyr::filter(Year >= first(yrs2show)) %>%
   #     dplyr::filter(Year <= last(yrs2show))
   
@@ -235,26 +237,23 @@ if (T) {
   CFSAFMon <- 1/AFMonCFS  
   
   # # Adding factors so ggplot does not alphebetize legend
-  scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
-  # head(scen_res)
+  scen_res_FG$Scenario = factor(scen_res_FG$Scenario, levels=names(scens))
+  # head(scen_res_FG)
   
+  saveRDS(scen_res_FG,file = file.path(ofigs,paste0("scen_res_FG.RDS")))
+  # scen_res_FG <- readRDS(file=file.path(ofigs,paste0("scen_res_FG.RDS"))) #prevent neeed to reprocess
   
-  scen_res_monthly <- scen_res
-  scen_res <- scen_res_monthly
-  saveRDS(scen_res_monthly,file = file.path(ofigs,paste0("scen_res_monthly.RDS")))
-  # scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
-  
-  scen_res_monthly <- scen_res_monthly %>% #filter out scens you don't want to keep for plots
+  scen_res_FG <- scen_res_FG %>% #filter out scens you don't want to keep for plots
     dplyr::filter(Scenario %in% keepscens)
-  unique(scen_res_monthly$Scenario)
+  unique(scen_res_FG$Scenario)
 
 
-scen_res_monthly <-  scen_res_monthly %>%
+scen_res_FG <-  scen_res_FG %>%
     dplyr::group_by(Variable,Scenario,TraceNumber,Year) %>%
     mutate(WY = ifelse(MonthNum<10, Year, Year+1))  
   
 #convert cfs to af/mo 
-convert <- scen_res_monthly %>%
+convert <- scen_res_FG %>%
   dplyr::filter(Variable%in%c("FlamingGorge.Outflow","GreenNearJensen.Gage Inflow")) 
 convert$Value = convert$Value*rep(AFMonCFS,times = length(convert$Value)/12)
 

@@ -1,0 +1,5 @@
+file,slot,period,summary,eval,t_s,variable
+Streamgages.rdf,GreenNearJensen.Gage Outflow,wy,sum,NA,NA,Jensen.OutflowWY
+Streamgages.rdf,GreenNearGreendale.Gage Outflow,wy,sum,NA,NA,FlamingGorge.OutflowWY
+Streamgages.rdf,GreenNearJensen.Gage Outflow,cy,sum,NA,NA,Jensen.OutflowCY
+Streamgages.rdf,GreenNearGreendale.Gage Outflow,cy,sum,NA,NA,FlamingGorge.OutflowCY

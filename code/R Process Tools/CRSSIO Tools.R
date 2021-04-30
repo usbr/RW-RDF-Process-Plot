@@ -9,6 +9,8 @@ packageVersion("CRSSIO")
 # install_github("BoulderCodeHub/CoRiverNF",ref = "v0.7.0") #update ALL supporting packages (1 + Enter) 
 install_github("BoulderCodeHub/CRSSIO") #update ALL supporting packages (1 + Enter) 
 
+install_github("BoulderCodeHub/CoRiverNF") #update ALL supporting packages (1 + Enter) 
+
 package <- "xts"
 packageVersion(package)
 remotes::install_github("joshuaulrich/xts", ref = "v0.11-2")
@@ -30,8 +32,8 @@ library(RWDataPlyr) # i
 #########create CRSS Input Files #### use for CRSS historical DNF 
 CRSSDIR <- Sys.getenv("CRSS_DIR")
 dmi_folder_nm <- "DNF"
-dmi_folder_nm <- "DNF1931_2018"
-dmi_folder_nm <- "DNF1988_2018"
+dmi_folder_nm <- "DNF1931_2019"
+dmi_folder_nm <- "DNF1988_2019"
 oFolder <- file.path(CRSSDIR,"dmi",dmi_folder_nm) 
 yy <- 2000:2019
 record_start <- '1906-1'
@@ -46,8 +48,8 @@ lapply(yy, function(x) {
     "CoRiverNF",
     oFolder = tmp,
     startYear = x,
-    endYear = 2060,
-    recordToUse = zoo::as.yearmon(c(record_start,'2018-12')), #zero out for whole record 
+    endYear = 2030,
+    recordToUse = zoo::as.yearmon(c(record_start,'2019-12')), #zero out for whole record 
     overwriteFiles = T
   )
 })

@@ -32,7 +32,7 @@ LegendWidth = 1
 LegendHeight = 2.5
 
 # # Set tick marks for x and y axis
-# myXLabs <- seq(1990,3000,5)
+myXLabs <- seq(1990,3000,2)
 # myYLabs <- seq(-500,1200,50)
 
 yrs <- startyr:endyr #simplify 

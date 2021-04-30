@@ -9,7 +9,8 @@ if (powtiers){
   powelltiers <- read.csv(file.path(getwd(),"data", "PowellTiers.csv"),header = T)
 }
 
-gg <- ggplot(zz, aes(x=Year, y=Mean, color=Scenario, group=Scenario)) +  theme_light()  #this is just a blank grided plot
+# gg <- ggplot(zz, aes(x=Year, y=Mean, color=Scenario, group=Scenario)) +  theme_light()  #this is just a blank grided plot
+gg <- ggplot(zz, aes(x=Year, y=Med, color=Scenario, group=Scenario)) +  theme_light()  #this is just a blank grided plot
 
 # #DEBUG ##### PLOTING ISSUE 
 # head(zz)
@@ -36,7 +37,8 @@ legenda <- get_legend(gga)
 if (MinMaxLines == T ){ # T is want dotted line as min max of any given trace 
   lengendtitle <- "Min, Mean, Max" #
 } else {
-  lengendtitle <- "Mean"
+  # lengendtitle <- "Mean"
+  lengendtitle <- "Median"
 }
 
 
@@ -68,8 +70,8 @@ ggc <- gg +
                      # labels = str_wrap(histLab, 15)) +
   labs(y = y_lab, title = title, x = 'Year') +# +,subtitle = subtitle) + 
   
-  # scale_x_continuous(minor_breaks = 1990:3000, breaks = myXLabs,
-  #                    labels = myXLabs, expand = c(0,0)) +
+  scale_x_continuous(minor_breaks = 1990:3000, breaks = myXLabs,
+                     labels = myXLabs, expand = c(0,0)) +
   # scale_y_continuous(minor_breaks = seq(300,9000,25),
   #                    breaks = myYLabs, labels = comma) +
   
