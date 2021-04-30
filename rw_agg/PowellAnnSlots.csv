@@ -1,0 +1,21 @@
+file,slot,period,summary,eval,t_s,variable
+Res.rdf,Powell.Inflow,cy,sum,NA,NA,Powell.InflowCY
+Res.rdf,Powell.Inflow,wy,sum,NA,NA,Powell.InflowWY
+KeySlots.rdf,Powell.Outflow,cy,sum,NA,NA,Powell.OutflowCY
+KeySlots.rdf,Powell.Outflow,wy,sum,NA,NA,Powell.OutflowWY
+res.rdf,Mead.Pool Elevation,eocy,NA,NA,NA,Mead.EOCYPoolElevation
+res.rdf,Powell.Pool Elevation,eocy,NA,NA,NA,Powell.EOCYPoolElevation
+Res.rdf,Mead.Inflow,wy,sum,NA,NA,Mead.InflowWY
+Res.rdf,Mead.Storage,cy,mean,NA,NA,Mead.Storage
+KeySlots.rdf,Mead.Outflow,cy,sum,NA,NA,Mead.OutflowCY
+SystemConditions.rdf,SummaryOutputData.EqualizationAbove823,asis,NA,NA,NA,EqualizationAbove823
+SystemConditions.rdf,SummaryOutputData.EqualizationAt823,asis,NA,NA,NA,EqualizationAt823
+SystemConditions.rdf,SummaryOutputData.LowerBalancingAbove823,asis,NA,NA,NA,LowerBalancingAbove823
+SystemConditions.rdf,SummaryOutputData.LowerBalancingAt823,asis,NA,NA,NA,LowerBalancingAt823
+SystemConditions.rdf,SummaryOutputData.LowerBalancingBelow823,asis,NA,NA,NA,LowerBalancingBelow823
+SystemConditions.rdf,SummaryOutputData.MidElevationReleaseAt748,asis,NA,NA,NA,MidElevationReleaseAt748
+SystemConditions.rdf,SummaryOutputData.MidElevationReleaseAt823,asis,NA,NA,NA,MidElevationReleaseAt823
+SystemConditions.rdf,SummaryOutputData.UpperBalancingAbove823,asis,NA,NA,NA,UpperBalancingAbove823
+SystemConditions.rdf,SummaryOutputData.UpperBalancingAt823,asis,NA,NA,NA,UpperBalancingAt823
+SystemConditions.rdf,SummaryOutputData.UpperBalancingBelow823,asis,NA,NA,NA,UpperBalancingBelow823
+SystemConditions.rdf,SummaryOutputData.MidElevationReleaseBypassConstrained,asis,NA,NA,NA,MidElevRelBypassConstrained

@@ -1,0 +1,4 @@
+file,slot,period,summary,eval,t_s,variable
+Check.rdf,PowellOperation.10 Year Compact Volume,eocy,NA,NA,NA,lf_10yr
+Check.rdf,PowellOperation.10 Year Compact Volume,eocy,NA,<=,75000000,lf_10yr_lt75
+Check.rdf,PowellOperation.10 Year Compact Volume,eocy,NA,<=,82500000,lf_10yr_lt825

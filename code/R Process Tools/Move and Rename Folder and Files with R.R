@@ -5,7 +5,9 @@
 # identify the folders
 ## Manoa to MyPC
 # current.folder <- "Z:/Shared/MTOM_CRSS_5-yrComparison/Analysis/data/Scenario_CRSS_9015" 
+current.folder <- "Z:/felletter/CRSS_MTOM_scens/Pul" #or delete this 
 current.folder <- "Z:/felletter/CRSS_MTOM_scens/Full" #or delete this 
+current.folder <- "Z:/felletter/CRSS_MTOM_scens/Stress" #or delete this 
 new.folder <- "C:/Users/cfelletter/Documents/CRSS_MTOM/testbedanalysis/data/Scenario"
 ## BA to Manoa
 current.folder <- "C:/Users/fellette/Documents/GIT/CRSS/Scenario" #BA
