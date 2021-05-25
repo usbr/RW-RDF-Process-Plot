@@ -11,7 +11,10 @@ current.folder <- "Z:/felletter/CRSS_MTOM_scens/Stress" #or delete this
 new.folder <- "C:/Users/cfelletter/Documents/CRSS_MTOM/testbedanalysis/data/Scenario"
 ## BA to Manoa
 current.folder <- "C:/Users/fellette/Documents/GIT/CRSS/Scenario" #BA
-new.folder <- "//128.138.214.42/bor/felletter/GREAT_Test/" #Manoa
+new.folder <- "//128.138.214.42/bor/felletter/CRSS_MTOM_scens/Stress/" #Manoa
+new.folder <- "//128.138.214.42/bor/felletter/CRSS_MTOM_scens/Full/" #Manoa
+new.folder <- "//128.138.214.42/bor/felletter/CRSS_MTOM_scens/Pul/" #Manoa
+
 
 # # create the folders if needed  
 folders.needed <- list.files(current.folder)
@@ -25,11 +28,11 @@ for (dir_check in folders.needed) {
 ## CRSS-MTOM files
 rdf <- c("SystemConditions","Res","UBRes","xtraRes")  #"UBRch.rdf"
 
-## required for Process CRSS tool 
-rdf <- c("KeySlots","Check","MPPE","MWDICS","SystemConditions","Res","CSD_ann","CSD_mon")  
-
-## GREAT files
-rdf <- c("DailyFlows","Res","UBRes","UBDO","Drought")  #"UBRch.rdf"
+# ## required for Process CRSS tool 
+# rdf <- c("KeySlots","Check","MPPE","MWDICS","SystemConditions","Res","CSD_ann","CSD_mon")  
+# 
+# ## GREAT files
+# rdf <- c("DailyFlows","Res","UBRes","UBDO","Drought")  #"UBRch.rdf"
 
 for (i in 1:length(rdf)) {
   list.of.files <- list.files(current.folder, rdf[i],recursive = TRUE)
@@ -50,10 +53,10 @@ for (i in 1:length(rdf)) {
 # current.folder <- "C:/Users/cfelletter/Documents/CRSS_MTOM/testbedanalysis/data/Test"
 list.files(current.folder,full.names = TRUE)
 
-current.folder <- "Z:/felletter/CRSS_MTOM_scens/Stress" #or delete this
+# current.folder <- "Z:/felletter/CRSS_MTOM_scens/Stress" #or delete this
 setwd(current.folder)
 runrange = 2000:2018
 
-file.rename(sprintf("NF_%s_%s,2016Dems_v1.6,CRSS_VerificationModel_9015,IGDCP.v4.4.0.9004", "Full",runrange),     # to
-            sprintf("NF_%s_%s,2016Dems_v1.6,CRSS_VerificationModel_9015,IGDCP.v4.4.0.9004", "StressTest",runrange))
-            # sprintf("NF_%s_%s,2016Dems_v1.6,CRSS_VerificationModel_9015,IGDCP.v4.4.0.9004", "pluvialRem",runrange))
+file.rename(sprintf("NF_%s_%s,2016Dems_v1.8,CRSS_V4.99.3.2021.Feb2020_2000start,IGDCP.v4.99.0", "Full",runrange),     # to
+            sprintf("NF_%s_%s,2016Dems_v1.8,CRSS_V4.99.3.2021.Feb2020_2000start,IGDCP.v4.99.0", "StressTest",runrange))
+            # sprintf("NF_%s_%s,2016Dems_v1.8,CRSS_V4.99.3.2021.Feb2020_2000start,IGDCP.v4.99.0", "PluvialRem",runrange))
