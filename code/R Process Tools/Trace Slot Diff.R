@@ -22,8 +22,8 @@ list.dirs(scen_dir) #list dirs in set folder folder for us in next input
 #### Normally You'll Only Change The Below ####
 #scens you want to compare, list as "your plot name" = "folder name"
 scens <- list(
-  "Jan21 Offc" = "Jan2021_2022,ISM1988_2018,2016Dems,IG_DCP,MTOM_Most", #what I compared in my first anlysis
-  "9000" = "Jan2021_9000,ISM1988_2018,2016Dems,IG_DCP,MTOM_Most" #Verify 
+  "Apr2021_2022" = "Apr2021_2022,ISM1988_2019,2016Dems,IG_DCP,MTOM_Most", #what I compared in my first anlysis
+  "CRSS.V5.1.3.2022.Apr2021" = "CRSS.V5.1.3.2022.Apr2021,ISM1988_2019,2016Dems,IG_DCP,MTOM_Most" #Verify 
 )
 
 #list rdf files in dir
@@ -40,7 +40,9 @@ rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],rdffile[1])))
 
 variable <- rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],rdffile[1])))[10]
 # variable <- c("BlueMesa.Outflow","FlamingGorge.Outflow") #RW Object.Slot
-variable <- c("Powell.Pool Elevation") #RW Object.Slot
+variable <- c("Powell.Pool Elevation") #keyslots.rdf
+variable <- c("Mead.Outflow") #keyslots.rdf
+
 variable <- c("Powell.Inflow") #RW Object.Slot
 
 
