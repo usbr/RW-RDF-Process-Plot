@@ -41,8 +41,8 @@ scens_noUBDRO
 scens_noUBDRO_DNF <- rw_scen_gen_names("Jun2021_2022", c("DNF"),
                                    "2016Dems,IG_DCPnoUBDRO", 
                                    paste0("Trace", 4:38))
-scens_noUBDRO_ST <- rw_scen_gen_names("Jun2021_2022", c("DNF", "ISM1988_2019"),
-                                   "2016Dems,IG_DCPnoUBDRO", 
+scens_noUBDRO_ST <- rw_scen_gen_names("Jun2021_2022", c("ISM1988_2019"),
+                                      "2016Dems,IG_DCPnoUBDRO", 
                                    paste0("Trace", 4:38))
 
 scens <- c(previous_scens,scens_latest,scens_noUBDRO) #combine
