@@ -8,6 +8,8 @@ rm(list=ls()) #clear the enviornment
 CRSSDIR <- Sys.getenv("CRSS_DIR")
 
 results_dir <- file.path(CRSSDIR,"results") 
+results_dir <- "M:/felletter"
+
 
 #Additional plotting functions and libraries
 library('tidyverse') #ggplot2,dplyr,tidyr
@@ -37,8 +39,8 @@ printfigs_singletrace<-T#T#make png figures
 # mylinetypes <- c("dashed","solid","solid")
 #standard powerpoint figure sizes 
 # first is for monthly plots, second is for daily plots 
-widths <- c(9.5,9.5) #smaller looks really bad, better to just resize larger image
-heights <- c(7,7)
+widths <- 11 #smaller looks really bad, better to just resize larger image
+heights <- 6
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #                               END USER INPUT
@@ -96,6 +98,14 @@ unique(scen_res_ST$Scenario)
 rm(zz)
 gc() #call of gc() causes a garbage collection to take place. It can be useful to call gc() after a large object has been removed, as this may prompt R to return memory to the operating system. gc() also return a summary of the occupy memory.
 
+scen_res_DNF<-arrow::read_feather(file.path(CRSSDIR,"scen_res_DNF.feather")) 
+scen_res_ST<-arrow::read_feather(file.path(CRSSDIR,"scen_res_ST.feather")) 
+
+unique(scen_res_ST$ScenarioGroup)
+unique(scen_res_ST$Variable)
+unique(scen_res_ST$CRMMSTraceNumber)
+
+
 #chunk up the data for easier working 
 scens = unique(scen_res_DNF$ScenarioGroup) 
 scens = scens[2:3]
@@ -105,6 +115,7 @@ scen_res_DNF <- scen_res_DNF %>%
   filter(ScenarioGroup %in% scens) 
 unique(scen_res_DNF$ScenarioGroup) 
 unique(scen_res_DNF$Year) 
+head(scen_res_DNF)
 
 scens = unique(scen_res_ST$ScenarioGroup) 
 scens = scens[2:3]
@@ -114,6 +125,7 @@ scen_res_ST <- scen_res_ST %>%
   filter(ScenarioGroup %in% scens) 
 unique(scen_res_ST$ScenarioGroup) 
 unique(scen_res_ST$Year) 
+head(scen_res_ST)
 
 #add a CRMMSTraceNumber
 scen_res_ST <- cbind.data.frame(scen_res_ST, 
@@ -141,6 +153,8 @@ arrow::write_feather(scen_res_ST,file.path(CRSSDIR,"scen_res_ST.feather"))
 
 gc() #call of gc() causes a garbage collection to take place. It can be useful to call gc() after a large object has been removed, as this may prompt R to return memory to the operating system. gc() also return a summary of the occupy memory.
 
+
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 5. Plot monthly figures  
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -161,22 +175,17 @@ CRMMStraces
 CRSStraces = unique(scen_res$TraceNumber) 
 CRSStraces
 
+#### Run Powell Clouds 
+
+
+#### Single Trace Plots 
 # create a pdf
-pdf(file.path(ofigs,paste0("June2021_",Hydro,".pdf")), width = widths[1],height = heights[1]) #width= width, height= height)
-
-
-#### Powell Clouds 
-
-# source("code/Cloud_plot_woHist.R")
-
-
-
-
+pdf(file.path(ofigs,paste0("SingleTrace_June2021_",Hydro,".pdf")), width = widths[1],height = heights[1]) #width= width, height= height)
 
 ### 4 Panel Plots ###
 # slotNames_plot = c('FlamingGorge.Outflow', 'BlueMesa.Outflow','Navajo.Outflow',)
 slotNames_plot = c('FlamingGorge.PE', 'BlueMesa.PE','Navajo.PE','Powell.PE')
-CRSStrace <- 14#ST 14 = 2001, DNF 96 = 2001
+CRSStrace <- 96#ST 14 = 2001, DNF 96 = 2001
 CRMMStrace <- 23 # 23 = 2000
 title = paste0("CRMMS trace ",CRMMStrace," (",CRMMStrace+1977,'), CRSS trace ',CRSStrace," (",CRSStrace+1987,")") 
 title
@@ -204,17 +213,17 @@ g <- df_plot  %>%
         legend.text = element_text(size = 12), 
         legend.spacing.x  = unit(0.5, units = 'cm'),
         axis.text.x = element_text(angle = 90, hjust = 1),
-        plot.title = element_text(size=rel(0.9)),
+        plot.title = element_text(size=rel(1.2)),
         plot.margin=unit(c(1,1.5,3,1),"lines"),
         strip.text = element_text(size = 12)) +
-  # guides(fill = guide_legend(nrow=legend_rows,byrow=T)) +
+  scale_y_continuous(label = comma) + # guides(fill = guide_legend(nrow=legend_rows,byrow=T)) +
   facet_wrap(~ Variable, scales = 'free_y',ncol = 1)
 print(g)
-if(printfigs_singletrace==T){ ggsave(filename = file.path(ofigs,paste0(Hydro,".CRSP.PE.",title,".png")), width = widths[1],height = heights[1])}
+if(printfigs_singletrace==T){ ggsave(filename = file.path(ofigs,paste0(Hydro,".CRSP.PE.",title,".png")), width = 11,height = 7)} #maxes out pptx slide height 
 
 slotNames_plot = c('FlamingGorge.PE', 'BlueMesa.PE','Navajo.PE','Powell.PE')
-CRSStrace <- 17#ST 14 = 2001, DNF 96 = 2001
-CRMMStrace <- 26 # 25 = 2002
+CRSStrace <- 98#ST 14 = 2001, DNF 96 = 2001
+CRMMStrace <- 26 # 25 = 2003
 title = paste0("CRMMS trace ",CRMMStrace," (",CRMMStrace+1977,'), CRSS trace ',CRSStrace," (",CRSStrace+1987,")") 
 title
 ytitle <- "Water Surface Elevation (ft)"
@@ -236,22 +245,16 @@ g <- df_plot  %>%
         legend.text = element_text(size = 12), 
         legend.spacing.x  = unit(0.5, units = 'cm'),
         axis.text.x = element_text(angle = 90, hjust = 1),
-        plot.title = element_text(size=rel(0.9)),
+        plot.title = element_text(size=rel(1.2)),
         plot.margin=unit(c(1,1.5,3,1),"lines"),
         strip.text = element_text(size = 12)) +
-  # guides(fill = guide_legend(nrow=legend_rows,byrow=T)) +
+  scale_y_continuous(label = comma) + # guides(fill = guide_legend(nrow=legend_rows,byrow=T)) +
   facet_wrap(~ Variable, scales = 'free_y',ncol = 1)
 print(g)
-# facet_grid(slotNames_plot ~ Value, scales = 'free_y')
-if(printfigs_singletrace==T){ ggsave(filename = file.path(ofigs,paste0("CRSP.PE.",title,".png")), width = widths[1],height = heights[1])}
-
+if(printfigs_singletrace==T){ ggsave(filename = file.path(ofigs,paste0(Hydro,".CRSP.PE.",title,".png")), width = 11,height = 7)} #maxes out pptx slide height 
 
 dev.off()
 dev.off()
-
-
-
-
 
 # ### Simple year average
 # 

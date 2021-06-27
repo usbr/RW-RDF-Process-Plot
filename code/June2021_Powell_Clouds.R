@@ -3,18 +3,24 @@
 ##############################################################################
 library('readxl') #read_xlsx()
 library('cowplot') #get_legend()
+library('scales') #comma in y axis label 
+
+figstats <- file.path(ofigs,"Stats") 
+if (!file.exists(figstats)) {
+  message(paste('Creating folder:', figstats))
+  dir.create(figstats)
+}
+message('Stats will be saved to: ', figstats)
+
+widths <- 11
+heights <- 6 #fits under title text in pptx 
 
 MinMaxLines<-F # T is want dotted line as min max of any given trace 
 
 plotColors <- c("#407ec9" , "#6b8f00", "#9a3324" ) #Reclamation blue, green, red
 plotColors <- c( "#6b8f00", "#9a3324" ) #green, red
-
 colorNames <- c(names(scens))
-#use mycolors defined by Master rather than old Cloud colors 
-# plotColors <-   c("#000000", mycolors,"#8B8682")  # #black, my colors, grey  
-# plotColors <-   c(mycolors)   
-cloudScen <- names(scens)
-cloudLabs <- names(scens)
+exc_month <-12
 
 #Text
 TitleSize = 13
@@ -48,28 +54,38 @@ yrs <- startyr:endyr #simplify
 
 
 ### Read Data ###
-
-
 zz_inout <- scen_res %>%
-  dplyr::filter(Variable %in% c('FlamingGorge.Storage', 'BlueMesa.Storage','Navajo.Storage','Powell.Storage',
-                                'FlamingGorge.Outflow', 'BlueMesa.Outflow','Navajo.Outflow','Powell.Inflow')) %>%
-  dplyr::group_by(Variable,ScenarioGroup, Year) %>%
-  dplyr::summarise(Value = sum(Value)) #inflow and outflow this needs to be sum(Value)
-  mutate(Value = Value/1000) #convert to MAF after we convert to AF  
+  dplyr::filter(Variable %in% c('FlamingGorge.Outflow', 'BlueMesa.Outflow','Navajo.Outflow','Powell.Inflow')) %>%
+  dplyr::group_by(Variable,ScenarioGroup,Scenario,TraceNumber,Year) %>%
+  dplyr::summarise(Value = sum(Value)) %>% #inflow and outflow this needs to be sum(Value)
+  mutate(Value = Value/1000) #convert to MAF after we convert to AF
+head(zz_inout)
+unique(zz_inout$Variable)
 
 zz_pe <- scen_res %>%
-  dplyr::filter(Variable %in% c('FlamingGorge.PE', 'BlueMesa.PE','Navajo.PE','Powell.PE')) %>%
+  dplyr::filter(Variable %in% c('FlamingGorge.PE', 'BlueMesa.PE','Navajo.PE','Powell.PE')) %>% #'Powell.Storage' didn't process 
   dplyr::filter(MonthNum %in% exc_month)   # EOCY 
 zz_pe <- zz_pe[,names(zz_inout)]
-  
-zz_all <- rbind.data.frame(zz_inout,zz_pe) %>%
+head(zz_pe)
+
+zz_stor <- scen_res %>%
+  dplyr::filter(Variable %in% c('FlamingGorge.Storage', 'BlueMesa.Storage','Navajo.Storage')) %>% #'Powell.Storage' didn't process 
+  mutate(Value = Value/1000) %>% #convert to MAF after we convert to AF
+  dplyr::filter(MonthNum %in% exc_month) # EOCY 
+head(zz_stor)
+zz_stor <- zz_stor[,names(zz_inout)]
+# summary(zz_stor)
+
+zz_all <- rbind.data.frame(zz_inout,zz_pe,zz_stor) %>%
  # compute the 10/50/90 and aggregate by start month
-dplyr::group_by(ScenarioGroup, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
+dplyr::group_by(ScenarioGroup, Variable, Year) %>% #don't use scenario here 
 dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
                  'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
                  'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot 
 
 zz_all$Scenario = zz_all$ScenarioGroup
+unique(zz_all$Variable)
+# summary(zz_all)
 
 # # Adding factors so ggplot does not alphebetize legend
 # zz_all$Scenario = factor(zz_all$Scenario, levels=colorNames)
@@ -96,17 +112,16 @@ y_lab = "EOCY Elevation (ft)"
 title = "Lake Powell" 
 source("code/Cloud_plot_woHistv2.R")
 
-powtiers <- F
-variable = "Powell.Storage"
-y_lab = "EOCY Storage (kaf)"
-title = "Lake Powell" 
-source("code/Cloud_plot_woHistv2.R")
+# powtiers <- F
+# variable = "Powell.Storage" ## you didn't grab this data you silly goose 
+# y_lab = "EOCY Storage (kaf)"
+# title = "Lake Powell" 
+# source("code/Cloud_plot_woHistv2.R")
 
 NumCrit <- NA
 powtiers <- F
 variable = "FlamingGorge.Storage"
 y_lab = "EOCY Storage (kaf)"
-title = "" 
 title = "Flaming Gorge"
 # ylims <- c(7,12)
 source("code/Cloud_plot_woHistv2.R")

@@ -1,7 +1,7 @@
 zz <- zz_all %>%
   dplyr::filter(Variable == variable) 
 
-write.csv(zz,file.path(ofigs,paste0(Hydro,'_',variable,"_stats.csv")))
+write.csv(zz,file.path(ofigs,"Stats",paste0(Hydro,'_',variable,"_stats.csv")))
 
 
 if (powtiers){
@@ -71,9 +71,9 @@ ggc <- gg +
   labs(y = y_lab, x = 'Year') +# +,subtitle = subtitle) + 
   
   
-  scale_x_continuous(minor_breaks = 1990:3000, breaks = myXLabs,
-                     labels = myXLabs, expand = c(0,0)) +
-  # scale_y_continuous(minor_breaks = seq(300,9000,25),
+  scale_x_continuous(minor_breaks = 1990:3000, breaks = 1990:3000,
+                     labels = 1990:3000, expand = c(0,0)) +
+  scale_y_continuous(label = comma) + #minor_breaks = seq(300,9000,25),
   #                    breaks = myYLabs, labels = comma) +
   
   theme(plot.title = element_text(size = TitleSize),
