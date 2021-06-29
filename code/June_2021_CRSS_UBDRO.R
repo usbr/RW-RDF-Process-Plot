@@ -60,8 +60,15 @@ message('Figures will be saved to: ', ofigs)
 # ## Load Feather with Processed Results 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-# scen_res_monthly <- feather::read_feather(path = file.path(CRSSDIR,'crsp_ops_data.feather'))
+# +++++++++++++++++++++++++EITHER+++++++++++++++++++++++++++++++++++++++
+### already processed feather file and saved results 
+scen_res_DNF<-arrow::read_feather(file.path(CRSSDIR,"scen_res_DNF.feather")) 
+scen_res_ST<-arrow::read_feather(file.path(CRSSDIR,"scen_res_ST.feather")) 
 
+# ++++++++++++++++++++++++++OR+++++++++++++++++++++++++++++++++++++++++++++++++
+### process CRSS crsp_ops_data.feather
+if (F) {
+  
 #chunk up the data for easier working 
 scen_res_DNF <- zz %>%
   filter(Scenario %in% c(previous_scens_DNF,scens_latest_DNF,scens_noUBDRO_DNF)) 
@@ -97,9 +104,6 @@ unique(scen_res_ST$Scenario)
 
 rm(zz)
 gc() #call of gc() causes a garbage collection to take place. It can be useful to call gc() after a large object has been removed, as this may prompt R to return memory to the operating system. gc() also return a summary of the occupy memory.
-
-scen_res_DNF<-arrow::read_feather(file.path(CRSSDIR,"scen_res_DNF.feather")) 
-scen_res_ST<-arrow::read_feather(file.path(CRSSDIR,"scen_res_ST.feather")) 
 
 unique(scen_res_ST$ScenarioGroup)
 unique(scen_res_ST$Variable)
@@ -153,8 +157,7 @@ arrow::write_feather(scen_res_ST,file.path(CRSSDIR,"scen_res_ST.feather"))
 
 gc() #call of gc() causes a garbage collection to take place. It can be useful to call gc() after a large object has been removed, as this may prompt R to return memory to the operating system. gc() also return a summary of the occupy memory.
 
-
-
+}
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 5. Plot monthly figures  
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -163,12 +166,11 @@ gc() #call of gc() causes a garbage collection to take place. It can be useful t
 ### now make plots but only for one hydrology 
 Hydro <- "ST"
 scen_res = scen_res_ST
+scens = unique(scen_res$ScenarioGroup) 
 
 Hydro <- "DNF"
 scen_res = scen_res_DNF
-
 scens = unique(scen_res$ScenarioGroup) 
-
 
 CRMMStraces = unique(scen_res$CRMMSTraceNumber) 
 CRMMStraces
@@ -185,8 +187,8 @@ pdf(file.path(ofigs,paste0("SingleTrace_June2021_",Hydro,".pdf")), width = width
 ### 4 Panel Plots ###
 # slotNames_plot = c('FlamingGorge.Outflow', 'BlueMesa.Outflow','Navajo.Outflow',)
 slotNames_plot = c('FlamingGorge.PE', 'BlueMesa.PE','Navajo.PE','Powell.PE')
-CRSStrace <- 96#ST 14 = 2001, DNF 96 = 2001
-CRMMStrace <- 23 # 23 = 2000
+CRSStrace <- 15 #ST 15 = 2002, worst case! #ST 14 = 2001, DNF 96 = 2001
+CRMMStrace <- 24 # 24 = 2001
 title = paste0("CRMMS trace ",CRMMStrace," (",CRMMStrace+1977,'), CRSS trace ',CRSStrace," (",CRSStrace+1987,")") 
 title
 # ytitle <- "EOCY Water Surface Elevation (ft)"
@@ -255,6 +257,96 @@ if(printfigs_singletrace==T){ ggsave(filename = file.path(ofigs,paste0(Hydro,".C
 
 dev.off()
 dev.off()
+
+
+
+### 3 Storage + Powell PE Plots ###
+# slotNames_plot = c('FlamingGorge.Outflow', 'BlueMesa.Outflow','Navajo.Outflow',)
+slotNames_plot = c('FlamingGorge.Storage', 'BlueMesa.Storage','Navajo.Storage','Powell.PE')
+CRSStrace <- 14 #ST 15 = 2002, worst case! #ST 14 = 2001, DNF 96 = 2001
+CRMMStrace <- 23 # 24 = 2001
+title = paste0("CRMMS trace ",CRMMStrace," (",CRMMStrace+1977,'), CRSS trace ',CRSStrace," (",CRSStrace+1987,")") 
+ytitle <- "Storage (kaf)"
+
+df_plot = scen_res %>% filter(Variable %in% slotNames_plot) %>%
+  mutate(Variable = factor(Variable, levels = slotNames_plot)) %>%
+  dplyr::filter(TraceNumber %in% CRSStrace) %>%
+  dplyr::filter(CRMMSTraceNumber %in% CRMMStrace) # %>%
+g <- df_plot  %>% 
+  ggplot(aes(Date, Value, fill = ScenarioGroup,color = ScenarioGroup)) + 
+  geom_line() +
+  labs(y = ytitle, x = '',title = title) +
+  theme(legend.title = element_blank(),
+        legend.position = 'bottom',
+        legend.text = element_text(size = 12), 
+        legend.spacing.x  = unit(0.5, units = 'cm'),
+        axis.text.x = element_text(angle = 90, hjust = 1),
+        plot.title = element_text(size=rel(1.2)),
+        plot.margin=unit(c(1,1.5,3,1),"lines"),
+        strip.text = element_text(size = 12)) +
+  scale_y_continuous(label = comma) + # guides(fill = guide_legend(nrow=legend_rows,byrow=T)) +
+  facet_wrap(~ Variable, scales = 'free_y',ncol = 1)
+print(g)
+if(printfigs_singletrace==T){ ggsave(filename = file.path(ofigs,paste0(Hydro,".CRSP.PE.",title,".png")), width = 11,height = 7)} #maxes out pptx slide height 
+
+CRSStrace <- 15#ST 14 = 2001, DNF 96 = 2001
+CRMMStrace <- 24 # 25 = 2003
+title = paste0("CRMMS trace ",CRMMStrace," (",CRMMStrace+1977,'), CRSS trace ',CRSStrace," (",CRSStrace+1987,")") 
+
+df_plot = scen_res %>% filter(Variable %in% slotNames_plot) %>%
+  mutate(Variable = factor(Variable, levels = slotNames_plot)) %>%
+  dplyr::filter(TraceNumber %in% CRSStrace) %>%
+  dplyr::filter(CRMMSTraceNumber %in% CRMMStrace) # %>%
+
+g <- df_plot  %>% 
+  ggplot(aes(Date, Value, fill = ScenarioGroup,color = ScenarioGroup)) + 
+  geom_line() +
+  labs(y = ytitle, x = '',title = title) +
+  theme(legend.title = element_blank(),
+        legend.position = 'bottom',
+        legend.text = element_text(size = 12), 
+        legend.spacing.x  = unit(0.5, units = 'cm'),
+        axis.text.x = element_text(angle = 90, hjust = 1),
+        plot.title = element_text(size=rel(1.2)),
+        plot.margin=unit(c(1,1.5,3,1),"lines"),
+        strip.text = element_text(size = 12)) +
+  scale_y_continuous(label = comma) + # guides(fill = guide_legend(nrow=legend_rows,byrow=T)) +
+  facet_wrap(~ Variable, scales = 'free_y',ncol = 1)
+print(g)
+if(printfigs_singletrace==T){ ggsave(filename = file.path(ofigs,paste0(Hydro,".CRSP.PE.",title,".png")), width = 11,height = 7)} #maxes out pptx slide height 
+
+CRSStrace <- 26#ST 14 = 2001, DNF 96 = 2001
+CRMMStrace <- 17 # 25 = 2003
+title = paste0("CRMMS trace ",CRMMStrace," (",CRMMStrace+1977,'), CRSS trace ',CRSStrace," (",CRSStrace+1987,")") 
+
+df_plot = scen_res %>% filter(Variable %in% slotNames_plot) %>%
+  mutate(Variable = factor(Variable, levels = slotNames_plot)) %>%
+  dplyr::filter(TraceNumber %in% CRSStrace) %>%
+  dplyr::filter(CRMMSTraceNumber %in% CRMMStrace) # %>%
+
+g <- df_plot  %>% 
+  ggplot(aes(Date, Value, fill = ScenarioGroup,color = ScenarioGroup)) + 
+  # bor_style() +
+  geom_line() +
+  labs(y = ytitle, x = '',title = title) +
+  theme(legend.title = element_blank(),
+        legend.position = 'bottom',
+        legend.text = element_text(size = 12), 
+        legend.spacing.x  = unit(0.5, units = 'cm'),
+        axis.text.x = element_text(angle = 90, hjust = 1),
+        plot.title = element_text(size=rel(1.2)),
+        plot.margin=unit(c(1,1.5,3,1),"lines"),
+        strip.text = element_text(size = 12)) +
+  scale_y_continuous(label = comma) + # guides(fill = guide_legend(nrow=legend_rows,byrow=T)) +
+  facet_wrap(~ Variable, scales = 'free_y',ncol = 1)
+print(g)
+if(printfigs_singletrace==T){ ggsave(filename = file.path(ofigs,paste0(Hydro,".CRSP.PE.",title,".png")), width = 11,height = 7)} #maxes out pptx slide height 
+
+dev.off()
+dev.off()
+
+
+
 
 # ### Simple year average
 # 

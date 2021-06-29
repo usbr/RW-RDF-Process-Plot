@@ -92,8 +92,11 @@ ggc <- gg +
     geom_abline(slope = 1.2542,intercept = 1124.4,color = "black", lty = 3,size = 1) + #this is linear reg for 2020-2040 line, R2 = .99
     # geom_line(aes(x=Year,y=EQ), data=powelltiers, color = "red", lty = 2) +
     geom_hline(aes(yintercept=MER), data=powelltiers, color = "black", lty = 3,size = 1) +
+    geom_hline(aes(yintercept=PP), data=powelltiers, color = "red", lty = 2,size = 1) +
+      
     annotate("text", x = 2023, y = 3600, label = "Upper Elevation Balancing Tier",size = 4,hjust = 0) +
       annotate("text", x = 2023, y = 3550, label = "Mid Elevation Release Tier",size = 4,hjust = 0) + 
+      annotate("text", x = 2023, y = 3495, label = "Power Pool",size = 4,hjust = 0) + 
     annotate("text", x = 2023, y = 3450, label = "Lower Elevation Balancing Tier",size = 4,hjust = 0)
   }
 

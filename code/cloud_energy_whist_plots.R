@@ -9,20 +9,21 @@ library(rhdb)
 library(feather)
 
 setwd('code') ### this all needs to be placed in the CRSS folder 
-source("get_mtom_data.R")
-source("plot_data.R")
+source("C:/Users/fellette/Documents/GIT/RW-RDF-Process-Plot/code/get_mtom_data.R")
+source("C:/Users/fellette/Documents/GIT/RW-RDF-Process-Plot/code/plot_data.R")
 
-mtom_res_file <- "C:/Users/cfelletter/Documents/MTOM/Output Data/MTOM_EnsembleOutput_APR21.xlsm"
+# mtom_res_file <- "C:/Users/cfelletter/Documents/MTOM/Output Data/CRMMS_EnsembleOutput.xlsm" #my PC
+mtom_res_file <- "C:/Users/fellette/Documents/GIT/crmms/Output Data/CRMMS_EnsembleOutput.xlsm" #BA
 
 #plot_years <- 2019:2025
 #nrg_w <- 9.5
 #nrg_h <- 6.5
 
-dnf_scens <- rw_scen_gen_names("Apr2021_2022.v5.1,DNF,2016Dems,IG_DCP.v5.1", 
-                               paste0("Trace", sprintf("%02d", 4:38)))
+dnf_name <- 'Jun2021_2022,DNF,2016Dems,IG_DCP'
+st_name <- 'Jun2021_2022,ISM1988_2019,2016Dems,IG_DCP'
+dnf_scens <- rw_scen_gen_names(dnf_name,  paste0('Trace', 4:38))
+st_scens <- rw_scen_gen_names(st_name,  paste0('Trace', 4:38))
 
-st_scens <- rw_scen_gen_names("Apr2021_2022.v5.1,ISM1988_2019,2016Dems,IG_DCP.v5.1", 
-                              paste0("Trace", sprintf("%02d", 4:38)))
 #st_scens <- c("st")
 
 date_to_wy <- function(x) {
@@ -37,13 +38,14 @@ date_to_wy <- function(x) {
 # data ---------------------------------------
 # CRSS
 
+crss <- zz #from Process_CRSS_crsp_energy.feather.R OR... 
 crss <- bind_rows(
-  read_feather("crsp_energy.feather")
+  read_feather(file.path(CRSSDIR,"crsp_energy.feather"))
 ) 
 
 slotnames <- c("Powell.Energy", "BlueMesa.Energy","Crystal.Energy","FlamingGorge.Energy","Fontenelle.Energy","MorrowPoint.Energy" )
 
-# MTOM - OND 2021 to combine with crss
+# MTOM - OND (Oct,Nov,Dec) 2021 to combine with crss
 powell_ond2021 <- get_mtom_ond(mtom_res_file, slotnames[1], ymd("2021-10-01"), ymd("2021-12-31")) 
 crystal_ond2021 <- get_mtom_ond(mtom_res_file, slotnames[3], ymd("2021-10-01"), ymd("2021-12-31")) 
 fontenelle_ond2021 <- get_mtom_ond(mtom_res_file, slotnames[5], ymd("2021-10-01"), ymd("2021-12-31")) 
@@ -54,72 +56,76 @@ flaming_gorge_ond2021 <- get_mtom_ond(mtom_res_file, slotnames[4], ymd("2021-10-
 # and expand it to have correct scenarios and number of traces
 crss_ond <- bind_rows(
   expand_ond_to_crss_scenarios(
-    powell_ond2021, 114, "Apr2021_2022.v5.1,DNF,2016Dems,IG_DCP.v5.1"
+    powell_ond2021, 114, dnf_name
   ) %>%
     mutate(water_year = date_to_wy(Date), Variable = "powell_energy"),
   expand_ond_to_crss_scenarios(
-    powell_ond2021, 32, "Apr2021_2022.v5.1,ISM1988_2019,2016Dems,IG_DCP.v5.1"
+    powell_ond2021, 32, st_name
   ) %>%
     mutate(water_year = date_to_wy(Date), Variable = "powell_energy"),
   
   expand_ond_to_crss_scenarios(
-    blue_mesa_ond2021, 114, "Apr2021_2022.v5.1,DNF,2016Dems,IG_DCP.v5.1"
+    blue_mesa_ond2021, 114, dnf_name
   ) %>%
     mutate(water_year = date_to_wy(Date), Variable = "blue_mesa_energy"),
   expand_ond_to_crss_scenarios(
-    blue_mesa_ond2021, 32, "Apr2021_2022.v5.1,ISM1988_2019,2016Dems,IG_DCP.v5.1"
+    blue_mesa_ond2021, 32, st_name
   ) %>%
     mutate(water_year = date_to_wy(Date), Variable = "blue_mesa_energy"),
   
   expand_ond_to_crss_scenarios(
-    flaming_gorge_ond2021, 114, "Apr2021_2022.v5.1,DNF,2016Dems,IG_DCP.v5.1"
+    flaming_gorge_ond2021, 114, dnf_name
   ) %>%
     mutate(water_year = date_to_wy(Date), Variable = "flaming_gorge_energy"),
   expand_ond_to_crss_scenarios(
-    flaming_gorge_ond2021, 32, "Apr2021_2022.v5.1,ISM1988_2019,2016Dems,IG_DCP.v5.1"
+    flaming_gorge_ond2021, 32, st_name
   ) %>%
     mutate(water_year = date_to_wy(Date), Variable = "flaming_gorge_energy"),
   
   expand_ond_to_crss_scenarios(
-    fontenelle_ond2021, 114, "Apr2021_2022.v5.1,DNF,2016Dems,IG_DCP.v5.1"
+    fontenelle_ond2021, 114, dnf_name
   ) %>%
     mutate(water_year = date_to_wy(Date), Variable = "fontenelle_energy"),
   expand_ond_to_crss_scenarios(
-    fontenelle_ond2021, 32, "Apr2021_2022.v5.1,ISM1988_2019,2016Dems,IG_DCP.v5.1"
+    fontenelle_ond2021, 32, st_name
   ) %>%
     mutate(water_year = date_to_wy(Date), Variable = "fontenelle_energy"),
 
     expand_ond_to_crss_scenarios(
-      morrow_point_ond2021, 114, "Apr2021_2022.v5.1,DNF,2016Dems,IG_DCP.v5.1"
+      morrow_point_ond2021, 114, dnf_name
     ) %>%
     mutate(water_year = date_to_wy(Date), Variable = "morrow_point_energy"),
   expand_ond_to_crss_scenarios(
-    morrow_point_ond2021, 32, "Apr2021_2022.v5.1,ISM1988_2019,2016Dems,IG_DCP.v5.1"
+    morrow_point_ond2021, 32, st_name
   ) %>%
     mutate(water_year = date_to_wy(Date), Variable = "morrow_point_energy"),
 
   expand_ond_to_crss_scenarios(
-    crystal_ond2021, 114, "Apr2021_2022.v5.1,DNF,2016Dems,IG_DCP.v5.1"
+    crystal_ond2021, 114, dnf_name
   ) %>%
     mutate(water_year = date_to_wy(Date), Variable = "crystal_energy"),
   expand_ond_to_crss_scenarios(
-    crystal_ond2021, 32, "Apr2021_2022.v5.1,ISM1988_2019,2016Dems,IG_DCP.v5.1"
+    crystal_ond2021, 32, st_name
   ) %>%
     mutate(water_year = date_to_wy(Date), Variable = "crystal_energy")
 
   )
 
 crss <- crss %>%
-  mutate(Date = ymd(paste(Year, match(Month, month.name), "01", sep = "-")),
-         water_year = date_to_wy(Date)) %>%
-  select(-Year, -Month)
+  mutate(
+    # Date = ymd(paste(Year, match(Month, month.name), "01", sep = "-")), #already have col date, don't do this? 
+         water_year = date_to_wy(Date)) #%>%
+  # select(-Year, -Month) #### why not have? Must be how I processed feather 
 
-crss <- bind_rows(crss, crss_ond) %>%
+# crss <- bind_rows(crss, crss_ond) %>% #already have scengroup for crss from Process_CRSS_crsp_energy.feather.R 
+crss <- crss_ond %>%
   mutate(ScenarioGroup = case_when(
-    Scenario %in% dnf_scens ~ "Full Hydrology",
-    Scenario %in% st_scens ~ "Stress Test Hydrology",
+    Scenario %in% dnf_scens ~ "June 2021 - DNF IG", 
+    Scenario %in% st_scens ~ "June 2021 - ST IG", 
     TRUE ~ "bad"
   ))
+
+crss <- bind_rows(crss, crss_ond) 
 
 # Historical
 ssids <- c("flaming_gorge_energy" = 2266, "blue_mesa_energy" = 2265, "powell_energy" = 2305,
