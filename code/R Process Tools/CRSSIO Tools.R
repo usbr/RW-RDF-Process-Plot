@@ -1,31 +1,18 @@
 # library(devtools)
 library(remotes)
-
 #https://github.com/BoulderCodeHub/CoRiverNF - Needs update to generate new NF
 #https://github.com/BoulderCodeHub/CRSSIO - Might need update to generate new NF
 packageVersion("CoRiverNF")
 packageVersion("CRSSIO")
-
-# install_github("BoulderCodeHub/CoRiverNF",ref = "v0.7.0") #update ALL supporting packages (1 + Enter) 
-install_github("BoulderCodeHub/CRSSIO") #update ALL supporting packages (1 + Enter) 
-
-install_github("BoulderCodeHub/CoRiverNF") #update ALL supporting packages (1 + Enter) 
-
-package <- "xts"
-packageVersion(package)
-remotes::install_github("joshuaulrich/xts", ref = "v0.11-2")
-# install.packages(package)
-library("xts")
-
-install_github("BoulderCodeHub/CRSSIO") #update ALL supporting packages (1 + Enter) 
-install_github('rabutler-usbr/CRSSIO',force = T)
+# package <- "xts"
+# packageVersion(package)
+# remotes::install_github("joshuaulrich/xts", ref = "v0.11-2")
+# # install.packages(package)
+# library("xts")
+# install_github("BoulderCodeHub/CRSSIO") #update ALL supporting packages (1 + Enter) 
+# install_github('rabutler-usbr/CRSSIO',force = T)
+# install_github("BoulderCodeHub/RWDataPlyr")
 ##### RESTART R after installing/updating ##########
-
-packageVersion("CRSSIO")
-
-install_github("BoulderCodeHub/RWDataPlyr")
-##### RESTART R after installing/updating ##########
-
 library(CRSSIO)
 library(RWDataPlyr) # i
 
@@ -130,3 +117,11 @@ for (yr in yy){
 
 paste0(CRSSIO::nf_gage_abbrv(),"NF.Inflow")
 CRSSIO::nf_file_names(version = 4)
+
+
+### Change CRSS v4 NFS inputs to v5 names ###
+iFolder<-'C:/Users/cfelletter/Documents/crss.trirvw2020/dmi/NFSinput_2018_binational'
+oFolder <-'C:/Users/cfelletter/Documents/crss.trirvw2020/dmi/NFSinput_2018_binational_CRSSv5'
+oldFileNames <- c(CRSSIO::nf_file_names(version = 4),CRSSIO::natsalt_file_names(version = 4))
+newFileNames <- c(CRSSIO::nf_file_names(version = 5),CRSSIO::natsalt_file_names(version = 5))
+CRSSIO::crssi_change_nf_file_names(iFolder, oFolder, 88,oldFileNames, newFileNames)
