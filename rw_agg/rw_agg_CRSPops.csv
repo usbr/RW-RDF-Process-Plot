@@ -1,8 +1,21 @@
-file,slot,Energyriod,summary,eval,t_s,variable
-CRSPPowerData.rdf,BlueMesa.Energy,asis,NA,NA,NA,BlueMesa.Energy
-CRSPPowerData.rdf,Fontenelle.Energy,asis,NA,NA,NA,Fontenelle.Energy
-CRSPPowerData.rdf,FlamingGorge.Energy,asis,NA,NA,NA,FlamingGorge.Energy
-CRSPPowerData.rdf,Navajo.Energy,asis,NA,NA,NA,Navajo.Energy
-CRSPPowerData.rdf,Powell.Energy,asis,NA,NA,NA,Powell.Energy
-CRSPPowerData.rdf,Crystal.Energy,asis,NA,NA,NA,Crystal.Energy
-CRSPPowerData.rdf,MorrowPoint.Energy,asis,NA,NA,NA,MorrowPoint.Energy
+file,slot,period,summary,eval,t_s,variable
+UBRes.rdf,BlueMesa.Pool Elevation,asis,NA,NA,NA,BlueMesa.PE
+UBRes.rdf,Fontenelle.Pool Elevation,asis,NA,NA,NA,Fontenelle.PE
+UBRes.rdf,FlamingGorge.Pool Elevation,asis,NA,NA,NA,FlamingGorge.PE
+UBRes.rdf,FlamingGorge.Outflow,asis,NA,NA,NA,FlamingGorge.Outflow
+UBRes.rdf,Fontenelle.Outflow,asis,NA,NA,NA,Fontenelle.Outflow
+UBRes.rdf,BlueMesa.Outflow,asis,NA,NA,NA,BlueMesa.Outflow
+UBRes.rdf,Navajo.Pool Elevation,asis,NA,NA,NA,Navajo.PE
+UBRes.rdf,Navajo.Outflow,asis,NA,NA,NA,Navajo.Outflow
+Res.rdf,Powell.Inflow,asis,NA,NA,NA,Powell.Inflow
+Res.rdf,Powell.Pool Elevation,asis,NA,NA,NA,Powell.PE
+Res.rdf,Powell.Outflow,asis,NA,NA,NA,Powell.Outflow
+UBRes.rdf,TaylorPark.Pool Elevation,asis,NA,NA,NA,TaylorPark.PE
+UBRes.rdf,TaylorPark.Outflow,asis,NA,NA,NA,TaylorPark.Outflow
+UBRes.rdf,FlamingGorge.Inflow,asis,NA,NA,NA,FlamingGorge.Inflow
+UBRes.rdf,Navajo.Inflow,asis,NA,NA,NA,Navajo.Inflow
+UBRes.rdf,BlueMesa.Inflow,asis,NA,NA,NA,BlueMesa.Inflow
+UBRes.rdf,FlamingGorge.Storage,asis,NA,NA,NA,FlamingGorge.Storage
+UBRes.rdf,Navajo.Storage,asis,NA,NA,NA,Navajo.Storage
+UBRes.rdf,BlueMesa.Storage,asis,NA,NA,NA,BlueMesa.Storage
+Res.rdf,Powell.Storage,asis,NA,NA,NA,Powell.Storage
