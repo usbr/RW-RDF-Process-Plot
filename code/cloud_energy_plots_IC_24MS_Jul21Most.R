@@ -1,53 +1,38 @@
 # create cloud plots of FY/WY data w/o Hist
 rm(list=ls())
 
-library(tidyverse)
-library(zoo)
-library(RWDataPlyr)
-library(lubridate)
-library(crssplot) #scens_plot_cloud
-# remotes::install_github('rabutler-usbr/crssplot')
-# remotes::install_github("BoulderCodeHub/rhdb") #need github PAT env var set
-library(rhdb) 
-library(feather)
+#### =============== INPUTS =============== ####
 
-date_to_wy <- function(x) {
-  mm <- month(x)
-  yy <- year(x)
-  yy[mm >= 10] <- yy[mm >= 10] + 1
-  yy
+results_nm <- "Jul2021_MostPowerRun" #results dir folder 
+
+onBA <- FALSE # which computer BA or my PC? find RW-RDF-Process-Plot dir 
+if (onBA == TRUE) {
+  rwprocess_dir <- "C:/Users/fellette/Documents/GIT/RW-RDF-Process-Plot"
+} else {
+  rwprocess_dir <- "C:/Users/cfelletter/Documents/RW-RDF-Process-Plot"
 }
 
-CRSSDIR <- Sys.getenv("CRSS_DIR")
+#libraries and setup directories 
+source(file.path(rwprocess_dir,"code","libs_n_dirs.R")) 
+# scen_dir = #OVERWRITE if not manoa/Shared/CRSS/2021/Scenario 
 
-
-results_dir <- file.path(CRSSDIR,"results") 
-# results_dir <- "M:/felletter"
-
-Figs <- "Jul2021_MostPowerRun" #results dir folder 
-
-# scengroups
-custom_colors <- c("July 2021 w DRO" = "#138d75", 
-                   "Jule 2021 no DRO" = "#f1c40f")
 ww <- 10
 hh <- 7
 start_yr <- 2022
 # end_yr <- 2030 
 
-ofigs <- file.path(results_dir,Figs) 
-if (!file.exists(ofigs)) {
-  message(paste('Creating folder:', ofigs))
-  dir.create(ofigs)
-}
-message('Figures will be saved to: ', ofigs)
+crss <- read_feather(file.path(feather_data_dir,"CRSPPowerData.feather")) 
+
+names(crss)
+unique(crss$ScenarioGroup)
+
+# scengroups
+custom_colors <- c("July 2021 w DRO" = "#138d75", 
+                   "Jule 2021 no DRO" = "#f1c40f")
+
+#### =============== INPUTS =============== ####
 
 
-# data ---------------------------------------
-# CRSS
-
-crss <- bind_rows(
-  read_feather(file.path(ofigs,"tempData","CRSPPowerData.feather")) #if you created with Alan's main.R code
-) 
 unique(crss$Variable)
 slotnames <- c("Powell.Energy", "BlueMesa.Energy","Crystal.Energy","FlamingGorge.Energy","Fontenelle.Energy","MorrowPoint.Energy" )
 
@@ -62,7 +47,7 @@ scengroups <- unique(crss$ScenarioGroup)
 
 
 # 24MS - OND (Oct,Nov,Dec) 2021 to combine with crss
-ond2021_24MS <- readxl::read_xlsx(file.path(ofigs,"24MS_CRSP_Energy.xlsx")) #24MS results
+ond2021_24MS <- readxl::read_xlsx(file.path(figures_dir,"24MS_CRSP_Energy.xlsx")) #24MS results
 # head(ond2021_24MS)
 ond2021_24MS <- ond2021_24MS %>% 
   pivot_longer(!Date, names_to = "Variable",values_to = "Value") %>%
@@ -93,7 +78,7 @@ unique(df$ScenarioGroup)
 # names(df)
 # names(crss)
 # zz <- bind_rows(crss[,names(df)], df) 
-# write.csv(zz,file.path(ofigs,'zz_monthly.csv'))
+# write.csv(zz,file.path(figures_dir,'zz_monthly.csv'))
 # unique(df$TraceNumber)
 # unique(df$ScenarioGroup)
 
@@ -104,11 +89,11 @@ zz <- bind_rows(crss[,names(df)], df) %>% # crss %>%
   summarise(Value = sum(Value)) %>%
   rename(Year = water_year) %>%
   filter(Year >= start_yr) 
-write.csv(zz,file.path(ofigs,'zz_wy.csv'))
+write.csv(zz,file.path(figures_dir,'zz_wy.csv'))
 
 # plot individual -------------------------
 
-pdf(file.path(ofigs,'CRSP_Energy_WY.pdf'))
+pdf(file.path(figures_dir,'CRSP_Energy_WY.pdf'))
 # 
 # for(j in 1:length(slotnames)){
 #   scens_plot_cloud(zz,vars=slotnames[j],title=slotnames[j])
@@ -165,7 +150,7 @@ dev.off()
 # zz <- zz %>%
 #   filter(ScenarioGroup %in% scengroups)  
 # # 1210440-1205184 = 5256 'bad'
-# setwd(ofigs)
+# setwd(figures_dir)
 # 
 # pdf('CRSP_Energy_wHist.pdf')
 # 
