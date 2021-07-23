@@ -1,4 +1,6 @@
-# create cloud plots of FY/WY data w/o Hist
+# create cloud plots of FY/WY energy w/o Hist
+# CF July 2021 - for Power Office 3490 analysis
+
 rm(list=ls())
 
 #### =============== INPUTS =============== ####

@@ -1,0 +1,27 @@
+file,slot,period,summary,eval,t_s,variable
+Res.rdf,Powell.Inflow,cy,sum,NA,NA,Powell.CY_Inflow
+UBRes.rdf,FlamingGorge.Inflow,cy,sum,NA,NA,FlamingGorge.CY_Inflow
+UBRes.rdf,Navajo.Inflow,cy,sum,NA,NA,Navajo.CY_Inflow
+UBRes.rdf,BlueMesa.Inflow,cy,sum,NA,NA,BlueMesa.CY_Inflow
+UBRes.rdf,FlamingGorge.Outflow,cy,sum,NA,NA,FlamingGorge.CY_Outflow
+UBRes.rdf,Fontenelle.Outflow,cy,sum,NA,NA,Fontenelle.CY_Outflow
+UBRes.rdf,BlueMesa.Outflow,cy,sum,NA,NA,BlueMesa.CY_Outflow
+UBRes.rdf,Navajo.Outflow,cy,sum,NA,NA,Navajo.CY_Outflow
+Res.rdf,Powell.Outflow,cy,sum,NA,NA,Powell.CY_Outflow
+UBRes.rdf,TaylorPark.Outflow,cy,sum,NA,NA,TaylorPark.CY_Outflow
+UBRes.rdf,BlueMesa.Pool Elevation,eocy,last,NA,NA,BlueMesa.CY_PE
+UBRes.rdf,Fontenelle.Pool Elevation,eocy,last,NA,NA,Fontenelle.CY_PE
+UBRes.rdf,FlamingGorge.Pool Elevation,eocy,last,NA,NA,FlamingGorge.CY_PE
+UBRes.rdf,Navajo.Pool Elevation,eocy,last,NA,NA,Navajo.CY_PE
+Res.rdf,Powell.Pool Elevation,eocy,last,NA,NA,Powell.CY_PE
+UBRes.rdf,TaylorPark.Pool Elevation,eocy,last,NA,NA,TaylorPark.CY_PE
+UBRes.rdf,FlamingGorge.Storage,eocy,last,NA,NA,FlamingGorge.CY_Storage
+UBRes.rdf,Navajo.Storage,eocy,last,NA,NA,Navajo.CY_Storage
+UBRes.rdf,BlueMesa.Storage,eocy,last,NA,NA,BlueMesa.CY_Storage
+Res.rdf,Powell.Storage,eocy,last,NA,NA,Powell.CY_Storage
+CRSPPowerData.rdf,BlueMesa.Energy,cy,sum,NA,NA,BlueMesa.CY_Energy
+CRSPPowerData.rdf,Fontenelle.Energy,cy,sum,NA,NA,Fontenelle.CY_Energy
+CRSPPowerData.rdf,FlamingGorge.Energy,cy,sum,NA,NA,FlamingGorge.CY_Energy
+CRSPPowerData.rdf,Powell.Energy,cy,sum,NA,NA,Powell.CY_Energy
+CRSPPowerData.rdf,Crystal.Energy,cy,sum,NA,NA,Crystal.CY_Energy
+CRSPPowerData.rdf,MorrowPoint.Energy,cy,sum,NA,NA,MorrowPoint.CY_Energy
