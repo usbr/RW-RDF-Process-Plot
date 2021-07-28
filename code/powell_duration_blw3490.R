@@ -24,7 +24,6 @@ hh <- 7
 end_yr <- 2026
 
 feather_file_nm <- "crspopsdata.feather"
-
 dat <- feather::read_feather(file.path(feather_data_dir,feather_file_nm))  
 
 ############ Duration ################
@@ -36,7 +35,7 @@ dat <- feather::read_feather(file.path(feather_data_dir,feather_file_nm))
 # boxplot(rle(tmp$p)$lengths)
 
 dat <- dat %>% 
-  filter(Year <= end_yr) %>% # rm this line if want all years 
+  # filter(Year <= end_yr) %>% # rm this line if want all years 
   filter(Variable == "Powell.PE") 
 
 
@@ -46,6 +45,24 @@ dat$duration <- rep(run$lengths, run$lengths)
 starts <- dat[head(c(1, cumsum(run$length) + 1), length(run$length)),]
 result <- subset(starts, duration > 1 & exceeds)
 # View(result)
+
+#### Frequency plots
+# 2022-26
+result %>% 
+  ggplot(aes(duration,color = ScenarioGroup)) +
+  # geom_histogram(position="dodge") +
+  geom_freqpoly() +
+  labs(x="Duration Below 3490'",y="Count",title = "Consecutive Months Powell < 3490'", subtitle ="2022-2026") 
+ggsave(filename = file.path(figures_dir,paste0("HistDurPow3490.png")), width = ww,height = hh)
+
+#all years (comment out filter line above)
+result %>% 
+  ggplot(aes(duration,color = ScenarioGroup)) +
+  # geom_histogram(position="dodge") +
+  geom_freqpoly() +
+  labs(x="Duration Below 3490'",y="Count",title = "Consecutive Months Powell < 3490'", subtitle ="2022-2053") 
+ggsave(filename = file.path(figures_dir,paste0("HistDurPow3490_allyrs.png")), width = ww,height = hh)
+
 
 result %>% 
   # dplyr::group_by(ScenarioGroup) %>%
@@ -59,38 +76,69 @@ ggsave(filename = file.path(figures_dir,paste0("DurationPow3490_2226.png")), wid
 write.csv(result,file = file.path(figures_dir,paste0("Blw3490_durations.csv")))
 
 
+################### Frequency of traces going below 3490
+feather_file_nm <- "MeadPowellPE.feather"
 
-#line plot 
-filter(xx, Variable == "Powell.PE")  %>%
-  mutate(blw = if_else(Value <= 3490, 1,0)) %>%
+dat <- feather::read_feather(file.path(feather_data_dir,feather_file_nm))  
+unique(dat$Variable)
+
+filter(dat, Variable == "powell_wy_min_lt_3490")  %>%
   dplyr::group_by(ScenarioGroup, Year) %>%
-  summarise(blw = sum(blw)/12) %>%
-  ggplot(aes(x=Year,y=blw,color=ScenarioGroup)) + 
+  summarise(Value = mean(Value)) %>%
+  ggplot(aes(x=Year,y=Value,color=ScenarioGroup)) +
+  scale_y_continuous(labels = scales::percent,limits = c(0,1)) +
+  labs(title = "Lake Powell: Percent of Trace Less than Power Pool (elevation 3,490') in Any Water Year",
+       y="Percent of Traces") +
   geom_line() #+
-# scale_x_discrete("Month",labels = 2022:2053,breaks=2022:2053) + #display abb. month names
+ggsave(filename = file.path(figures_dir,paste0("PercPow3490_allyrs.png")), width = ww,height = hh)#width= width, height= height)
 
 
-xx %>% filter(Variable == "Powell.PE", Year <= 2026)  %>%
-  mutate(blw = if_else(Value <= 3490, 1,0)) %>%
-  dplyr::group_by(TraceNumber,ScenarioGroup, Year) %>%
-  summarise(blw = sum(blw)/12) %>%
-  ggplot(aes(x=factor(Year),y=blw,color=ScenarioGroup)) +
-  geom_boxplot() +
-  scale_y_continuous("",labels = scales::percent,
-                     limits = c(0,1)) +
-  labs(x = "Year", title = "Precentage of CY Year Powell < 3490") 
-ggsave(filename = file.path(figures_dir,paste0("DurationPow3490.png")), width = ww,height = hh)#width= width, height= height)
+filter(dat, Variable == "powell_wy_min_lt_3490",Year <= 2026)  %>%
+  dplyr::group_by(ScenarioGroup, Year) %>%
+  summarise(Value = mean(Value)) %>%
+  ggplot(aes(x=Year,y=Value,color=ScenarioGroup)) +
+  scale_y_continuous(labels = scales::percent,limits = c(0,1)) +
+  labs(title = "Lake Powell: Percent of Trace Less than Power Pool (elevation 3,490') in Any Water Year",
+       y="Percent of Traces") +
+  geom_line() #+
+ggsave(filename = file.path(figures_dir,paste0("PercPow3490_2226.png")), width = ww,height = hh)#width= width, height= height)
 
-xx %>% filter(Variable == "Powell.PE")  %>%
-  mutate(blw = if_else(Value <= 3490, 1,0)) %>%
-  dplyr::group_by(TraceNumber,ScenarioGroup, Year) %>%
-  summarise(blw = sum(blw)/12) %>%
-  ggplot(aes(x=factor(Year),y=blw,color=ScenarioGroup)) +
-  geom_boxplot() +
-  scale_y_continuous("",labels = scales::percent,
-                     limits = c(0,1)) +
-  labs(x = "Year", title = "Precentage of CY Year Powell < 3490") 
-ggsave(filename = file.path(figures_dir,paste0("DurationPow3490_allyrs.png")), width = ww,height = hh)#width= width, height= height)
+#############
 
-dev.off()
+
+
+
+# #line plot 
+# filter(dat, Variable == "Powell.PE")  %>%
+#   mutate(blw = if_else(Value <= 3490, 1,0)) %>%
+#   dplyr::group_by(ScenarioGroup, Year) %>%
+#   summarise(blw = sum(blw)/12) %>%
+#   ggplot(aes(x=Year,y=blw,color=ScenarioGroup)) + 
+#   geom_line() #+
+# # scale_x_discrete("Month",labels = 2022:2053,breaks=2022:2053) + #display abb. month names
+# 
+# 
+# dat %>% filter(Variable == "Powell.PE", Year <= 2026)  %>%
+#   mutate(blw = if_else(Value <= 3490, 1,0)) %>%
+#   dplyr::group_by(TraceNumber,ScenarioGroup, Year) %>%
+#   summarise(blw = sum(blw)/12) %>%
+#   ggplot(aes(x=factor(Year),y=blw,color=ScenarioGroup)) +
+#   geom_boxplot() +
+#   scale_y_continuous("",labels = scales::percent,
+#                      limits = c(0,1)) +
+#   labs(x = "Year", title = "Precentage of CY Year Powell < 3490") 
+# ggsave(filename = file.path(figures_dir,paste0("DurationPow3490.png")), width = ww,height = hh)#width= width, height= height)
+# 
+# xx %>% filter(Variable == "Powell.PE")  %>%
+#   mutate(blw = if_else(Value <= 3490, 1,0)) %>%
+#   dplyr::group_by(TraceNumber,ScenarioGroup, Year) %>%
+#   summarise(blw = sum(blw)/12) %>%
+#   ggplot(aes(x=factor(Year),y=blw,color=ScenarioGroup)) +
+#   geom_boxplot() +
+#   scale_y_continuous("",labels = scales::percent,
+#                      limits = c(0,1)) +
+#   labs(x = "Year", title = "Precentage of CY Year Powell < 3490") 
+# ggsave(filename = file.path(figures_dir,paste0("DurationPow3490_allyrs.png")), width = ww,height = hh)#width= width, height= height)
+# 
+# dev.off()
 

@@ -141,3 +141,24 @@ for(j in 1:length(slotnames)){
 
 dev.off()
 
+
+
+####### feather file, no process 
+
+xx <- feather::read_feather(file.path(feather_data_dir,"crspopsdata.feather"))
+unique(xx$Variable)
+
+
+xx %>% filter(Variable == "FlamingGorge.PE") %>%
+  group_by(TraceNumber, ScenarioGroup) %>% 
+  mutate(BlwDead = ifelse(Value<=5890,1,0)) %>%
+  group_by(ScenarioGroup,Year) %>% 
+  summarise(BlwDead = mean(BlwDead))  %>%
+  ggplot(aes(x=Year,y=BlwDead,color = ScenarioGroup)) + 
+  geom_line() +
+  scale_y_continuous("Percent Trace Below Dead Pool Any Month",labels = scales::percent,
+                     limits = c(0,1)) +
+  theme(plot.caption = element_text(hjust = 0)) + 
+  labs(title = "Flaming Gorge < 5890'") 
+ggsave(filename = file.path(figures_dir,"FG5890Risk.png"), width = ww,height = hh)#width= width, height= height)
+
