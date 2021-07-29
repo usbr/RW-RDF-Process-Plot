@@ -1,0 +1,7 @@
+file,slot,period,summary,eval,t_s,variable
+CRSPPowerData.rdf,BlueMesa.Energy,wy,sum,NA,NA,BlueMesa.Energy
+CRSPPowerData.rdf,Fontenelle.Energy,wy,sum,NA,NA,Fontenelle.Energy
+CRSPPowerData.rdf,FlamingGorge.Energy,wy,sum,NA,NA,FlamingGorge.Energy
+CRSPPowerData.rdf,Powell.Energy,wy,sum,NA,NA,Powell.Energy
+CRSPPowerData.rdf,Crystal.Energy,wy,sum,NA,NA,Crystal.Energy
+CRSPPowerData.rdf,MorrowPoint.Energy,wy,sum,NA,NA,MorrowPoint.Energy
