@@ -1,4 +1,6 @@
 #open normal libraries and setup directories 
+# CF July 2021 - for Power Office 3490 analysis
+
 # results_nm #results dir folder 
 # onBA = TRUE # which computer BA or my PC?
 # otherscenlocation <- NA #only if not manoa/Shared/CRSS/2021/Scenario 

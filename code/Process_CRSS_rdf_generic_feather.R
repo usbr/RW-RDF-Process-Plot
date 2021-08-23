@@ -1,4 +1,5 @@
 # process CRSS scenarios and create .feather 
+# CF July 2021 - for Power Office 3490 analysis
 rm(list=ls())
 
 #### =============== INPUTS =============== ####

@@ -1,11 +1,12 @@
 # process CRSS scenarios and check which CRSP res are below dead pool 
+# CF created July 2021
 rm(list=ls())
 
 #### =============== INPUTS =============== ####
 
 results_nm <- "Jul2021_MostPowerRun" #results dir folder 
 
-onBA <- TRUE # which computer BA or my PC? find RW-RDF-Process-Plot dir 
+onBA <- F # which computer BA or my PC? find RW-RDF-Process-Plot dir 
 if (onBA == TRUE) {
   rwprocess_dir <- "C:/Users/fellette/Documents/GIT/RW-RDF-Process-Plot"
 } else {
@@ -96,4 +97,68 @@ View(dfcsv)
 
 # writexl::write_xlsx()
 write.csv(dfcsv,file=file.path(results_dir,'BlwDeadPool.csv'))
+
+#### =============== PLOT =============== ####
+df <- read.csv(file=file.path(results_dir,'BlwDeadPool.csv'),header = T)
+slotnames <- unique(df$Variable)
+slotnames
+plotnames<-c("Blue Mesa < 7393'","Fontenelle < 6460'","Flaming Gorge < 5871'",
+             "Navajo < 5990'","Morrow Point < 7100'","Crystal < 6700'",
+             "Powell < 3490'" )
+
+df<- df %>% pivot_longer(cols = July.2021.no.DRO:July.2021.w.DRO, names_to= "ScenarioGroup",values_to= "Value")
+# head(df)
+
+df <- df %>%
+  mutate(ScenarioGroup = case_when(
+    ScenarioGroup %in% "July.2021.w.DRO" ~ "July 2021 w DRO",
+    ScenarioGroup %in% "July.2021.no.DRO" ~ "July 2021 no DRO", 
+    TRUE ~ "BAD"))
+unique(df$ScenarioGroup)
+
+ww <- 10
+hh <- 7
+start_yr <- 2022
+
+pdf(file.path(figures_dir,'riskofbelowdead.pdf'))
+
+
+for(j in 1:length(slotnames)){
+  p<-df %>% filter(Variable == slotnames[j]) %>%
+    group_by(ScenarioGroup) %>% 
+    filter(Year >= start_yr) %>%
+    ggplot(aes(x=Year,y=Value,color = ScenarioGroup)) + 
+    geom_line() +
+    scale_y_continuous("Percent Trace Below Dead Pool Any Month",labels = scales::percent,
+                       limits = c(0,1)) +
+    theme(plot.caption = element_text(hjust = 0)) #left justify 
+  p <- p + labs(title = paste(plotnames[j])) 
+  ggsave(p,filename = file.path(figures_dir,paste0(slotnames[j],".png")), width = ww,height = hh)#width= width, height= height)
+  print(p)
+  
+  
+}
+
+dev.off()
+
+
+
+####### feather file, no process 
+
+xx <- feather::read_feather(file.path(feather_data_dir,"crspopsdata.feather"))
+unique(xx$Variable)
+
+
+xx %>% filter(Variable == "FlamingGorge.PE") %>%
+  group_by(TraceNumber, ScenarioGroup) %>% 
+  mutate(BlwDead = ifelse(Value<=5890,1,0)) %>%
+  group_by(ScenarioGroup,Year) %>% 
+  summarise(BlwDead = mean(BlwDead))  %>%
+  ggplot(aes(x=Year,y=BlwDead,color = ScenarioGroup)) + 
+  geom_line() +
+  scale_y_continuous("Percent Trace Below Dead Pool Any Month",labels = scales::percent,
+                     limits = c(0,1)) +
+  theme(plot.caption = element_text(hjust = 0)) + 
+  labs(title = "Flaming Gorge < 5890'") 
+ggsave(filename = file.path(figures_dir,"FG5890Risk.png"), width = ww,height = hh)#width= width, height= height)
 
