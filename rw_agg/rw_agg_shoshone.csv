@@ -1,0 +1,6 @@
+file,slot,period,summary,eval,t_s,variable
+Res.rdf,Powell.Inflow,cy,sum,NA,NA,Powell.Inflow
+Res.rdf,Powell.Pool Elevation,eocy,NA,NA,NA,Powell.PE
+Res.rdf,Powell.Outflow,cy,sum,NA,NA,Powell.Outflow
+StreamGages.rdf,ColoradoNearGlenwoodSprings.Gage Outflow,cy,sum,NA,NA,GlenwoodSprings.Outflow
+StreamGages.rdf,ColoradoNearCameo.Gage Outflow,cy,sum,NA,NA,Cameo.Outflow
