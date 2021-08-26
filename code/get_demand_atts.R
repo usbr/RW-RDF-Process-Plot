@@ -1,7 +1,7 @@
 # library(xml2)
 # library(dplyr) #both are in tidyverse
 # library(stringr)
-dit_atts <- read_xml("Attributes.xml")
+dit_atts <- Attributes
 
 # get all children
 sim_objs <- xml_children(dit_atts)

@@ -1,4 +1,6 @@
 #### Combined Gage and Use Verificaiton Script ########
+#CF,20210824: Improve to not use VerificationGage.rdf and instead take observed
+# from a xlsx sheet. Use R to annualize the data rather than RWDataPlyr
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 1. Set Up ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -16,12 +18,12 @@ CRSSDIR <- Sys.getenv("CRSS_DIR")
 results_dir <- file.path(CRSSDIR,"results") 
 # # where rdf results folder is kept
 
-scen_dir <- file.path(CRSSDIR,"Scenario")
+#easier to make folder from output in the results dir than to move it 
+scen_dir <- file.path(CRSSDIR,"results") #file.path(CRSSDIR,"Scenario")
 # #containing the sub folders for each ensemble
 # scens <- "Linked_RR" #"Unlinked_NoRRNF"
-scens <- "AllCUL_Linked_RR" # "AllCULExCO_Linked_RR" #"Linked_NoRRNF" #### REMBMEBER VerificationGAGE.RDF doesn't change so don't copy
-# scens <- "COExps_AllCUL_Linked_RR"# "Unlinked_NewCoeff4States" #
-# scens <- "COExps_NoLimit"# "Unlinked_NewCoeff4States" #
+scens <- "2021Verification_AugCRSS" 
+#### REMBMEBER VerificationGAGE.RDF doesn't change so don't copy
 
 
 #### Plot Controls #####
@@ -51,7 +53,6 @@ sect_heights <- c(2,3,2)
 ## 3. Process Results 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #### File Checks #####
-
 
 file_dir <- file.path(scen_dir, scens[1])
 
@@ -83,13 +84,32 @@ df_monthly$Date = as.Date(paste0(df_monthly$Year,df_monthly$Month,"01"), format 
 #get a numeric month number
 df_monthly$MonthNum = as.numeric(format.Date(df_monthly$Date, format = "%m"))
 
-rw_agg_file <- "VerificationRun_rwagg_annual.csv"
-#read agg file specifying which slots
-rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) #ubres.rdf res.rdf
+#easier to do this in r than with rw_agg_file <- "VerificationRun_rwagg_annual.csv"
+df_annual <-df_monthly %>% group_by(Variable,Year) %>%
+  summarise(Value = sum(Value))
 
-#rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
-df_annual <- rdf_aggregate(rwa1, rdf_dir = file_dir) #MUST be in Scenario FOLDER! not results folder
+# ## create obs from excel not crss run ##
+# df_obs <- df_monthly %>% pivot_wider(names_from = Variable,values_from = Value)
+# df_obs = df_obs[,c(1:5,24:41)]
+# writexl::write_xlsx(df_obs,'Verification_Obs_Gage_Data.xlsx')
+# df[,6:23]-df_obs[,6:23] #not sure why different but proceed anyways
+df_obs <- readxl::read_xlsx('data/Verification_Obs_Gage_Data_Linked.xlsx',sheet = "R_Input",col_names = T, ) 
+df_obs = df_obs %>% pivot_longer(cols=names(df_obs)[6:23],names_to = 'Variable',values_to = 'Value')
 
+df_monthly <- rbind.data.frame(df_monthly,df_obs)
+
+#annual data
+df_obs_annual<-df_obs %>% group_by(Variable,Year) %>%
+  summarise(Value = sum(Value))
+
+df_annual <- rbind.data.frame(df_annual[,names(df_obs_annual)],df_obs_annual)
+
+#fix issues with class
+df_monthly <- as.data.frame(df_monthly)
+df_annual <- as.data.frame(df_annual)
+
+#use this later to filter CUL
+years <- unique(df_annual$Year)
 
 outflows <- c ("1_Simulated_UpperColoradoReach", "2_Simulated_UpperColoradoAboveCameo","3_Simulated_TaylorAboveBlueMesa",
                "6_Simulated_GunnisonRiverAboveGrandJunction","7_Simulated_DoloresRiver","8_Simulated_DoloresColorado",
@@ -110,7 +130,7 @@ gages <- c("1_Gage_ColoradoNearGlenwoodSprings","2_Gage_ColoradoNearCameo","3_Ga
 #### #### B. Read water use data  ####  ####
 ################################################################################
 #### read attributes data to make key ####
-Attributes <- read_xml(x="C:/Users/cfelletter/Documents/CRSS working/DemandUseVerificationRun/2016_Attributes.xml")
+Attributes <- read_xml(x="C:/Users/cfelletter/Documents/RW-RDF-Process-Plot/data/2016_Attributes.xml")
 # Attributes <- read_xml(x="C:/Users/cfelletter/Documents/CRSS working/DemandUseVerificationRun/2007_Attributes.xml")
 
 source("code/get_demand_atts.R") 
@@ -176,6 +196,10 @@ allCUL <- pivot_longer(allCUL, cols = names(allCUL)[3:length(names(allCUL))],nam
 #format date and make year month colums 
 allCUL$Date = as.Date(as.numeric(allCUL$Date), origin = "1899-12-30")
 allCUL$Year = as.numeric(format.Date(allCUL$Date, format = "%Y"))
+
+#filter out any extra years
+allCUL <- allCUL %>% filter(Year %in% years)
+
 #get a numeric month number - NOT SURE I NEED THIS 
 allCUL$MonthNum = as.numeric(format.Date(allCUL$Date, format = "%m"))
 allCUL$Slot = rep("CUL",times=length(allCUL$Date))
@@ -187,9 +211,7 @@ allCUL <- allCUL %>%
 ## 4. Plot Figures 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-i=1
-j=1
-
+i=j=1 #debug
 if(!(length(outflows) == length(gages)))
   stop('Please ensure Nodes, Gages, Outflows are set correctly.')
 
@@ -245,11 +267,12 @@ for (i in 1:length(nodes)) {
   #### #### A. Gage vs Model Outflow  ####  ####
   ##############################################################################
   
-  #annual plot
-  df <- df_annual %>%
-    dplyr::filter(Variable == gages[i] | Variable == outflows[i]) %>%
-    dplyr::group_by(Year, Variable) 
+  # annual plot
+  df <-  df_annual %>%
+  dplyr::filter(Variable == gages[i] | Variable == outflows[i]) %>%
+  dplyr::group_by(Year, Variable)
   
+
   #custom plot parameters for those areas that are compared to Reservoir Inflow rather than gage 
   if (i %in% c(3,7,9,16)){ #"4 Blue Mesa"  "9 Fontenelle" "11 Greendale" "18 Archuleta"
     legend_labs <- c("Res Inflow", "Model")
@@ -275,8 +298,10 @@ for (i in 1:length(nodes)) {
   #calculate residual
   gage <- df_annual %>%
     dplyr::filter(Variable == gages[i])
+  
   simulated <- df_annual %>%
     dplyr::filter(Variable == outflows[i])
+  
   diff <- gage
   diff$Value = simulated$Value - gage$Value
   diff$Variable = rep("Residual",times = length(diff$Variable))
@@ -310,322 +335,326 @@ for (i in 1:length(nodes)) {
   }
   
   #### monthly #####  
-  
+
   #monthly flows
   p <- df_monthly %>%
-    dplyr::filter(Variable == gages[i] | Variable == outflows[i]) %>%
+  dplyr::filter(Variable == gages[i] | Variable == outflows[i]) %>%
     dplyr::group_by(Date, Variable) %>%
     ggplot(aes(x = Date, y = Value, color = Variable)) +
     geom_line() +
-    theme_light() + 
-    scale_colour_discrete(#name  ="Legend",  #change legend 
-      type= c(mycolors[3],mycolors[1]), # customcolors 
+    theme_light() +
+    scale_colour_discrete(#name  ="Legend",  #change legend
+      type= c(mycolors[3],mycolors[1]), # customcolors
       breaks=c(gages[i], outflows[i]),
-      labels=legend_labs)  + 
+      labels=legend_labs)  +
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Monthly Flow"), y = y_lab_mon)
   print(p)
   if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Gage",scens,".png")), width = gage_widths[3],height = gage_heights[3])}
-  
+
   #calculate residual
   gage <- df_monthly %>%
     dplyr::filter(Variable == gages[i])
   simulated <- df_monthly %>%
     dplyr::filter(Variable == outflows[i])
+  
   diff <- gage
   diff$Value = simulated$Value - gage$Value
   diff$Variable = rep("Residual",times = length(diff$Variable))
-  
+
   #monthly residual
   p <- diff %>%
     dplyr::group_by(Date, Variable) %>%
     ggplot(aes(x = Date, y = Value, color = Variable)) +
     geom_line() +
-    theme_light() + 
+    theme_light() +
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste(node_title,"Monthly Residual"), y = y_lab_mon)
   print(p)
   if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Resid",scens,".png")), width = gage_widths[4],height = gage_heights[4])}
-  
+
   metrics <- diff %>%
     dplyr::group_by(MonthNum) %>%
     summarise('MAE' = round(mean(abs(Value))),'Bias' = round(mean(Value))) #%>%
-  # metrics  
-  
-  ann_metrics <- metrics[1,] 
+  # metrics
+
+  ann_metrics <- metrics[1,]
   ann_metrics[1,] = as.list(c(0,mae,bias))
   # ann_metrics
-  
+
   metrics = rbind.data.frame(metrics,ann_metrics,c(NA,error_perc,NA))
   # write.csv(metrics,file = file.path(results_dir,paste0(gages[i],".csv")))
-  
+
   ##############################################################################
   #### #### B. Filter Sector ####  ####
   ##############################################################################
-  
+
   #filter out all but one node
   WU <- allWU %>%
-    dplyr::filter(Node == nodes[i])
+    dplyr::filter(Node == nodes[i]) ###THIS WORKS must be something wrong with my dataframe
   CUL <- allCUL %>%
     dplyr::filter(Node == nodes[i]) %>%
-    dplyr::filter(Sector != "ResReg") #remove from total demands  
-  
-  #plot total demand and total CUL 
-  zz <- rbind(WU[,c("Date","Value","Year","Slot")], 
+    dplyr::filter(Sector != "ResReg") #remove from total demands
+
+  #plot total demand and total CUL
+  zz <- rbind(WU[,c("Date","Value","Year","Slot")],
               CUL[,c("Date","Value","Year","Slot")])
-  
-  p <- zz %>% 
-    dplyr::filter(Slot %in% c("Depletion Requested","CUL")) %>% 
+
+  p <- zz %>%
+    dplyr::filter(Slot %in% c("Depletion Requested","CUL")) %>%
     group_by(Slot,Year) %>%
     summarise(Value = sum(Value))  %>%
-    ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() + 
+    ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() +
     geom_line() +
     scale_color_manual(values = c(mycolors[3],mycolors[1])) +
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Total Annual Demand"), y = "Depletions (AF/yr)")
   print(p)
   if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Total Demand",scens,".png")), width = gage_widths[5],height = gage_heights[5])}
-  
-  #plot shortage with flow  
+
+  #plot shortage with flow
   xxx <- df_monthly %>%
     dplyr::filter(Variable == gages[i] | Variable == outflows[i]) %>%
     mutate(Slot = Variable)
   flowuse <- rbind.data.frame(zz,xxx[,c("Date","Value","Year","Slot" )])
   # "Depletion" %in% unique(zz$Slot)  # we don't have a depletion slot yet, I build it later
-  p <- flowuse %>% 
+  p <- flowuse %>%
     dplyr::filter(Slot %in% c("Depletion Requested",outflows[i],"Depletion Shortage","CUL")) %>%
     # dplyr::filter(Slot %in% c("Depletion Requested","CUL",gages[i],outflows[i],"Depletion Shortage")) %>%
     group_by(Slot,Year) %>%
     summarise(Value = sum(Value))  %>%
-    ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() + 
+    ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() +
     geom_line() +
     scale_color_manual(values = c(mycolors[3],"#eb34de",mycolors[1],mycolors[2])) +
-    # scale_color_manual(values = c(mycolors[3],mycolors[1],mycolors[2])) + #if don't have CUL 
+    # scale_color_manual(values = c(mycolors[3],mycolors[1],mycolors[2])) + #if don't have CUL
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Annual Flow-Shortage Relationship"), y = "(AF/yr)")
   # print(p)
-  
-  # # what to do about sectors unique to CRSS? "Environmental" and "Lease". Fish & Wildlife only in LB                             
+
+  # # what to do about sectors unique to CRSS? "Environmental" and "Lease". Fish & Wildlife only in LB
 
   # add CUL stockpond, livestock and minearls into sectors evap, ag, energy
   CUL[which(CUL$Sector == "Evaporation"),]$Value = CUL[which(CUL$Sector == "Evaporation"),]$Value + CUL[which(CUL$Sector == "Stockpond"),]$Value
   CUL[which(CUL$Sector == "Agriculture"),]$Value = CUL[which(CUL$Sector == "Agriculture"),]$Value + CUL[which(CUL$Sector == "Livestock"),]$Value
-  
-  # sort(unique(allWU[which(allWU$Sector == "Minerals"),]$Node)) #some sectors have mineraals and some don't, they don't match up 
+
+  # sort(unique(allWU[which(allWU$Sector == "Minerals"),]$Node)) #some sectors have mineraals and some don't, they don't match up
   if (sum(WU[which(WU$Sector == "Minerals"),]$Value) == 0){
     CUL[which(CUL$Sector == "Energy"),]$Value = CUL[which(CUL$Sector == "Energy"),]$Value + CUL[which(CUL$Sector == "Minerals"),]$Value
     print("No Minerals in CRSS, combining CUL Mineral with CUL Energy")
-  } #some sectors have mineraals and some don't, they don't match up 
-  
-  #limit which sectors are plotted 
+  } #some sectors have mineraals and some don't, they don't match up
+
+  #limit which sectors are plotted
   sectors <- unique(WU$Sector) #only plot sectors that exisit in CP
-  sectors = sectors[which(sectors %in% onlythesesectors)] #minearls is now included but only if exisits in WU 
+  sectors = sectors[which(sectors %in% onlythesesectors)] #minearls is now included but only if exisits in WU
   sectors = sectors[which(sectors %in% unique(CUL$Sector))]
   # sectors
-  
-  #filter out all unused sectors and slots 
+
+  #filter out all unused sectors and slots
   WU <- WU %>%
     dplyr::filter(Sector %in% sectors) %>%
-    dplyr::filter(Slot %in% c("Depletion Requested","Depletion Shortage")) 
+    dplyr::filter(Slot %in% c("Depletion Requested","Depletion Shortage"))
   CUL <- CUL %>%
-    dplyr::filter(Sector %in% sectors) 
+    dplyr::filter(Sector %in% sectors)
 
 ##############################################################################
 #### #### C. Sector Plots   ####  ####
-##############################################################################  
-  
-  if(length(sectors) > 0){ #have some sector of interest 
+##############################################################################
+
+  if(length(sectors) > 0){ #have some sector of interest
   for (j in 1:length(sectors)) {
-    
+
     print(paste("Sector",sectors[j]))
-    
-    x <- WU %>% 
+
+    x <- WU %>%
       dplyr::filter(Sector == sectors[j]) %>%
       group_by(Sector,Slot,Year,MonthNum,Date) %>%
-      summarise(Value = sum(Value))# %>% # summarize multiple users into one  
-    uses <- CUL %>% 
-      dplyr::filter(Sector == sectors[j]) 
+      summarise(Value = sum(Value))# %>% # summarize multiple users into one
+    uses <- CUL %>%
+      dplyr::filter(Sector == sectors[j])
     uses <- uses[,names(x)]  #same column layout
-  
-    #create a depleted slot   
+
+    #create a depleted slot
     requested <- x %>%
         dplyr::filter(Slot == "Depletion Requested")
       depleted <- x %>%
         dplyr::filter(Slot == "Depletion Shortage")
-    
-    #for stats later  
-    precntshorted <- sum(depleted$Value)/sum(requested$Value)*100  
-    annrequest <- sum(requested$Value)/19 
-        
-    depleted$Value = requested$Value - depleted$Value   
+
+    #for stats later
+    precntshorted <- sum(depleted$Value)/sum(requested$Value)*100
+    annrequest <- sum(requested$Value)/19
+
+    depleted$Value = requested$Value - depleted$Value
     depleted$Slot = rep("Depletion",times = length(depleted$Slot))
-    
+
     xx <- rbind.data.frame(requested,depleted,uses)
-    
+
     # # Adding factors so ggplot does not alphebetize legend
     xx$Slot = factor(xx$Slot, levels=c("Depletion Requested","Depletion","CUL"))
-    
-    #annual  
-    p <- xx %>% 
+
+    #annual
+    p <- xx %>%
       group_by(Slot,Year) %>%
       summarise(Value = sum(Value)) %>%
-      ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() + 
+      ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() +
       geom_line(aes(linetype=Slot)) +
       scale_linetype_manual(values = mylinetypes) +
-      scale_color_manual(values = mycolors) + 
+      scale_color_manual(values = mycolors) +
       scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
       labs(title = paste(node_title,sectors[j],"Annual"), y = "Depletions (AF/yr)")
     print(p)
-    
-    #print small annual plot 
-    if(printfigs==T){ 
-      px <- xx %>% 
+
+    #print small annual plot
+    if(printfigs==T){
+      px <- xx %>%
         group_by(Slot,Year) %>%
         summarise(Value = sum(Value)) %>%
-        ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() + 
+        ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() +
         geom_line(aes(linetype=Slot)) +
         scale_linetype_manual(values = mylinetypes) +
-        scale_color_manual(values = mycolors) + 
+        scale_color_manual(values = mycolors) +
         scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
         labs(title = sectors[j]) +
-        theme(legend.position = "none", axis.title.x = element_blank(),axis.title.y= element_blank()) 
+        theme(legend.position = "none", axis.title.x = element_blank(),axis.title.y= element_blank())
       # print(px)
       # ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(nodes[i],sectors[j]," Ann",scens,".png")), width = w_ansector,height = h_ansector)
       ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste(j,sectors[j],"Ann",scens,".png")), width = sect_widths[1],height = sect_heights[1])
       }
-    
+
     #calculate residual
     diff <- xx[which(xx$Slot == "Depletion"),]
-    diff$Value = diff$Value - xx[which(xx$Slot == "CUL"),]$Value
+    diff$Value = diff$Value - xx[which(xx$Slot == "CUL"),]$Value 
+    length(diff$Value)/12
+    length(xx[which(xx$Slot == "CUL"),]$Value)/12
+    #Error: Assigned data `value` must be compatible with existing data
     diff$Slot = rep("Residual",times = length(diff$Value))
-    
+
     #annual residual
-    p <- diff %>% 
+    p <- diff %>%
       group_by(Slot,Year) %>%
       summarise(Value = sum(Value)) %>%
-      ggplot(aes(x = Year, y = Value, color = Slot)) +  theme_light() + 
+      ggplot(aes(x = Year, y = Value, color = Slot)) +  theme_light() +
       geom_line() +
       scale_y_continuous(labels = scales::comma) +
       labs(title = paste(node_title,sectors[j],"Annual Residual"), y = "Depletions (AF/yr)")
     print(p)
-    
-    #monthly 
+
+    #monthly
     p <- xx %>%
       group_by(Slot,Date) %>%
       ggplot(aes(x = Date, y = Value, color = Slot)) +
-      theme_light() + 
+      theme_light() +
       geom_line(aes(linetype=Slot)) +
       scale_linetype_manual(values = mylinetypes) +
-      scale_color_manual(values = mycolors) + 
+      scale_color_manual(values = mycolors) +
       labs(title = paste(node_title,sectors[j],"Monthly"), y = "Depletions (AF/mo)")
     if (min(xx$Value) < 0) {
-      #don't limit y to 0 
-      p <- p + 
-        scale_y_continuous(labels = scales::comma) 
+      #don't limit y to 0
+      p <- p +
+        scale_y_continuous(labels = scales::comma)
     } else {
-      p <- p +  
-        scale_y_continuous(limits = c(0,NA), labels = scales::comma) 
+      p <- p +
+        scale_y_continuous(limits = c(0,NA), labels = scales::comma)
     }
     print(p)
-    
+
     if(printfigs==T){ #print figure of monthly agg
-      px <- xx %>% 
+      px <- xx %>%
         group_by(Slot,Date) %>%
         ggplot(aes(x = Date, y = Value, color = Slot)) +
-        theme_light() + 
+        theme_light() +
         geom_line(aes(linetype=Slot)) +
         scale_linetype_manual(values = mylinetypes) +
-        scale_color_manual(values = mycolors) + 
+        scale_color_manual(values = mycolors) +
         scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
         labs(y = "Depletions (AF/mo)") +
         theme(legend.position = "none", axis.title.x = element_blank())#,axis.title.y= element_blank())
       # print(px)
       ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(j,sectors[j]," Mon",scens,".png")), width = sect_widths[2],height = sect_heights[2])
       }
-    
+
    #monthly residual
     p <- diff %>%
       dplyr::group_by(Date, Slot) %>%
       ggplot(aes(x = Date, y = Value, color = Slot)) +
       geom_line() +
-      theme_light() + 
+      theme_light() +
       scale_y_continuous(labels = scales::comma) +
       labs(title = paste(node_title,sectors[j],"Monthly Residual"), y = "Depletions (AF/mon)")
     print(p)
-    
-    # % monthly / annual distribution plot 
-    xx <- xx %>% 
-      filter(Slot == "Depletion Requested" | Slot == "CUL") %>%  
+
+    # % monthly / annual distribution plot
+    xx <- xx %>%
+      filter(Slot == "Depletion Requested" | Slot == "CUL") %>%
       group_by(Slot,Year) %>%
       mutate(Distirubtion = Value/sum(Value)) %>%
       group_by(Slot,MonthNum) %>%
-      summarise(Distirubtion = mean(Distirubtion)) 
-    
-    #save the CUL distribution to apply as new distribution factor 
-    sctrdist<-xx[which(xx$Slot == "CUL"),] 
+      summarise(Distirubtion = mean(Distirubtion))
+
+    #save the CUL distribution to apply as new distribution factor
+    sctrdist<-xx[which(xx$Slot == "CUL"),]
     sctrdist <- cbind(sctrdist,xx[which(xx$Slot == "Depletion Requested"),]$Distirubtion)[,3:4]
     colnames(sctrdist) = c(paste("CUL",sectors[j]),paste("CRSS",sectors[j]))
     # sctrdist
-    
-    #finish distribution plot 
-    p <- xx %>% 
+
+    #finish distribution plot
+    p <- xx %>%
       ggplot(aes(x = MonthNum, y = Distirubtion, color = Slot)) +
-      theme_light() + 
-      scale_y_continuous(labels = scales::percent) + 
-      scale_x_continuous(breaks = 1:12,labels = month.abb) + 
-      scale_color_manual(values = c(mycolors[1],mycolors[3])) + 
+      theme_light() +
+      scale_y_continuous(labels = scales::percent) +
+      scale_x_continuous(breaks = 1:12,labels = month.abb) +
+      scale_color_manual(values = c(mycolors[1],mycolors[3])) +
       geom_line() +
       labs(title = paste(node_title,sectors[j],"Distribution"), y = "Monthly Distribution",x="Month")
     print(p)
-    
+
     if(printfigs==T){ #print figure of monthly agg
-      px <- xx %>% 
+      px <- xx %>%
         ggplot(aes(x = MonthNum, y = Distirubtion, color = Slot)) +
-        theme_light() + 
-        scale_y_continuous(labels = scales::percent) + 
-        scale_x_continuous(breaks = 1:12,labels = month.abb) + 
-        scale_color_manual(values = c(mycolors[1],mycolors[3])) + 
+        theme_light() +
+        scale_y_continuous(labels = scales::percent) +
+        scale_x_continuous(breaks = 1:12,labels = month.abb) +
+        scale_color_manual(values = c(mycolors[1],mycolors[3])) +
         geom_line() +
         theme(legend.position = "none", axis.title.x = element_blank(),axis.title.y= element_blank())
       # print(px)
       ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste(j,sectors[j],"Mon Dist.png")), width = sect_widths[3],height = sect_heights[3])
     }
-    
-    #enable the below line if want to calculate MAE and BIAS as Depletion Requested - CUL (credit for shortage)
-    # depleted <- requested # inccorrect method how I did other sectors beyond ag in my intial wbs    
 
-    #monthly MAE and bias 
+    #enable the below line if want to calculate MAE and BIAS as Depletion Requested - CUL (credit for shortage)
+    # depleted <- requested # inccorrect method how I did other sectors beyond ag in my intial wbs
+
+    #monthly MAE and bias
     depleted$CUL <- uses$Value
-    
-    zz <- depleted %>% 
-      mutate(Diff = Value - CUL)  %>% 
-      mutate(absDiff = abs(Value - CUL))  
-    
+
+    zz <- depleted %>%
+      mutate(Diff = Value - CUL)  %>%
+      mutate(absDiff = abs(Value - CUL))
+
     monbias <- zz %>%
       group_by(MonthNum) %>%
       summarise(Bias = mean(Diff)) %>%
       round()
-    
+
     monMAE <- zz %>%
       group_by(MonthNum) %>%
       summarise(MAE = mean(absDiff)) %>%
       round()
-    
-    #sum to annual 
-    anndepleted <- depleted %>% 
+
+    #sum to annual
+    anndepleted <- depleted %>%
       group_by(Year) %>%
-      summarise(Value = sum(Value)) #%>% 
-    annuses <- uses %>% 
+      summarise(Value = sum(Value)) #%>%
+    annuses <- uses %>%
       group_by(Year) %>%
-      summarise(Value = sum(Value)) #%>% 
-    
+      summarise(Value = sum(Value)) #%>%
+
     anndepleted$CUL <- annuses$Value
-    
-    #compute 
-    anndepleted <- anndepleted %>% 
-      mutate(Diff = Value - CUL)  %>% 
-      mutate(absDiff = abs(Value - CUL)) 
-    
+
+    #compute
+    anndepleted <- anndepleted %>%
+      mutate(Diff = Value - CUL)  %>%
+      mutate(absDiff = abs(Value - CUL))
+
     #mean
     annbias <- anndepleted %>%
       summarise(Bias = mean(Diff)) %>%
@@ -633,38 +662,38 @@ for (i in 1:length(nodes)) {
     annMAE <- anndepleted %>%
     summarise(MAE = mean(absDiff)) %>%
       round()
-    
+
     error_prec_annual <- round(annMAE/annrequest*100)
-    
+
     mystats <- rbind(cbind(monMAE[,2],monbias[,2]),
             c(annMAE,annbias))
-   
-    #add off stats 
-    mystats <- rbind(mystats,mystats[1:2,])         
+
+    #add off stats
+    mystats <- rbind(mystats,mystats[1:2,])
     mystats[14,1] = error_prec_annual
     mystats[14,2] = NA
     mystats[15,1] = round(precntshorted)
     mystats[15,2] = NA
-    
+
     row.names(mystats) = c(month.abb,"Annual","% AnnMAE/AnnRequest","Total % Shorted")
-    # mystats     
-    
-    colnames(mystats) = paste(sectors[j],colnames(mystats)) 
-    
+    # mystats
+
+    colnames(mystats) = paste(sectors[j],colnames(mystats))
+
     if (j == 1){
-      allstats <- mystats 
-      allsctrdist <- sctrdist 
+      allstats <- mystats
+      allsctrdist <- sctrdist
     } else {
       allstats <- cbind(allstats,mystats )
       allsctrdist <- cbind(allsctrdist,sctrdist )
-      
-    } 
-    
-    #combine metrics from out-gage with allstats from demands analysis 
+
+    }
+
+    #combine metrics from out-gage with allstats from demands analysis
     write.csv(cbind(rbind(metrics[,2:3],NA),allstats),
               file = file.path(ofigs,paste(nodes[i],scens,"Stats.csv")))
-    
-    #write sector monthly distributions 
+
+    #write sector monthly distributions
     write.csv(allsctrdist,
               file = file.path(ofigs,paste(nodes[i],scens,"SectorMonthlyDistribution.csv")))
     
@@ -680,7 +709,7 @@ if (dim(annstats)[1]==length(nodes)) { #this should mean you ran all of the trac
   colnames(annstats) <- c("Reach","MAE","Bias","Error % of gage","AA Gage Flow")
   annstats <- annstats[,c("Reach","MAE","Bias","AA Gage Flow","Error % of gage")] 
   rownames(annstats) <- nodes
-  rownames(annstats)[18] <- "Lees Ferry"
+  # rownames(annstats)[18] <- "Lees Ferry"
   write.csv(annstats[,2:5],file = file.path(ofigs,paste0("AnnualVerificationStats",scens,".csv")))
 } else {
   write.csv(annstats,file = file.path(ofigs,paste0("Partial_AnnualVerificationStats",scens,".csv")))
