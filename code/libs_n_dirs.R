@@ -16,6 +16,9 @@ library(crssplot) #scens_plot_cloud
 # remotes::install_github("BoulderCodeHub/rhdb") #need github PAT env var set
 library(rhdb) 
 library(feather)
+library(scales) #comma labels for axis
+
+source(file.path(rwprocess_dir,"code","stat-boxplot-custom.R")) #stat_boxplot_custom()
 
 date_to_wy <- function(x) {
   mm <- month(x)
@@ -50,4 +53,6 @@ for (dir_check in dir_v) {
   dir.create(file.path(dir_check), showWarnings = FALSE)
 }
 message('Figures will be saved to: ', results_dir)
+
+source(file.path(rwprocess_dir,"code","stat-boxplot-custom.R")) #stat_boxplot_custom()
 
