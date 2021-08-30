@@ -1,10 +1,16 @@
 ##############################################################################
 #This script creates powell in,out and PE clouds 
+#requires earlier running of June2021_UBDRO_...R to get scen_res
 ##############################################################################
 library('readxl') #read_xlsx()
 library('cowplot') #get_legend()
 library('scales') #comma in y axis label 
 
+### check you have inputs read in from June2021_UBDRO_...R to get scen_res
+unique(scen_res$ScenarioGroup)
+unique(scen_res$Variable)
+
+#set up folders for stats 
 figstats <- file.path(ofigs,"Stats") 
 if (!file.exists(figstats)) {
   message(paste('Creating folder:', figstats))
