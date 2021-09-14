@@ -200,57 +200,50 @@ df %>% group_by(Variable,Year) %>%
 ggsave(filename = file.path(figures_dir,paste0("Bxplt_combined_","CRSPaddDRORelease_",results_nm,".png")), width = 11,height = 7) #maxes out pptx slide height 
 
 #lumped 22-26 boxplots by reservoir
-df %>% group_by(ScenarioGroup,Variable,TraceNumber) %>%
+#include 2021 DRO
+library('cowplot') #get_legend()
+DRO2021 <- read.csv(file.path(rwprocess_dir,"data", "2021DRO.csv"),header = T)
+
+title = "UB DRO release by reservoir"
+
+gg <-
+  df %>% group_by(ScenarioGroup,Variable,TraceNumber) %>%
   summarise(Value=sum(Value)) %>%  
-  filter(Variable != "CRSP Total") %>%
+  filter(Variable != "CRSP Total")  %>%
   ggplot(aes(x=Variable,y=Value,color = Variable)) +
-  # geom_boxplot(fatten = 2) +
-  # stat_summary(fun = mean, geom = "errorbar", aes(ymax = ..y.., ymin = ..y..),
-  #              width = .75, linetype = "dashed") +
   stat_boxplot_custom() +
+  geom_point(mapping=data = DRO2021,shape=18,size=4) + 
   labs(y = y_lab, x = "2022 - 2026",title = paste(title),subtitle = subtitle) +
-  theme(legend.title = element_blank()) +
+  theme(legend.position = "none") +
   scale_y_continuous(label = comma) + 
   theme(axis.line=element_blank(),axis.text.x=element_blank())#,
-# axis.title.x=element_blank())
-# 
+
+gg1 <-
+  df %>% group_by(ScenarioGroup,Variable,TraceNumber) %>%
+  summarise(Value=sum(Value)) %>%  
+  filter(Variable != "CRSP Total")  %>%
+  ggplot(aes(x=Variable,y=Value,fill= Variable)) +
+  stat_boxplot_custom() +
+  labs(fill="2022-2026 DRO") 
+
+legend1 <- get_legend(gg1)
+
+gg2 <-
+  DRO2021 %>% 
+  ggplot(aes(x=Variable,y=Value,color=Variable)) +
+  geom_point(shape=18,size=4) + 
+  labs(color="2021 DRO")
+
+legend2 <- get_legend(gg2)
+
+gglegend <- plot_grid(NULL, legend1,legend2, NULL, align = 'hv', nrow=4) #nrows=4
+
+# gg <- 
+plot_grid(gg, gglegend, rel_widths = c(2,.5))
+
 ggsave(filename = file.path(figures_dir,paste0("Bxplot_2226_","CRSPaddDRORelease_",results_nm,".png")), width = 11,height = 7) #maxes out pptx slide height 
 
-# #by trace lumped 22-26 boxplots by reservoir
-# y_lab = "Total contribution through 2026 [kaf]"
-# title = "Total UB DRO release by trace"
-# x_breaks <- c("5","10","15","20","25","30")
-# x_labs <- c("1992","1997","2002","2007","2012","2017")
-# df %>% group_by(Variable,TraceNumber) %>%
-#   summarise(Value=sum(Value)) %>%  
-#   filter(Variable == "CRSP Total") %>%
-#   ggplot(aes(y=Value,x=as.factor(TraceNumber),color = Variable)) +
-#   # stat_boxplot_custom() + #### its wrong to boxplot these I could do stacked bars but I'm not sure how to do that
-#   geom_bar() + #how do I get the plot I want? 
-#   labs(y = y_lab, x = "Trace",title = paste(title),subtitle = paste(subtitle,"(2022-2026)")) +
-#   theme(legend.position = "none") +
-#   scale_y_continuous(label = comma) + 
-#   scale_x_discrete(breaks=x_breaks,
-#                    labels=x_labs) 
-# # 
-# ggsave(filename = file.path(figures_dir,paste0("bytracetotCRSP_addDRORelease_",results_nm,".png")), width = 11,height = 7) #maxes out pptx slide height 
-# 
-# #by trace lumped 22-26 boxplots by reservoir
-# y_lab = "Contribution through 2026 [kaf]"
-# title = "UB DRO release by trace by reservoir"
-# df %>% group_by(Variable,TraceNumber) %>%
-#   summarise(Value=sum(Value)) %>%  
-#   filter(Variable != "CRSP Total") %>%
-#   ggplot(aes(y=Value,x=as.factor(TraceNumber),color = Variable)) +
-#   # stat_boxplot_custom() + #### its wrong to boxplot these I could do stacked bars but I'm not sure how to do that
-#   geom_bar() + #how do I get the plot I want? 
-#   labs(y = y_lab, x = "Trace",title = paste(title),subtitle = "August CRSS (2022-2026)") +
-#   theme(legend.title = element_blank()) +
-#   scale_y_continuous(label = comma) + 
-#   scale_x_discrete(breaks=x_breaks,
-#                    labels=x_labs) 
-# # 
-# ggsave(filename = file.path(figures_dir,paste0("bytracetotbyres_addDRORelease_",results_nm,".png")), width = 11,height = 7) #maxes out pptx slide height 
+  
 
 #histogram  total
 y_lab = "Total contribution through 2026 [kaf]"
@@ -263,8 +256,8 @@ df %>% group_by(Variable,TraceNumber) %>%
   geom_histogram(binwidth = 250) +
   labs(y = "Count", x = y_lab,title = paste(title),subtitle = "August CRSS (2022-2026)") +
   theme(legend.position = "none") #+
-  # scale_y_continuous(label = comma) #+ #leave out for no decimals 
+# scale_y_continuous(label = comma) #+ #leave out for no decimals 
 # 
 ggsave(filename = file.path(figures_dir,paste0("Hist_","CRSPaddDRORelease_",results_nm,".png")), width = 11,height = 7) #maxes out pptx slide height 
 
-dev.off()
+dev.off()  
