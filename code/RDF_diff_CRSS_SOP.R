@@ -16,8 +16,9 @@ results_dir <- file.path(CRSSDIR,"results")
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #all scens 
 scens <- list( ### don't comment these out use keepscens variabile #### 
-               "Jun9005" = "Jun9005,ISM1988_2019,2016Dems,IG_DCP,CRMMS_Most",
-               "Jun9004" = "Jun9004,ISM1988_2019,2016Dems,IG_DCP,CRMMS_Most"#,
+               # "OffcAugFixed" = "Aug2021_2022,ISM1988_2019,2016Dems,IG_DCPnoUBDRO,CRMMS_Most_Fix",
+               "RW8.3.1" = "Aug2021_2022_RW831,ISM1988_2019,2016Dems,IG_DCPnoUBDRO,CRMMS_Most",
+               "OffcReRun" = "Aug2021_2022.9000.NvjElVol,ISM1988_2019,2016Dems,IG_DCPnoUBDRO,CRMMS_Most"
 )
 
 rdf <- 'KeySlots.rdf'

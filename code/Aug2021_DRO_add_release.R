@@ -243,6 +243,16 @@ plot_grid(gg, gglegend, rel_widths = c(2,.5))
 
 ggsave(filename = file.path(figures_dir,paste0("Bxplot_2226_","CRSPaddDRORelease_",results_nm,".png")), width = 11,height = 7) #maxes out pptx slide height 
 
+#print out the stats
+df_stats <-
+  df %>% group_by(ScenarioGroup,Variable,TraceNumber) %>%
+  summarise(Value=sum(Value)) %>%  
+  group_by(ScenarioGroup,Variable) %>%
+  dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
+                   'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
+                   'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot 
+write.csv(df_stats,file.path(figures_dir,"Stats",paste0("AddDRORelease_stats_2226bxplt_",results_nm,".csv")))
+
   
 
 #histogram  total

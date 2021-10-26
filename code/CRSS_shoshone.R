@@ -50,6 +50,15 @@ unique(zz$Variable)
 
 feather::write_feather(zz,file.path(CRSSDIR,"CRSPPowerData.feather")) 
 
+zz %>% group_by(ScenarioGroup,Variable,TraceNumber) %>%
+  summarise(Value=sum(Value)) %>%  #summmary by month 
+  group_by(ScenarioGroup,Variable) %>%
+  dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
+                   'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
+                   'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot 
+write.csv(df_stats,file.path(figures_dir,"Stats",paste0("AddDRORelease_stats_2226bxplt_",results_nm,".csv")))
+
+
 #### =============== Plotting =============== ####
 
 results_nm <- "ShoshoneMove" #results dir folder 
