@@ -12,67 +12,96 @@ scen_dir <- file.path(CRSSDIR,"Scenario")
 
 results_dir <- file.path(CRSSDIR,"results") 
 
+library(RColorBrewer)
+#Additional plotting functions and libraries
+library('tidyverse') #ggplot2,dplyr,tidyr
+library('devtools')
+library(RWDataPlyr)
+#see RWDATPlyr Workflow for more information
+library(CRSSIO)
+# plotEOCYElev() and csVarNames()
+source('code/Stat_emp_ExcCrv.r')
+source('code/stat-boxplot-custom.r')
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #all scens 
 scens <- list( ### don't comment these out use keepscens variabile #### 
-               "Basecase_7001" = "Base_7004,DNF,2007Dems,GREAT_7001,MTOM_Most",
-               "Basecase" = "Base_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
-               "LTSP" = "LTSP_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
-               "CPMBF" = "CPM_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "SMB" = "SMB_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP&SMB" = "LTSP_SMB_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP,SMB,CPMBF_7001" = "All_7004,DNF,2007Dems,GREAT_7001,MTOM_Most",
-               "LTSP,SMB,CPMBF" = "All_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most"#,
+               "Basecase" = "Base_NoDO_8004.mdl,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC", 
+               "LTSP" = "LTSP_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC",
+               # "SMB" = "SMB_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC",
+               # "CPMBF" = "CPMBF_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC",
+               "LTSP&SMB" = "LTSP_SMB_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC",
+               "LTSP,SMB,CPMBF" = "All_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC"#,
                
 )
 
-## pick which scens to plot from larger group to process and save as RDS files for later analysis 
-keepscens <- names(scens)
-keepscens <- names(scens)[c(1,2,7,8)] #compare base and all w/wo new 7002 rls 
-keepscens <- names(scens)[c(2:6,8)] #compare base and all w/wo new 7002 rls 
-Figs <- "7004mdl_7002rls.pdf"
+Figs <- "GREAT_NoDRO.pdf"
 
-#stress test compare
-scens <- list( ### don't comment these out use keepscens variabile #### 
-               "Basecase_Full" = "Base_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
-               "Basecase_Stress" = "Base_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most", 
-               "LTSP_Stress" = "LTSP_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               # "CPMBF_Stress" = "CPM_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               # "SMB_Stress" = "SMB_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP&SMB_Stress" = "LTSP_SMB_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP,SMB,CPMBF_Full" = "All_7004,DNF,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
-               "LTSP,SMB,CPMBF_Stress" = "All_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most"#,
                
-)
 
 
+
+# scens <- list( ### don't comment these out use keepscens variabile ####
+#                "PrvRun7004_DRO7002rls_Aug20IC" = "All_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+#                "NewRun8005_DRO8002rls_Aug20IC"= "All_8005_DO,ISM1988_2018,2007Dems,GREAT_8002_MinFlow,MTOM_Most_Aug2020",
+#                # "NewRun8004_DRO8002rls_Aug21IC" = "All_8004_DO,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most_Aug21IC",
+#                "NewRun8004_NoDRO8002rls_Aug20IC" = "All_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug2020",
+#                # "NewRun8005_NoDRO8002rls_Aug21IC" = "All_8005_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_8002_MinFlow,MTOM_Most_Aug21IC",
+#                "NewRun8004_NoDRO8002rls_Aug21IC" = "All_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC"#,
+# )
+# 
+# 
+# 
+# scens <- list(
+#   "DRO_Aug20IC_Base"= "Base_8005_DO,ISM1988_2018,2007Dems,GREAT_8002_MinFlow,MTOM_Most_Aug2020",
+#   "NoDRO_Aug20IC_Base" = "Base_NoDO_8004.mdl,ISM1988_2018,2007Dems,GREAT_8002_MinFlow,MTOM_Most_Aug2020",
+#   "NoDRO_Aug21IC_Base" = "Base_NoDO_8004.mdl,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC"#,
+# )
+# Figs <- "Baseline_MdlChanges.pdf"
+# 
+# 
+# scens <- list( ### don't comment these out use keepscens variabile ####
+#                # "PrvRun7004_DRO7002rls_Aug20IC" = "All_7004,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most",
+#                "DRO_Aug20IC_All"= "All_8005_DO,ISM1988_2018,2007Dems,GREAT_8002_MinFlow,MTOM_Most_Aug2020",
+#                # "NewRun8004_DRO8002rls_Aug21IC" = "All_8004_DO,ISM1988_2018,2007Dems,GREAT_7002_MinFlow,MTOM_Most_Aug21IC",
+#                "NoDRO_Aug20IC_All" = "All_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug2020",
+#                # "NewRun8005_NoDRO8002rls_Aug21IC" = "All_8005_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_8002_MinFlow,MTOM_Most_Aug21IC",
+#                "NoDRO_Aug21IC_All" = "All_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC"#,
+# )
+# Figs <- "AllExp_MdlChanges.pdf"
 
 
 ## pick which scens to plot from larger group to process and save as RDS files for later analysis 
 keepscens <- names(scens)
-# keepscens <- names(scens)[c(1,2,3,6,7,8)] #all but  
 
-Figs <- "Stress_7004mdl_7002rls.pdf"
-
-mycolors <- c("#f8766d","#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
 Noscens <- length(keepscens)
-library(RColorBrewer)
 # mycolors <- brewer.pal(n = Noscens, name = "Paired")
 mycolors <- brewer.pal(n = Noscens, name = "Set1")
-# library(scales)
-# show_col(hue_pal()(8))
-# mycolors <- hue_pal()(Noscens) # standard r colors 
+
+# Figs <- "Oct2021RerunNoDO.pdf"
+# mycolors <- c("#377EB8","#4DAF4A","#A65628", "#F781BF","#984EA3","#FFFF33",)
+
+# Figs <- "Oct2021RerunNoDO_CompareColors.pdf"
+# mycolors <- c("#377EB8","#4DAF4A","#984EA3","#FFFF33",)
+
+
+# mycolors <- c("#f8766d","#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
+mycolors <- c("#000076","#ff0bff","#49ff49","#00ffff") # match heather Base, LTSP, LTSP SMB, All
+Figs <- "GREAT_NoDRO_matchHeatherscolors.pdf"
+
 
 startyr = 2021 #filter out all years > this year
-endyr = 2040 #2060 has a bad year of data
+endyr = 2040 #2040 was what I was showing but 2040 fails for one DRO trace 
 yrs2show <- startyr:endyr # can't use this until your run extends to end of 2023
 
+caption <- ""
+
 #### Plot Controls #####
-printfigs_monthly<-F#T#make png figures 
-printfigs_daily<-F#T#make png figures since pdfs take FOREVER to open
-printfigs_exceed<-F#T#make png figures 
+printfigs_monthly<-T#T#make png figures 
+printfigs_daily<-T#T#make png figures since pdfs take FOREVER to open
+printfigs_exceed<-T#T#make png figures 
  
 # mylinetypes <- c("dashed","solid","solid")
 #standard powerpoint figure sizes 
@@ -84,15 +113,7 @@ heights <- c(7,7)
 #                               END USER INPUT
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#Additional plotting functions and libraries
-library('tidyverse') #ggplot2,dplyr,tidyr
-library('devtools')
-library(RWDataPlyr)
-#see RWDATPlyr Workflow for more information
-library(CRSSIO)
-# plotEOCYElev() and csVarNames()
-source('code/Stat_emp_ExcCrv.r')
-source('code/stat-boxplot-custom.r')
+
 
 # check folders
 if(!file.exists(file.path(scen_dir, scens[1]))
@@ -113,9 +134,9 @@ message('Figures will be saved to: ', ofigs)
 # # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ## Skip Process Results - Load RDS 
 
-if(any(list.files(ofigs) == "scen_res_monthly.RDS")){ 
+if(any(list.files(ofigs) == "scen_res_monthly.RDS")){
   #exists(file.path(ofigs,paste0("scen_res_monthly.RDS"))) # this only works for an object, so if was loaded could do exists("scen_res_monthly")
-  
+
   scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
   scen_res_monthly <- scen_res_monthly %>% #filter out scens you don't want to keep for plots
     dplyr::filter(Scenario %in% keepscens)
@@ -127,17 +148,7 @@ if(any(list.files(ofigs) == "scen_res_monthly.RDS")){
     dplyr::filter(Scenario %in% keepscens)
   unique(scen_res_daily$Scenario)
   scen_res_daily$Scenario = factor(scen_res_daily$Scenario, levels=names(scens))
-  
-  # scen_res_exp <- readRDS(file = file.path(ofigs,paste0("scen_res_exp.RDS")))
-  
-  scen_res_DO <- readRDS(file = file.path(ofigs,paste0("scen_res_DO.RDS")))
-  scen_res_DO <- scen_res_DO %>% #filter out scens you don't want to keep for plots
-    dplyr::filter(Scenario %in% keepscens)
-  
-  scen_res_hclass <- readRDS(file = file.path(ofigs,paste0("scen_res_hclass.RDS")))
-  scen_res_hclass <- scen_res_hclass %>% #filter out scens you don't want to keep for plots
-    dplyr::filter(Scenario %in% keepscens)
-  
+
 }
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -266,7 +277,8 @@ if (T) {
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # ++++++++++++++++ DO vs year plots  +++++++++++++++++++++++++++++++++++++++++++++++++++
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  ## DO Occurances ##
+if(T){
+    ## DO Occurances ##
 p <- 
  scen_res_DO %>%
     dplyr::filter(Variable == "ExtendedOperations.PowellForecastDeficitFlag") %>%
@@ -341,7 +353,8 @@ print(p)
 if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste("Average Annual",variable,".png")), width = widths[1],height = heights[1])}
  
 ### end DO ###
-
+}
+  
 variable = "FlamingGorge.Storage"
 title = paste(variable,first(yrs2show),"-",last(yrs2show))
 y_lab = "EOCY Storage (1,000 ac-ft)"
@@ -515,27 +528,8 @@ if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste("Mean EOCY",va
   print(p)
   if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste(title,variable,".png")), width = widths[1],height = heights[1])}
   
-  
-  #### WORK ON THIS ##### 
-  # #figure out which months are releasing minimum flow
-  # variable = "FlamingGorge.Outflow"
-  # y_lab = "Monthly Flow (cfs)"
-  # target <- data.frame(yintercept=800)
-  # df <- scen_res_monthly %>%
-  #   dplyr::filter(Variable == variable) %>%
-  #   dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-  #   mutate(MinFlow = 
-  #            if(Value<=800){1},else{0}) # %>%
-  # df
-  # summary(df)
-  # df %>% dplyr::filter(Month %in% month.name[c(7,8,9)]) %>% #only look a July-Sept 
-  #   dplyr::group_by(Scenario) %>%
-  #   summarise(Value = sum(Value))
-  # df
-  
   dev.off()
 }
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 5.b. Plot monthly Powell figures  
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -588,7 +582,7 @@ if (T) {
   exc_month <- c(4,5,6,7) # April - July
   title <- paste(maintitle,month.name[first(exc_month)],'-',month.name[last(exc_month)])
   # ymin <- c(0,0) ; ymax <- c(8600,50000); mybreaks <- c(2000,5000)#old GREAT 
-  p <- scen_res_FG %>%
+  p <- scen_res_monthly %>%
     dplyr::filter(Variable == variable) %>% 
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
@@ -612,7 +606,7 @@ if (T) {
   exc_month <- c(7,8,9) # April - July
   title <- paste(maintitle,month.name[first(exc_month)],'-',month.name[last(exc_month)])
   # ymin <- c(0,0) ; ymax <- c(8600,50000); mybreaks <- c(2000,5000)#old GREAT 
-  p <- scen_res_FG %>%
+  p <- scen_res_monthly %>%
     dplyr::filter(Variable == variable) %>% 
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
@@ -636,7 +630,7 @@ if (T) {
   exc_month <- c(8,9) # April - July
   title <- paste(maintitle,month.name[first(exc_month)],'-',month.name[last(exc_month)])
   # ymin <- c(0,0) ; ymax <- c(8600,50000); mybreaks <- c(2000,5000)#old GREAT 
-  p <- scen_res_FG %>%
+  p <- scen_res_monthly %>%
     dplyr::filter(Variable == variable) %>% 
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
@@ -660,7 +654,7 @@ if (T) {
   exc_month <- c(10,11) # April - July
   title <- paste(maintitle,month.name[first(exc_month)],'-',month.name[last(exc_month)])
   # ymin <- c(0,0) ; ymax <- c(8600,50000); mybreaks <- c(2000,5000)#old GREAT 
-  p <- scen_res_FG %>%
+  p <- scen_res_monthly %>%
     dplyr::filter(Variable == variable) %>% 
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
@@ -684,7 +678,7 @@ if (T) {
   exc_month <- c(12,1,2) # April - July
   title <- paste(maintitle,month.name[first(exc_month)],'-',month.name[last(exc_month)])
   # ymin <- c(0,0) ; ymax <- c(8600,50000); mybreaks <- c(2000,5000)#old GREAT 
-  p <- scen_res_FG %>%
+  p <- scen_res_monthly %>%
     dplyr::filter(Variable == variable) %>% 
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
@@ -708,7 +702,7 @@ if (T) {
   exc_month <- c(3,4) # April - July
   title <- paste(maintitle,month.name[first(exc_month)],'-',month.name[last(exc_month)])
   # ymin <- c(0,0) ; ymax <- c(8600,50000); mybreaks <- c(2000,5000)#old GREAT 
-  p <- scen_res_FG %>%
+  p <- scen_res_monthly %>%
     dplyr::filter(Variable == variable) %>% 
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
@@ -1223,7 +1217,7 @@ if (T) { #set true for easy running all plots
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 8. Plot Results - Expression Slots ----- NOT TESTED
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-if(T){
+if(F){
 #agg file specifying which slots
 rw_agg_file <- "rw_agg_GREATExp.csv"
 #read agg file specifying which slots
@@ -1320,7 +1314,7 @@ saveRDS(scen_res_exp,file = file.path(ofigs,paste0("scen_res_exp.RDS")))
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 9. Plot Results - H Class
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-if(T){
+if(F){
   
   rw_agg_file <- "rw_agg_FG_HClass.csv" # HClass 
   
@@ -1448,62 +1442,46 @@ if(T){
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ##############  Filter Out All Except Dry and Mod Dry H Class  ########
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+dev.off(
+)
+
+# # 
+# # scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
+# # scen_res_daily <- readRDS(file = file.path(ofigs,paste0("scen_res_daily.RDS")))
+# # scen_res_exp <- readRDS(file = file.path(ofigs,paste0("scen_res_exp.RDS")))
+# # scen_res_DO <- readRDS(file = file.path(ofigs,paste0("scen_res_DO.RDS")))
+# # scen_res_hclass <- readRDS(file = file.path(ofigs,paste0("scen_res_hclass.RDS")))
 # 
-# scen_res_monthly <- readRDS(file=file.path(ofigs,paste0("scen_res_monthly.RDS"))) #prevent neeed to reprocess
-# scen_res_daily <- readRDS(file = file.path(ofigs,paste0("scen_res_daily.RDS")))
-# scen_res_exp <- readRDS(file = file.path(ofigs,paste0("scen_res_exp.RDS")))
-# scen_res_DO <- readRDS(file = file.path(ofigs,paste0("scen_res_DO.RDS")))
-# scen_res_hclass <- readRDS(file = file.path(ofigs,paste0("scen_res_hclass.RDS")))
-
-unique(scen_res_hclass$Scenario)
-unique(scen_res_monthly$Scenario)
-
-unique(scen_res_hclass$Variable)
-hclass <- unique(scen_res_hclass$Variable) #base,spring,yampa
-dim(scen_res_hclass)
-dim(scen_res_hclass)
-dim(df)
+# unique(scen_res_hclass$Scenario)
+# unique(scen_res_monthly$Scenario)
 # 
-
-class <- pivot_wider(scen_res_hclass,names_from = Variable,values_from = Value)
-
-out <- scen_res_monthly %>%
-  dplyr::filter(Variable == "FlamingGorge.Outflow")
-
-df <- cbind.data.frame(out,BaseFlowHClass = class$FlamingGorgeData.BaseFlowHClass, SpringFlowHClass = class$FlamingGorgeData.SpringHClass)
-tail(df)
-
-df_filter <- df %>%
-  dplyr::filter(df$SpringFlowHClass == 0 | df$SpringFlowHClass == 1 ) #%>%
-df_filter <- df_filter %>%
-  dplyr::filter(df_filter$BaseFlowHClass == 0 | df_filter$BaseFlowHClass == 1 ) 
-head(df_filter)
-
-y_lab = "Monthly Flow (cfs)"
-title = "Dry OR ModDry Spring AND Baseflow H Class FG.Outflow Exceedance "
-caption = "Only Spring & Baseflow H Class = Dry OR ModDry"
-p <- df_filter %>% 
-  dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-  dplyr::group_by(Scenario) %>% 
-  ggplot(aes(Value, color = Scenario)) +
-  theme_light() + 
-  stat_eexccrv() +
-  scale_color_manual(values = mycolors) +
-  # coord_cartesian(xlim =c(0,1), ylim = c(ymin[j],ymax[j]), expand = expand) + #don't drop data
-  scale_x_continuous("Percent Exceedance",labels = scales::percent,breaks=seq(0,1,.2)) + 
-  labs(title = title,
-       y = y_lab, caption = caption) +
-  theme(plot.caption = element_text(hjust = 0)) #left justify 
-print(p)
-ggsave(filename = file.path(ofigs,paste(title,".png")), width = widths[1],height = heights[1])
-
-summary(p)
-
-# df2 <- out %>% ### this isn't working for finding the bypass only - just process the spill slot
-#   mutate(Value = max(Value-4600,0)) %>% 
-#   dplyr::filter(Value > 0) 
-# p <- df2 %>%
+# unique(scen_res_hclass$Variable)
+# hclass <- unique(scen_res_hclass$Variable) #base,spring,yampa
+# dim(scen_res_hclass)
+# dim(scen_res_hclass)
+# dim(df)
+# # 
+# 
+# class <- pivot_wider(scen_res_hclass,names_from = Variable,values_from = Value)
+# 
+# out <- scen_res_monthly %>%
+#   dplyr::filter(Variable == "FlamingGorge.Outflow")
+# 
+# df <- cbind.data.frame(out,BaseFlowHClass = class$FlamingGorgeData.BaseFlowHClass, SpringFlowHClass = class$FlamingGorgeData.SpringHClass)
+# tail(df)
+# 
+# df_filter <- df %>%
+#   dplyr::filter(df$SpringFlowHClass == 0 | df$SpringFlowHClass == 1 ) #%>%
+# df_filter <- df_filter %>%
+#   dplyr::filter(df_filter$BaseFlowHClass == 0 | df_filter$BaseFlowHClass == 1 ) 
+# head(df_filter)
+# 
+# y_lab = "Monthly Flow (cfs)"
+# title = "Dry OR ModDry Spring AND Baseflow H Class FG.Outflow Exceedance "
+# caption = "Only Spring & Baseflow H Class = Dry OR ModDry"
+# p <- df_filter %>% 
+#   dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
 #   dplyr::group_by(Scenario) %>% 
 #   ggplot(aes(Value, color = Scenario)) +
 #   theme_light() + 
@@ -1515,36 +1493,6 @@ summary(p)
 #        y = y_lab, caption = caption) +
 #   theme(plot.caption = element_text(hjust = 0)) #left justify 
 # print(p)
-
-# test1 <- df2 %>% #fails, gives same values 
-#   dplyr::filter(Scenario == names(scens[1])) 
-# test2 <- df2 %>%
-#   dplyr::filter(Scenario == names(scens[4])) 
-# mean(test1$Value)
-# mean(test2$Value)
-
-# test1 <- df_filter %>% #works 
-#   dplyr::filter(Scenario == names(scens[1])) 
-# test2 <- df_filter %>%
-#   dplyr::filter(Scenario == names(scens[4])) 
-# mean(test1$Value)
-# mean(test2$Value)
-
-
-# test1 <- out %>% #works 
-#   dplyr::filter(Scenario == names(scens[1])) 
-# test2 <- out %>%
-#   dplyr::filter(Scenario == names(scens[4])) 
-# mean(test1$Value)
-# mean(test2$Value)
+# ggsave(filename = file.path(ofigs,paste(title,".png")), width = widths[1],height = heights[1])
 # 
-# 
-# test1 <- scen_res_monthly %>%
-#   dplyr::filter(Scenario == names(scens[1])) 
-# test2 <- scen_res_monthly %>%
-#   dplyr::filter(Scenario == names(scens[4]))
-# head(test1)
-# head(test2)
-# mean(test1$Value)
-# mean(test2$Value)
-
+# summary(p)

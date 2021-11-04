@@ -8,48 +8,65 @@ warning('Run CRSS/code/create_results_package() first')
 ## User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-results_nm <- "NavajoElVol" #results name should match 
 
-scen_dir_overwrite = "M:/Shared/CRSS/2021/Scenario_dev"#OVERWRITE 
-# scen_dir_overwrite = F # manoa/Shared/CRSS/2021/Scenario
+
 
 # which rdf/agg files to process? # ONLY ONE TRUE at a time 
 CRSPops <- TRUE
 CRSPpow <- FALSE
 
 # which scens to process? 
+#libraries and setup directories 
+onBA = TRUE # which computer BA or my PC?
+scen_dir_overwrite=FALSE # onBA=T "M:/Shared/CRSS/2021/Scenario", onBA=F "Z:/Shared/CRSS/2021/Scenario"
+#else provide a value for scen_dir_overwrite
 
-#### FUTURE DEV: get this information from .yml file!! ####
+#get scen information from .yml file
+yaml_nm=FALSE #give it name e.g. 
 
-singleIC <- TRUE #FALSE = multiple IC from CRMMS
-if (singleIC == T) {
-  ## latest run #
-  scen1 <- scens_latest_ST <- "Aug2021.9000.NvjEV_PwlEV,ISM1988_2019_HvrEvap_NvjEV_PwlEV,2016Dems,IG_DCPnoUBDRO.RW931,CRMMS_Most"
-  scen1_shrt_nm <- "PwlEV_NvjEV_9000"
-  ## compare to run #
-  scen2 <- scens_latest_ST <- "Aug2021.9000.NvjEV,ISM1988_2019_HvrEvap_NvjEV,2016Dems,IG_DCPnoUBDRO.RW931,CRMMS_Most"
-  scen2_shrt_nm <- "NvjEV_9000"
-# "Aug2021_2022_RW831,ISM1988_2019,2016Dems,IG_DCPnoUBDRO,CRMMS_Most"
-  # scen2_shrt_nm <- "Aug2021_RW831"
-} else {
-  ## latest offical run #
-  mdl_nm_scen1 <- "Jun2021_2022"
-  rls_nm_scen1 <- "2016Dems,IG_DCP"
-  scen1_DNF <- rw_scen_gen_names(mdl_nm_scen1, c("DNF"),rls_nm_scen1, 
-                                       # paste0("Trace", 4:38))
-                                       paste0("Trace", sprintf("%02d", 4:38))) # this creates a double digit number, e.g. 04 
-  scen1_ST <- rw_scen_gen_names(mdl_nm_scen1, c("ISM1988_2019"), rls_nm_scen1,paste0("Trace", sprintf("%02d", 4:38)))
-  scen1 <- c(scen1_DNF,scen1_ST)
+source(file.path(rwprocess_dir,"code","libs_n_dirs.R")) 
+
+#if you didn't get scen information from .yml file fill in the below
+if(yaml_nm==FALSE){
+  singleIC <- TRUE #FALSE = multiple IC from CRMMS
+  if (singleIC == T) {
+    ## latest run #
+    
+    scen1 <- "Aug2021.9002.FG,ISM1988_2019_HvrEvap_NvjEV_PwlEV,2016Dems,IG_DCPnoUBDRO.9001.BM,CRMMS_Most"
+    scen1_shrt_nm <- "FG_9002" ### ENSURE THIS IS WHAT YOU What results/[dir] to be named!!!! 
+    warning(paste('Output will be to',Sys.getenv("CRSS_DIR"),'/results/',scen1_shrt_nm))
+    
+    ## compare to run #
+    scen2 <- "Aug2021.9001.BM,ISM1988_2019_HvrEvap_NvjEV_PwlEV,2016Dems,IG_DCPnoUBDRO.9001.BM,CRMMS_Most"
+    scen2_shrt_nm <- "BM_9001"
+    # "Aug2021_2022_RW831,ISM1988_2019,2016Dems,IG_DCPnoUBDRO,CRMMS_Most"
+    # scen2_shrt_nm <- "Aug2021_RW831"
+  } else {
+    ## latest offical run #
+    mdl_nm_scen1 <- "Jun2021_2022"
+    rls_nm_scen1 <- "2016Dems,IG_DCP"
+    scen1_DNF <- rw_scen_gen_names(mdl_nm_scen1, c("DNF"),rls_nm_scen1, 
+                                   # paste0("Trace", 4:38))
+                                   paste0("Trace", sprintf("%02d", 4:38))) # this creates a double digit number, e.g. 04 
+    scen1_ST <- rw_scen_gen_names(mdl_nm_scen1, c("ISM1988_2019"), rls_nm_scen1,paste0("Trace", sprintf("%02d", 4:38)))
+    scen1 <- c(scen1_DNF,scen1_ST)
+    
+    ## compare to run #
+    mdl_nm_scen2 <- "Jun2021_2022"
+    rls_nm_scen2 <- "2016Dems,IG_DCP"
+    scen2_DNF <- rw_scen_gen_names(mdl_nm_scen2, c("DNF"),rls_nm_scen2, 
+                                   # paste0("Trace", 4:38))
+                                   paste0("Trace", sprintf("%02d", 4:38))) # this creates a double digit number, e.g. 04 
+    scen2_ST <- rw_scen_gen_names(mdl_nm_scen2, c("ISM1988_2019"), rls_nm_scen2,paste0("Trace", sprintf("%02d", 4:38)))
+    scen2 <- c(scen2_DNF,scen2_ST)
+  }
   
-  ## compare to run #
-  mdl_nm_scen2 <- "Jun2021_2022"
-  rls_nm_scen2 <- "2016Dems,IG_DCP"
-  scen2_DNF <- rw_scen_gen_names(mdl_nm_scen2, c("DNF"),rls_nm_scen2, 
-                                       # paste0("Trace", 4:38))
-                                       paste0("Trace", sprintf("%02d", 4:38))) # this creates a double digit number, e.g. 04 
-  scen2_ST <- rw_scen_gen_names(mdl_nm_scen2, c("ISM1988_2019"), rls_nm_scen2,paste0("Trace", sprintf("%02d", 4:38)))
-  scen2 <- c(scen2_DNF,scen2_ST)
+  results_nm <- scen1_shrt_nm #results name should match 
 }
+
+
+########## if don't need to process stop here ########
+
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #                               END USER INPUT
@@ -57,18 +74,7 @@ if (singleIC == T) {
 
 #### =============== PROCESS =============== ####
 
-onBA <- TRUE # which computer BA or my PC? find RW-RDF-Process-Plot dir 
-if (onBA == TRUE) {
-  rwprocess_dir <- "C:/Users/fellette/Documents/GIT/RW-RDF-Process-Plot"
-} else {
-  rwprocess_dir <- "C:/Users/cfelletter/Documents/RW-RDF-Process-Plot"
-}
 
-#libraries and setup directories 
-source(file.path(rwprocess_dir,"code","libs_n_dirs.R")) 
-if(scen_dir_overwrite != F){
-  scen_dir = scen_dir_overwrite
-}
 
 #CRSP operations 
 if (CRSPops == T){
