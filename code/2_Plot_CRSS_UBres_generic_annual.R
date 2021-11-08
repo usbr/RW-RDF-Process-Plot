@@ -20,7 +20,7 @@ results_nm
 
 #pick which res to graph along with Powell in/PE/out
 res <- "FlamingGorge" #BlueMesa #FlamingGorge #Fontenelle #TaylorPark
-# res <- F #if F only plot Powell
+res <- F #if F only plot Powell
 
 startyr = 2022 #filter out all years > this year
 endyr = 2040 #2060

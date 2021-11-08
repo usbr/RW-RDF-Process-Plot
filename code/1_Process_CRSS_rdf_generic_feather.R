@@ -8,21 +8,16 @@ warning('Run CRSS/code/create_results_package() first')
 ## User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-
-
-# which rdf/agg files to process? # ONLY ONE TRUE at a time 
-CRSPops <- TRUE
-CRSPpow <- FALSE
-
 # which scens to process? 
 #libraries and setup directories 
 onBA = TRUE # which computer BA or my PC?
 scen_dir_overwrite=FALSE # onBA=T "M:/Shared/CRSS/2021/Scenario", onBA=F "Z:/Shared/CRSS/2021/Scenario"
+singleIC=T
 #else provide a value for scen_dir_overwrite
 
 #get scen information from .yml file
 yaml_nm=FALSE #give it name e.g. 
+yaml_nm="aug2021_sensitivity.yml"
 
 source(file.path(rwprocess_dir,"code","libs_n_dirs.R")) 
 
@@ -64,28 +59,17 @@ if(yaml_nm==FALSE){
   results_nm <- scen1_shrt_nm #results name should match 
 }
 
-
-########## if don't need to process stop here ########
-
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #                               END USER INPUT
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 #### =============== PROCESS =============== ####
 
-
-
 #CRSP operations 
-if (CRSPops == T){
   rw_agg_nm <- "rw_agg_CRSPops.csv"
   feather_file_nm <- "crspopsdata.feather"
   
-} else if (CRSPpow == T){ #CRSP energy 
-  rw_agg_nm <- "rw_agg_CRSPPowerData_Energy.csv"
-  feather_file_nm <- "CRSPPowerData.feather"
-
-} 
+  # rw_agg_nm <- "rw_agg_CRSPPowerData_Energy.csv"
+  # feather_file_nm <- "CRSPPowerData.feather"
 
 rwd <- read_rwd_agg(file.path(rwprocess_dir,"rw_agg",rw_agg_nm)) 
 

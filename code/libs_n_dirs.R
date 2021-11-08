@@ -1,11 +1,11 @@
 #open normal libraries and setup directories 
-onBA = TRUE # which computer BA or my PC?
-# otherscenlocation <- NA #only if not manoa/Shared/CRSS/2021/Scenario 
-results_nm="default_results"
-scen_dir_overwrite=FALSE
-yaml_nm=FALSE
-  # results_nm #results dir folder 
- 
+# onBA = TRUE # which computer BA or my PC?
+# # otherscenlocation <- NA #only if not manoa/Shared/CRSS/2021/Scenario 
+# results_nm="default_results"
+# scen_dir_overwrite=FALSE
+# yaml_nm=FALSE
+#   # results_nm #results dir folder 
+#  
   #### =============== Libraries =============== ####
   
   library(tidyverse)
@@ -84,7 +84,6 @@ yaml_nm=FALSE
   message('Figures will be saved to: ', results_dir)
   
   source(file.path(rwprocess_dir,"code","stat-boxplot-custom.R")) #stat_boxplot_custom()
-  
-}
+
 
 
