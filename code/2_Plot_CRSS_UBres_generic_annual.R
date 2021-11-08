@@ -3,6 +3,19 @@
 # # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 warning('Run Process_CRSS_rdf_generic_feather.R before this')
 # ## Load Feather with Processed Results 
+if(T){ #if you already ran 1_Process_CRSS_rdf_generic_feather.R  just update results_nm 
+  results_nm <- "FG_9002" #"PowellElVol" #"NavajoElVol"
+  if (onBA == TRUE) { #first set the rwprocess_dir so you can setup directories 
+    
+    rwprocess_dir <- "C:/Users/fellette/Documents/GIT/RW-RDF-Process-Plot"
+  } else {
+    rwprocess_dir <- "C:/Users/cfelletter/Documents/RW-RDF-Process-Plot"
+  }
+  #libraries and setup directories 
+  source(file.path(rwprocess_dir,"code","libs_n_dirs.R")) 
+}
+
+
 
 scen_res <- feather::read_feather(path = file.path(feather_data_dir,'crspopsdata.feather')) 
 summary(scen_res)
@@ -11,8 +24,7 @@ scens
 unique(scen_res$Variable)
 length(unique(scen_res$Scenario))
 
-results_nm<-unique(scen_res$ScenarioGroup)[1]
-results_nm 
+# results_nm<-unique(scen_res$ScenarioGroup)[1]
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 2. User Input ##
@@ -23,7 +35,7 @@ res <- "FlamingGorge" #BlueMesa #FlamingGorge #Fontenelle #TaylorPark
 res <- F #if F only plot Powell
 
 startyr = 2022 #filter out all years > this year
-endyr = 2040 #2060
+endyr = 2040#2060
 
 print_png <- F #F = don't make seperate png figures 
  
@@ -50,12 +62,6 @@ message('PDF will be saved to: ', results_dir)
 yrs2show <- startyr:endyr 
 scen_res <- scen_res %>%
   dplyr::filter(Year %in% yrs2show) 
-
-scen_res_stats <- scen_res %>%
-  dplyr::group_by(ScenarioGroup, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
-  dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
-                   'q10' = quantile(Value,.1),'q90' = quantile(Value,.9),
-                   'Min' = min(Value),'Max' = max(Value)) #add in outliers for plot 
 
 #get everything on a date 
 scen_res$MonthNum = as.Date(paste0(scen_res$Year,scen_res$Month,"01"), format = "%Y%B%d")
@@ -146,11 +152,23 @@ print(p)
 if(print_png==T){ ggsave(filename = file.path(figures_dir,paste("Mean EOCY",variable,".png")), width = widths[1],height = heights[1])}
 
 
+#print out res stats 
+scen_res_stats_inout <- scen_res %>%
+  dplyr::filter(Variable %in% paste0(res,c(".Inflow",".Outflow"))) %>%
+  dplyr::group_by(ScenarioGroup, Year,Variable,TraceNumber) %>% #by leaving Variable in I keep the name in the resulting df
+  summarise(Value = sum(Value)) #first sum by year, keeping scens, traces, and years together
+scen_res_stats_eocy <- scen_res %>%
+  dplyr::filter(Variable %in% paste0(res,c(".Storage",".PE"))) %>%
+  dplyr::filter(MonthNum%in%12) #%>%
+scen_res_stats <- rbind.data.frame(scen_res_stats_eocy[,names(scen_res_stats_inout)],scen_res_stats_inout)
 scen_res_stats %>%
-  dplyr::filter(Variable %in% paste0("Powell",c(".Inflow",".Storage",".PE",".Outflow"))) %>%
+  dplyr::group_by(ScenarioGroup, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
+  dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value), #summarize over the traces
+                   'q10' = quantile(Value,.1),'q90' = quantile(Value,.9),
+                   'Min' = min(Value),'Max' = max(Value)) %>% 
   pivot_wider(names_from = ScenarioGroup,values_from=c("Mean","Med","Min","q10","q90","Max")) %>% 
   arrange(Variable,Year) %>%
-write.csv(file = file.path(results_dir,"figure_data",paste(res,"_Stats.csv")))
+  write.csv(file = file.path(results_dir,"figure_data",paste(res,"_Stats.csv")))
 
 } # end UB res plotting loop  
 
@@ -252,8 +270,19 @@ p <- scen_res %>%
 print(p)
 
 #print out res stats 
+scen_res_stats_inout <- scen_res %>%
+  dplyr::filter(Variable %in% paste0("Powell",c(".Inflow",".Outflow"))) %>%
+  dplyr::group_by(ScenarioGroup, Year,Variable,TraceNumber) %>% #by leaving Variable in I keep the name in the resulting df
+  summarise(Value = sum(Value)) #first sum by year, keeping scens, traces, and years together
+scen_res_stats_eocy <- scen_res %>%
+  dplyr::filter(Variable %in% paste0("Powell",c(".Storage",".PE"))) %>%
+  dplyr::filter(MonthNum%in%12) #%>%
+scen_res_stats <- rbind.data.frame(scen_res_stats_eocy[,names(scen_res_stats_inout)],scen_res_stats_inout)
 scen_res_stats %>%
-  dplyr::filter(Variable %in% paste0("Powell",c(".Inflow",".Storage",".PE",".Outflow"))) %>%
+  dplyr::group_by(ScenarioGroup, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
+  dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value), #summarize over the traces
+                   'q10' = quantile(Value,.1),'q90' = quantile(Value,.9),
+                   'Min' = min(Value),'Max' = max(Value)) %>% 
   pivot_wider(names_from = ScenarioGroup,values_from=c("Mean","Med","Min","q10","q90","Max")) %>% 
   arrange(Variable,Year) %>%
   write.csv(file = file.path(results_dir,"figure_data",paste("Powell_Stats.csv")))
@@ -261,3 +290,5 @@ message(paste('Writing stats file to',file.path(results_dir,"figure_data",paste(
 
 dev.off()
 }
+
+

@@ -16,6 +16,29 @@ packageVersion("CRSSIO")
 library(CRSSIO)
 library(RWDataPlyr) # i
 
+#########create Single set of trace files
+
+
+#############
+CRSSDIR <- Sys.getenv("CRSS_DIR")
+dmi_folder_nm <- "StressTest"
+oFolder <- file.path(CRSSDIR,"dmi",dmi_folder_nm) 
+record_start <- '1988-1'
+nf_file <- 'NaturalFlows1906-2019_NvjE-V_20211026.xlsx'
+iFile <- file.path('C:/Users/cfelletter/Documents/natflowsaltmodel/results',nf_file)
+# dir.create(oFolder)
+CRSSIO::crssi_create_dnf_files(
+  iFile,
+  oFolder = oFolder,
+  startYear = 2022,
+  endYear = 2053,
+  recordToUse = zoo::as.yearmon(c(record_start,'2019-12')), #zero out for whole record
+  overwriteFiles = T
+)
+
+#############
+
+
 #########create CRSS Input Files #### use for CRSS historical DNF 
 CRSSDIR <- Sys.getenv("CRSS_DIR")
 dmi_folder_nm <- "DNF"
@@ -27,6 +50,22 @@ record_start <- '1906-1'
 record_start <- '1931-1'
 record_start <- '1988-1'
 
+#############
+#Single set of trace files 
+  tmp <- file.path(oFolder, paste0("NFSinput_", x,"01"))
+  dir.create(tmp)
+  CRSSIO::crssi_create_dnf_files(
+    "CoRiverNF",
+    oFolder = tmp,
+    startYear = 2022,
+    endYear = 2053,
+    recordToUse = zoo::as.yearmon(c(record_start,'2019-12')), #zero out for whole record
+    overwriteFiles = T
+  )
+
+#############
+## cont'd #######create CRSS Input Files #### use for CRSS historical DNF 
+  
 #makes each folder then creates trace files in each
 lapply(yy, function(x) {
   tmp <- file.path(oFolder, paste0("NFSinput_", x,"01"))
@@ -41,18 +80,9 @@ lapply(yy, function(x) {
   )
 })
 
-
-
-
-
 #change the start date of traces
-CRSSIO::crssi_change_nf_start_date(folder = "C:/Users/cfelletter/Documents/crss.offc/dmi/NFSinput",
-                                   startDate = "2018-1-31",nTrace = 110)
-
-CRSSIO::crssi_change_nf_start_date(folder = "C:/Users/cfelletter/Documents/crss.offc/dmi/NFS_2015_2Lay",
-                                   startDate = "2018-1-31",nTrace = 110)
-
-
+CRSSIO::crssi_change_nf_start_date(folder = "C:/Users/cfelletter/Documents/NatSalt_RCode/RWfiles/NF_2000",
+                                   start_year = 2000,nTrace = 114)
 
 
 #or use for easy interface 
@@ -125,3 +155,6 @@ oFolder <-'C:/Users/cfelletter/Documents/crss.trirvw2020/dmi/NFSinput_2018_binat
 oldFileNames <- c(CRSSIO::nf_file_names(version = 4),CRSSIO::natsalt_file_names(version = 4))
 newFileNames <- c(CRSSIO::nf_file_names(version = 5),CRSSIO::natsalt_file_names(version = 5))
 CRSSIO::crssi_change_nf_file_names(iFolder, oFolder, 88,oldFileNames, newFileNames)
+
+
+

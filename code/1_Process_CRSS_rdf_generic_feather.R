@@ -9,8 +9,8 @@ warning('Run CRSS/code/create_results_package() first')
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # which scens to process? 
-#libraries and setup directories 
-onBA = TRUE # which computer BA or my PC?
+onBA = FALSE # which computer BA or my PC?
+
 scen_dir_overwrite=FALSE # onBA=T "M:/Shared/CRSS/2021/Scenario", onBA=F "Z:/Shared/CRSS/2021/Scenario"
 singleIC=T
 #else provide a value for scen_dir_overwrite
@@ -19,6 +19,13 @@ singleIC=T
 yaml_nm=FALSE #give it name e.g. 
 yaml_nm="aug2021_sensitivity.yml"
 
+if (onBA == TRUE) { #first set the rwprocess_dir so you can setup directories 
+
+  rwprocess_dir <- "C:/Users/fellette/Documents/GIT/RW-RDF-Process-Plot"
+} else {
+  rwprocess_dir <- "C:/Users/cfelletter/Documents/RW-RDF-Process-Plot"
+}
+#libraries and setup directories 
 source(file.path(rwprocess_dir,"code","libs_n_dirs.R")) 
 
 #if you didn't get scen information from .yml file fill in the below
@@ -29,6 +36,9 @@ if(yaml_nm==FALSE){
     
     scen1 <- "Aug2021.9002.FG,ISM1988_2019_HvrEvap_NvjEV_PwlEV,2016Dems,IG_DCPnoUBDRO.9001.BM,CRMMS_Most"
     scen1_shrt_nm <- "FG_9002" ### ENSURE THIS IS WHAT YOU What results/[dir] to be named!!!! 
+    results_nm <- scen1_shrt_nm #results name should match 
+    #libraries and setup directories 
+    source(file.path(rwprocess_dir,"code","libs_n_dirs.R")) 
     warning(paste('Output will be to',Sys.getenv("CRSS_DIR"),'/results/',scen1_shrt_nm))
     
     ## compare to run #
@@ -56,7 +66,6 @@ if(yaml_nm==FALSE){
     scen2 <- c(scen2_DNF,scen2_ST)
   }
   
-  results_nm <- scen1_shrt_nm #results name should match 
 }
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
