@@ -25,6 +25,7 @@ scen_dir <- file.path(CRSSDIR,"results") #file.path(CRSSDIR,"Scenario")
 scens <- "2021Verification_AugCRSS" 
 # scens <- "2021Verification_90UBDemand"
 # scens <- "2021Verification_noRRNF" 
+# scens <- '2020Verification_2016UCRC_CUL' #must change df_obs length to do 2000-2020
 
 #### Plot Controls #####
 
@@ -90,11 +91,8 @@ df_annual <-df_monthly %>% group_by(Variable,Year) %>%
   summarise(Value = sum(Value))
 
 # ## create obs from excel not crss run ##
-# df_obs <- df_monthly %>% pivot_wider(names_from = Variable,values_from = Value)
-# df_obs = df_obs[,c(1:5,24:41)]
-# writexl::write_xlsx(df_obs,'Verification_Obs_Gage_Data.xlsx')
-# df[,6:23]-df_obs[,6:23] #not sure why different but proceed anyways
 df_obs <- readxl::read_xlsx('data/Verification_Obs_Gage_Data_Linked.xlsx',sheet = "R_Input",col_names = T, ) 
+# df_obs <- df_obs[1:228,] #only if need to limit it to 2000-2018
 df_obs = df_obs %>% pivot_longer(cols=names(df_obs)[6:23],names_to = 'Variable',values_to = 'Value')
 
 df_monthly <- rbind.data.frame(df_monthly,df_obs)
@@ -115,14 +113,14 @@ years <- unique(df_annual$Year)
 outflows <- c ("1_Simulated_UpperColoradoReach", "2_Simulated_UpperColoradoAboveCameo","3_Simulated_TaylorAboveBlueMesa",
                "6_Simulated_GunnisonRiverAboveGrandJunction","7_Simulated_DoloresRiver","8_Simulated_DoloresColorado",
                "9_Simulated_GreenRAboveFontenelle","10_Simulated_GreenRAboveGreenRiverWY","11_Simulated_GreenRAboveFlamingGorge",
-               "12_Simulated_LittleSnakeRiver","13_Simulated_YampaRiver","14_Simulated_DuchesneBelowStarv",
+               "12_Simulated_YampaRiver","13_Simulated_LittleSnakeRiver","14_Simulated_DuchesneBelowStarv",
                "15_Simulated_WhiteRiverAboveWatson","16_Simulated_GreenRWhiteToSanRafael","17_Simulated_SanRafaelRiver",
                "18_Simulated_SJAboveNavajo","19_Simulated_LowerSanJuanRiver","20_Simulated_SanJuanPowell")
 
 gages <- c("1_Gage_ColoradoNearGlenwoodSprings","2_Gage_ColoradoNearCameo","3_Gage_BlueMesa", 
            "6_Gage_GunnisonNearGrandJunction",  "7_Gage_DoloresNearCisco", "8_Gage_ColoradoNearCisco", 
            "9_Gage_Fontenelle","10_Gage_GreenAtGreenRiverWY","11_Gage_FlamingGorge",
-           "12_Gage_LittleSnakeNearLily","13_Gage_YampaNearMaybell","14_Gage_DuchesneNearRandlett",
+           "12_Gage_YampaNearMaybell","13_Gage_LittleSnakeNearLily","14_Gage_DuchesneNearRandlett",
            "15_Gage_WhiteNearWatson", "16_Gage_GreenAtGreenRiverUT","17_Gage_SanRafaelNearGreenRiverUT",
            "18_Gage_Navajo","19_Gage_SanJuanNearBluff","20_Gage_Powell")  #"18_Gage_SanJuanNearArchuleta"   
 
@@ -219,10 +217,10 @@ if(!(length(outflows) == length(gages)))
 # pdf(file.path(ofigs,"WUandCULbyCPbySector.pdf"), width=9, height=6) #disable below pdf if enabled
 
 for (i in 1:length(nodes)) {
-  # for (i in 12:12) {
+  # for (i in 5:length(nodes)) {
   # for (i in 8) {
   # for (i in c(1,2,8,9)) {
-  # for (i in c(1:2)) {
+  # for (i in c(1:4)) {
   
   
   #create a figure folder
@@ -767,11 +765,11 @@ for (i in 1:length(nodes)) {
       
       #combine metrics from out-gage with allstats from demands analysis
       write.csv(cbind(rbind(metrics[,2:3],NA),allstats),
-                file = file.path(ofigs,paste(nodes[i],scens,"Stats.csv")))
+                file = file.path(ofigs,nodes[i],paste(nodes[i],scens,"Stats.csv")))
       
       #write sector monthly distributions
       write.csv(allsctrdist,
-                file = file.path(ofigs,paste(nodes[i],scens,"SectorMonthlyDistribution.csv")))
+                file = file.path(ofigs,nodes[i],paste(nodes[i],scens,"SectorMonthlyDistribution.csv")))
       
       # if (i==1) {
       #   
