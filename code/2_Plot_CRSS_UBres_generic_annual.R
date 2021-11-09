@@ -3,6 +3,12 @@
 # # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 warning('Run Process_CRSS_rdf_generic_feather.R before this')
 # ## Load Feather with Processed Results 
+onBA = T # which computer BA or my PC?
+scen_dir_overwrite=FALSE # onBA=T "M:/Shared/CRSS/2021/Scenario", onBA=F "Z:/Shared/CRSS/2021/Scenario"
+scen_dir_overwrite="C:/Users/fellette/Documents/GIT/CRSS"
+
+#get scen information from .yml file
+yaml_nm=FALSE #give it name e.g. 
 if(T){ #if you already ran 1_Process_CRSS_rdf_generic_feather.R  just update results_nm 
   results_nm <- "FG_9002" #"PowellElVol" #"NavajoElVol"
   if (onBA == TRUE) { #first set the rwprocess_dir so you can setup directories 
@@ -37,8 +43,11 @@ res <- F #if F only plot Powell
 startyr = 2022 #filter out all years > this year
 endyr = 2040#2060
 
-print_png <- F #F = don't make seperate png figures 
- 
+print_png <- T #F = don't make seperate png figures 
+widths=9; heights=6
+mycolors <- c("#f1c40f", "#138d75") #crssplot 138d75=green=dev, f1c40f=gold=baseline,  colors 
+mycolors <- c("#138d75","#f1c40f") #reverse order - should be setting this to not reorder crssplot 138d75=green=dev, f1c40f=gold=baseline,  colors 
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #                               END USER INPUT
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -88,7 +97,7 @@ p <- scen_res %>%
   geom_line() +
   theme_light() + 
   scale_y_continuous(labels = scales::comma) +
-  # scale_color_manual(values = mycolors) +
+  scale_color_manual(values = mycolors) +
   labs(title = paste("Average Annual",title), y = y_lab, x = "Year")
 print(p)
 if(print_png==T){ ggsave(filename = file.path(figures_dir,paste("Average Annual",variable,".png")), width = widths[1],height = heights[1])}
@@ -106,7 +115,7 @@ p <- scen_res %>%
   ggplot(aes(x = Year, y = Value, color = ScenarioGroup))+#, group = ScenarioGroup)) +
   geom_line() +
   theme_light() + 
-  # scale_color_manual(values = mycolors) +
+  scale_color_manual(values = mycolors) +
   labs(title = paste("Average EOCY",title), y = y_lab, x = "Year")
 print(p)
 if(print_png==T){ ggsave(filename = file.path(figures_dir,paste("Mean EOCY",variable,".png")), width = widths[1],height = heights[1])}
@@ -127,7 +136,7 @@ p <- scen_res %>%
   geom_line() +
   theme_light() + 
   scale_y_continuous(labels = scales::comma) +
-  # scale_color_manual(values = mycolors) +
+  scale_color_manual(values = mycolors) +
   labs(title = paste("Average Annual",title), y = y_lab, x = "Year")
 print(p)
 if(print_png==T){ ggsave(filename = file.path(figures_dir,paste("Average Annual",variable,".png")), width = widths[1],height = heights[1])}
@@ -146,7 +155,7 @@ p <- scen_res %>%
   ggplot(aes(x = Year, y = Value, color = ScenarioGroup))+#, group = ScenarioGroup)) +
   geom_line() +
   theme_light() + 
-  # scale_color_manual(values = mycolors) +
+  scale_color_manual(values = mycolors) +
   labs(title = paste("Average EOCY",title), y = y_lab, x = "Year")
 print(p)
 if(print_png==T){ ggsave(filename = file.path(figures_dir,paste("Mean EOCY",variable,".png")), width = widths[1],height = heights[1])}
@@ -193,7 +202,7 @@ p <- scen_res %>%
   geom_line() +
   theme_light() + 
   scale_y_continuous(labels = scales::comma) +
-  # scale_color_manual(values = mycolors) +
+  scale_color_manual(values = mycolors) +
   labs(title = paste("Average Annual",title), y = y_lab, x = "Year")
 print(p)
 if(print_png==T){ ggsave(filename = file.path(figures_dir,paste("Average Annual",variable,".png")), width = widths[1],height = heights[1])}
@@ -211,7 +220,7 @@ p <- scen_res %>%
   ggplot(aes(x = factor(Year), y = Value, color = ScenarioGroup, group = ScenarioGroup)) +
   geom_line() +
   theme_light() + 
-  # scale_color_manual(values = mycolors) +
+  scale_color_manual(values = mycolors) +
   labs(title = paste("Average EOCY",title), y = y_lab, x = "Year")
 print(p)
 if(print_png==T){ ggsave(filename = file.path(figures_dir,paste("Mean EOCY",variable,".png")), width = widths[1],height = heights[1])}
@@ -232,7 +241,7 @@ p <- scen_res %>%
   geom_line() +
   theme_light() + 
   scale_y_continuous(labels = scales::comma) +
-  # scale_color_manual(values = mycolors) +
+  scale_color_manual(values = mycolors) +
   labs(title = paste("Average Annual",title), y = y_lab, x = "Year")
 print(p)
 if(print_png==T){ ggsave(filename = file.path(figures_dir,paste("Average Annual",variable,".png")), width = widths[1],height = heights[1])}
@@ -250,7 +259,7 @@ p <- scen_res %>%
   geom_line() +
   theme_light() + 
   ylim(c(3400,3700))+
-  # scale_color_manual(values = mycolors) +
+  scale_color_manual(values = mycolors) +
   labs(title = paste("Average EOCY",title), y = y_lab, x = "Year")
 print(p)
 if(print_png==T){ ggsave(filename = file.path(figures_dir,paste("Mean EOCY",variable,".png")), width = widths[1],height = heights[1])}
@@ -265,7 +274,7 @@ p <- scen_res %>%
   geom_line() +
   theme_light() + 
   ylim(c(3400,3700))+
-  # scale_color_manual(values = mycolors) +
+  scale_color_manual(values = mycolors) +
   labs(title = paste("Average EOCY",title), y = y_lab, x = "Year")
 print(p)
 
