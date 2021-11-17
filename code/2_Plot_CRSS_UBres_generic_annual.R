@@ -3,14 +3,16 @@
 # # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 warning('Run Process_CRSS_rdf_generic_feather.R before this')
 
-if(T){ #if you've already processed just Load Feather with Processed Results 
-  scen_dir_overwrite=FALSE # don't need this for already processed, just give F so doesn't error on libs_n_dirs 
-  #get scen information from .yml file
-  yaml_nm=FALSE #
-  results_nm <- "PowellElVol_NewInactCap"# "NoChangeNF_PowellElVol" #"NewInactCap_NewNF_PowEV" 
-  
-  #libraries and setup directories, just use getwd()
-  source(file.path(getwd(),"code","libs_n_dirs.R")) 
+
+# scen_dir_overwrite=FALSE # don't need this for already processed, just give F so doesn't error on libs_n_dirs 
+# #get scen information from .yml file
+# yaml_nm=FALSE #
+# results_nm <- "PowellElVol_NewInactCap"# "NoChangeNF_PowellElVol" #"NewInactCap_NewNF_PowEV" 
+# 
+# #libraries and setup directories, just use getwd()
+# source(file.path(getwd(),"code","libs_n_dirs.R")) 
+
+if(T){ #if you've already processed just Load Feather with Processed Results
   
   scen_res <- feather::read_feather(path = file.path(feather_data_dir,'crspopsdata.feather')) 
   summary(scen_res)
@@ -283,5 +285,5 @@ message(paste('Writing stats file to',file.path(results_dir,"figure_data",paste(
 
 dev.off()
 }
-
+dev.off()
 

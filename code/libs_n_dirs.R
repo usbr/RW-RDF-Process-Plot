@@ -19,15 +19,6 @@
   library(feather)
   library(scales) #comma labels for axis
   
-  source(file.path(rwprocess_dir,"code","stat-boxplot-custom.R")) #stat_boxplot_custom()
-  
-  date_to_wy <- function(x) {
-    mm <- month(x)
-    yy <- year(x)
-    yy[mm >= 10] <- yy[mm >= 10] + 1
-    yy
-  }
-  
   #### =============== Directories INPUTS =============== ####
   
   # if (onBA == TRUE) {
@@ -40,14 +31,21 @@
   rwprocess_dir <- getwd()
   # list.dirs(path=scen_dir)
   
- 
+  source(file.path(rwprocess_dir,"code","stat-boxplot-custom.R")) #stat_boxplot_custom()
+  
+  date_to_wy <- function(x) {
+    mm <- month(x)
+    yy <- year(x)
+    yy[mm >= 10] <- yy[mm >= 10] + 1
+    yy
+  }
   
   CRSSDIR <- Sys.getenv("CRSS_DIR")
   
   #### =============== yaml INPUTS =============== ####
   
   if(yaml_nm!=FALSE){
-    yaml_nm <- "aug2021_sensitivity.yml"
+    # yaml_nm <- "aug2021_sensitivity.yml"
     
     yaml_path <- file.path(CRSSDIR,"code",yaml_nm)
     yaml <- yaml::read_yaml(yaml_path)
