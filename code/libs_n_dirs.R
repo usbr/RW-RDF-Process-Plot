@@ -30,13 +30,14 @@
   
   #### =============== Directories INPUTS =============== ####
   
-  if (onBA == TRUE) {
-    rwprocess_dir <- "C:/Users/fellette/Documents/GIT/RW-RDF-Process-Plot"
-    scen_dir <- "M:/Shared/CRSS/2021/Scenario" # Manoa CRSS shared from BA
-  } else {
-    rwprocess_dir <- "C:/Users/cfelletter/Documents/RW-RDF-Process-Plot"
-    scen_dir <- "Z:/Shared/CRSS/2021/Scenario" # Manoa CRSS shared from BA
-  }
+  # if (onBA == TRUE) {
+  #   rwprocess_dir <- "C:/Users/fellette/Documents/GIT/RW-RDF-Process-Plot"
+  #   scen_dir <- "M:/Shared/CRSS/2021/Scenario" # Manoa CRSS shared from BA
+  # } else {
+  #   rwprocess_dir <- "C:/Users/cfelletter/Documents/RW-RDF-Process-Plot"
+  #   scen_dir <- "Z:/Shared/CRSS/2021/Scenario" # Manoa CRSS shared from BA
+  # }
+  rwprocess_dir <- getwd()
   # list.dirs(path=scen_dir)
   
  

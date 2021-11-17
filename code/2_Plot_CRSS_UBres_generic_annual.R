@@ -2,33 +2,25 @@
 # CF Oct 2021 
 # # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 warning('Run Process_CRSS_rdf_generic_feather.R before this')
-# ## Load Feather with Processed Results 
-onBA = T # which computer BA or my PC?
-scen_dir_overwrite=FALSE # onBA=T "M:/Shared/CRSS/2021/Scenario", onBA=F "Z:/Shared/CRSS/2021/Scenario"
-scen_dir_overwrite="C:/Users/fellette/Documents/GIT/CRSS"
 
-#get scen information from .yml file
-yaml_nm=FALSE #give it name e.g. 
-if(T){ #if you already ran 1_Process_CRSS_rdf_generic_feather.R  just update results_nm 
-  results_nm <- "FG_9002" #"PowellElVol" #"NavajoElVol"
-  if (onBA == TRUE) { #first set the rwprocess_dir so you can setup directories 
-    
-    rwprocess_dir <- "C:/Users/fellette/Documents/GIT/RW-RDF-Process-Plot"
-  } else {
-    rwprocess_dir <- "C:/Users/cfelletter/Documents/RW-RDF-Process-Plot"
-  }
-  #libraries and setup directories 
-  source(file.path(rwprocess_dir,"code","libs_n_dirs.R")) 
+if(T){ #if you've already processed just Load Feather with Processed Results 
+  scen_dir_overwrite=FALSE # don't need this for already processed, just give F so doesn't error on libs_n_dirs 
+  #get scen information from .yml file
+  yaml_nm=FALSE #
+  results_nm <- "PowellElVol_NewInactCap"# "NoChangeNF_PowellElVol" #"NewInactCap_NewNF_PowEV" 
+  
+  #libraries and setup directories, just use getwd()
+  source(file.path(getwd(),"code","libs_n_dirs.R")) 
+  
+  scen_res <- feather::read_feather(path = file.path(feather_data_dir,'crspopsdata.feather')) 
+  summary(scen_res)
+  scens <- unique(scen_res$ScenarioGroup)
+  scens
+  #make ggplot keep this order rather than alpha
+  scen_res$ScenarioGroup <- factor(scen_res$ScenarioGroup, levels=scens) 
+  unique(scen_res$Variable)
+  length(unique(scen_res$Scenario))
 }
-
-
-
-scen_res <- feather::read_feather(path = file.path(feather_data_dir,'crspopsdata.feather')) 
-summary(scen_res)
-scens <- unique(scen_res$ScenarioGroup)
-scens
-unique(scen_res$Variable)
-length(unique(scen_res$Scenario))
 
 # results_nm<-unique(scen_res$ScenarioGroup)[1]
 
@@ -45,8 +37,7 @@ endyr = 2040#2060
 
 print_png <- T #F = don't make seperate png figures 
 widths=9; heights=6
-mycolors <- c("#f1c40f", "#138d75") #crssplot 138d75=green=dev, f1c40f=gold=baseline,  colors 
-mycolors <- c("#138d75","#f1c40f") #reverse order - should be setting this to not reorder crssplot 138d75=green=dev, f1c40f=gold=baseline,  colors 
+mycolors <- c("#138d75","#f1c40f") #crssplot 138d75=green=dev, f1c40f=gold=baseline
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #                               END USER INPUT
@@ -57,13 +48,6 @@ if (!file.exists(results_nm)) {
 } else {
   stop('Run Process_CRSS_rdf_generic_feather.R first')
 }
-
-# check folders
-if (!file.exists(results_dir)) {
-  message(paste('Creating folder:', results_dir))
-  dir.create(results_dir)
-}
-message('PDF will be saved to: ', results_dir)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## Plot annual figures  
@@ -78,7 +62,7 @@ scen_res$MonthNum = as.Date(paste0(scen_res$Year,scen_res$Month,"01"), format = 
 scen_res$MonthNum = as.numeric(format.Date(scen_res$MonthNum, format = "%m"))
 
 if (res != F) {
-pdf(file.path(results_dir,paste0(results_nm,"_AnnualPowell+",res,'.pdf')), width=9, height=6)
+pdf(file.path(results_dir,paste0(results_nm,"_AnnualPowell+",res,"_",first(yrs2show),"-",last(yrs2show),'.pdf')), width=9, height=6)
 
 
 variable = paste0(res,".Inflow")
@@ -182,7 +166,7 @@ scen_res_stats %>%
 } # end UB res plotting loop  
 
 if (res == F) { #if UB res was not plotted than open a pdf just for Powell 
-  pdf(file.path(results_dir,paste0(results_nm,"_AnnualPowell.pdf")), width=9, height=6)
+  pdf(file.path(results_dir,paste0(results_nm,"_AnnualPowell_",first(yrs2show),"-",last(yrs2show),'.pdf')), width=9, height=6)
 }  
 
 if (T){ #always plot Powell
@@ -294,7 +278,7 @@ scen_res_stats %>%
                    'Min' = min(Value),'Max' = max(Value)) %>% 
   pivot_wider(names_from = ScenarioGroup,values_from=c("Mean","Med","Min","q10","q90","Max")) %>% 
   arrange(Variable,Year) %>%
-  write.csv(file = file.path(results_dir,"figure_data",paste("Powell_Stats.csv")))
+  write.csv(file = file.path(results_dir,"figure_data",paste0("Powell_",first(yrs2show),"-",last(yrs2show),'_Stats.csv')))
 message(paste('Writing stats file to',file.path(results_dir,"figure_data",paste("res_Stats.csv"))))
 
 dev.off()
