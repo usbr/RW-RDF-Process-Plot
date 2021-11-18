@@ -5,6 +5,7 @@ rm(list=ls()) #clear the enviornment
 
 CRSSDIR <- Sys.getenv("CRSS_DIR")
 # CRSSDIR <- "C:\\Users\\cfelletter\\Documents\\CRSS.Offc" #results in old model dir
+CRSSDIR <- "C:\\Users\\fellette\\Documents\\GIT\\crss.trirvw2020"
 
 # # where scenarios are folder are kept
 scen_dir <- file.path(CRSSDIR,"Scenario")
@@ -30,8 +31,8 @@ source('code/stat-boxplot-custom.r')
 scens <- list( ### don't comment these out use keepscens variabile #### 
                "Basecase" = "Base_NoDO_8004.mdl,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC", 
                "LTSP" = "LTSP_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC",
-               # "SMB" = "SMB_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC",
-               # "CPMBF" = "CPMBF_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC",
+               "SMB" = "SMB_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC",
+               "CPMBF" = "CPMBF_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC",
                "LTSP&SMB" = "LTSP_SMB_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC",
                "LTSP,SMB,CPMBF" = "All_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7002_MinFlow,MTOM_Most_Aug21IC"#,
                
@@ -88,8 +89,8 @@ mycolors <- brewer.pal(n = Noscens, name = "Set1")
 
 
 # mycolors <- c("#f8766d","#fcbe03","#000076","#ff0bff","#49ff49","#00ffff") #CRSS offical + match heather Base, LTSP, LTSP SMB, All
-mycolors <- c("#000076","#ff0bff","#49ff49","#00ffff") # match heather Base, LTSP, LTSP SMB, All
-Figs <- "GREAT_NoDRO_matchHeatherscolors.pdf"
+# mycolors <- c("#000076","#ff0bff","#49ff49","#00ffff") # match heather Base, LTSP, LTSP SMB, All
+# Figs <- "GREAT_NoDRO_matchHeatherscolors.pdf"
 
 
 startyr = 2021 #filter out all years > this year
