@@ -16,7 +16,7 @@ singleIC=T
 
 #get scen information from .yml file
 yaml_nm=FALSE #give it name e.g. 
-yaml_nm="aug2021_sensitivity.yml"
+yaml_nm="aug2021_sensitivity_Shoshone.yml"
 
 #libraries and setup directories, just use getwd()
 source(file.path(getwd(),"code","libs_n_dirs.R")) 
