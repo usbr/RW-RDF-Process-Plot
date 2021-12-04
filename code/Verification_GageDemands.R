@@ -21,10 +21,8 @@ results_dir <- file.path(CRSSDIR,"results")
 #easier to make folder from output in the results dir than to move it 
 scen_dir <- file.path(CRSSDIR,"results") #file.path(CRSSDIR,"Scenario")
 # #containing the sub folders for each ensemble
-# scens <- "Linked_RR" #"Unlinked_NoRRNF"
-scens <- "2021Verification_AugCRSS" 
-# scens <- "2021Verification_90UBDemand"
-# scens <- "2021Verification_noRRNF" 
+scens <- "Verification_ShoshoneAug9003" 
+# scens <- "2021Verification_AugCRSS_ReRun"
 # scens <- '2020Verification_2016UCRC_CUL' #must change df_obs length to do 2000-2020
 
 #### Plot Controls #####
@@ -34,8 +32,10 @@ printfigs<-T#T#make png figures and dump data
 y_lab_yr = "Flow (ac-ft/yr)"
 y_lab_mon = "Flow (ac-ft/mo)"
 
-mycolors <- c("#009E73","#6bbd28","#0072B2") #for Sector plots dark green, light green, blue 
-mylinetypes <- c("dashed","solid","solid")
+mycolors <- c("#61bd17","#009E73","#6bbd28","#0072B2") #for Sector plots mid dark green - schedule depl, dark green - depl rqst, light green - depletion, blue - CUL, 
+mylinetypes <- c("dotdash","dashed","solid","solid","dotdash")  #schedule depl, depl rqst, depletion, CUL, 
+
+nyears <- length(2000:2019) #currently only used one place to calculate average
 
 #standard powerpoint figure sizes 
 # gage an, an gage resid, gage mon, mon gage resid, total use  
@@ -218,8 +218,7 @@ if(!(length(outflows) == length(gages)))
 
 for (i in 1:length(nodes)) {
   # for (i in 5:length(nodes)) {
-  # for (i in 8) {
-  # for (i in c(1,2,8,9)) {
+  # for (i in 1) {
   # for (i in c(1:4)) {
   
   
@@ -252,7 +251,7 @@ for (i in 1:length(nodes)) {
   #   summarise(Value = sum(Value))  %>%
   #   ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() + 
   #   geom_line() +
-  #   scale_color_manual(values = c(mycolors[3],mycolors[2],mycolors[1])) +
+  #   scale_color_manual(values = c(mycolors[4],mycolors[3],mycolors[3])) +
   #   scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
   #   labs(title = paste("UB Total Annual Demand"), y = "Depletions (AF/yr)")
   # print(p)
@@ -286,7 +285,7 @@ for (i in 1:length(nodes)) {
     geom_line() +
     theme_light() + 
     scale_colour_discrete(#name  ="Legend",  #change legend 
-      type= c(mycolors[3],mycolors[1]), # customcolors 
+      type= c(mycolors[4],mycolors[3]), # customcolors 
       breaks=c(gages[i], outflows[i]),
       labels=legend_labs)  + 
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
@@ -363,7 +362,7 @@ for (i in 1:length(nodes)) {
     geom_line() +
     theme_light() +
     scale_colour_discrete(#name  ="Legend",  #change legend
-      type= c(mycolors[3],mycolors[1]), # customcolors
+      type= c(mycolors[4],mycolors[3]), # customcolors
       breaks=c(gages[i], outflows[i]),
       labels=legend_labs)  +
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
@@ -436,43 +435,58 @@ for (i in 1:length(nodes)) {
     dplyr::filter(Node == nodes[i]) %>%
     dplyr::filter(Sector != "ResReg") #remove from total demands
   
-  #plot total demand and total CUL
+  #create a depleted slot, there is not one on the water user in RW
+  requested <- WU %>%
+    dplyr::filter(Slot == "Depletion Requested") # zz %>%
+  depleted <- WU %>% #this slot will be later overwritten with actual depletion values 
+    dplyr::filter(Slot == "Depletion Shortage") # Schedule - Depletion = all shortages  
+  schedule <- WU %>%
+    dplyr::filter(Slot == "Depletion Schedule")
+  
+  depleted$Value = requested$Value - depleted$Value
+  depleted$Slot = rep("Depletion",times = length(depleted$Slot))
+  
+  WU <- rbind(schedule,requested,depleted)
   zz <- rbind(WU[,c("Date","Value","Year","Slot")],
               CUL[,c("Date","Value","Year","Slot")])
   
+  # # Adding factors so ggplot does not alphabetize legend
+  zz$Slot = factor(zz$Slot, levels=c("Depletion Schedule","Depletion Requested","Depletion","CUL"))
+  
+  #plot total demand and total CUL
   p <- zz %>%
-    dplyr::filter(Slot %in% c("Depletion Requested","CUL")) %>%
+    dplyr::filter(Slot %in% c("Depletion Schedule","Depletion Requested","Depletion","CUL")) %>%
     group_by(Slot,Year) %>%
     summarise(Value = sum(Value))  %>%
     ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() +
-    geom_line() +
-    scale_color_manual(values = c(mycolors[3],mycolors[1])) +
+    geom_line(aes(linetype=Slot)) +
+    scale_linetype_manual(values = mylinetypes) +
+    scale_color_manual(values = mycolors) +
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Total Annual Demand"), y = "Depletions (AF/yr)")
   print(p)
   if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Total Demand",scens,".png")), width = gage_widths[5],height = gage_heights[5])}
   
-  #plot shortage with flow
-  xxx <- df_monthly %>%
-    dplyr::filter(Variable == gages[i] | Variable == outflows[i]) %>%
-    mutate(Slot = Variable)
-  flowuse <- rbind.data.frame(zz,xxx[,c("Date","Value","Year","Slot" )])
-  # "Depletion" %in% unique(zz$Slot)  # we don't have a depletion slot yet, I build it later
-  p <- flowuse %>%
-    dplyr::filter(Slot %in% c("Depletion Requested",outflows[i],"Depletion Shortage","CUL")) %>%
-    # dplyr::filter(Slot %in% c("Depletion Requested","CUL",gages[i],outflows[i],"Depletion Shortage")) %>%
-    group_by(Slot,Year) %>%
-    summarise(Value = sum(Value))  %>%
-    ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() +
-    geom_line() +
-    scale_color_manual(values = c(mycolors[3],"#eb34de",mycolors[1],mycolors[2])) +
-    # scale_color_manual(values = c(mycolors[3],mycolors[1],mycolors[2])) + #if don't have CUL
-    scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
-    labs(title = paste(node_title,"Annual Flow-Shortage Relationship"), y = "(AF/yr)")
-  # print(p)
+  # #plot depletion requested with flow - I was trying to look at flow-shortage relationship
+  # xxx <- df_monthly %>%
+  #   dplyr::filter(Variable == gages[i] | Variable == outflows[i]) %>%
+  #   mutate(Slot = Variable)
+  # flowuse <- rbind.data.frame(zz,xxx[,c("Date","Value","Year","Slot" )])
+  # 
+  # p <- flowuse %>%
+  #   dplyr::filter(Slot %in% c("Depletion Requested",outflows[i],"Depletion Shortage","CUL")) %>%
+  #   # dplyr::filter(Slot %in% c("Depletion Requested","CUL",gages[i],outflows[i],"Depletion Shortage")) %>%
+  #   group_by(Slot,Year) %>%
+  #   summarise(Value = sum(Value))  %>%
+  #   ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() +
+  #   geom_line() +
+  #   scale_color_manual(values = c(mycolors[4],"#eb34de",mycolors[3],mycolors[3])) +
+  #   # scale_color_manual(values = c(mycolors[4],mycolors[3],mycolors[3])) + #if don't have CUL
+  #   scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
+  #   labs(title = paste(node_title,"Annual Flow-Shortage Relationship"), y = "(AF/yr)")
+  # # print(p)
   
   # # what to do about sectors unique to CRSS? "Environmental" and "Lease". Fish & Wildlife only in LB
-  
   # add CUL stockpond, livestock and minearls into sectors evap, ag, energy
   CUL[which(CUL$Sector == "Evaporation"),]$Value = CUL[which(CUL$Sector == "Evaporation"),]$Value + CUL[which(CUL$Sector == "Stockpond"),]$Value
   CUL[which(CUL$Sector == "Agriculture"),]$Value = CUL[which(CUL$Sector == "Agriculture"),]$Value + CUL[which(CUL$Sector == "Livestock"),]$Value
@@ -489,10 +503,9 @@ for (i in 1:length(nodes)) {
   sectors = sectors[which(sectors %in% unique(CUL$Sector))]
   # sectors
   
-  #filter out all unused sectors and slots
+  #filter out all unused sectors 
   WU <- WU %>%
-    dplyr::filter(Sector %in% sectors) %>%
-    dplyr::filter(Slot %in% c("Depletion Requested","Depletion Shortage"))
+    dplyr::filter(Sector %in% sectors)
   CUL <- CUL %>%
     dplyr::filter(Sector %in% sectors)
   
@@ -513,23 +526,20 @@ for (i in 1:length(nodes)) {
         dplyr::filter(Sector == sectors[j])
       uses <- uses[,names(x)]  #same column layout
       
-      #create a depleted slot
-      requested <- x %>%
-        dplyr::filter(Slot == "Depletion Requested")
-      depleted <- x %>%
-        dplyr::filter(Slot == "Depletion Shortage")
+      #previously created a depleted slot, so no need to redo, just filter x
+      depleted <- x %>% #this slot will be later overwritten with actual depletion values 
+        dplyr::filter(Slot == "Depletion") # Schedule - Depletion = all shortages  
+      schedule <- x %>%
+        dplyr::filter(Slot == "Depletion Schedule")
       
       #for stats later
-      precntshorted <- sum(depleted$Value)/sum(requested$Value)*100
-      annrequest <- sum(requested$Value)/19
+      precntshorted <- sum(depleted$Value)/sum(schedule$Value)*100 #base on schedule now
+      annrequest <- sum(schedule$Value)/nyears
       
-      depleted$Value = requested$Value - depleted$Value
-      depleted$Slot = rep("Depletion",times = length(depleted$Slot))
+      xx <- rbind.data.frame(x,uses)
       
-      xx <- rbind.data.frame(requested,depleted,uses)
-      
-      # # Adding factors so ggplot does not alphebetize legend
-      xx$Slot = factor(xx$Slot, levels=c("Depletion Requested","Depletion","CUL"))
+      # # Adding factors so ggplot does not alphabetize legend
+      xx$Slot = factor(xx$Slot, levels=c("Depletion Schedule","Depletion Requested","Depletion","CUL"))
       
       #annual
       p <- xx %>%
@@ -657,37 +667,37 @@ for (i in 1:length(nodes)) {
         }
       
       # % monthly / annual distribution plot
-      xx <- xx %>%
-        filter(Slot == "Depletion Requested" | Slot == "CUL") %>%
+      xxx <- xx %>%
+        filter(Slot == "Depletion Schedule" | Slot == "CUL") %>%
         group_by(Slot,Year) %>%
         mutate(Distirubtion = Value/sum(Value)) %>%
         group_by(Slot,MonthNum) %>%
         summarise(Distirubtion = mean(Distirubtion))
       
       #save the CUL distribution to apply as new distribution factor
-      sctrdist<-xx[which(xx$Slot == "CUL"),]
-      sctrdist <- cbind(sctrdist,xx[which(xx$Slot == "Depletion Requested"),]$Distirubtion)[,3:4]
+      sctrdist<-xxx[which(xxx$Slot == "CUL"),]
+      sctrdist <- cbind(sctrdist,xxx[which(xxx$Slot == "Depletion Schedule"),]$Distirubtion)[,3:4]
       colnames(sctrdist) = c(paste("CUL",sectors[j]),paste("CRSS",sectors[j]))
       # sctrdist
       
       #finish distribution plot
-      p <- xx %>%
+      p <- xxx %>%
         ggplot(aes(x = MonthNum, y = Distirubtion, color = Slot)) +
         theme_light() +
         scale_y_continuous(labels = scales::percent) +
         scale_x_continuous(breaks = 1:12,labels = month.abb) +
-        scale_color_manual(values = c(mycolors[1],mycolors[3])) +
+        scale_color_manual(values = c(mycolors[3],mycolors[4])) +
         geom_line() +
         labs(title = paste(node_title,sectors[j],"Distribution"), y = "Monthly Distribution",x="Month")
       print(p)
       
       if(printfigs==T){ #print figure of monthly agg
-        px <- xx %>%
+        px <- xxx %>%
           ggplot(aes(x = MonthNum, y = Distirubtion, color = Slot)) +
           theme_light() +
           scale_y_continuous(labels = scales::percent) +
           scale_x_continuous(breaks = 1:12,labels = month.abb) +
-          scale_color_manual(values = c(mycolors[1],mycolors[3])) +
+          scale_color_manual(values = c(mycolors[3],mycolors[4])) +
           geom_line() +
           theme(legend.position = "none", axis.title.x = element_blank(),axis.title.y= element_blank())
         # print(px)

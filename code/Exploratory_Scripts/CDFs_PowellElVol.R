@@ -103,6 +103,26 @@ if(T){
   print(p)
   ggsave(filename = file.path(figures_dir,paste("CDF_",title,".png")), width = widths[1],height = heights[1])
   
+  
+  variable = "Powell.Storage"
+  title = paste(variable,first(yrs2show),"-",last(yrs2show))
+  y_lab = "EOCY Storage (KAF)"
+  exc_month = 12
+  p <- scen_res %>%
+    dplyr::filter(Variable == variable) %>%
+    dplyr::filter(MonthNum%in%exc_month) %>%
+    mutate(Value = Value/1000) %>% #convert to KAF after we convert to AF  
+    # dplyr::group_by(ScenarioGroup, Year) %>%
+    # dplyr::summarise(Value = mean(Value)) %>%
+    ggplot(aes(x = Value, color = ScenarioGroup, group = ScenarioGroup)) +
+    stat_ecdf(geom = "step") +
+    crssplot::theme_crss() +
+    # ylim(c(3400,3700))+
+    scale_color_manual(values = mycolors) +
+    labs(title = paste(title), y = "", x = y_lab)
+  print(p)
+  ggsave(filename = file.path(figures_dir,paste("CDF_",title,".png")), width = widths[1],height = heights[1])
+  
 }
 
 #process and plot GainsAboveLeesFerry.feather
