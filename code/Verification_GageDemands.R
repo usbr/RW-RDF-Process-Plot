@@ -219,7 +219,7 @@ if(!(length(outflows) == length(gages)))
 for (i in 1:length(nodes)) {
   # for (i in 5:length(nodes)) {
   # for (i in 1) {
-  # for (i in c(1:4)) {
+  # for (i in c(10:11)) {
   
   
   #create a figure folder
@@ -312,7 +312,7 @@ for (i in 1:length(nodes)) {
   
   #dump out the data for Jim 
   if(printfigs==T){ write.csv(x = df_csv,
-                             file = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Gage",scens,".csv")))}
+                             file = file.path(ofigs,nodes[i],paste0("Data Ann Gage ",nodes[i]," ",scens,".csv")))}
   
   #annual residual
   diff <- diff %>%
@@ -324,7 +324,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste(node_title,"Annual Residual"), y = y_lab_yr)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Resid",scens,".png")), width = gage_widths[2],height = gage_heights[2])}
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0("Grph Ann Resid",nodes[i]," ",scens,".png")), width = gage_widths[2],height = gage_heights[2])}
   
   #annual cumsum residual
   p <- df_csv %>%
@@ -334,7 +334,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste(node_title,"Annual Cummulative Residual"), y = y_lab_yr)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Cumsum Resid",scens,".png")), width = gage_widths[2],height = gage_heights[2])}
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0("Grph Ann Cumsum Resid",nodes[i]," ",scens,".png")), width = gage_widths[2],height = gage_heights[2])}
   
   #annual metrics 
   mae <- round(sum(abs(diff$Value))/length(diff$Value))
@@ -368,7 +368,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Monthly Flow"), y = y_lab_mon)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Gage",scens,".png")), width = gage_widths[3],height = gage_heights[3])}
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0("Grph Mon Gage",nodes[i]," ",scens,".png")), width = gage_widths[3],height = gage_heights[3])}
   
   #calculate residual
   gage <- df_monthly %>%
@@ -388,7 +388,7 @@ for (i in 1:length(nodes)) {
   
   #dump out the data for Jim 
   if(printfigs==T){ write.csv(x = df_csv,
-                              file = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Gage",scens,".csv")))}
+                              file = file.path(ofigs,nodes[i],paste0("Data Mon Gage ",nodes[i]," ",scens,".csv")))}
   
   #monthly residual
   p <- diff %>%
@@ -465,7 +465,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Total Annual Demand"), y = "Depletions (AF/yr)")
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Total Demand",scens,".png")), width = gage_widths[5],height = gage_heights[5])}
+  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0("Grph Ann Total Demand ",nodes[i]," ",scens,".png")), width = gage_widths[5],height = gage_heights[5])}
   
   # #plot depletion requested with flow - I was trying to look at flow-shortage relationship
   # xxx <- df_monthly %>%
@@ -658,7 +658,7 @@ for (i in 1:length(nodes)) {
           
           #print data on last sector 
           write.csv(x = df_all_sector,
-                    file = file.path(ofigs,nodes[i],paste0(nodes[i],"_Sector_Mon",scens,".csv")))}
+                    file = file.path(ofigs,nodes[i],paste0("Data_Sector_Mon",nodes[i]," ",scens,".csv")))}
   
         } else {
           
@@ -779,7 +779,7 @@ for (i in 1:length(nodes)) {
       
       #write sector monthly distributions
       write.csv(allsctrdist,
-                file = file.path(ofigs,nodes[i],paste(nodes[i],scens,"SectorMonthlyDistribution.csv")))
+                file = file.path(ofigs,nodes[i],paste("SectorMonthlyDistribution",nodes[i],scens,".csv")))
       
       # if (i==1) {
       #   
