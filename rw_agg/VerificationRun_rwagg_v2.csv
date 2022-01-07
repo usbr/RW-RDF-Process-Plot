@@ -1,0 +1,19 @@
+file,slot,period,summary,eval,t_s,variable
+Verification.rdf,ColoradoNearGlenwoodSprings.Gage Outflow,asis,NA,NA,NA,1_Simulated_UpperColoradoReach
+Verification.rdf,ColoradoNearCameo.Gage Outflow,asis,NA,NA,NA,2_Simulated_UpperColoradoAboveCameo
+Verification.rdf,BlueMesa.Inflow,asis,NA,NA,NA,3_Simulated_TaylorAboveBlueMesa
+Verification.rdf,GunnisonNearGrandJunction.Gage Outflow,asis,NA,NA,NA,6_Simulated_GunnisonRiverAboveGrandJunction
+Verification.rdf,DoloresNearCisco.Gage Outflow,asis,NA,NA,NA,7_Simulated_DoloresRiver
+Verification.rdf,ColoradoNearCisco.Gage Outflow,asis,NA,NA,NA,8_Simulated_DoloresColorado
+Verification.rdf,Fontenelle.Inflow,asis,NA,NA,NA,9_Simulated_GreenRAboveFontenelle
+Verification.rdf,GreenAtGreenRiverWY.Gage Outflow,asis,NA,NA,NA,10_Simulated_GreenRAboveGreenRiverWY
+Verification.rdf,FlamingGorge.Inflow,asis,NA,NA,NA,11_Simulated_GreenRAboveFlamingGorge
+Verification.rdf,LittleSnakeNearLily.Gage Outflow,asis,NA,NA,NA,13_Simulated_LittleSnakeRiver
+Verification.rdf,YampaNearMaybell.Gage Outflow,asis,NA,NA,NA,12_Simulated_YampaRiver
+Verification.rdf,DuchesneNearRandlett.Gage Outflow,asis,NA,NA,NA,14_Simulated_DuchesneBelowStarv
+Verification.rdf,WhiteNearWatson.Gage Outflow,asis,NA,NA,NA,15_Simulated_WhiteRiverAboveWatson
+Verification.rdf,GreenAtGreenRiverUT.Gage Outflow,asis,NA,NA,NA,16_Simulated_GreenRWhiteToSanRafael
+Verification.rdf,SanRafaelNearGreenRiverUT.Gage Outflow,asis,NA,NA,NA,17_Simulated_SanRafaelRiver
+Verification.rdf,Navajo.Inflow,asis,NA,NA,NA,18_Simulated_SJAboveNavajo
+Verification.rdf,SanJuanNearBluff.Gage Outflow,asis,NA,NA,NA,19_Simulated_LowerSanJuanRiver
+Verification.rdf,Powell.Inflow,asis,NA,NA,NA,20_Simulated_SanJuanPowell

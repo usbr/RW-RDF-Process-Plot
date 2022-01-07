@@ -4,8 +4,8 @@
 rm(list=ls()) #clear the enviornment
 
 CRSSDIR <- Sys.getenv("CRSS_DIR")
-# CRSSDIR <- "C:\\Users\\cfelletter\\Documents\\CRSS.Offc" #results in old model dir
-CRSSDIR <- "C:\\Users\\fellette\\Documents\\GIT\\crss.trirvw2020"
+CRSSDIR <- "C:/Users/cfelletter/Documents/crss.trirvw2020" #my computer
+# CRSSDIR <- "C:\\Users\\fellette\\Documents\\GIT\\crss.trirvw2020" #BA
 
 # # where scenarios are folder are kept
 scen_dir <- file.path(CRSSDIR,"Scenario")
@@ -913,7 +913,7 @@ if (T) { #set true for easy running all plots
     dplyr::filter(Variable == variable) %>%
     dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
     dplyr::group_by(Scenario, TraceNumber) %>%
-    mutate(Value = max(Value)) %>%
+    # mutate(Value = max(Value)) %>% #i was taking the max for some reason but the label didn't reflect this
     dplyr::group_by(Scenario) %>%
     ggplot(aes(Value, color = Scenario)) +
     theme_light() + 

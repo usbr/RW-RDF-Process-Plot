@@ -74,7 +74,7 @@ if (!file.exists(ofigs)) {
 ################################################################################
 
 #agg file specifying which slots
-rw_agg_file <- "VerificationRun_rwagg.csv"
+rw_agg_file <- "VerificationRun_rwagg_v2.csv" #v2 uses gage.outflow instead
 #read agg file specifying which slots
 rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) #ubres.rdf res.rdf
 
