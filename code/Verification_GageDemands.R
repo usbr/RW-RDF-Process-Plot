@@ -54,18 +54,11 @@ sect_heights <- c(2,3,2)
 ## 3. Process Results 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #### File Checks #####
-
-file_dir <- file.path(scen_dir, scens[1])
-
-# check folders
-if(!file.exists(file_dir))
-  stop('Scenarios folder(s) do not exist or scen_dir is set up incorrectly.
-       Please ensure Scenarios is set correctly.')
-
-ofigs <- file.path(results_dir,scens[1])
-if (!file.exists(ofigs)) {
-  message(paste('Creating folder:', ofigs,'move results rdfs into this dir and then proceed with code'))
-  dir.create(ofigs)
+#file_dir was the same as ofigs since rdfs and fgiures are in same place, replaced ofigs with file_dir 
+file_dir <- file.path(results_dir,scens[1])
+if (!file.exists(file_dir)) {
+  message(paste('Creating folder:', file_dir,'move results rdfs into this dir and then proceed with code'))
+  dir.create(file_dir)
   stop() #if created folder need to move results rdfs into this dir and then proceed with code
 }
 
@@ -172,7 +165,6 @@ allWU$Date = as.Date(paste0(allWU$Year,allWU$Month,"01"), format = "%Y%B%d")
 #get a numeric month number - NOT SURE I NEED THIS 
 allWU$MonthNum = as.numeric(format.Date(allWU$Date, format = "%m"))
 
-# nodes <- sort(unique(df$Node)) #sort these better 
 nodes <- c("1 Glenwood","2 Cameo","4 Blue Mesa","6 Grand Junction","7 Dolores",
            "8 CO River at Cisco","9 Fontenelle","10 Green River WY","11 Greendale",
            "12 Yampa","13 Little Snake","14 Duchesne","15 White River","16 Green River UT",
@@ -229,33 +221,6 @@ for (i in 1:length(nodes)) {
       dir.create(file.path(ofigs,nodes[i]))
     }
   }
-  
-  #### DON"T Need to repeat these steps in later code ### 
-  
-  # #plot total demand and total CUL 
-  # zz <- rbind(allWU[,c("Date","Value","Year","Slot")],
-  #             allCUL[,c("Date","Value","Year","Slot")])
-  
-  # #create a depleted slot   
-  # requested <- zz %>%
-  #   dplyr::filter(Slot == "Depletion Requested")
-  # depleted <- zz %>%
-  #   dplyr::filter(Slot == "Depletion Shortage")
-  # depleted$Value = requested$Value - depleted$Value   
-  # depleted$Slot = rep("Depletion",times = length(depleted$Slot))
-  # xx <- rbind.data.frame(zz,depleted)
-  # #
-  # p <- xx %>% 
-  #   dplyr::filter(Slot %in% c("Depletion Requested","Depletion","CUL"))  %>% 
-  #   group_by(Slot,Year) %>%
-  #   summarise(Value = sum(Value))  %>%
-  #   ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() + 
-  #   geom_line() +
-  #   scale_color_manual(values = c(mycolors[4],mycolors[3],mycolors[3])) +
-  #   scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
-  #   labs(title = paste("UB Total Annual Demand"), y = "Depletions (AF/yr)")
-  # print(p)
-  # if(printfigs==T){ ggsave(filename = file.path(ofigs,paste0("UB Ann Total Demand",scens,".png")), width = gage_widths[5],height = gage_heights[5])}
   
   print(paste("Node",nodes[i]))
   
