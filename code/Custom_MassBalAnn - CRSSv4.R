@@ -7,8 +7,8 @@
 
 
 #agg file specifying which slots
-rw_agg_file <- "SaltMassBal_CRSSv5.csv" #slot names updated for v5 redo. see SaltVerification.control
-# rw_agg_file <- "SaltMassBal_Nov19Control.csv" #UB Salt Mass Balance.ExportSaltMassExtra does not exist in Nov2019 CRSS.OFFC - Need to rebuild
+# rw_agg_file <- "SaltMassBal.csv" #slot names updated for v5 redo. see SaltVerification.control
+rw_agg_file <- "SaltMassBal_Nov19Control.csv" #UB Salt Mass Balance.ExportSaltMassExtra does not exist in Nov2019 CRSS.OFFC - Need to rebuild
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
@@ -31,8 +31,8 @@ scen_res <- rw_scen_aggregate(
 # unique(scen_res$Variable) #check variable names 
 
 ## Divide Values by 1,000,000 to present data in Million of Tons/Year
+
 scen_res$Value=(scen_res$Value)/1000000
-y_lab = "Salt Mass (million tons/yr)"
 
 #add scenario names to line, point and color scales
 names(lt_scale) <- unique(scen_res$Scenario)
@@ -56,7 +56,9 @@ if(length(scens) == 1){
 pdf(file.path(oFigs,paste0("SaltMassBalGrph_",Figs,".pdf")), width=9, height=6)
 
 ### Means ###
+
 variable = "UpperBasinBalance"
+y_lab = "Salt Mass (million tons/yr)"
 title = "Upper Basin Salt Mass Balance"
 ylims <- c(-1,1)
 
@@ -91,244 +93,11 @@ write.csv(df_ub,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
-variable = "UB_Natural_Inflow"
-title = variable
-ylims <- c(-1,6) #c(0,7)
-
-df_ub <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-p <- df_ub %>%
-  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-  geom_line() +
-  geom_point() +
-  ylim(ylims) +
-  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste(title,Model.Step.Name) , y = y_lab, x = "Year")+
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-print(p)
-
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
-
-write.csv(df_ub,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
-
-#-------------------------------------------------------------------------------------
-
-variable = "UB_Agricultural_Inflow"
-title = variable
-ylims <- c(0,7)
-
-df <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-
-p <- df %>%
-  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-  geom_line() +
-  geom_point() +
-  ylim(ylims) +
-  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = "UB Agricultural Salt Loading", y = y_lab, x = "Year")+
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-print(p)
-
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
-
-write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
-
-#-------------------------------------------------------------------------------------
-
-variable = "UB_AgSaltLoading"
-title = variable
-ylims <- c(0,7)
-
-df <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-
-p <- df %>%
-  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-  geom_line() +
-  geom_point() +
-  ylim(ylims) +
-  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-print(p)
-
-#-------------------------------------------------------------------------------------
-
-variable = "UB_AgSaltLoadingExtra"
-title = variable
-ylims <- c(-1,6) #c(0,7)
-
-df <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-
-p <- df %>%
-  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-  geom_line() +
-  geom_point() +
-  ylim(ylims) +
-  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-print(p)
-
-#-------------------------------------------------------------------------------------
-
-variable = "UB_Exports"
-title = variable
-ylims <- c(0,7)
-
-df <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-
-p <- df %>%
-  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-  geom_line() +
-  geom_point() +
-  ylim(ylims) +
-  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-print(p)
-
-#-------------------------------------------------------------------------------------
-
-variable = "UB_ExportSaltMass"
-title = variable
-ylims <- c(0,7)
-
-df <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-
-p <- df %>%
-  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-  geom_line() +
-  geom_point() +
-  ylim(ylims) +
-  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-print(p)
-
-#-------------------------------------------------------------------------------------
-
-variable = "UB_ExportSaltMassExtra"
-
-title = variable
-ylims <- c(0,7)
-df <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-
-p <- df %>%
-  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-  geom_line() +
-  geom_point() +
-  ylim(ylims) +
-  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-print(p)
-
-#-------------------------------------------------------------------------------------
-
-variable = "UB_WQIPS"
-title = variable
-ylims <- c(0,7)
-df <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-p <- df %>%
-  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-  geom_line() +
-  geom_point() +
-  ylim(ylims) +
-  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = "UB Water Quality Improvement Projects", y = y_lab, x = "Year")+
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-print(p)
-
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
-
-write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
-
-#-------------------------------------------------------------------------------------
-
-variable = "UB_ChangeInReachSaltMass"
-
-title = variable
-ylims <- c(-3.5,3.5)
-df <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-
-p <- df %>%
-  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-  geom_line() +
-  geom_point() +
-  ylim(ylims) +
-  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-print(p)
-
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
-
-#-------------------------------------------------------------------------------------
-
-variable = "UB_ReservoirSaltMass"
-
-title = variable
-ylims <- c(-3.5,3.5)
-df <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-
-p <- df %>%
-  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-  geom_line() +
-  geom_point() +
-  ylim(ylims) +
-  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = "UB Reservoir Salt Mass", y = y_lab, x = "Year")+
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-print(p)
-
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
-
-#-------------------------------------------------------------------------------------
-#### Lower Basin ####
-#-------------------------------------------------------------------------------------
-
 variable = "LowerBasinBalance"
+y_lab = "Salt Mass (million tons/yr)"
 title = "Lower Basin Salt Mass Balance"
 ylims <- c(-1,1)
+
 
 df_ub <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -353,9 +122,37 @@ write.csv(df_ub,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
-variable = "LB_Natural_Inflow"
+variable = "UB_Natural_Inflow"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(0,15) #c(0,4)
+ylims <- c(0,7)
+
+
+df_ub <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+p <- df_ub %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+  labs(title = paste(title,Model.Step.Name) , y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df_ub,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+
+#-------------------------------------------------------------------------------------
+
+variable = "LB_Natural_Inflow"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(0,4)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
@@ -391,7 +188,150 @@ write.csv(df_lb,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
+variable = "UB_Agricultural_Inflow"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(0,7)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+  labs(title = "UB Agricultural Salt Loading", y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+
+#-------------------------------------------------------------------------------------
+
+variable = "UB_AgSaltLoading"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(0,7)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+#-------------------------------------------------------------------------------------
+
+variable = "UB_AgSaltLoadingExtra"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(0,7)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+#-------------------------------------------------------------------------------------
+
 variable = "LB_Agricultural_Inflow"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(0,7)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+#-------------------------------------------------------------------------------------
+
+variable = "UB_Exports"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(0,7)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+#-------------------------------------------------------------------------------------
+
+variable = "UB_ExportSaltMass"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(0,7)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+#-------------------------------------------------------------------------------------
+
+variable = "UB_ExportSaltMassExtra"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
 ylims <- c(0,7)
 
@@ -414,8 +354,10 @@ print(p)
 #-------------------------------------------------------------------------------------
 
 variable = "LB_Exports"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
 ylims <- c(0,7)
+
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
@@ -431,13 +373,55 @@ p <- df %>%
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+#-------------------------------------------------------------------------------------
+
+variable = "UB_WQIPS"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(0,7)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+  labs(title = "UB Water Quality Improvement Projects", y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+
+# #custom scale for presentation
+# ylims <- c(0,3)
+# p <- df %>%
+#   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+#   geom_line() +
+#   geom_point() +
+#   ylim(ylims) +
+#   scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+#   labs(title = "UB Water Quality Improvement Projects", y = y_lab, x = "Year")+
+#   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+# print(p)
+# 
+# ggsave(filename = file.path(oFigs,paste0(variable,"customlimits.png")), width= width, height= height)
+
 
 #-------------------------------------------------------------------------------------
 
 variable = "LB_WQIPS"
-
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
 ylims <- c(0,7)
+
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
@@ -456,10 +440,11 @@ print(p)
 
 #-------------------------------------------------------------------------------------
 
-variable = "LB_ChangeInReachSaltMass"
-
+variable = "UB_ChangeInReachSaltMass"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(-7.5,7.5) #c(-3.5,3.5)
+ylims <- c(-3.5,3.5)
+
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
@@ -480,10 +465,61 @@ ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height
 
 #-------------------------------------------------------------------------------------
 
-variable = "LB_ReservoirSaltMass"
-
+variable = "LB_ChangeInReachSaltMass"
+y_lab = "Salt Mass (million tons/yr)"
 title = variable
-ylims <- c(-7.5,7.5) #c(-3.5,3.5)
+ylims <- c(-3.5,3.5)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+  labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+#-------------------------------------------------------------------------------------
+
+variable = "UB_ReservoirSaltMass"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(-3.5,3.5)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  geom_line() +
+  geom_point() +
+  ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+  labs(title = "UB Reservoir Salt Mass", y = y_lab, x = "Year")+
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+#-------------------------------------------------------------------------------------
+
+variable = "LB_ReservoirSaltMass"
+y_lab = "Salt Mass (million tons/yr)"
+title = variable
+ylims <- c(-3.5,3.5)
+
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year

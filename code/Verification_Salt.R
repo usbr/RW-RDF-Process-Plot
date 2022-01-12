@@ -1,6 +1,4 @@
-#### Combined Gage and Use Verificaiton Script ########
-#CF,20210824: Improve to not use VerificationGage.rdf and instead take observed
-# from a xlsx sheet. Use R to annualize the data rather than RWDataPlyr
+#### Salt Verification Script ########
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 1. Set Up ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -25,9 +23,6 @@ scen_dir <- file.path(CRSSDIR,"results") #file.path(CRSSDIR,"Scenario")
 scens <- "BaselineSaltVerification" 
 
 printfigs<-T#T#make png figures and dump data 
-
-y_lab_yr = 
-
 
 mycolors <- c("#61bd17","#009E73","#6bbd28","#0072B2") #for Sector plots mid dark green - schedule depl, dark green - depl rqst, light green - depletion, blue - CUL, 
 mylinetypes <- c("dotdash","dashed","solid","solid","dotdash")  #schedule depl, depl rqst, depletion, CUL, 
@@ -69,12 +64,6 @@ rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFact
 #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
 df_annual <- rdf_aggregate(rwa1, rdf_dir = file_dir) #MUST be in Scenario FOLDER! not results folder
 
-# ## create obs from excel not crss run ##
-# df_obs <- readxl::read_xlsx('data/Verification_Obs_Gage_Data_Linked.xlsx',sheet = "R_Input",col_names = T, ) 
-# df_obs = df_obs %>% pivot_longer(cols=names(df_obs)[6:23],names_to = 'Variable',values_to = 'Value')
-# 
-# df_monthly <- rbind.data.frame(df_monthly,df_obs)
-
 #annual data
 df_obs_annual<-df_obs %>% group_by(Variable,Year) %>%
   summarise(Value = sum(Value))
@@ -83,9 +72,6 @@ df_annual <- rbind.data.frame(df_annual[,names(df_obs_annual)],df_obs_annual)
 
 #fix issues with class
 df_annual <- as.data.frame(df_annual)
-
-#use this later to filter CUL
-years <- unique(df_annual$Year)
 
 nodes <- c('glen','cameo','gunn','dolor','cisco','grwy','gdale','yampa','duch',
            'white','grut','sanraf','arch','bluf','lees','grcan','virgin','hoover',
@@ -102,11 +88,9 @@ df_annual <- cbind.data.frame(df_annual, DataType = rep("Sim",times=dim(df_annua
 
 df_annual <- rbind.data.frame(df_annual[,names(df_obs)],df_obs)
 
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 4. Plot Figures 
+## 4. Plot Node Figures 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 pdf(file = file.path(file_dir,paste("SaltVerification_",scens,".pdf")), width=9, height=6)
 
@@ -160,12 +144,8 @@ for (i in 1:length(nodes)) {
   
   grid.arrange(p1,p2,p3,ncol=1)
   
-  
   if(printfigs==T){ ggsave(filename = file.path(file_dir,paste0(nodes[i]," Ann ",scens,".png")), width = gage_widths[1],height = gage_heights[1])}
-
   
-
-    
   #calculate residual
   gage <- df_annual %>%
     dplyr::filter(Variable == massnm[i] & DataType == "Obs")
@@ -179,13 +159,13 @@ for (i in 1:length(nodes)) {
 
   cumsum_err <- cumsum(diff$Value) #get cumulative error
 
-  # df_csv <- cbind.data.frame(pivot_wider(rbind.data.frame(df,diff),
-  #             names_from = Variable,values_from = Value),
-  #             cumsum_err)
-  # 
-  # #dump out the data for Jim
-  # if(printfigs==T){ write.csv(x = df_csv,
-  #                            file = file.path(file_dir,nodes[i],paste0("Data Ann Gage ",nodes[i]," ",scens,".csv")))}
+  df_csv <- df_annual %>%
+    dplyr::filter(Variable == flownm[i] | Variable == massnm[i] | Variable == concnm[i])  %>%
+    pivot_wider(names_from = Variable,values_from = Value)
+
+  #dump out the data 
+  if(printfigs==T){ write.csv(x = df_csv,
+                             file = file.path(file_dir,paste0("Data Ann Gage ",nodes[i]," ",scens,".csv")))}
 
   #annual residual
   # diff <- diff %>%
@@ -213,9 +193,6 @@ for (i in 1:length(nodes)) {
     annstats <- rbind(annstats,c(nodes[i],mae,bias,error_perc,ann_avgflow))
   }
 
-  
-  #   
-  #   
     #make row names then don't print reach
     if (dim(annstats)[1]==length(nodes)) { #this should mean you ran all of the traces
       colnames(annstats) <- c("Reach","MAE","Bias","Error % of avg mass","AA Mass")
@@ -232,4 +209,19 @@ for (i in 1:length(nodes)) {
 dev.off() #mega plot
 
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## 5. Plot Mass Balance 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# match Inputs used in TriRvw_Master.R
 
+oFigs <- file_dir
+Model.Step.Name <- Figs <- scens #plot title and results/folder name #[plot type] identifying name .pdf
+startyr <- 2000 #filter out all years > this year
+endyr <- 2019
+customcolorltpt <- F
+  lt_scale <- rep(1, 4)
+  pt_scale <- rep(19, 4)
+  mycolors <- c("#D55E00" , "#F0E442", "#009E73" , "#407ec9") #TRY 2 - color blind red, yellow, red (stop light), blue
+
+#SaltMassBal
+source("code/Custom_MassBalAnn.R")  

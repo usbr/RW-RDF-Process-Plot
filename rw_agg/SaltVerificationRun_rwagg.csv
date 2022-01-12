@@ -39,23 +39,23 @@ SaltVerification.rdf,VirginRiver.Outflow Salt Mass,cy,sum,NA,NA,24_mass_virgin
 SaltVerification.rdf,Mead.Outflow Salt Mass,cy,sum,NA,NA,25_mass_hoover
 SaltVerification.rdf,Havasu.Outflow Salt Mass,cy,sum,NA,NA,28_mass_parker
 SaltVerification.rdf,AboveImperialDamColoradoR.Outflow Salt Mass,cy,sum,NA,NA,29_mass_imper
-FWAAC.rdf,AnnualSalinity.Glenwood_FWAAC,asis,NA,NA,NA,1_FWAAC_glen
-FWAAC.rdf,AnnualSalinity.Cameo_FWAAC,asis,NA,NA,NA,2_FWAAC_cameo
-FWAAC.rdf,AnnualSalinity.GrandJunction_FWAAC,asis,NA,NA,NA,6_FWAAC_gunn
-FWAAC.rdf,AnnualSalinity.CiscoDolores_FWAAC,asis,NA,NA,NA,7_FWAAC_dolor
-FWAAC.rdf,AnnualSalinity.CiscoColorado_FWAAC,asis,NA,NA,NA,8_FWAAC_cisco
-FWAAC.rdf,AnnualSalinity.GreenRiverWY_FWAAC,asis,NA,NA,NA,10_FWAAC_grwy
-FWAAC.rdf,AnnualSalinity.Greendale_FWAAC,asis,NA,NA,NA,11_FWAAC_gdale
-FWAAC.rdf,AnnualSalinity.Maybell_FWAAC,asis,NA,NA,NA,12_FWAAC_yampa
-FWAAC.rdf,AnnualSalinity.Randlett_FWAAC,asis,NA,NA,NA,14_FWAAC_duch
-FWAAC.rdf,AnnualSalinity.Watson_FWAAC,asis,NA,NA,NA,15_FWAAC_white
-FWAAC.rdf,AnnualSalinity.GreenRiverUTGreen_FWAAC,asis,NA,NA,NA,16_FWAAC_grut
-FWAAC.rdf,AnnualSalinity.GreenRiverUTSanRafael_FWAAC,asis,NA,NA,NA,17_FWAAC_sanraf
-FWAAC.rdf,AnnualSalinity.Archeuleta_FWAAC,asis,NA,NA,NA,18_FWAAC_arch
-FWAAC.rdf,AnnualSalinity.Bluff_FWAAC,asis,NA,NA,NA,19_FWAAC_bluf
-FWAAC.rdf,AnnualSalinity.LeesFerry_FWAAC,asis,NA,NA,NA,20_FWAAC_lees
-FWAAC.rdf,AnnualSalinity.GrandCanyon_FWAAC,asis,NA,NA,NA,23_FWAAC_grcan
-FWAAC.rdf,AnnualSalinity.Virgin_FWAAC,asis,NA,NA,NA,24_FWAAC_virgin
-FWAAC.rdf,AnnualSalinity.Hoover_FWAAC,asis,NA,NA,NA,25_FWAAC_hoover
-FWAAC.rdf,AnnualSalinity.Parker_FWAAC,asis,NA,NA,NA,28_FWAAC_parker
-FWAAC.rdf,AnnualSalinity.Imperial_FWAAC,asis,NA,NA,NA,29_FWAAC_imper
+WQAnn.rdf,AnnualSalinity.Glenwood_FWAAC,asis,NA,NA,NA,1_FWAAC_glen
+WQAnn.rdf,AnnualSalinity.Cameo_FWAAC,asis,NA,NA,NA,2_FWAAC_cameo
+WQAnn.rdf,AnnualSalinity.GrandJunction_FWAAC,asis,NA,NA,NA,6_FWAAC_gunn
+WQAnn.rdf,AnnualSalinity.CiscoDolores_FWAAC,asis,NA,NA,NA,7_FWAAC_dolor
+WQAnn.rdf,AnnualSalinity.CiscoColorado_FWAAC,asis,NA,NA,NA,8_FWAAC_cisco
+WQAnn.rdf,AnnualSalinity.GreenRiverWY_FWAAC,asis,NA,NA,NA,10_FWAAC_grwy
+WQAnn.rdf,AnnualSalinity.Greendale_FWAAC,asis,NA,NA,NA,11_FWAAC_gdale
+WQAnn.rdf,AnnualSalinity.Maybell_FWAAC,asis,NA,NA,NA,12_FWAAC_yampa
+WQAnn.rdf,AnnualSalinity.Randlett_FWAAC,asis,NA,NA,NA,14_FWAAC_duch
+WQAnn.rdf,AnnualSalinity.Watson_FWAAC,asis,NA,NA,NA,15_FWAAC_white
+WQAnn.rdf,AnnualSalinity.GreenRiverUTGreen_FWAAC,asis,NA,NA,NA,16_FWAAC_grut
+WQAnn.rdf,AnnualSalinity.GreenRiverUTSanRafael_FWAAC,asis,NA,NA,NA,17_FWAAC_sanraf
+WQAnn.rdf,AnnualSalinity.Archeuleta_FWAAC,asis,NA,NA,NA,18_FWAAC_arch
+WQAnn.rdf,AnnualSalinity.Bluff_FWAAC,asis,NA,NA,NA,19_FWAAC_bluf
+WQAnn.rdf,AnnualSalinity.LeesFerry_FWAAC,asis,NA,NA,NA,20_FWAAC_lees
+WQAnn.rdf,AnnualSalinity.GrandCanyon_FWAAC,asis,NA,NA,NA,23_FWAAC_grcan
+WQAnn.rdf,AnnualSalinity.Virgin_FWAAC,asis,NA,NA,NA,24_FWAAC_virgin
+WQAnn.rdf,AnnualSalinity.Hoover_FWAAC,asis,NA,NA,NA,25_FWAAC_hoover
+WQAnn.rdf,AnnualSalinity.Parker_FWAAC,asis,NA,NA,NA,28_FWAAC_parker
+WQAnn.rdf,AnnualSalinity.Imperial_FWAAC,asis,NA,NA,NA,29_FWAAC_imper

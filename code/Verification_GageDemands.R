@@ -103,14 +103,14 @@ df_annual <- as.data.frame(df_annual)
 #use this later to filter CUL
 years <- unique(df_annual$Year)
 
-outflows <- c ("1_Simulated_UpperColoradoReach", "2_Simulated_UpperColoradoAboveCameo","3_Simulated_TaylorAboveBlueMesa",
+outflows <- c ("1_Simulated_UpperColoradoReach", "2_Simulated_UpperColoradoAboveCameo","4_Simulated_TaylorAboveBlueMesa",
                "6_Simulated_GunnisonRiverAboveGrandJunction","7_Simulated_DoloresRiver","8_Simulated_DoloresColorado",
                "9_Simulated_GreenRAboveFontenelle","10_Simulated_GreenRAboveGreenRiverWY","11_Simulated_GreenRAboveFlamingGorge",
                "12_Simulated_YampaRiver","13_Simulated_LittleSnakeRiver","14_Simulated_DuchesneBelowStarv",
                "15_Simulated_WhiteRiverAboveWatson","16_Simulated_GreenRWhiteToSanRafael","17_Simulated_SanRafaelRiver",
                "18_Simulated_SJAboveNavajo","19_Simulated_LowerSanJuanRiver","20_Simulated_SanJuanPowell")
 
-gages <- c("1_Gage_ColoradoNearGlenwoodSprings","2_Gage_ColoradoNearCameo","3_Gage_BlueMesa", 
+gages <- c("1_Gage_ColoradoNearGlenwoodSprings","2_Gage_ColoradoNearCameo","4_Gage_BlueMesa", 
            "6_Gage_GunnisonNearGrandJunction",  "7_Gage_DoloresNearCisco", "8_Gage_ColoradoNearCisco", 
            "9_Gage_Fontenelle","10_Gage_GreenAtGreenRiverWY","11_Gage_FlamingGorge",
            "12_Gage_YampaNearMaybell","13_Gage_LittleSnakeNearLily","14_Gage_DuchesneNearRandlett",

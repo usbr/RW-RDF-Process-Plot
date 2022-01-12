@@ -1,0 +1,22 @@
+file,slot,period,summary,eval,t_s,variable
+SaltMassBalance.rdf,UB Salt Mass Balance.UpperBasinSaltMass_Upper Basin Balance.Natural Inflow,cy,sum,NA,NA,UB_Natural_Inflow
+SaltMassBalance.rdf,UB Salt Mass Balance.UpperBasinSaltMass_Upper Basin Balance.Agricultural Inflow,cy,sum,NA,NA,UB_Agricultural_Inflow
+SaltMassBalance.rdf,UB Salt Mass Balance.UpperBasinSaltMass_Upper Basin Balance.Exports,cy,sum,NA,NA,UB_Exports
+SaltMassBalance.rdf,UB Salt Mass Balance.UpperBasinSaltMass_Upper Basin Balance.WQIPS,cy,sum,NA,NA,UB_WQIPS
+SaltMassBalance.rdf,UB Salt Mass Balance.ReservoirSaltMass,cy,sum,NA,NA,UB_ReservoirSaltMass
+SaltMassBalance.rdf,UB Salt Mass Balance.ChangeInReachSaltMass,cy,sum,NA,NA,UB_ChangeInReachSaltMass
+SaltMassBalance.rdf,UB Salt Mass Balance.UpperBasinSaltMass_Upper Basin Balance.OutflowSaltMass,cy,sum,NA,NA,UB_OutflowSaltMass
+SaltMassBalance.rdf,LB Salt Mass Balance.LowerBasinSaltMass_Lower Basin Balance.Natural Inflow,cy,sum,NA,NA,LB_Natural_Inflow
+SaltMassBalance.rdf,LB Salt Mass Balance.LowerBasinSaltMass_Lower Basin Balance.Agricultural Inflow,cy,sum,NA,NA,LB_Agricultural_Inflow
+SaltMassBalance.rdf,LB Salt Mass Balance.LowerBasinSaltMass_Lower Basin Balance.Exports,cy,sum,NA,NA,LB_Exports
+SaltMassBalance.rdf,LB Salt Mass Balance.LowerBasinSaltMass_Lower Basin Balance.WQIPS,cy,sum,NA,NA,LB_WQIPS
+SaltMassBalance.rdf,LB Salt Mass Balance.LowerBasinSaltMass_Lower Basin Balance.OutflowSaltMass,cy,sum,NA,NA,LB_OutflowSaltMass
+SaltMassBalance.rdf,LB Salt Mass Balance.ChangeInReachSaltMass,cy,sum,NA,NA,LB_ChangeInReachSaltMass
+SaltMassBalance.rdf,LB Salt Mass Balance.ReservoirSaltMass,cy,sum,NA,NA,LB_ReservoirSaltMass
+SaltMassBalance.rdf,CoRivPariaToLittleCO.Outflow Salt Mass,cy,sum,NA,NA,CoRivPariaToLittleCO.Outflow Salt Mass
+SaltMassBalance.rdf,UB Salt Mass Balance.AgSaltLoadingExtra,cy,sum,NA,NA,UB_AgSaltLoadingExtra
+SaltMassBalance.rdf,UB Salt Mass Balance.AgSaltLoading,cy,sum,NA,NA,UB_AgSaltLoading
+SaltMassBalance.rdf,UB Salt Mass Balance.ExportSaltMassExtra,cy,sum,NA,NA,UB_ExportSaltMassExtra
+SaltMassBalance.rdf,UB Salt Mass Balance.ExportSaltMass,cy,sum,NA,NA,UB_ExportSaltMass
+SaltMassBalance.rdf,UB Salt Mass Balance.UpperBasinSaltMass_Upper Basin Balance.Balance,cy,sum,NA,NA,UpperBasinBalance
+SaltMassBalance.rdf,LB Salt Mass Balance.LowerBasinSaltMass_Lower Basin Balance.Balance,cy,sum,NA,NA,LowerBasinBalance
