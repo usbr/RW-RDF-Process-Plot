@@ -52,6 +52,14 @@ if (!file.exists(file_dir)) {
   dir.create(file_dir)
   stop() #if created folder need to move results rdfs into this dir and then proceed with code
 }
+
+fig_dir <-  file.path(file_dir,"png_figures")
+data_dir <-  file.path(file_dir,"csv_data")
+
+if (!file.exists(fig_dir) | !file.exists(data_dir)) {
+  dir.create(fig_dir)
+  dir.create(data_dir)
+}
 ################################################################################
 #### #### A. Read flow data  ####  ####
 ################################################################################
@@ -63,12 +71,6 @@ rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFact
 
 #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
 df_annual <- rdf_aggregate(rwa1, rdf_dir = file_dir) #MUST be in Scenario FOLDER! not results folder
-
-#annual data
-df_obs_annual<-df_obs %>% group_by(Variable,Year) %>%
-  summarise(Value = sum(Value))
-
-df_annual <- rbind.data.frame(df_annual[,names(df_obs_annual)],df_obs_annual)
 
 #fix issues with class
 df_annual <- as.data.frame(df_annual)
@@ -84,7 +86,7 @@ concnm <- paste0(nodenums,rep("_FWAAC_",length(nodes)),nodes)
 df_obs <- readxl::read_xlsx('data/HistFlowMassConc.xlsx',col_names = T, ) 
 df_obs = df_obs %>% pivot_longer(cols=names(df_obs)[3:62],names_to = 'Variable',values_to = 'Value')
 
-df_annual <- cbind.data.frame(df_annual, DataType = rep("Sim",times=dim(df_annual)[1]))
+df_annual$DataType = rep("Sim",times=dim(df_annual)[1])
 
 df_annual <- rbind.data.frame(df_annual[,names(df_obs)],df_obs)
 
@@ -144,7 +146,7 @@ for (i in 1:length(nodes)) {
   
   grid.arrange(p1,p2,p3,ncol=1)
   
-  if(printfigs==T){ ggsave(filename = file.path(file_dir,paste0(nodes[i]," Ann ",scens,".png")), width = gage_widths[1],height = gage_heights[1])}
+  if(printfigs==T){ ggsave(filename = file.path(fig_dir,paste(nodenums[i],nodes[i],"AnnPlot",scens,".png")), width = gage_widths[1],height = gage_heights[1])}
   
   #calculate residual
   gage <- df_annual %>%
@@ -157,49 +159,78 @@ for (i in 1:length(nodes)) {
   diff$Value = simulated$Value - gage$Value
   diff$Variable = rep("Residual",times = length(diff$Variable))
 
-  cumsum_err <- cumsum(diff$Value) #get cumulative error
-
   df_csv <- df_annual %>%
     dplyr::filter(Variable == flownm[i] | Variable == massnm[i] | Variable == concnm[i])  %>%
     pivot_wider(names_from = Variable,values_from = Value)
-
   #dump out the data 
   if(printfigs==T){ write.csv(x = df_csv,
-                             file = file.path(file_dir,paste0("Data Ann Gage ",nodes[i]," ",scens,".csv")))}
+                              file = file.path(data_dir,paste(nodenums[i],nodes[i],"Data",scens,".csv")))}
 
-  #annual residual
-  # diff <- diff %>%
-  #   dplyr::group_by(Year, Variable)
-  # p <- diff %>%
-  #   ggplot(aes(x = Year, y = Value, color = Variable)) +
-  #   geom_line() +
-  #   theme_light() +
-  #   scale_y_continuous(labels = scales::comma) +
-  #   labs(title = paste("Annual Mass Residual"), y = "Mass (tons/yr)")
-  # print(p)
+  # annual residual
+  diff <- diff %>%
+    dplyr::group_by(Year, Variable)
+  r1 <- diff %>%
+    ggplot(aes(x = Year, y = Value, color = Variable)) +
+    geom_line() +
+    theme_light() +
+    theme(legend.position = "none", axis.title.x = element_blank()) +
+    geom_hline(yintercept = 0) + 
+    scale_y_continuous(labels = scales::comma) +
+    labs(title = paste(nodes[i],"Annual Mass Residual"), y = "Mass (tons/yr)")
   # if(printfigs==T){ ggsave(filename = file.path(file_dir,nodes[i],paste0("Grph Ann Resid",nodes[i]," ",scens,".png")), width = gage_widths[2],height = gage_heights[2])}
 
+  cumsum_err <- cumsum(diff$Value) #get cumulative error
+  cumsum_df <- diff
+  cumsum_df$Value = cumsum_err 
+  
+  #annual cumsum residual
+  r2 <- cumsum_df %>%
+    ggplot(aes(x = Year, y = Value)) +
+    geom_line() +
+    theme_light() + 
+    scale_y_continuous(labels = scales::comma) +
+    geom_hline(yintercept = 0) + 
+    theme(legend.position = "none", axis.title.x = element_blank()) +
+    
+    labs(title = paste(nodes[i],"Annual Cummulative Mass Residual"), y = "Mass (tons/yr)")
+  # if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0("Grph Ann Cumsum Resid",nodes[i]," ",scens,".png")), width = gage_widths[2],height = gage_heights[2])}
+  
+  grid.arrange(r1,r2,ncol=1)
+  
   #annual metrics
   mae <- round(sum(abs(diff$Value))/length(diff$Value))
   bias <- round(sum(diff$Value)/length(diff$Value))
   error_perc <- round(mae/mean(gage$Value)*100)
-  ann_avgflow <- round(mean(gage$Value))
+  ann_avgmass <- round(mean(gage$Value))
   # print(paste(title,"mae",mae,"bias",bias,"Error % of avg mass",error_perc*100))
+  
+  #flow for stats 
+  gage <- df_annual %>%
+    dplyr::filter(Variable == flownm[i] & DataType == "Obs")
+  
+  simulated <- df_annual %>%
+    dplyr::filter(Variable == flownm[i] & DataType == "Sim")
+  diff <- gage
+  diff$Value = simulated$Value - gage$Value
+  #annual metrics
+  mae_flow <- round(sum(abs(diff$Value))/length(diff$Value))
+  bias_flow <- round(sum(diff$Value)/length(diff$Value))
+  error_perc_flow <- round(mae_flow/mean(gage$Value)*100)
+  ann_avgflow <- round(mean(gage$Value))  
+  
 
   #create a sperate matrix of annual stats to store the % of gage erorr
   if(!exists("annstats") | i==1){
-    annstats <- array(c(nodes[i],mae,bias,error_perc,ann_avgflow)) #c(outflows[i],mae,bias,error_perc*100)
+    annstats <- array(c(nodes[i],mae,bias,ann_avgmass,error_perc,mae_flow,bias_flow,ann_avgflow,error_perc_flow)) 
   } else {
-    annstats <- rbind(annstats,c(nodes[i],mae,bias,error_perc,ann_avgflow))
+    annstats <- rbind(annstats,c(nodes[i],mae,bias,ann_avgmass,error_perc,mae_flow,bias_flow,ann_avgflow,error_perc_flow))
   }
 
     #make row names then don't print reach
     if (dim(annstats)[1]==length(nodes)) { #this should mean you ran all of the traces
-      colnames(annstats) <- c("Reach","MAE","Bias","Error % of avg mass","AA Mass")
-      annstats <- annstats[,c("Reach","MAE","Bias","AA Mass","Error % of avg mass")]
+      colnames(annstats) <- c("Reach","MAE Mass","Bias Mass","Avg Mass","Error % of Avg Mass","MAE Flow","Bias Flow","Avg Flow","Error % of Avg Flow")
       rownames(annstats) <- nodes
-      # rownames(annstats)[18] <- "Lees Ferry"
-      write.csv(annstats[,2:5],file = file.path(file_dir,paste0("AnnualVerificationStats",scens,".csv")))
+      write.csv(annstats[,2:dim(annstats)[2]],file = file.path(file_dir,paste0("AnnualVerificationStats",scens,".csv")))
     } else {
       write.csv(annstats,file = file.path(file_dir,paste0("Partial_AnnualVerificationStats",scens,".csv")))
     }
@@ -218,6 +249,8 @@ oFigs <- file_dir
 Model.Step.Name <- Figs <- scens #plot title and results/folder name #[plot type] identifying name .pdf
 startyr <- 2000 #filter out all years > this year
 endyr <- 2019
+width=9# 10 #9
+height=6 #6.67 #6
 customcolorltpt <- F
   lt_scale <- rep(1, 4)
   pt_scale <- rep(19, 4)
