@@ -5,6 +5,24 @@
 # # Disable Scientifc Notation 
 # options(scipen=999)
 
+# file_dir <- oFigs ### old TriRvw code relies on oFigs, replace by file_dir
+
+#### File Checks #####
+file_dir <- file.path(results_dir,scens[1])
+if (!file.exists(file_dir)) {
+  message(paste('Creating folder:', file_dir,'aka file_dir'))
+  dir.create(file_dir)
+  stop() #if created folder need to move results rdfs into this dir and then proceed with code
+}
+
+fig_dir <-  file.path(file_dir,"png_figures")
+data_dir <-  file.path(file_dir,"csv_data")
+
+if (!file.exists(fig_dir) | !file.exists(data_dir)) {
+  dir.create(fig_dir)
+  dir.create(data_dir)
+}
+
 
 #agg file specifying which slots
 rw_agg_file <- "SaltMassBal_CRSSv5.csv" #slot names updated for v5 redo. see SaltVerification.control
@@ -53,7 +71,7 @@ if(length(scens) == 1){
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ## create a pdf  
-pdf(file.path(oFigs,paste0("SaltMassBalGrph_",Figs,".pdf")), width=9, height=6)
+pdf(file.path(file_dir,paste0("SaltMassBalGrph_",Figs,".pdf")), width=9, height=6)
 
 ### Means ###
 variable = "UpperBasinBalance"
@@ -85,9 +103,9 @@ print(p)
 # add_logo_horiz(p)
 
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df_ub,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+write.csv(df_ub,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
@@ -110,9 +128,9 @@ p <- df_ub %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df_ub,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+write.csv(df_ub,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
@@ -136,9 +154,9 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+write.csv(df,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
@@ -270,9 +288,9 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+write.csv(df,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
@@ -296,7 +314,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
 
 #-------------------------------------------------------------------------------------
 
@@ -320,7 +338,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
 
 #-------------------------------------------------------------------------------------
 #### Lower Basin ####
@@ -347,9 +365,9 @@ p <- df_ub %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df_ub,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+write.csv(df_ub,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
@@ -385,9 +403,9 @@ p <- df_lb %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df_lb,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+write.csv(df_lb,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
@@ -476,7 +494,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
 
 #-------------------------------------------------------------------------------------
 
@@ -500,7 +518,7 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
-ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
 
 dev.off()
 

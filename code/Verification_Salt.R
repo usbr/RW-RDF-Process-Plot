@@ -177,12 +177,12 @@ for (i in 1:length(nodes)) {
   #dump out the data
   if(printfigs==T){ write.csv(x = df_csv,
                               file = file.path(data_dir,paste(nodenums[i],nodes[i],"Data",scens,".csv")))}
-
+  #### annual residuals ####
+  if(T){
   # annual residual
-  diff <- diff %>%
-    mutate(Value = Value/1000) %>%
-    dplyr::group_by(Year, Variable)
   r1 <- diff %>%
+    mutate(Value = Value/1000) %>%
+    dplyr::group_by(Year, Variable) %>%
     ggplot(aes(x = Year, y = Value, color = Variable)) +
     geom_line() +
     theme_light() +
@@ -191,11 +191,11 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste(nodes[i],"Annual Mass Residual"), y = "Mass (ktons/yr)")
   # if(printfigs==T){ ggsave(filename = file.path(file_dir,nodes[i],paste0("Grph Ann Resid",nodes[i]," ",scens,".png")), width = gage_widths[2],height = gage_heights[2])}
-
-  cumsum_err <- cumsum(diff$Value) #get cumulative error
+  
+  cumsum_err <- cumsum(diff$Value)
   cumsum_df <- diff
   cumsum_df$Value = cumsum_err
-
+  
   #annual cumsum residual
   r2 <- cumsum_df %>%
     mutate(Value = Value/1000) %>%
@@ -205,11 +205,13 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(labels = scales::comma) +
     geom_hline(yintercept = 0) +
     theme(legend.position = "none", axis.title.x = element_blank()) +
-
+    
     labs(title = paste(nodes[i],"Annual Cummulative Mass Residual"), y = "Mass (ktons/yr)")
   # if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0("Grph Ann Cumsum Resid",nodes[i]," ",scens,".png")), width = gage_widths[2],height = gage_heights[2])}
-
+  
   grid.arrange(r1,r2,ncol=1)
+} #### end annual residuals ####
+  
 
   #annual metrics
   mae <- round(sum(abs(diff$Value))/length(diff$Value))
@@ -248,8 +250,8 @@ for (i in 1:length(nodes)) {
     write.csv(annstats,file = file.path(file_dir,paste0("Partial_AnnualVerificationStats",scens,".csv")))
   }
 
-  #### monthly #####
-  
+#### monthly #####
+if(T){
   # 3 panel monthly plot
   p1 <- df_monthly %>%
     dplyr::filter(Variable == flownm[i])  %>%
@@ -272,7 +274,7 @@ for (i in 1:length(nodes)) {
     theme(axis.title.x = element_blank()) +
     labs(y = "Mass (ktons/mo)",x="")
   # print(p2)
-
+  
   p3 <- df_monthly %>%
     dplyr::filter(Variable == concnm[i])  %>%
     group_by(DataType,Variable,Date) %>%
@@ -285,7 +287,55 @@ for (i in 1:length(nodes)) {
   
   grid.arrange(p1,p2,p3,ncol=1)
   
-  #### end monthly ####
+  #calculate residual
+  gage <- df_monthly %>%
+    dplyr::filter(Variable == massnm[i] & DataType == "Obs")
+  
+  simulated <- df_monthly %>%
+    dplyr::filter(Variable == massnm[i] & DataType == "Sim")
+  
+  diff <- gage
+  diff$Value = simulated$Value - gage$Value
+  diff$Variable = rep("Residual",times = length(diff$Variable))
+  
+  #monthly metrics
+  mae <- round(sum(abs(diff$Value))/length(diff$Value))
+  bias <- round(sum(diff$Value)/length(diff$Value))
+  error_perc <- round(mae/mean(gage$Value)*100)
+  mon_avgmass <- round(mean(gage$Value))
+  # print(paste(title,"mae",mae,"bias",bias,"Error % of avg mass",error_perc*100))
+  
+  #flow for stats
+  gage <- df_monthly %>%
+    dplyr::filter(Variable == flownm[i] & DataType == "Obs")
+  
+  simulated <- df_monthly %>%
+    dplyr::filter(Variable == flownm[i] & DataType == "Sim")
+  diff <- gage
+  diff$Value = simulated$Value - gage$Value
+  #monthly metrics
+  mae_flow <- round(sum(abs(diff$Value))/length(diff$Value))
+  bias_flow <- round(sum(diff$Value)/length(diff$Value))
+  error_perc_flow <- round(mae_flow/mean(gage$Value)*100)
+  mon_avgflow <- round(mean(gage$Value))
+  
+  #create a sperate matrix of monthly stats to store the % of gage erorr
+  if(!exists("monstats") | i==1){
+    monstats <- array(c(nodes[i],mae,bias,mon_avgmass,error_perc,mae_flow,bias_flow,mon_avgflow,error_perc_flow))
+  } else {
+    monstats <- rbind(monstats,c(nodes[i],mae,bias,mon_avgmass,error_perc,mae_flow,bias_flow,mon_avgflow,error_perc_flow))
+  }
+  
+  #make row names then don't print reach
+  if (dim(monstats)[1]==length(nodes)) { #this should mean you ran all of the traces
+    colnames(monstats) <- c("Reach","MAE Mon Mass","Bias Mon Mass","Avg Mon Mass","Error % of Avg Mon Mass",
+                            "MAE Mon Flow","Bias Mon Flow","Avg Mon Flow","Error % of Avg Mon Flow")
+    rownames(monstats) <- nodes
+    write.csv(monstats[,2:dim(monstats)[2]],file = file.path(file_dir,paste0("MonthlyVerificationStats",scens,".csv")))
+  } else {
+    write.csv(monstats,file = file.path(file_dir,paste0("Partial_MonthlyVerificationStats",scens,".csv")))
+  }
+} #### end monthly ####
 
   } #end node loop
   
@@ -295,17 +345,19 @@ dev.off() #mega plot
 ## 5. Plot Mass Balance 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # match Inputs used in TriRvw_Master.R
-
-oFigs <- file_dir
-Model.Step.Name <- Figs <- scens #plot title and results/folder name #[plot type] identifying name .pdf
-startyr <- 2000 #filter out all years > this year
-endyr <- 2019
-width=9# 10 #9
-height=6 #6.67 #6
-customcolorltpt <- F
+if (F){
+  oFigs <- fig_dir
+  Model.Step.Name <- Figs <- scens #plot title and results/folder name #[plot type] identifying name .pdf
+  startyr <- 2000 #filter out all years > this year
+  endyr <- 2019
+  width=9# 10 #9
+  height=6 #6.67 #6
+  customcolorltpt <- F
   lt_scale <- rep(1, 4)
   pt_scale <- rep(19, 4)
   mycolors <- c("#D55E00" , "#F0E442", "#009E73" , "#407ec9") #TRY 2 - color blind red, yellow, red (stop light), blue
+  
+  #SaltMassBal
+  source("code/Custom_MassBalAnn.R")  
+}
 
-#SaltMassBal
-source("code/Custom_MassBalAnn.R")  
