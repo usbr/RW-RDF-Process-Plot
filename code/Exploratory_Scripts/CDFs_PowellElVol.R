@@ -64,7 +64,15 @@ if(T){
     scale_color_manual(values = mycolors) +
     labs(title = paste(title), y = "", x = y_lab)
   print(p)
+  
   ggsave(filename = file.path(figures_dir,paste("CDF_",title,".png")), width = widths[1],height = heights[1])
+  
+  # scen_res %>%
+  #   dplyr::filter(Variable == variable) %>%
+  #   mutate(Value = Value/1000) %>% #convert to KAF after we convert to AF  
+  #   dplyr::group_by(ScenarioGroup,TraceNumber,Year) %>%
+  #   summarise(Value = sum(Value)) %>% 
+  # write.csv(file = file.path(figures_dir,paste("CDFdata_",title,".csv")))
   
   variable = "Powell.Outflow"
   title = paste(variable,first(yrs2show),"-",last(yrs2show))
@@ -161,5 +169,12 @@ if(F){
     labs(title = paste(title), y = "", x = y_lab)
   print(p)
   ggsave(filename = file.path(figures_dir,paste("CDF_",title,".png")), width = widths[1],height = heights[1])
-  
+ 
+  # df %>%
+  #   # dplyr::filter(Variable == variable) %>%
+  #   dplyr::group_by(ScenarioGroup, Year) %>%
+  #   # dplyr::summarise(Value = sum(Value)) %>% #### this was already done with rw_agg
+  #   dplyr::summarise(Value = Value/1000)  %>% #KAF
+  #   write.csv(file = file.path(figures_dir,paste("CDFdata_",title,".csv")))
+   
 }

@@ -101,8 +101,15 @@ df_monthly$DataType = rep("Sim",times=dim(df_monthly)[1])
 df_monthly_obs <- readxl::read_xlsx('data/HistFlowMassConcMonthly.xlsx',col_names = T, ) 
 df_monthly_obs = df_monthly_obs %>% pivot_longer(cols=names(df_monthly_obs)[3:62],names_to = 'Variable',values_to = 'Value')
 
+#convert EOM Date to 1st of M to match df_monthly (could just make df_monthly EOM)
+df_monthly_obs$Month = format.Date(df_monthly_obs$Date, format = "%B")
+df_monthly_obs$Year = format.Date(df_monthly_obs$Date, format = "%Y")
+df_monthly_obs$Date = as.Date(paste0(df_monthly_obs$Year,df_monthly_obs$Month,"01"), format = "%Y%B%d")
+# unique(df_monthly_obs$Date) %in% unique(df_monthly$Date)
+
 df_monthly <- rbind.data.frame(df_monthly[,names(df_monthly_obs)],df_monthly_obs)
 
+df_monthly <- as.data.frame(df_monthly) #fix issues with class #i have to do this to get it to work, not sure why 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Plot Node Figures 
@@ -212,7 +219,6 @@ for (i in 1:length(nodes)) {
   grid.arrange(r1,r2,ncol=1)
 } #### end annual residuals ####
   
-
   #annual metrics
   mae <- round(sum(abs(diff$Value))/length(diff$Value))
   bias <- round(sum(diff$Value)/length(diff$Value))
@@ -233,17 +239,38 @@ for (i in 1:length(nodes)) {
   bias_flow <- round(sum(diff$Value)/length(diff$Value))
   error_perc_flow <- round(mae_flow/mean(gage$Value)*100)
   ann_avgflow <- round(mean(gage$Value))
+  
+  #conc for stats
+  gage <- df_annual %>%
+    dplyr::filter(Variable == concnm[i] & DataType == "Obs")
+  
+  simulated <- df_annual %>%
+    dplyr::filter(Variable == concnm[i] & DataType == "Sim")
+  diff <- gage
+  diff$Value = simulated$Value - gage$Value
+  #annual metrics
+  mae_conc <- round(sum(abs(diff$Value))/length(diff$Value))
+  bias_conc <- round(sum(diff$Value)/length(diff$Value))
+  error_perc_conc <- round(mae_conc/mean(gage$Value)*100)
+  ann_avgconc <- round(mean(gage$Value))
 
   #create a sperate matrix of annual stats to store the % of gage erorr
   if(!exists("annstats") | i==1){
-    annstats <- array(c(nodes[i],mae,bias,ann_avgmass,error_perc,mae_flow,bias_flow,ann_avgflow,error_perc_flow))
+    annstats <- array(c(nodes[i],mae,bias,ann_avgmass,error_perc,
+                        mae_flow,bias_flow,ann_avgflow,error_perc_flow,
+                        mae_conc,bias_conc,ann_avgconc,error_perc_conc))
   } else {
-    annstats <- rbind(annstats,c(nodes[i],mae,bias,ann_avgmass,error_perc,mae_flow,bias_flow,ann_avgflow,error_perc_flow))
+    annstats <- rbind(annstats,
+                      c(nodes[i],mae,bias,ann_avgmass,error_perc,
+                        mae_flow,bias_flow,ann_avgflow,error_perc_flow,
+                        mae_conc,bias_conc,ann_avgconc,error_perc_conc))
   }
 
   #make row names then don't print reach
   if (dim(annstats)[1]==length(nodes)) { #this should mean you ran all of the traces
-    colnames(annstats) <- c("Reach","MAE Mass","Bias Mass","Avg Mass","Error % of Avg Mass","MAE Flow","Bias Flow","Avg Flow","Error % of Avg Flow")
+    colnames(annstats) <- c("Reach","MAE Mass","Bias Mass","Avg Mass","Error % of Avg Mass",
+                            "MAE Flow","Bias Flow","Avg Flow","Error % of Avg Flow",
+                            "MAE conc","Bias conc","Avg conc","Error % of Avg conc")
     rownames(annstats) <- nodes
     write.csv(annstats[,2:dim(annstats)[2]],file = file.path(file_dir,paste0("AnnualVerificationStats",scens,".csv")))
   } else {

@@ -21,8 +21,7 @@ results_dir <- file.path(CRSSDIR,"results")
 #easier to make folder from output in the results dir than to move it 
 scen_dir <- file.path(CRSSDIR,"results") #file.path(CRSSDIR,"Scenario")
 # #containing the sub folders for each ensemble
-scens <- "Verification_ShoshoneAug9003" 
-# scens <- "2021Verification_AugCRSS_ReRun"
+scens <- "2022JanVerification"
 # scens <- '2020Verification_2016UCRC_CUL' #must change df_obs length to do 2000-2020
 
 #### Plot Controls #####
@@ -54,7 +53,7 @@ sect_heights <- c(2,3,2)
 ## 3. Process Results 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #### File Checks #####
-#file_dir was the same as ofigs since rdfs and fgiures are in same place, replaced ofigs with file_dir 
+#file_dir was the same as file_dir since rdfs and fgiures are in same place, replaced file_dir with file_dir 
 file_dir <- file.path(results_dir,scens[1])
 if (!file.exists(file_dir)) {
   message(paste('Creating folder:', file_dir,'move results rdfs into this dir and then proceed with code'))
@@ -206,7 +205,7 @@ i=j=1 #debug
 if(!(length(outflows) == length(gages)))
   stop('Please ensure Nodes, Gages, Outflows are set correctly.')
 
-# pdf(file.path(ofigs,"WUandCULbyCPbySector.pdf"), width=9, height=6) #disable below pdf if enabled
+# pdf(file.path(file_dir,"WUandCULbyCPbySector.pdf"), width=9, height=6) #disable below pdf if enabled
 
 for (i in 1:length(nodes)) {
   # for (i in 5:length(nodes)) {
@@ -216,15 +215,15 @@ for (i in 1:length(nodes)) {
   
   #create a figure folder
   if(printfigs==T){
-    if (!file.exists(file.path(ofigs,nodes[i]))) {
+    if (!file.exists(file.path(file_dir,nodes[i]))) {
       message(paste('Creating folder:',nodes[i]))
-      dir.create(file.path(ofigs,nodes[i]))
+      dir.create(file.path(file_dir,nodes[i]))
     }
   }
   
   print(paste("Node",nodes[i]))
   
-  pdf(file = file.path(ofigs,paste(nodes[i],scens,"Use.pdf")), width=9, height=6) ### disable if running one big plot including earlier dev.off
+  pdf(file = file.path(file_dir,paste(nodes[i],scens,"Use.pdf")), width=9, height=6) ### disable if running one big plot including earlier dev.off
   
   ##############################################################################
   #### #### A. Gage vs Model Outflow  ####  ####
@@ -256,7 +255,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Annual Flow"), y = y_lab_yr)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Ann Gage",scens,".png")), width = gage_widths[1],height = gage_heights[1])}
+  if(printfigs==T){ ggsave(filename = file.path(file_dir,nodes[i],paste0(nodes[i]," Ann Gage",scens,".png")), width = gage_widths[1],height = gage_heights[1])}
   
   #calculate residual
   gage <- df_annual %>%
@@ -277,7 +276,7 @@ for (i in 1:length(nodes)) {
   
   #dump out the data for Jim 
   if(printfigs==T){ write.csv(x = df_csv,
-                             file = file.path(ofigs,nodes[i],paste0("Data Ann Gage ",nodes[i]," ",scens,".csv")))}
+                             file = file.path(file_dir,nodes[i],paste0("Data Ann Gage ",nodes[i]," ",scens,".csv")))}
   
   #annual residual
   diff <- diff %>%
@@ -289,7 +288,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste(node_title,"Annual Residual"), y = y_lab_yr)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0("Grph Ann Resid",nodes[i]," ",scens,".png")), width = gage_widths[2],height = gage_heights[2])}
+  if(printfigs==T){ ggsave(filename = file.path(file_dir,nodes[i],paste0("Grph Ann Resid",nodes[i]," ",scens,".png")), width = gage_widths[2],height = gage_heights[2])}
   
   #annual cumsum residual
   p <- df_csv %>%
@@ -299,7 +298,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste(node_title,"Annual Cummulative Residual"), y = y_lab_yr)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0("Grph Ann Cumsum Resid",nodes[i]," ",scens,".png")), width = gage_widths[2],height = gage_heights[2])}
+  if(printfigs==T){ ggsave(filename = file.path(file_dir,nodes[i],paste0("Grph Ann Cumsum Resid",nodes[i]," ",scens,".png")), width = gage_widths[2],height = gage_heights[2])}
   
   #annual metrics 
   mae <- round(sum(abs(diff$Value))/length(diff$Value))
@@ -333,7 +332,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Monthly Flow"), y = y_lab_mon)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0("Grph Mon Gage",nodes[i]," ",scens,".png")), width = gage_widths[3],height = gage_heights[3])}
+  if(printfigs==T){ ggsave(filename = file.path(file_dir,nodes[i],paste0("Grph Mon Gage",nodes[i]," ",scens,".png")), width = gage_widths[3],height = gage_heights[3])}
   
   #calculate residual
   gage <- df_monthly %>%
@@ -353,7 +352,7 @@ for (i in 1:length(nodes)) {
   
   #dump out the data for Jim 
   if(printfigs==T){ write.csv(x = df_csv,
-                              file = file.path(ofigs,nodes[i],paste0("Data Mon Gage ",nodes[i]," ",scens,".csv")))}
+                              file = file.path(file_dir,nodes[i],paste0("Data Mon Gage ",nodes[i]," ",scens,".csv")))}
   
   #monthly residual
   p <- diff %>%
@@ -364,7 +363,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste(node_title,"Monthly Residual"), y = y_lab_mon)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon Resid",scens,".png")), width = gage_widths[4],height = gage_heights[4])}
+  if(printfigs==T){ ggsave(filename = file.path(file_dir,nodes[i],paste0(nodes[i]," Mon Resid",scens,".png")), width = gage_widths[4],height = gage_heights[4])}
   
   #monthly cumsum residual
   p <- df_csv %>%
@@ -374,7 +373,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(labels = scales::comma) +
     labs(title = paste(node_title,"Monthly Cummulative Residual"), y = y_lab_mon)
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0(nodes[i]," Mon CumSum Resid",scens,".png")), width = gage_widths[4],height = gage_heights[4])}
+  if(printfigs==T){ ggsave(filename = file.path(file_dir,nodes[i],paste0(nodes[i]," Mon CumSum Resid",scens,".png")), width = gage_widths[4],height = gage_heights[4])}
   
   
   metrics <- diff %>%
@@ -430,7 +429,7 @@ for (i in 1:length(nodes)) {
     scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
     labs(title = paste(node_title,"Total Annual Demand"), y = "Depletions (AF/yr)")
   print(p)
-  if(printfigs==T){ ggsave(filename = file.path(ofigs,nodes[i],paste0("Grph Ann Total Demand ",nodes[i]," ",scens,".png")), width = gage_widths[5],height = gage_heights[5])}
+  if(printfigs==T){ ggsave(filename = file.path(file_dir,nodes[i],paste0("Grph Ann Total Demand ",nodes[i]," ",scens,".png")), width = gage_widths[5],height = gage_heights[5])}
   
   # #plot depletion requested with flow - I was trying to look at flow-shortage relationship
   # xxx <- df_monthly %>%
@@ -531,8 +530,8 @@ for (i in 1:length(nodes)) {
           labs(title = sectors[j]) +
           theme(legend.position = "none", axis.title.x = element_blank(),axis.title.y= element_blank())
         # print(px)
-        # ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(nodes[i],sectors[j]," Ann",scens,".png")), width = w_ansector,height = h_ansector)
-        ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste(j,sectors[j],"Ann",scens,".png")), width = sect_widths[1],height = sect_heights[1])
+        # ggsave(plot = px, filename = file.path(file_dir,nodes[i],paste0(nodes[i],sectors[j]," Ann",scens,".png")), width = w_ansector,height = h_ansector)
+        ggsave(plot = px, filename = file.path(file_dir,nodes[i],paste(j,sectors[j],"Ann",scens,".png")), width = sect_widths[1],height = sect_heights[1])
       }
       
       #calculate residual
@@ -586,7 +585,7 @@ for (i in 1:length(nodes)) {
           labs(y = "Depletions (AF/mo)") +
           theme(legend.position = "none", axis.title.x = element_blank())#,axis.title.y= element_blank())
         # print(px)
-        ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste0(j,sectors[j]," Mon",scens,".png")), width = sect_widths[2],height = sect_heights[2])
+        ggsave(plot = px, filename = file.path(file_dir,nodes[i],paste0(j,sectors[j]," Mon",scens,".png")), width = sect_widths[2],height = sect_heights[2])
       }
       
       #monthly residual
@@ -623,7 +622,7 @@ for (i in 1:length(nodes)) {
           
           #print data on last sector 
           write.csv(x = df_all_sector,
-                    file = file.path(ofigs,nodes[i],paste0("Data_Sector_Mon",nodes[i]," ",scens,".csv")))}
+                    file = file.path(file_dir,nodes[i],paste0("Data_Sector_Mon",nodes[i]," ",scens,".csv")))}
   
         } else {
           
@@ -666,7 +665,7 @@ for (i in 1:length(nodes)) {
           geom_line() +
           theme(legend.position = "none", axis.title.x = element_blank(),axis.title.y= element_blank())
         # print(px)
-        ggsave(plot = px, filename = file.path(ofigs,nodes[i],paste(j,sectors[j],"Mon Dist.png")), width = sect_widths[3],height = sect_heights[3])
+        ggsave(plot = px, filename = file.path(file_dir,nodes[i],paste(j,sectors[j],"Mon Dist.png")), width = sect_widths[3],height = sect_heights[3])
       }
       
       #enable the below line if want to calculate MAE and BIAS as Depletion Requested - CUL (credit for shortage)
@@ -740,18 +739,18 @@ for (i in 1:length(nodes)) {
       
       #combine metrics from out-gage with allstats from demands analysis
       write.csv(cbind(rbind(metrics[,2:3],NA),allstats),
-                file = file.path(ofigs,nodes[i],paste(nodes[i],scens,"Stats.csv")))
+                file = file.path(file_dir,nodes[i],paste(nodes[i],scens,"Stats.csv")))
       
       #write sector monthly distributions
       write.csv(allsctrdist,
-                file = file.path(ofigs,nodes[i],paste("SectorMonthlyDistribution",nodes[i],scens,".csv")))
+                file = file.path(file_dir,nodes[i],paste("SectorMonthlyDistribution",nodes[i],scens,".csv")))
       
       # if (i==1) {
       #   
       # }
       # 
       # writexl::write_xlsx(allsctrdist,
-      #           file = file.path(ofigs,paste(nodes[i],scens,"SectorMonthlyDistribution.csv")))
+      #           file = file.path(file_dir,paste(nodes[i],scens,"SectorMonthlyDistribution.csv")))
       # xlsx::write
       
     } #end for sectors loop
@@ -767,9 +766,9 @@ for (i in 1:length(nodes)) {
     annstats <- annstats[,c("Reach","MAE","Bias","AA Gage Flow","Error % of gage")] 
     rownames(annstats) <- nodes
     # rownames(annstats)[18] <- "Lees Ferry"
-    write.csv(annstats[,2:5],file = file.path(ofigs,paste0("AnnualVerificationStats",scens,".csv")))
+    write.csv(annstats[,2:5],file = file.path(file_dir,paste0("AnnualVerificationStats",scens,".csv")))
   } else {
-    write.csv(annstats,file = file.path(ofigs,paste0("Partial_AnnualVerificationStats",scens,".csv")))
+    write.csv(annstats,file = file.path(file_dir,paste0("Partial_AnnualVerificationStats",scens,".csv")))
   }
   
 } #end node loop
