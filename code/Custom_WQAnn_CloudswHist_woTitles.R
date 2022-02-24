@@ -156,7 +156,9 @@ zz_all <- bind_rows(hist,zz_all)
 # plotColors <- c("#000000", "#00BFC4","#F8766D")
 
 #use mycolors defined by Master rather than old Cloud colors 
-plotColors <-   c("#000000", mycolors,"#8B8682")  # #black, my colors, grey  
+# plotColors <-   c("#000000", mycolors,"#8B8682")  # #black, my colors, grey  
+plotColors <-   c("#000000", mycolors)  # #black, my colors, grey  
+
 
 # 
 # if(length(scens) == 4){

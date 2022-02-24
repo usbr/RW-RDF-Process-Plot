@@ -81,6 +81,8 @@ lapply(yy, function(x) {
 CRSSIO::crssi_change_nf_start_date(folder = "C:/Users/cfelletter/Documents/NatSalt_RCode/RWfiles/NF_2000",
                                    start_year = 2000,nTrace = 114)
 
+CRSSIO::crssi_change_nf_start_date(folder = "C:/Users/cfelletter/Documents/crss.2023TRIRVW/dmi/NFSinput_2018_binational_CRSSv5",
+                                   start_year = 2023,nTrace = 88)
 
 #or use for easy interface ################################
 CRSSIO:::crss_input_addin() #this function is currently not exported 
@@ -143,9 +145,9 @@ CRSSIO::crssi_create_hist_nf_xlsx()
 # }
 
 
-# ### Change CRSS v4 NFS inputs to v5 names ###################################
-# iFolder<-'C:/Users/cfelletter/Documents/crss.trirvw2020/dmi/NFSinput_2018_binational'
-# oFolder <-'C:/Users/cfelletter/Documents/crss.trirvw2020/dmi/NFSinput_2018_binational_CRSSv5'
-# oldFileNames <- c(CRSSIO::nf_file_names(version = 4),CRSSIO::natsalt_file_names(version = 4))
-# newFileNames <- c(CRSSIO::nf_file_names(version = 5),CRSSIO::natsalt_file_names(version = 5))
-# CRSSIO::crssi_change_nf_file_names(iFolder, oFolder, 88,oldFileNames, newFileNames)
+### Change CRSS v4 NFS inputs to v5 names ###################################
+iFolder<-'C:/Users/cfelletter/Documents/crss.trirvw2020/dmi/NFSinput_2018_binational'
+oFolder <-'C:/Users/cfelletter/Documents/crss.2023trirvw/dmi/NFSinput_2018_binational_CRSSv5'
+oldFileNames <- c(CRSSIO::nf_file_names(version = 4),CRSSIO::natsalt_file_names(version = 4))
+newFileNames <- c(CRSSIO::nf_file_names(version = 5),CRSSIO::natsalt_file_names(version = 5))
+CRSSIO::crssi_change_nf_file_names(iFolder, oFolder, 88,oldFileNames, newFileNames)

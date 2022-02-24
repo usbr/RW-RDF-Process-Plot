@@ -1,0 +1,5 @@
+file,slot,period,summary,eval,t_s,variable
+Salt.rdf,AboveImperialDamColoradoR.Outflow Salt Mass,cy,sum,NA,NA,29_mass_imper
+Salt.rdf,Havasu.Outflow Salt Mass,cy,sum,NA,NA,28_mass_parker
+Salt.rdf,Mead.Outflow Salt Mass,cy,sum,NA,NA,25_mass_hoover
+Salt.rdf,Powell.Outflow Salt Mass,cy,sum,NA,NA,20_mass_lees

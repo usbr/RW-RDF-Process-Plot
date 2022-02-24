@@ -21,7 +21,7 @@ results_dir <- file.path(CRSSDIR,"results")
 #easier to make folder from output in the results dir than to move it 
 scen_dir <- file.path(CRSSDIR,"results") #file.path(CRSSDIR,"Scenario")
 # #containing the sub folders for each ensemble
-scens <- "2022JanVerification"
+scens <- "2022JanOffcVerification"
 # scens <- '2020Verification_2016UCRC_CUL' #must change df_obs length to do 2000-2020
 
 #### Plot Controls #####
@@ -121,7 +121,7 @@ gages <- c("1_Gage_ColoradoNearGlenwoodSprings","2_Gage_ColoradoNearCameo","4_Ga
 #### #### B. Read water use data  ####  ####
 ################################################################################
 #### read attributes data to make key ####
-Attributes <- read_xml(x="data/2016_Attributes.xml")
+Attributes <- read_xml(x="data/2016_Attributes_v2_20220215.xml") #2016_Attributes.xml had EnergyBlwWatson mislabed
 # Attributes <- read_xml(x="C:/Users/cfelletter/Documents/CRSS working/DemandUseVerificationRun/2007_Attributes.xml")
 
 source("code/get_demand_atts.R") 
@@ -196,6 +196,8 @@ allCUL$Slot = rep("CUL",times=length(allCUL$Date))
 
 allCUL <- allCUL %>%
   dplyr::filter(Sector != "ResReg") #remove from total demands  
+allCUL$Value = as.numeric(allCUL$Value) #20220215 Why did I suddenly have to add this? 
+
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Plot Figures 
@@ -417,20 +419,21 @@ for (i in 1:length(nodes)) {
   # # Adding factors so ggplot does not alphabetize legend
   zz$Slot = factor(zz$Slot, levels=c("Depletion Schedule","Depletion Requested","Depletion","CUL"))
   
-  #plot total demand and total CUL
-  p <- zz %>%
-    dplyr::filter(Slot %in% c("Depletion Schedule","Depletion Requested","Depletion","CUL")) %>%
-    group_by(Slot,Year) %>%
-    summarise(Value = sum(Value))  %>%
-    ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() +
-    geom_line(aes(linetype=Slot)) +
-    scale_linetype_manual(values = mylinetypes) +
-    scale_color_manual(values = mycolors) +
-    scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
-    labs(title = paste(node_title,"Total Annual Demand"), y = "Depletions (AF/yr)")
-  print(p)
-  if(printfigs==T){ ggsave(filename = file.path(file_dir,nodes[i],paste0("Grph Ann Total Demand ",nodes[i]," ",scens,".png")), width = gage_widths[5],height = gage_heights[5])}
-  
+  # #plot total demand and total CUL
+  #### THERE IS A BUG WITH THIS PLOT So Don't Include it 
+  # p <- zz %>%
+  #   dplyr::filter(Slot %in% c("Depletion Schedule","Depletion Requested","Depletion","CUL")) %>%
+  #   group_by(Slot,Year) %>%
+  #   summarise(Value = sum(Value))  %>%
+  #   ggplot(aes(x = Year, y = Value, color = Slot)) + theme_light() +
+  #   geom_line(aes(linetype=Slot)) +
+  #   scale_linetype_manual(values = mylinetypes) +
+  #   scale_color_manual(values = mycolors) +
+  #   scale_y_continuous(limits = c(0,NA), labels = scales::comma) +
+  #   labs(title = paste(node_title,"Total Annual Demand"), y = "Depletions (AF/yr)")
+  # print(p)
+  # if(printfigs==T){ ggsave(filename = file.path(file_dir,nodes[i],paste0("Grph Ann Total Demand ",nodes[i]," ",scens,".png")), width = gage_widths[5],height = gage_heights[5])}
+
   # #plot depletion requested with flow - I was trying to look at flow-shortage relationship
   # xxx <- df_monthly %>%
   #   dplyr::filter(Variable == gages[i] | Variable == outflows[i]) %>%
@@ -451,15 +454,16 @@ for (i in 1:length(nodes)) {
   # # print(p)
   
   # # what to do about sectors unique to CRSS? "Environmental" and "Lease". Fish & Wildlife only in LB
-  # add CUL stockpond, livestock and minearls into sectors evap, ag, energy
+  # add CUL stockpond, livestock into sectors evap, ag, 
   CUL[which(CUL$Sector == "Evaporation"),]$Value = CUL[which(CUL$Sector == "Evaporation"),]$Value + CUL[which(CUL$Sector == "Stockpond"),]$Value
   CUL[which(CUL$Sector == "Agriculture"),]$Value = CUL[which(CUL$Sector == "Agriculture"),]$Value + CUL[which(CUL$Sector == "Livestock"),]$Value
   
-  # sort(unique(allWU[which(allWU$Sector == "Minerals"),]$Node)) #some sectors have mineraals and some don't, they don't match up
-  if (sum(WU[which(WU$Sector == "Minerals"),]$Value) == 0){
-    CUL[which(CUL$Sector == "Energy"),]$Value = CUL[which(CUL$Sector == "Energy"),]$Value + CUL[which(CUL$Sector == "Minerals"),]$Value
-    print("No Minerals in CRSS, combining CUL Mineral with CUL Energy")
-  } #some sectors have mineraals and some don't, they don't match up
+  #I don't think I need the below code anymore 
+  # # sort(unique(allWU[which(allWU$Sector == "Minerals"),]$Node)) #some sectors have mineraals and some don't, they don't match up
+  # if (sum(WU[which(WU$Sector == "Minerals"),]$Value) == 0){
+  #   CUL[which(CUL$Sector == "Energy"),]$Value = CUL[which(CUL$Sector == "Energy"),]$Value + CUL[which(CUL$Sector == "Minerals"),]$Value
+  #   print("No Minerals in CRSS, combining CUL Mineral with CUL Energy")
+  # } #some sectors have mineraals and some don't, they don't match up
   
   #limit which sectors are plotted
   sectors <- unique(WU$Sector) #only plot sectors that exisit in CP

@@ -1,13 +1,13 @@
 zz <- zz_all %>%
   dplyr::filter(Variable == variable) 
 
-# write.csv(zz,file.path(ofigs,paste0(variable,"_stats.csv")))
-write.csv(zz,file.path(ofigs,paste0(title,"_stats.csv")))
+# write.csv(zz,file.path(oFigs,paste0(variable,"_stats.csv")))
+write.csv(zz,file.path(oFigs,paste0(title,"_stats.csv")))
 
 
-if (powtiers){
-  powelltiers <- read.csv(file.path(getwd(),"data", "PowellTiers.csv"),header = T)
-}
+# if (powtiers){
+#   powelltiers <- read.csv(file.path(getwd(),"data", "PowellTiers.csv"),header = T)
+# }
 
 # gg <- ggplot(zz, aes(x=Year, y=Mean, color=Scenario, group=Scenario)) +  theme_light()  #this is just a blank grided plot
 gg <- ggplot(zz, aes(x=Year, y=Med, color=Scenario, group=Scenario)) +  theme_light()  #this is just a blank grided plot
@@ -84,19 +84,16 @@ ggc <- gg +
   
   guides(fill=FALSE) #+
 
-  
-  if (powtiers){
-    ggc <-       ggc + 
-    geom_hline(aes(yintercept=UEB), data=powelltiers, color = "black", lty = 3,size = 1) +
-    geom_abline(slope = 1.2542,intercept = 1124.4,color = "black", lty = 3,size = 1) + #this is linear reg for 2020-2040 line, R2 = .99
-    # geom_line(aes(x=Year,y=EQ), data=powelltiers, color = "red", lty = 2) +
-    geom_hline(aes(yintercept=MER), data=powelltiers, color = "black", lty = 3,size = 1) +
-    annotate("text", x = 2022, y = 3600, label = "Upper Elevation Balancing Tier",size = 3,hjust = 0) +
-      annotate("text", x = 2022, y = 3550, label = "Mid Elevation Release Tier",size = 3,hjust = 0) + 
-    annotate("text", x = 2022, y = 3450, label = "Lower Elevation Balancing Tier",size = 3,hjust = 0)
-    
-      
-  }
+  # if (powtiers){
+  #   ggc <-       ggc + 
+  #   geom_hline(aes(yintercept=UEB), data=powelltiers, color = "black", lty = 3,size = 1) +
+  #   geom_abline(slope = 1.2542,intercept = 1124.4,color = "black", lty = 3,size = 1) + #this is linear reg for 2020-2040 line, R2 = .99
+  #   # geom_line(aes(x=Year,y=EQ), data=powelltiers, color = "red", lty = 2) +
+  #   geom_hline(aes(yintercept=MER), data=powelltiers, color = "black", lty = 3,size = 1) +
+  #   annotate("text", x = 2022, y = 3600, label = "Upper Elevation Balancing Tier",size = 3,hjust = 0) +
+  #     annotate("text", x = 2022, y = 3550, label = "Mid Elevation Release Tier",size = 3,hjust = 0) + 
+  #   annotate("text", x = 2022, y = 3450, label = "Lower Elevation Balancing Tier",size = 3,hjust = 0)
+  # }
 
 if (!is.na(NumCrit)){
   ggc <- ggc +
@@ -132,5 +129,5 @@ print(gg)
 # source("code/add_logo.R") #alan's way, bottom right corner
 # add_logo_horiz(gg)
 
-# ggsave(filename = file.path(ofigs,paste0(variable,"_Cloud.png")), width = widths[1],height = heights[1])#width= width, height= height)
-ggsave(filename = file.path(ofigs,paste0(title,"_Cloud.png")), width = widths[1],height = heights[1])#width= width, height= height)
+# ggsave(filename = file.path(oFigs,paste0(variable,"_Cloud.png")), width = widths[1],height = heights[1])#width= width, height= height)
+ggsave(filename = file.path(oFigs,paste0(title,"_Cloud.png")), width = widths[1],height = heights[1])#width= width, height= height)

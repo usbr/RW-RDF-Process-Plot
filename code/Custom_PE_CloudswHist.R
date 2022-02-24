@@ -148,7 +148,7 @@ zz_all <- bind_rows(hist,zz_all)
 # # Getting all scenarios passed to fxn - CF: Alan's addIC use scens instead
 
 #use mycolors defined by Master rather than old Cloud colors 
-plotColors <-   c("#000000", mycolors,"#8B8682")  # #black, my colors, grey  
+plotColors <-   c("#000000", mycolors)#,"#8B8682")  # #black, my colors, grey  
 # 
 # # Setting colors for graph- ensures historical data is black on plot
 # # colorNames <- unique(zz_all$Scenario)

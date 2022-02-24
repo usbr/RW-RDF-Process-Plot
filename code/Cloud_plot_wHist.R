@@ -15,9 +15,11 @@ name <- str_wrap("10th, 90th percentile",20)
 gga <- gg + geom_ribbon(data = subset(zz,Scenario %in% cloudScen),aes(ymin=Min, ymax=Max, fill = Scenario),  #CF: need to subset so don't create for mean 
                         alpha = 0.3, linetype = 2, size = 0.5*Medians) + 
   scale_fill_manual(name, 
-                    values = plotColors, guide = guide_legend(order=1),
+                    values = mycolors, #2022 change: was plotcolors
+                    guide = guide_legend(order=1),
                     labels = str_wrap(cloudLabs[], 15)) + scale_color_manual(name,
-                                                                             values = plotColors, guide = guide_legend(order=1),
+                                                                             values = mycolors, #2022 change: was plotcolors 
+                                                                             guide = guide_legend(order=1),
                                                                              labels = str_wrap(cloudLabs, 15))  +
   theme(legend.text = element_text(size=LegendText),legend.title = element_text(size=LegendLabText, face="bold"),
         legend.box.margin = margin(0,0,0,0)) 
@@ -53,10 +55,12 @@ ggc <- gg +
               alpha = 0.3, linetype = 2, size = 0.5*Medians) +
   geom_line(size=Medians) +
   scale_fill_manual(str_wrap("10th to 90th percentile of full range",20),
-                    values = plotColors, guide = FALSE,
+                    values = plotColors,  
+                    guide = FALSE,
                     labels = str_wrap(cloudLabs, 15)) + 
   scale_color_manual(name = str_wrap(lengendtitle,20),
-                     values = plotColors, guide = FALSE,
+                     values = plotColors, 
+                     guide = FALSE,
                      labels = str_wrap(histLab, 15)) +
   labs(y = y_lab, title = title, x = '',subtitle = subtitle) + 
   
@@ -86,7 +90,7 @@ if (MinMaxLines == T){
     geom_line(data = zz, aes(x=Year, y=MaxOut, color=Scenario, group=Scenario),linetype = "dotted")   
 }
 
-# ggc
+ggc
 
 #final plot configuration 
 gg <- plot_grid(ggc, gglegend, rel_widths = c(2,.4))
