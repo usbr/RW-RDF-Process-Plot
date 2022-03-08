@@ -101,6 +101,13 @@ if (!is.na(NumCrit)){
   geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) #+
 }
 
+if (!is.na(HistMin)){
+  ggc <- ggc +
+    #Adding lines for historic min and max 
+    geom_hline(aes(yintercept=yintercept), data=HistMin, color = "red", lty = 3) +
+    geom_hline(aes(yintercept=yintercept), data=HistMax, color = "red", lty = 3) #+
+}
+
 
 if (MinMaxLines == T){
   ggc <- ggc + 

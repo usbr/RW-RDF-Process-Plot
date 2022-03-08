@@ -146,12 +146,12 @@ source("code/Custom_WQAnn_CloudswHist.R") #clouds for FWAAC - has titles
 #SaltMassBal
 source("code/Custom_MassBalAnn.R")
 #Doesn't include UB Salt Mass Balance.ExportSaltMassExtra since this needs to be recreated in CRSS.OFFC
-# source("code/Custom_MassBalAnn_OldControl.R")
+source("code/Custom_MassBalAnn - CRSSv4 vs v5.R") #only works for 2 scens 
 
-# #This script can only be used with data processed using the new output.control file 6/27/2019
-source("code/Custom_PowellMead_3Panel.R") #still need to fix issues Jim suggested - Jan2020 model now has Pow/Mead Inflow FWAAC
-#need to add AnnualSalinity.PowellInflow_FWAAC to Nov 2019 model to use new (also add to WQAnn.rdf in output.control)
-# source("code/Custom_PowellMead_3Panel_OldControlFile.R") #using this Jan 2020 model this shouldn't be an issue any more
+source("code/Custom_PowellMead_3Panel.R") #grouped by flow, mass, conc
+
+source("code/Custom_PowellMead_3Panel_Clouds.R") #grouped by Pow.In, Pow.Stor, Pow.Out
+
  
 # # #Saltstorage
 # source("code/Custom_SaltStorage.R")

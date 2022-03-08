@@ -18,8 +18,7 @@ singleIC=T
 yaml_nm=FALSE #give it name e.g. 
 yaml_nm="aug2021_sensitivity_Shoshone.yml"
 
-#libraries and setup directories, just use getwd()
-source(file.path(getwd(),"code","libs_n_dirs.R")) 
+
 
 #if you didn't get scen information from .yml file fill in the below
 if(yaml_nm==FALSE){
@@ -47,8 +46,13 @@ if(yaml_nm==FALSE){
     mdl_nm_scen2 <- scen2_shrt_nm <- "Jun2021_2022"
     rls_nm_scen2 <- "2016Dems,IG_DCP"
     scen2 <- rw_scen_gen_names(mdl_nm_scen2, c("ISM1988_2019"), rls_nm_scen2,paste0("Trace", sprintf("%02d", 4:38)))
-  }
+    
+    #libraries and setup directories, just use getwd()
+    source(file.path(getwd(),"code","libs_n_dirs.R")) #requires reults_nm 
+    }
 }
+
+
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #                               END USER INPUT
