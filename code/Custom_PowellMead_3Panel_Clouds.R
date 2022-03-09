@@ -40,6 +40,14 @@ scen_res <- rw_scen_aggregate(
   scen_dir = scen_dir
 )
 
+if(names(scens[1])=="2020TriRvw_Scen3" && 2020 %in% unique(scen_res$Year)){
+#Shift TriRvw forward 3 years
+trirvwrows <- which(scen_res$Scenario == names(scens[1]))
+scen_res$Year[trirvwrows] = scen_res$Year[trirvwrows] + 3
+unique(scen_res$Year)
+}
+
+
 # unique(scen_res$Variable) #check variable names
 
 # # Adding factors so ggplot does not alphebetize legend
@@ -85,8 +93,7 @@ zz_1M <- zz_1M %>% #this doesn't work for some reason
   dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
                    'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot
-
-unique(zz_1M$Variable)
+# unique(zz_1M$Variable)
 
 
 zz_conc <- zz_conc %>% #this doesn't work for some reason 
@@ -96,14 +103,12 @@ zz_conc <- zz_conc %>% #this doesn't work for some reason
   dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
                    'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot
-
-summary(zz_all)
-unique(zz_conc$Variable)
+# unique(zz_conc$Variable)
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Plot Custom UB Figures 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+if(T){
 ## create a pdf  
 pdf(file.path(oFigs,paste0("Cloud_PowMeadInOut_",Figs,".pdf")), width= width, height= height)
 
@@ -113,8 +118,8 @@ pdf(file.path(oFigs,paste0("Cloud_PowMeadInOut_",Figs,".pdf")), width= width, he
 
 zz_all = zz_1M #need zz_all for Cloud_plot_woHist.R
 variable = "Powell.Inflow"
-y_lab = "Inflow (million acre-ft/year)"
-title = "Lake Powell Annual Inflow" 
+y_lab = "Inflow (MAF/yr)"
+title = "Lake Powell Inflow" 
 subtitle = ""
 # ylims <- c(3490,3570)
 NumCrit <- data.frame(yintercept=9.6) #mean of 2020 NFSM, 1991-2020 CY sum
@@ -124,8 +129,8 @@ source("code/Cloud_plot_woHist.R")
 p1 <- gg
 
 variable = "Powell.Inflow Salt Mass"
-y_lab = "Inflow Salt Mass (million tons/year)"
-title = "Lake Powell Annual Inflow Salt Mass" 
+y_lab = "Inflow Salt Mass (MTons/yr)"
+title = "Lake Powell Inflow Salt Mass" 
 NumCrit <- data.frame(yintercept=5.7) #mean of 2020 NFSM, 1991-2020 CY sum
 HistMin <- data.frame(yintercept=2.6)
 HistMax <- data.frame(yintercept=8.8)
@@ -135,7 +140,7 @@ p2 <- gg
 zz_all = zz_conc #need zz_all for Cloud_plot_woHist.R
 variable = "AnnlSlnty_In_Powell_FWAAC"
 y_lab = "Inflow Salt Concentration (mg/l)"
-title = "Lake Powell Annual Inflow Salt Concentration" 
+title = "Lake Powell Inflow Salt Concentration" 
 NumCrit <- data.frame(yintercept=456) #mean of 2020 NFSM, 1991-2020 FWAAC
 HistMin <- data.frame(yintercept=342)
 HistMax <- data.frame(yintercept=608)
@@ -153,7 +158,7 @@ ggsave(filename = file.path(oFigs,paste0("Powell_Inflow_3Panel.png")), width= wi
 
 zz_all = zz_1M #need zz_all for Cloud_plot_woHist.R
 variable = "Powell.Storage"
-y_lab = "Storage (million acre-ft)"
+y_lab = "Storage (MAF)"
 title = "Lake Powell EOCY Storage" 
 subtitle = ""
 # ylims <- c(3490,3570)
@@ -163,14 +168,37 @@ HistMax <- data.frame(yintercept=20.7)
 source("code/Cloud_plot_woHist.R")
 p1 <- gg
 
+# df1 <- scen_res %>%
+#   dplyr::filter(Variable == variable) 
+
 variable = "Powell.Reservoir Salt Mass"
-y_lab = "Reservoir Salt Mass (million tons)"
+y_lab = "Reservoir Salt Mass (MTons)"
 title = "Lake Powell Reservoir Salt Mass" 
 NumCrit <- data.frame(yintercept=9.3) #mean of 2020 NFSM, 1991-2020 CY sum
 HistMin <- data.frame(yintercept=6.5)
 HistMax <- data.frame(yintercept=13.2)
 source("code/Cloud_plot_woHist.R")
 p2 <- gg
+
+# df2 <- scen_res %>%
+#   dplyr::filter(!(Variable %in% variable)) 
+# 
+# df2$Value = df2$Value/df1$Value * 735.474184440583
+# variable = "Reservoir Salt Concentration"
+# df2$Variable = variable
+# y_lab = "Reservoir Salt Concentration (mg/l)"
+# title = "Calculated Reservoir Salt Concentration" 
+# 
+# zz_all = df2 %>% #this doesn't work for some reason 
+#   dplyr::filter(Year %in% yrs) %>%
+#   # compute the 10/50/90 and aggregate by start month
+#   dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
+#   dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
+#                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
+#                    'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot
+# 
+# source("code/Cloud_plot_woHist.R")
+# p3 <- gg
 
 grid.arrange(p1,p2,ncol=1)
 
@@ -183,8 +211,8 @@ ggsave(filename = file.path(oFigs,paste0("Powell_Storage_3Panel.png")), width= w
 
 zz_all = zz_1M #need zz_all for Cloud_plot_woHist.R
 variable = "Powell.Outflow"
-y_lab = "Outflow (million acre-ft/year)"
-title = "Lake PowellAnnual Outflow" 
+y_lab = "Outflow (MAF/yr)"
+title = "Lake Powell Outflow" 
 subtitle = ""
 # ylims <- c(3490,3570)
 NumCrit <- data.frame(yintercept=9.3) #mean of 2020 NFSM, 1991-2020 CY sum
@@ -196,8 +224,8 @@ source("code/Cloud_plot_woHist.R")
 p1 <- gg
 
 variable = "Powell.Outflow Salt Mass"
-y_lab = "Outflow Salt Mass (million tons/year)"
-title = "Lake Powell Annual Outflow Salt Mass" 
+y_lab = "Outflow Salt Mass (MTons/yr)"
+title = "Lake Powell Outflow Salt Mass" 
 NumCrit <- data.frame(yintercept=5.9) #mean of 2020 NFSM, 1991-2020 CY sum
 HistMin <- data.frame(yintercept=4.7)
 HistMax <- data.frame(yintercept=8.8)
@@ -207,7 +235,7 @@ p2 <- gg
 zz_all = zz_conc #need zz_all for Cloud_plot_woHist.R
 variable = "AnnlSlntyLsFrry_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
-title = "Lees Ferry Average Annual Salt Concentration" 
+title = "Lees Ferry Average Salt Concentration" 
 NumCrit <- data.frame(yintercept=469) #mean of 2020 NFSM, 1991-2020 FWAAC
 HistMin <- data.frame(yintercept=405)
 HistMax <- data.frame(yintercept=580)
@@ -231,8 +259,8 @@ NumCrit = HistMin = HistMax = NA #dont add for Mead
 
 zz_all = zz_1M #need zz_all for Cloud_plot_woHist.R
 variable = "Mead.Inflow"
-y_lab = "Inflow (million acre-ft/year)"
-title = "Lake Mead Annual Inflow" 
+y_lab = "Inflow (MAF/yr)"
+title = "Lake Mead Inflow" 
 subtitle = ""
 # ylims <- c(3490,3570)
 #NumCrit <- data.frame(yintercept=9.6) #mean of 2020 NFSM, 1991-2020 CY sum
@@ -242,8 +270,8 @@ source("code/Cloud_plot_woHist.R")
 p1 <- gg
 
 variable = "Mead.Inflow Salt Mass"
-y_lab = "Inflow Salt Mass (million tons/year)"
-title = "Lake Mead Annual Inflow Salt Mass" 
+y_lab = "Inflow Salt Mass (MTons/yr)"
+title = "Lake Mead Inflow Salt Mass" 
 #NumCrit <- data.frame(yintercept=5.7) #mean of 2020 NFSM, 1991-2020 CY sum
 #HistMin <- data.frame(yintercept=2.6)
 #HistMax <- data.frame(yintercept=8.8)
@@ -253,7 +281,7 @@ p2 <- gg
 zz_all = zz_conc #need zz_all for Cloud_plot_woHist.R
 variable = "AnnlSlnty_In_Hvr_FWAAC"
 y_lab = "Inflow Salt Concentration (mg/l)"
-title = "Lake Mead Annual Inflow Salt Concentration" 
+title = "Lake Mead Inflow Salt Concentration" 
 #NumCrit <- data.frame(yintercept=456) #mean of 2020 NFSM, 1991-2020 FWAAC
 #HistMin <- data.frame(yintercept=342)
 #HistMax <- data.frame(yintercept=608)
@@ -271,7 +299,7 @@ ggsave(filename = file.path(oFigs,paste0("Mead_Inflow_3Panel.png")), width= widt
 
 zz_all = zz_1M #need zz_all for Cloud_plot_woHist.R
 variable = "Mead.Storage"
-y_lab = "Storage (million acre-ft)"
+y_lab = "Storage (MAF)"
 title = "Lake Mead EOCY Storage" 
 subtitle = ""
 # ylims <- c(3490,3570)
@@ -281,14 +309,37 @@ subtitle = ""
 source("code/Cloud_plot_woHist.R")
 p1 <- gg
 
+df1 <- scen_res %>%
+  dplyr::filter(Variable == variable) 
+
 variable = "Mead.Reservoir Salt Mass"
-y_lab = "Reservoir Salt Mass (million tons)"
+y_lab = "Reservoir Salt Mass (MTons)"
 title = "Lake Mead Reservoir Salt Mass" 
 #NumCrit <- data.frame(yintercept=9.3) #mean of 2020 NFSM, 1991-2020 CY sum
 #HistMin <- data.frame(yintercept=6.5)
 #HistMax <- data.frame(yintercept=13.2)
 source("code/Cloud_plot_woHist.R")
 p2 <- gg
+
+# df2 <- scen_res %>%
+#   dplyr::filter(!(Variable %in% variable)) 
+# 
+# df2$Value = df2$Value/df1$Value * 735.474184440583
+# variable = "Reservoir Salt Concentration"
+# df2$Variable = variable
+# y_lab = "Reservoir Salt Concentration (mg/l)"
+# title = "Calculated Reservoir Salt Concentration" 
+# 
+# zz_all = df2 %>% #this doesn't work for some reason 
+#   dplyr::filter(Year %in% yrs) %>%
+#   # compute the 10/50/90 and aggregate by start month
+#   dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
+#   dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
+#                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
+#                    'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot
+# 
+# source("code/Cloud_plot_woHist.R")
+# p3 <- gg
 
 grid.arrange(p1,p2,ncol=1)
 
@@ -301,8 +352,8 @@ ggsave(filename = file.path(oFigs,paste0("Mead_Storage_3Panel.png")), width= wid
 
 zz_all = zz_1M #need zz_all for Cloud_plot_woHist.R
 variable = "Mead.Outflow"
-y_lab = "Outflow (million acre-ft/year)"
-title = "Lake MeadAnnual Outflow" 
+y_lab = "Outflow (MAF/yr)"
+title = "Lake Mead Outflow" 
 subtitle = ""
 # ylims <- c(3490,3570)
 #NumCrit <- data.frame(yintercept=9.3) #mean of 2020 NFSM, 1991-2020 CY sum
@@ -314,8 +365,8 @@ source("code/Cloud_plot_woHist.R")
 p1 <- gg
 
 variable = "Mead.Outflow Salt Mass"
-y_lab = "Outflow Salt Mass (million tons/year)"
-title = "Lake Mead Annual Outflow Salt Mass" 
+y_lab = "Outflow Salt Mass (MTons/yr)"
+title = "Lake Mead Outflow Salt Mass" 
 #NumCrit <- data.frame(yintercept=5.9) #mean of 2020 NFSM, 1991-2020 CY sum
 #HistMin <- data.frame(yintercept=4.7)
 #HistMax <- data.frame(yintercept=8.8)
@@ -325,7 +376,7 @@ p2 <- gg
 zz_all = zz_conc #need zz_all for Cloud_plot_woHist.R
 variable = "AnnlSlntyMead_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
-title = "Below Hoover Average Annual Salt Concentration" 
+title = "Below Hoover Average Salt Concentration" 
 #NumCrit <- data.frame(yintercept=469) #mean of 2020 NFSM, 1991-2020 FWAAC
 #HistMin <- data.frame(yintercept=405)
 #HistMax <- data.frame(yintercept=580)
@@ -338,3 +389,4 @@ ggsave(filename = file.path(oFigs,paste0("Mead_Outflow_3Panel.png")), width= wid
 
 
 dev.off()
+}
