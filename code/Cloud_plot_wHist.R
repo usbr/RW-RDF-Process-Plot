@@ -56,11 +56,11 @@ ggc <- gg +
   geom_line(size=Medians) +
   scale_fill_manual(str_wrap("10th to 90th percentile of full range",20),
                     values = plotColors,  
-                    guide = FALSE,
+                    guide = "none", #It is deprecated to specify `guide = FALSE` 
                     labels = str_wrap(cloudLabs, 15)) + 
   scale_color_manual(name = str_wrap(lengendtitle,20),
                      values = plotColors, 
-                     guide = FALSE,
+                     guide = "none", #It is deprecated to specify `guide = FALSE` 
                      labels = str_wrap(histLab, 15)) +
   labs(y = y_lab, title = title, x = '',subtitle = subtitle) + 
   
@@ -82,7 +82,7 @@ ggc <- gg +
   }
   
   
-  guides(fill=FALSE) #+
+  guides(fill="none") #+
 
 if (MinMaxLines == T){
   ggc <- ggc + 

@@ -63,10 +63,10 @@ ggc <- gg +
               alpha = 0.3, linetype = 2, size = 0.5*Medians) +
   geom_line(size=Medians) +
   scale_fill_manual(str_wrap("10th to 90th percentile of full range",20),
-                    values = plotColors, guide = FALSE,
+                    values = plotColors, guide = "none", #It is deprecated to specify `guide = FALSE` 
                     labels = str_wrap(cloudLabs, 15)) + 
   scale_color_manual(name = str_wrap(lengendtitle,20),
-                     values = plotColors, guide = FALSE) +#,
+                     values = plotColors, guide = "none") +#, #It is deprecated to specify `guide = FALSE` 
                      # labels = str_wrap(histLab, 15)) +
   labs(y = y_lab, title = title, x = 'Year') +# +,subtitle = subtitle) + 
   
@@ -80,9 +80,9 @@ ggc <- gg +
         axis.text.y = element_text (size =AxisLab),
         axis.title = element_text(size=AxisText),
         panel.grid.minor = element_line(size = GridMin),
-        panel.grid.major = element_line(size = GridMaj)) +
+        panel.grid.major = element_line(size = GridMaj)) #+
   
-  guides(fill=FALSE) #+
+  # guides(fill = "none") #guides(fill=FALSE) is depreciated #+
 
   # if (powtiers){
   #   ggc <-       ggc + 
@@ -119,7 +119,8 @@ ggc
 
 #final plot configuration 
 gg <- plot_grid(ggc, gglegend, rel_widths = c(2,.4))
-print(gg)
+
+# print(gg) #do print it for now, just assign gg in and print in your main code 
 
   # # Read in Reclamation logo png
   # im <- load.image('code/BofR-horiz-cmyk.png')
@@ -136,5 +137,4 @@ print(gg)
 # source("code/add_logo.R") #alan's way, bottom right corner
 # add_logo_horiz(gg)
 
-# ggsave(filename = file.path(oFigs,paste0(variable,"_Cloud.png")), width = widths[1],height = heights[1])#width= width, height= height)
-ggsave(filename = file.path(oFigs,paste0(title,"_Cloud.png")), width = widths[1],height = heights[1])#width= width, height= height)
+# ggsave(filename = file.path(oFigs,paste0(title,"_Cloud.png")), width = widths[1],height = heights[1])#width= width, height= height)

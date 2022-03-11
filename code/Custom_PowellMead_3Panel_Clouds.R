@@ -15,18 +15,18 @@ library(gridExtra)
 # Parameters for cloud plot customization (line thicknesses, text size, etc.)
 # Have been pulled out for convenience
 #Text
-TitleSize =8
-AxisText = 7
-LegendLabText = 7
+TitleSize = 6# 8
+AxisText = 4#7
+LegendLabText = 4#7
 
-AxisLab = 7
-LabSize = 7
-LegendText = 7
+AxisLab = 4#7
+LabSize = 4#7
+LegendText = 4#7
 
-ylims_pow_inoutflow <- c(7,11)
-ylims_pow_inoutmass <- c(5,7)
-ylims_mead_inoutflow <- c(7,11)
-ylims_mead_inoutmass <- c(7,9)
+# ylims_pow_inoutflow <- c(7,11)
+# ylims_pow_inoutmass <- c(5,7)
+# ylims_mead_inoutflow <- c(7,11)
+# ylims_mead_inoutmass <- c(7,9)
 
 widths=width
 heights=height
@@ -105,13 +105,51 @@ zz_conc <- zz_conc %>% #this doesn't work for some reason
                    'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot
 # unique(zz_conc$Variable)
 
+
+
+
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Plot Custom UB Figures 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+dev.off()
+
 if(T){
 ## create a pdf  
 pdf(file.path(oFigs,paste0("Cloud_PowMeadInOut_",Figs,".pdf")), width= width, height= height)
-
+  
+  # # need df from rw_agg_file <- "UB3GageFlowSaltMass.csv" 
+  # # run SingleTrace_Salt_Explore.R to load this data 
+  zz_all = UB_res_raw %>% 
+    dplyr::filter(Year %in% yrs) %>%
+    # compute the 10/50/90 and aggregate by start month
+    dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
+    dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
+                     'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
+                     'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot
+  
+  NumCrit = HistMin = HistMax = NA 
+  
+  variable = "8_conc_cisco"
+  y_lab = "Concentration (mg/l)"
+  title = "Cisco FWAAC" 
+  source("code/Cloud_plot_woHist.R")
+  c1 <- gg
+  
+  variable = "16_conc_grut"
+  y_lab = "Concentration (mg/l)"
+  title = "GRUT FWAAC" 
+  source("code/Cloud_plot_woHist.R")
+  c2 <- gg
+  
+  variable = "19_conc_bluf"
+  y_lab = "Concentration (mg/l)"
+  title = "Bluff FWAAC" 
+  source("code/Cloud_plot_woHist.R")
+  c3 <- gg
+  
+  grid.arrange(c1,c2,c3,ncol=1)
+  
 #-------------------------------------------------------------------------------------
 # Powell Inflow 
 #-------------------------------------------------------------------------------------
@@ -126,30 +164,28 @@ NumCrit <- data.frame(yintercept=9.6) #mean of 2020 NFSM, 1991-2020 CY sum
 HistMin <- data.frame(yintercept=3.9)
 HistMax <- data.frame(yintercept=17.1)
 source("code/Cloud_plot_woHist.R")
-p1 <- gg
+f1 <- gg
 
 variable = "Powell.Inflow Salt Mass"
-y_lab = "Inflow Salt Mass (MTons/yr)"
+y_lab = "Mass (MTons/yr)"
 title = "Lake Powell Inflow Salt Mass" 
 NumCrit <- data.frame(yintercept=5.7) #mean of 2020 NFSM, 1991-2020 CY sum
 HistMin <- data.frame(yintercept=2.6)
 HistMax <- data.frame(yintercept=8.8)
 source("code/Cloud_plot_woHist.R")
-p2 <- gg
+m1 <- gg
 
 zz_all = zz_conc #need zz_all for Cloud_plot_woHist.R
 variable = "AnnlSlnty_In_Powell_FWAAC"
-y_lab = "Inflow Salt Concentration (mg/l)"
+y_lab = "Concentration (mg/l)"
 title = "Lake Powell Inflow Salt Concentration" 
 NumCrit <- data.frame(yintercept=456) #mean of 2020 NFSM, 1991-2020 FWAAC
 HistMin <- data.frame(yintercept=342)
 HistMax <- data.frame(yintercept=608)
 source("code/Cloud_plot_woHist.R")
-p3 <- gg
+c1 <- gg
 
-grid.arrange(p1,p2,p3,ncol=1)
-
-ggsave(filename = file.path(oFigs,paste0("Powell_Inflow_3Panel.png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0("Powell_Inflow_3Panel.png")), width= width, height= height)
 
 
 #-------------------------------------------------------------------------------------
@@ -166,19 +202,19 @@ NumCrit <- data.frame(yintercept=13.8) #mean of 2020 NFSM, 1991-2020 CY sum
 HistMin <- data.frame(yintercept=8.1)
 HistMax <- data.frame(yintercept=20.7)
 source("code/Cloud_plot_woHist.R")
-p1 <- gg
+f2 <- gg
 
 # df1 <- scen_res %>%
 #   dplyr::filter(Variable == variable) 
 
 variable = "Powell.Reservoir Salt Mass"
-y_lab = "Reservoir Salt Mass (MTons)"
+y_lab = "Mass (MTons)"
 title = "Lake Powell Reservoir Salt Mass" 
 NumCrit <- data.frame(yintercept=9.3) #mean of 2020 NFSM, 1991-2020 CY sum
 HistMin <- data.frame(yintercept=6.5)
 HistMax <- data.frame(yintercept=13.2)
 source("code/Cloud_plot_woHist.R")
-p2 <- gg
+m2 <- gg
 
 # df2 <- scen_res %>%
 #   dplyr::filter(!(Variable %in% variable)) 
@@ -186,7 +222,7 @@ p2 <- gg
 # df2$Value = df2$Value/df1$Value * 735.474184440583
 # variable = "Reservoir Salt Concentration"
 # df2$Variable = variable
-# y_lab = "Reservoir Salt Concentration (mg/l)"
+# y_lab = "Concentration (mg/l)"
 # title = "Calculated Reservoir Salt Concentration" 
 # 
 # zz_all = df2 %>% #this doesn't work for some reason 
@@ -200,9 +236,8 @@ p2 <- gg
 # source("code/Cloud_plot_woHist.R")
 # p3 <- gg
 
-grid.arrange(p1,p2,ncol=1)
 
-ggsave(filename = file.path(oFigs,paste0("Powell_Storage_3Panel.png")), width= width, height= height)
+# #ggsave(filename = file.path(oFigs,paste0("Powell_Storage_3Panel.png")), width= width, height= height)
 
 
 #-------------------------------------------------------------------------------------
@@ -221,31 +256,38 @@ HistMax = NA
 # HistMin <- data.frame(yintercept=7.9)
 # HistMax <- data.frame(yintercept=15.3)
 source("code/Cloud_plot_woHist.R")
-p1 <- gg
+f3 <- gg
 
 variable = "Powell.Outflow Salt Mass"
-y_lab = "Outflow Salt Mass (MTons/yr)"
+y_lab = "Mass (MTons/yr)"
 title = "Lake Powell Outflow Salt Mass" 
 NumCrit <- data.frame(yintercept=5.9) #mean of 2020 NFSM, 1991-2020 CY sum
 HistMin <- data.frame(yintercept=4.7)
 HistMax <- data.frame(yintercept=8.8)
 source("code/Cloud_plot_woHist.R")
-p2 <- gg
+m3 <- gg
 
 zz_all = zz_conc #need zz_all for Cloud_plot_woHist.R
 variable = "AnnlSlntyLsFrry_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
+y_lab = "Concentration (mg/l)"
 title = "Lees Ferry Average Salt Concentration" 
 NumCrit <- data.frame(yintercept=469) #mean of 2020 NFSM, 1991-2020 FWAAC
 HistMin <- data.frame(yintercept=405)
 HistMax <- data.frame(yintercept=580)
 source("code/Cloud_plot_woHist.R")
-p3 <- gg
+c3 <- gg
 
-grid.arrange(p1,p2,p3,ncol=1)
+# #ggsave(filename = file.path(oFigs,paste0("Powell_Outflow_3Panel.png")), width= width, height= height)
 
-ggsave(filename = file.path(oFigs,paste0("Powell_Outflow_3Panel.png")), width= width, height= height)
+#arrange by in, out 
+grid.arrange(f1,m1,c1,ncol=1)
+grid.arrange(f2,m2,ncol=1)
+grid.arrange(f3,m3,c3,ncol=1)
 
+#arrange by type 
+grid.arrange(f1,f2,f3,ncol=1)
+grid.arrange(m1,m2,m3,ncol=1)
+grid.arrange(c1,c3,ncol=1)
 
 
 ################################################################################
@@ -267,30 +309,28 @@ subtitle = ""
 #HistMin <- data.frame(yintercept=3.9)
 #HistMax <- data.frame(yintercept=17.1)
 source("code/Cloud_plot_woHist.R")
-p1 <- gg
+f1 <- gg
 
 variable = "Mead.Inflow Salt Mass"
-y_lab = "Inflow Salt Mass (MTons/yr)"
+y_lab = "Mass (MTons/yr)"
 title = "Lake Mead Inflow Salt Mass" 
 #NumCrit <- data.frame(yintercept=5.7) #mean of 2020 NFSM, 1991-2020 CY sum
 #HistMin <- data.frame(yintercept=2.6)
 #HistMax <- data.frame(yintercept=8.8)
 source("code/Cloud_plot_woHist.R")
-p2 <- gg
+m1 <- gg
 
 zz_all = zz_conc #need zz_all for Cloud_plot_woHist.R
 variable = "AnnlSlnty_In_Hvr_FWAAC"
-y_lab = "Inflow Salt Concentration (mg/l)"
+y_lab = "Concentration (mg/l)"
 title = "Lake Mead Inflow Salt Concentration" 
 #NumCrit <- data.frame(yintercept=456) #mean of 2020 NFSM, 1991-2020 FWAAC
 #HistMin <- data.frame(yintercept=342)
 #HistMax <- data.frame(yintercept=608)
 source("code/Cloud_plot_woHist.R")
-p3 <- gg
+c1 <- gg
 
-grid.arrange(p1,p2,p3,ncol=1)
-
-ggsave(filename = file.path(oFigs,paste0("Mead_Inflow_3Panel.png")), width= width, height= height)
+#ggsave(filename = file.path(oFigs,paste0("Mead_Inflow_3Panel.png")), width= width, height= height)
 
 
 #-------------------------------------------------------------------------------------
@@ -307,19 +347,19 @@ subtitle = ""
 #HistMin <- data.frame(yintercept=8.1)
 #HistMax <- data.frame(yintercept=20.7)
 source("code/Cloud_plot_woHist.R")
-p1 <- gg
+f2 <- gg
 
 df1 <- scen_res %>%
   dplyr::filter(Variable == variable) 
 
 variable = "Mead.Reservoir Salt Mass"
-y_lab = "Reservoir Salt Mass (MTons)"
+y_lab = "Mass (MTons)"
 title = "Lake Mead Reservoir Salt Mass" 
 #NumCrit <- data.frame(yintercept=9.3) #mean of 2020 NFSM, 1991-2020 CY sum
 #HistMin <- data.frame(yintercept=6.5)
 #HistMax <- data.frame(yintercept=13.2)
 source("code/Cloud_plot_woHist.R")
-p2 <- gg
+m2 <- gg
 
 # df2 <- scen_res %>%
 #   dplyr::filter(!(Variable %in% variable)) 
@@ -327,7 +367,7 @@ p2 <- gg
 # df2$Value = df2$Value/df1$Value * 735.474184440583
 # variable = "Reservoir Salt Concentration"
 # df2$Variable = variable
-# y_lab = "Reservoir Salt Concentration (mg/l)"
+# y_lab = "Concentration (mg/l)"
 # title = "Calculated Reservoir Salt Concentration" 
 # 
 # zz_all = df2 %>% #this doesn't work for some reason 
@@ -341,9 +381,7 @@ p2 <- gg
 # source("code/Cloud_plot_woHist.R")
 # p3 <- gg
 
-grid.arrange(p1,p2,ncol=1)
-
-ggsave(filename = file.path(oFigs,paste0("Mead_Storage_3Panel.png")), width= width, height= height)
+#ggsave(filename = file.path(oFigs,paste0("Mead_Storage_3Panel.png")), width= width, height= height)
 
 
 #-------------------------------------------------------------------------------------
@@ -362,30 +400,39 @@ subtitle = ""
 # #HistMin <- data.frame(yintercept=7.9)
 # #HistMax <- data.frame(yintercept=15.3)
 source("code/Cloud_plot_woHist.R")
-p1 <- gg
+f3 <- gg
 
 variable = "Mead.Outflow Salt Mass"
-y_lab = "Outflow Salt Mass (MTons/yr)"
+y_lab = "Mass (MTons/yr)"
 title = "Lake Mead Outflow Salt Mass" 
 #NumCrit <- data.frame(yintercept=5.9) #mean of 2020 NFSM, 1991-2020 CY sum
 #HistMin <- data.frame(yintercept=4.7)
 #HistMax <- data.frame(yintercept=8.8)
 source("code/Cloud_plot_woHist.R")
-p2 <- gg
+m3 <- gg
 
 zz_all = zz_conc #need zz_all for Cloud_plot_woHist.R
 variable = "AnnlSlntyMead_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
+y_lab = "Concentration (mg/l)"
 title = "Below Hoover Average Salt Concentration" 
 #NumCrit <- data.frame(yintercept=469) #mean of 2020 NFSM, 1991-2020 FWAAC
 #HistMin <- data.frame(yintercept=405)
 #HistMax <- data.frame(yintercept=580)
 source("code/Cloud_plot_woHist.R")
-p3 <- gg
+c3 <- gg
 
-grid.arrange(p1,p2,p3,ncol=1)
+#ggsave(filename = file.path(oFigs,paste0("Mead_Outflow_3Panel.png")), width= width, height= height)
 
-ggsave(filename = file.path(oFigs,paste0("Mead_Outflow_3Panel.png")), width= width, height= height)
+
+#arrange by in, out 
+grid.arrange(f1,m1,c1,ncol=1)
+grid.arrange(f2,m2,ncol=1)
+grid.arrange(f3,m3,c3,ncol=1)
+
+#arrange by type 
+grid.arrange(f1,f2,f3,ncol=1)
+grid.arrange(m1,m2,m3,ncol=1)
+grid.arrange(c1,c3,ncol=1)
 
 
 dev.off()

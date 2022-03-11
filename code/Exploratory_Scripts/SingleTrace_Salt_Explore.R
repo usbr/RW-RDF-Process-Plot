@@ -1,5 +1,14 @@
 ##############################################################################
 ##############################################################################
+CRSSDIR <- Sys.getenv("CRSS_DIR")
+scen_dir <- file.path(CRSSDIR,"Scenario")
+scen_dir <- 'C:/Users/cfelletter/Documents/crss.2023TRIRVW/Scenario'
+
+startyr <- 2020 #filter out all years > this year
+endyr <- 2040 #60
+
+width=9# 10 #9
+height=6 #6.67 #6
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process UB 3 Gage
@@ -48,6 +57,8 @@ if(customcolorltpt == F && length(scens) == 2){ #1 color, first scen dashed, sec
   stop("customcolorltpt not setup or too many Scens")
 } 
 
+source(file.path(getwd(),"code","libs_n_dirs.R")) #requires reults_nm 
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Powell/Mead 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -78,15 +89,20 @@ UB_res_raw <- rw_scen_aggregate(
   scen_dir = scen_dir
 )
 
-if(names(scens[1])=="2020TriRvw_Scen3" && 2020 %in% unique(scen_res$Year)){
+if(names(scens[1])=="2020TriRvw_Scen3" && 2020 %in% unique(UB_res_raw$Year)){
   #Shift TriRvw forward 3 years
   trirvwrows <- which(UB_res_raw$Scenario == names(scens[1]))
   UB_res_raw$Year[trirvwrows] = UB_res_raw$Year[trirvwrows] + 3
   unique(UB_res_raw$Year)
 }
 
+UB_res_raw$Scenario = factor(UB_res_raw$Scenario, levels=names(scens))
 
-UB_res$Scenario = factor(UB_res$Scenario, levels=names(scens))
+unique(UB_res_raw$Variable)
+
+keep <- which(UB_res_raw$Month == "December") #2020 FWAAC were monthly, drop all except December which have values
+UB_res_raw = UB_res_raw[keep,]
+unique(UB_res_raw$Month)
 
 yrs <- startyr:endyr #simplify 
 
@@ -96,7 +112,7 @@ yrs <- startyr:endyr #simplify
 #ylims_mead_inoutmass <- c(7,9)
 
 ######
-tracenm = 64 #64 
+tracenm = 70 #64 
 ######
 
 # unique(scen_res$Variable)

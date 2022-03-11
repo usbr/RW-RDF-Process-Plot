@@ -30,6 +30,8 @@ CRSSDIR <- Sys.getenv("CRSS_DIR")
 scen_dir <- file.path(CRSSDIR,"Scenario")
 #containing the sub folders for each ensemble
 
+scen_dir <- 'C:/Users/cfelletter/Documents/crss.2023TRIRVW/Scenario'
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 2. User Input ##
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -67,6 +69,13 @@ scens <- list(
   "Jan2022_2020Scen3_ST8817" = "CRMMS_Most,DNF with Salinity 19882017,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0"
   )
 
+
+# Model.Step.Name <- Figs <- "Check_2020TriRvwRerun" #plot title and results/folder name #[plot type] identifying name .pdf
+# customcolorltpt <- F
+# scens <- list(
+#   "2020TriRvw_Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
+#   "ReRun" = "ReRun_2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409"
+# )
 
 # # ##########################################################################
 
