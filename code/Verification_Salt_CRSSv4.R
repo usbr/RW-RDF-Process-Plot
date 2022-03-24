@@ -13,16 +13,14 @@ library(xml2)
 library(gridExtra)
 
 CRSSDIR <- Sys.getenv("CRSS_DIR")
-# CRSSDIR <- "C:/Users/cfelletter/Documents/CRSS"
-
+CRSSDIR <- "C:/Users/cfelletter/Documents/crss.trirvw2020"
 results_dir <- file.path(CRSSDIR,"results") 
 # # where rdf results folder is kept
 
 #easier to make folder from output in the results dir than to move it 
 scen_dir <- file.path(CRSSDIR,"results") #file.path(CRSSDIR,"Scenario")
 # #containing the sub folders for each ensemble
-scens <- "Elliot_Change" #### Elliot Change this to folder name you created in CRSSDIR/results/ ####
-
+scens <- "CRSSv4_2020TriRvw_SaltVerification" 
 
 printfigs<-T#T#make png figures and dump data 
 
@@ -67,25 +65,22 @@ if (!file.exists(fig_dir) | !file.exists(data_dir)) {
 ################################################################################
 
 #do this with rwagg becasue you need different FWAAC slots 
-rw_agg_file <- "SaltVerificationAnn_rwagg.csv" 
+rw_agg_file <- "SaltVerificationAnn_rwagg_CRSSv4.csv" 
 rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) #ubres.rdf res.rdf
 df_annual <- rdf_aggregate(rwa1, rdf_dir = file_dir) #MUST be in Scenario FOLDER! not results folder
-unique(df_annual$Month)
-# unique(df_annual$Variable)
 
 df_annual <- as.data.frame(df_annual) #fix issues with class #i have to do this to get it to work, not sure why 
 
 nodes <- c('glen','cameo','gunn','dolor','cisco','grwy','gdale','yampa','duch',
-           'white','grut','sanraf','arch','bluf','powellin','lees','grcan','virgin','hoover',
-           'parker','imper')
-nodenums <- c(1,2,6:8,10:12,14:20,20,23:25,28,29) #20 twice for powell inflow and outflow 
+           'white','grut','sanraf','arch','bluf','powellin')#,'lees','grcan','virgin','hoover',
+           # 'parker','imper')
+nodenums <- c(1,2,6:8,10:12,14:19,20)#,20,23:25,28,29) #20 twice for powell inflow and outflow 
 flownm <- paste0(nodenums,rep("_flow_",length(nodes)),nodes)
 massnm <- paste0(nodenums,rep("_mass_",length(nodes)),nodes)
 concnm <- paste0(nodenums,rep("_conc_",length(nodes)),nodes)
 
 df_obs <- readxl::read_xlsx('data/HistFlowMassConcAnn.xlsx',col_names = T, ) 
 df_obs = df_obs %>% pivot_longer(cols=names(df_obs)[3:65],names_to = 'Variable',values_to = 'Value')
-unique(df_obs$Variable)
 
 df_annual$DataType = rep("Sim",times=dim(df_annual)[1])
 
@@ -136,7 +131,8 @@ for (i in 1:length(nodes)) {
   print(paste("Node",nodes[i]))
 
   # 3 panel annual plot
-  p1 <- df_annual %>%
+  p1 <-
+    df_annual %>%
     dplyr::filter(Variable == flownm[i])  %>%
     group_by(DataType,Variable,Year) %>%
     mutate(Value = Value/1000) %>%
@@ -145,7 +141,7 @@ for (i in 1:length(nodes)) {
     theme_light() +
     theme(axis.title.x = element_blank()) +
     labs(title = paste(nodes[i]), y = "Flow (KAF/yr)",x="")
-  # print(p1)
+  print(p1)
 
   p2 <- df_annual %>%
     dplyr::filter(Variable == massnm[i])  %>%
@@ -373,8 +369,8 @@ if(T){
 
 dev.off() #mega plot
 
-df_annual$Scenario = "CRSSv5"
-
+df_annual$Scenario = "CRSSv4_2020TriRvw"
+df_annual_2020 = df_annual
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 5. Plot Mass Balance 

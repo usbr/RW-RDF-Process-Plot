@@ -44,6 +44,8 @@ height=6 #6.67 #6
 startyr <- 2020 #filter out all years > this year
 endyr <- 2040 #60
 
+customcolorltpt <- F
+
 # # # ##########################################################################
 # # Scenarios ##
 # # # ##########################################################################
@@ -54,13 +56,11 @@ endyr <- 2040 #60
 #
 #file names
 Model.Step.Name <- Figs <- "Jan2022_2020Scen3" #plot title and results/folder name #[plot type] identifying name .pdf
-customcolorltpt <- F
 
 scens <- list(
   "2020TriRvw_Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
   "Jan2022_2020Scen3" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0"
 )
-
 
 Model.Step.Name <- Figs <- "Jan2022_2020Scen3_PulvST"
 scens <- list(
@@ -69,6 +69,12 @@ scens <- list(
   "Jan2022_2020Scen3_ST8817" = "CRMMS_Most,DNF with Salinity 19882017,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0"
   )
 
+# Model.Step.Name <- Figs <- "CRSSJan2022_2000runwSalt"
+# scens <- list(
+#   # "2020TriRvw_Scen3_PulRvm3118" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
+#   "CRSSv4" = "CRSSv4_2020TriRvw_SaltVerification",
+#   "CRSSv5" = "CRSSJan2022_2000runwSalt"
+# )
 
 # Model.Step.Name <- Figs <- "Check_2020TriRvwRerun" #plot title and results/folder name #[plot type] identifying name .pdf
 # customcolorltpt <- F
@@ -104,7 +110,7 @@ if(!file.exists(file.path(scen_dir, scens[1]))
   stop('Scenarios folder(s) do not exist or scen_dir is set up incorrectly. 
        Please ensure Scenarios is set correctly.')
 
-oFigs <- file.path(getwd(),'results') 
+oFigs <- file.path(CRSSDIR,'results') 
 if (!file.exists(oFigs)) {
   message(paste('Creating folder:', oFigs))
   dir.create(oFigs)
