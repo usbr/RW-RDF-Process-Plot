@@ -9,7 +9,10 @@ UBRes.rdf,BlueMesa.Outflow,asis,NA,NA,NA,BlueMesa.Outflow
 UBRes.rdf,Crystal.Outflow,asis,NA,NA,NA,Crystal.Outflow
 UBRes.rdf,MorrowPoint.Pool Elevation,asis,NA,NA,NA,MorrowPoint.Pool Elevation
 UBRes.rdf,MorrowPoint.Outflow,asis,NA,NA,NA,MorrowPoint.Outflow
-MonthlyFlowTargets.rdf,GunnisonNearGrandJunction.Gage Outflow,asis,NA,NA,NA,GunnisonNearGrandJunction.AFOutflow
 UBRes.rdf,Navajo.Pool Elevation,asis,NA,NA,NA,Navajo.Pool Elevation
 UBRes.rdf,Navajo.Outflow,asis,NA,NA,NA,Navajo.Outflow
 Res.rdf,Powell.Inflow,asis,NA,NA,NA,Powell.Inflow
+Res.rdf,Powell.Pool Elevation,asis,NA,NA,NA,Powell.Pool Elevation
+Res.rdf,Powell.Outflow,asis,NA,NA,NA,Powell.Outflow
+UBRes.rdf,TaylorPark.Pool Elevation,asis,NA,NA,NA,TaylorPark.Pool Elevation
+UBRes.rdf,TaylorPark.Outflow,asis,NA,NA,NA,TaylorPark.Outflow

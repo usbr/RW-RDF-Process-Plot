@@ -128,57 +128,57 @@ generic_scen_process_2 <- function(scen_dir,scens,timestep,same_rdf) {
   
   else if (timestep == "daily"){
     
-    
-  #   title <- variable
-  #   
-  #   #Special rw scen agg since RWDataPlyr doesn't support daily 
-  #   for (i in 1:length(scens)) {
-  #     
-  #     scen_res_x <- file.path(scen_dir,scens[i],rdffile) %>% #this means "pipe" the data to the next function 
-  #       rdf_to_rwtbl2() %>%
-  #       filter(ObjectSlot == variable)
-  #     
-  #     #add on Scenario since rdf_to_rwtbl2 doesn't add it  
-  #     scen_res_x <- cbind.data.frame(
-  #       scen_res_x,
-  #       Scenario = rep(names(scens)[i], Times = length(scen_res_x$Timestep))
-  #     )
-  #     
-  #     #convert Timestep chr to POSIXct
-  #     scen_res_x$Timestep <- as.POSIXct(strptime(scen_res_x$Timestep,"%Y-%m-%d %H:%M")) 
-  #     scen_res_x$Timestep <- as.Date(scen_res_x$Timestep)
-  #     #first entry is 2019-1-31 24:00 which gets converted to 2019-02-01, is that okay????? 
-  #     
-  #     if(i == 1){
-  #       scen_res = scen_res_x
-  #     } else {
-  #       scen_res = rbind.data.frame(scen_res,scen_res_x)
-  #     }
-  #     
-  #   } #close i Scenario loop 
-  #   
-  #   # unique(scen_res$ObjectSlot) #check variable names 
-  #   # unique(scen_res$Scenario) #check Scenario names 
-  #   
-  #   #get everything on a date 
-  #   scen_res$MonthNum = as.Date(paste0(scen_res$Year,scen_res$Month,"01"), format = "%Y%B%d")
-  #   #get a numeric month number
-  #   scen_res$MonthNum = as.numeric(format.Date(scen_res$Timestep, format = "%m"))
-  #   scen_res$DayNum = as.numeric(format.Date(scen_res$Timestep, format = "%d"))
-  #   
-  #   if (model == "MTOM"){
-  #     test <- scen_res %>% 
-  #       # filter out Most,Min,Max
-  #       dplyr::filter(
-  #         (Scenario == names(scens[1]) && TraceNumber >= first_ensemble[1]) |
-  #           (Scenario == names(scens[2]) && TraceNumber >= first_ensemble[2])
-  #       ) 
-  #     message(paste('Filtering out trace',first_ensemble[1],'from',names(scens[1]),"and",first_ensemble[2],'from',names(scens[2])))
-  #   }
-  #   
-  #   return(scen_res)
-  #   
-  # } else {
+
+    title <- variable
+
+    #Special rw scen agg since RWDataPlyr doesn't support daily
+    for (i in 1:length(scens)) {
+
+      scen_res_x <- file.path(scen_dir,scens[i],rdffile) %>% #this means "pipe" the data to the next function
+        rdf_to_rwtbl2() %>%
+        filter(ObjectSlot == variable)
+
+      #add on Scenario since rdf_to_rwtbl2 doesn't add it
+      scen_res_x <- cbind.data.frame(
+        scen_res_x,
+        Scenario = rep(names(scens)[i], Times = length(scen_res_x$Timestep))
+      )
+
+      #convert Timestep chr to POSIXct
+      scen_res_x$Timestep <- as.POSIXct(strptime(scen_res_x$Timestep,"%Y-%m-%d %H:%M"))
+      scen_res_x$Timestep <- as.Date(scen_res_x$Timestep)
+      #first entry is 2019-1-31 24:00 which gets converted to 2019-02-01, is that okay?????
+
+      if(i == 1){
+        scen_res = scen_res_x
+      } else {
+        scen_res = rbind.data.frame(scen_res,scen_res_x)
+      }
+
+    } #close i Scenario loop
+
+    # unique(scen_res$ObjectSlot) #check variable names
+    # unique(scen_res$Scenario) #check Scenario names
+
+    #get everything on a date
+    scen_res$MonthNum = as.Date(paste0(scen_res$Year,scen_res$Month,"01"), format = "%Y%B%d")
+    #get a numeric month number
+    scen_res$MonthNum = as.numeric(format.Date(scen_res$Timestep, format = "%m"))
+    scen_res$DayNum = as.numeric(format.Date(scen_res$Timestep, format = "%d"))
+
+    if (model == "MTOM"){
+      test <- scen_res %>%
+        # filter out Most,Min,Max
+        dplyr::filter(
+          (Scenario == names(scens[1]) && TraceNumber >= first_ensemble[1]) |
+            (Scenario == names(scens[2]) && TraceNumber >= first_ensemble[2])
+        )
+      message(paste('Filtering out trace',first_ensemble[1],'from',names(scens[1]),"and",first_ensemble[2],'from',names(scens[2])))
+    }
+
+    return(scen_res)
+
+  } else {
     stop(paste0("Process type ",timestep," not supported"))
   }
   

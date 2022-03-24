@@ -1,0 +1,4 @@
+file,slot,period,summary,eval,t_s,variable
+DailyFlows.rdf,DailyFlows.FlamingGorgeDaily,asis,NA,NA,NA,DailyFlows.FlamingGorgeDaily
+DailyFlows.rdf,DailyFlows.JensenDaily,asis,NA,NA,NA,DailyFlows.JensenDaily
+DailyFlows.rdf,BlueMesaData.TargetDailyWhitewaterFlows,asis,NA,NA,NA,BlueMesaData.TargetDailyWhitewaterFlows

@@ -1,0 +1,4 @@
+file,slot,period,summary,eval,t_s,variable
+UBDO.rdf,ExtendedOperations.AdditionalBlueMesaRelease,asis,NA,NA,NA,add_dro_rel_bm
+UBDO.rdf,ExtendedOperations.FlamingGorgeReleaseDifference,asis,NA,NA,NA,add_dro_rel_fg
+UBDO.rdf,ExtendedOperations.Navajo_TotalAdditionalRelease,asis,NA,NA,NA,add_dro_rel_nav

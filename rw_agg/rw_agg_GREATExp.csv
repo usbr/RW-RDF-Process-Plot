@@ -1,0 +1,6 @@
+file,slot,period,summary,eval,t_s,variable
+GREAT_mon.rdf,GREATExpressionSlots.Check_Meet_JensenLL_EIS,asis,NA,NA,NA,Meet_JensenLL_EIS
+GREAT_mon.rdf,GREATExpressionSlots.Check_Meet_JensenLL_CPMBF,asis,NA,NA,NA,Meet_JensenLL_CPMBF
+GREAT_mon.rdf,GREATExpressionSlots.Check_Winter25,asis,NA,NA,NA,Winter25
+GREAT_ann.rdf,GREATExpressionSlots.Check_Have_Spike,asis,NA,NA,NA,Have_Spike
+GREAT_ann.rdf,GREATExpressionSlots.Check_Winter_Volume,asis,NA,NA,NA,Winter_Volume

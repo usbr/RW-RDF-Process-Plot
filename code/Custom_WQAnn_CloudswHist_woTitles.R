@@ -14,11 +14,15 @@
 library('readxl') #read_xlsx()
 library('cowplot') #get_legend()
 
-
 ######READ IN and make scen_res USING REGULAR WQAnn or PE code#######
 
 # rw_agg_file <- "WQAnn.csv" #doesn't include outflow
-
+# 
+# #read agg file specifying which slots
+# # # NEW files are annual slots so use AsIs
+# rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE))
+# # # # Old files from 2017 review are monthly so use EOCY 
+# 
 # #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
 # scen_res <- rw_scen_aggregate(
 #   scens,
@@ -58,8 +62,9 @@ library('cowplot') #get_legend()
 MinMaxLines<-F # T is want dotted line as min max of any given trace 
 
 
-colorNames <- c("Historical Elevation",names(scens))  
+colorNames <- c("Historical SLOAD",names(scens))  
 # colorNames <- c("Historical Elevation","Full Hydrology","Early Pluvial Removed Hydrology","Stress Test Hydrology")  
+
 #####UPDATE THIS EVERY TIME #### OR UPDATE LATER IN DOCUMENT USING 
 
 # Parameters for cloud plot customization (line thicknesses, text size, etc.)
@@ -67,12 +72,12 @@ colorNames <- c("Historical Elevation",names(scens))
 #Text
 TitleSize = 13
 AxisText = 11
-LegendLabText = 9.5
+LegendLabText = 9.5 #legend title text size
+AxisLab = 9 #axis text size
+LabSize = 2.9 #this doesn't appear to be called in Cloud_plot_wHist
+LegendText = 8 #controls the text size
 
-AxisLab = 9
-LabSize = 2.9
-LegendText = 8
-# 
+ 
 #Lines
 IGStartLine = .8
 OpsLines = 1
@@ -85,12 +90,12 @@ GridMin = .25
 # yaxmax = ceiling(max(zz$Max)/50)*50
 # 
 # #Other
-LegendWidth = 1
-LegendHeight = 2.5
+LegendWidth = 1 #this doesn't appear to be called in Cloud_plot_wHist
+LegendHeight = 2.5 #this doesn't appear to be called in Cloud_plot_wHist
 
 # Set tick marks for x and y axis
 myXLabs <- seq(1990,3000,5)
-myYLabs <- seq(900,4000,50)
+myYLabs <- seq(-500,1200,50)
 
 yrs <- startyr:endyr #simplify 
 
@@ -99,20 +104,17 @@ cloudLabs <- names(scens)
 
 ### Read Data ###
 
-unique(scen_res$Variable)
 
 zz_all <- scen_res %>%
-  dplyr::filter(Year %in% yrs, Variable %in% c("Powell.PoolElevation",
-                                               "Mead.PoolElevation"
-                                               )) %>%
+  dplyr::filter(Year %in% yrs, Variable %in% c("AnnlSlntyLsFrry_FWAAC",
+                                                "AnnlSlntyHvr_FWAAC",
+                                                "AnnlSlntyPrkr_FWAAC",
+                                                "AnnlSlntyImprl_FWAAC")) %>%
   # compute the 10/50/90 and aggregate by start month
   dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
   dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
                    'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot 
-
-unique(zz_all$Variable)
-head(zz_all)
 
 # # debug
 # head(zz_all)
@@ -120,10 +122,10 @@ head(zz_all)
 # unique(zz_all$Year)
 
 #  Pulling historical SLOAD data
-hist <- read_xlsx(file.path(getwd(),'data/HistPE.xlsx'))
+hist <- read_xlsx(file.path(getwd(),'data/HistSLOAD.xlsx')) #extended to 2019
 
 # Formatting data frame to match zz_all
-hist$Scenario <- 'Historical Elevation'
+hist$Scenario <- 'Historical SLOAD'
 hist$Mean <-hist$Med <- hist$Min <- hist$Max <- hist$MinOut <- hist$MaxOut <- hist$Value
 hist <- within(hist, rm(Value))
 hist <- hist[c("Scenario","Year","Variable","Mean","Med","Min","Max","MinOut","MaxOut")]
@@ -147,14 +149,18 @@ zz_all <- bind_rows(hist,zz_all)
 
 # # Getting all scenarios passed to fxn - CF: Alan's addIC use scens instead
 
+# Setting colors for graph- ensures historical data is black on plot
+# colorNames <- unique(zz_all$Scenario)
+#DCP colors (to match AZ Big Bang slides)"#54FF9F","#F4A460"
+#Grey for Interim Guidelines Projections (if included) #8B8682. Add to end.
+# plotColors <- c("#000000", "#00BFC4","#F8766D")
+
 #use mycolors defined by Master rather than old Cloud colors 
-plotColors <-   c("#000000", mycolors)#,"#8B8682")  # #black, my colors, grey  
+# plotColors <-   c("#000000", mycolors,"#8B8682")  # #black, my colors, grey  
+plotColors <-   c("#000000", mycolors)  # #black, my colors, grey  
+
+
 # 
-# # Setting colors for graph- ensures historical data is black on plot
-# # colorNames <- unique(zz_all$Scenario)
-# #DCP colors (to match AZ Big Bang slides)"#54FF9F","#F4A460"
-# #Grey for Interim Guidelines Projections (if included) #8B8682. Add to end.
-# # plotColors <- c("#000000", "#00BFC4","#F8766D")
 # if(length(scens) == 4){
 #   plotColors <-   c("#000000", "#00BFC4","#329b20","#ede453","#F8766D","#8B8682")  #"#e553fc") #black, green blue yellow red grey  (other = purple
 # } else if(length(scens) == 3){
@@ -173,9 +179,9 @@ names(plotColors) <- colorNames
 zz_all$Scenario = factor(zz_all$Scenario, levels=colorNames)
 
 # Generating labels for the lines in ggplot
-histLab = "Historical PE"
+histLab = "Historical SLOAD"
 # PrvTRLab = "2017 TriRvw Projection (No Adtl Bynd 2020)"
-names(histLab) = "Historical PE"
+names(histLab) = "Historical SLOAD"
 # names(PrvTRLab) = "2017 TriRvw Projection (No Adtl Bynd 2020)"
 histLab = append(histLab, cloudLabs)
 # histLab = append(histLab, PrvTRLab)
@@ -186,7 +192,7 @@ histLab = append(histLab, cloudLabs)
 # im_rast <- grid::rasterGrob(im, interpolate = T)
 
 ## create a pdf  
-pdf(file.path(oFigs,paste0("PEClouds_MinMaxLines=",MinMaxLines,"_",Figs,".pdf")), width= width, height= height)
+pdf(file.path(oFigs,paste0("WQAnnClouds_woTitles_",Figs,".pdf")), width= width, height= height)
 
 ### Means ###
 
@@ -194,27 +200,55 @@ pdf(file.path(oFigs,paste0("PEClouds_MinMaxLines=",MinMaxLines,"_",Figs,".pdf"))
 # ++++++++++++++++++++++++++Lees Ferry+++++++++++++++++++++++++++++++++++++
 #-------------------------------------------------------------------------------------
 
-variable = "Powell.PoolElevation"
-y_lab = "Pool Elevation (ft)"
-title = "Lake Powell Pool Elevation" 
-subtitle = ""
-ylims <- c(3490,3570)
 NumCrit <- NA
+variable = "AnnlSlntyLsFrry_FWAAC"
+y_lab = "Salt Concentration (mg/l)"
+title = "" 
+subtitle = ""
+ylims <- c(400,600)
 
-source("code/Cloud_plot_wHist.R")
+source("code/Cloud_plot_wHist_woTitles.R")
 
 #-------------------------------------------------------------------------------------
 # ++++++++++++++++++++++++++Below Mead+++++++++++++++++++++++++++++++++++++
 #-------------------------------------------------------------------------------------
 
-variable = "Mead.PoolElevation"
-y_lab = "Pool Elevation (ft)"
-title = "Lake Mead Pool Elevation" 
-ylims <- c(3490,3570)
-subtitle = ""
-NumCrit <- NA
 
-source("code/Cloud_plot_wHist.R")
+NumCrit <- data.frame(yintercept=723)
+variable = "AnnlSlntyHvr_FWAAC"
+y_lab = "Salt Concentration (mg/l)"
+title = "Colorado River below Hoover Dam" 
+subtitle = "Average Annual Concentration Comparison"
+ylims <- c(545,750)
+
+source("code/Cloud_plot_wHist_woTitles.R")
+
+#-------------------------------------------------------------------------------------
+#------------------------------Below Parker-------------------------------------------------------
+#-------------------------------------------------------------------------------------
+
+
+NumCrit <- data.frame(yintercept=747)
+variable = "AnnlSlntyPrkr_FWAAC"
+y_lab = "Salt Concentration (mg/l)"
+title = "Colorado River below Parker Dam" 
+subtitle = "Average Annual Concentration Comparison"
+ylims <- c(550,750)
+
+source("code/Cloud_plot_wHist_woTitles.R")
+
+#-------------------------------------------------------------------------------------
+#-------------------------------At Imperial------------------------------------------------------
+#-------------------------------------------------------------------------------------
+
+NumCrit <- data.frame(yintercept=879)
+variable = "AnnlSlntyImprl_FWAAC"
+y_lab = "Salt Concentration (mg/l)"
+title = "Colorado River above Imperial Dam" 
+subtitle = "Average Annual Concentration Comparison"
+ylims <- c(675,900)
+
+source("code/Cloud_plot_wHist_woTitles.R")
 
 dev.off()
 

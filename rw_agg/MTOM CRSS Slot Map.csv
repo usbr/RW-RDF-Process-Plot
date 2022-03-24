@@ -1,0 +1,18 @@
+file,slot,period,summary,eval,t_s,variable
+SystemConditions.rdf,SummaryOutputData.LBFloodControlSurplus,,,,,AnnualFloodControlFlag   
+SystemConditions.rdf,SummaryOutputData.LBShortageConditions,,,,,AnnualShortageAnyTypeFlag
+SystemConditions.rdf,SummaryOutputData.EqualizationAbove823     ,,,,,EqualizationAbove823     
+SystemConditions.rdf,SummaryOutputData.EqualizationAt823        ,,,,,EqualizationAt823        
+SystemConditions.rdf,SummaryOutputData.LBNormalCondition        ,,,,,LBNormalCondition        
+SystemConditions.rdf,SummaryOutputData.LowerBalancingAbove823   ,,,,,LowerBalancingAbove823   
+SystemConditions.rdf,SummaryOutputData.LowerBalancingAt823      ,,,,,LowerBalancingAt823      
+SystemConditions.rdf,SummaryOutputData.LowerBalancingBelow823   ,,,,,LowerBalancingBelow823   
+SystemConditions.rdf,SummaryOutputData.MidElevationReleaseAt748,,,,,MidElevationReleaseAt748
+SystemConditions.rdf,SummaryOutputData.MidElevationReleaseAt823,,,,,MidElevationReleaseAt823
+SystemConditions.rdf,SummaryOutputData.LBShortageStep1,,,,,Step1ShortageFlag        
+SystemConditions.rdf,SummaryOutputData.LBShortageStep2,,,,,Step2ShortageFlag        
+SystemConditions.rdf,SummaryOutputData.LBShortageStep3,,,,,Step3ShortageFlag        
+SystemConditions.rdf,SummaryOutputData.UpperBalancingAbove823   ,,,,,UpperBalancingAbove823   
+SystemConditions.rdf,SummaryOutputData.UpperBalancingAt823      ,,,,,UpperBalancingAt823      
+SystemConditions.rdf,SummaryOutputData.UpperBalancingBelow823   ,,,,,UpperBalancingBelow823   
+SystemConditions.rdf,SummaryOutputData.LBSurplusConditions  ,,,,,LBSurplusConditions  

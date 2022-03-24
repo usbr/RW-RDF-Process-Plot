@@ -1,0 +1,22 @@
+file,slot,period,summary,eval,t_s,variable
+ResSaltVerification.rdf,Powell.Storage,asis,NA,NA,NA,Powell.Storage
+ResSaltVerification.rdf,Mead.Storage,asis,NA,NA,NA,Mead.Storage
+ResSaltVerification.rdf,Mohave.Storage,asis,NA,NA,NA,Mohave.Storage
+ResSaltVerification.rdf,Havasu.Storage,asis,NA,NA,NA,Havasu.Storage
+ResSaltVerification.rdf,FlamingGorge.Storage,asis,NA,NA,NA,FlamingGorge.Storage
+ResSaltVerification.rdf,Navajo.Storage,asis,NA,NA,NA,Navajo.Storage
+ResSaltVerification.rdf,Starvation.Storage,asis,NA,NA,NA,Starvation.Storage
+ResSaltVerification.rdf,Powell.Reservoir Salt Mass,asis,NA,NA,NA,Powell.SaltMass
+ResSaltVerification.rdf,Mead.Reservoir Salt Mass,asis,NA,NA,NA,Mead.SaltMass
+ResSaltVerification.rdf,Mohave.Reservoir Salt Mass,asis,NA,NA,NA,Mohave.SaltMass
+ResSaltVerification.rdf,Havasu.Reservoir Salt Mass,asis,NA,NA,NA,Havasu.SaltMass
+ResSaltVerification.rdf,FlamingGorge.Reservoir Salt Mass,asis,NA,NA,NA,FlamingGorge.SaltMass
+ResSaltVerification.rdf,Navajo.Reservoir Salt Mass,asis,NA,NA,NA,Navajo.SaltMass
+ResSaltVerification.rdf,Starvation.Reservoir Salt Mass,asis,NA,NA,NA,Starvation.SaltMass
+ResSaltVerification.rdf,Powell.Reservoir Salt Concentration,asis,NA,NA,NA,Powell.SaltConc
+ResSaltVerification.rdf,Mead.Reservoir Salt Concentration,asis,NA,NA,NA,Mead.SaltConc
+ResSaltVerification.rdf,Mohave.Reservoir Salt Concentration,asis,NA,NA,NA,Mohave.SaltConc
+ResSaltVerification.rdf,Havasu.Reservoir Salt Concentration,asis,NA,NA,NA,Havasu.SaltConc
+ResSaltVerification.rdf,FlamingGorge.Reservoir Salt Concentration,asis,NA,NA,NA,FlamingGorge.SaltConc
+ResSaltVerification.rdf,Navajo.Reservoir Salt Concentration,asis,NA,NA,NA,Navajo.SaltConc
+ResSaltVerification.rdf,Starvation.Reservoir Salt Concentration,asis,NA,NA,NA,Starvation.SaltConc

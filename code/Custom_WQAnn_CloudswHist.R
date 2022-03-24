@@ -72,12 +72,12 @@ colorNames <- c("Historical SLOAD",names(scens))
 #Text
 TitleSize = 13
 AxisText = 11
-LegendLabText = 9.5 #legend title text size
-AxisLab = 9 #axis text size
-LabSize = 2.9 #this doesn't appear to be called in Cloud_plot_wHist
-LegendText = 8 #controls the text size
+LegendLabText = 9.5
 
- 
+AxisLab = 9
+LabSize = 2.9
+LegendText = 8
+# 
 #Lines
 IGStartLine = .8
 OpsLines = 1
@@ -90,8 +90,8 @@ GridMin = .25
 # yaxmax = ceiling(max(zz$Max)/50)*50
 # 
 # #Other
-LegendWidth = 1 #this doesn't appear to be called in Cloud_plot_wHist
-LegendHeight = 2.5 #this doesn't appear to be called in Cloud_plot_wHist
+LegendWidth = 1
+LegendHeight = 2.5
 
 # Set tick marks for x and y axis
 myXLabs <- seq(1990,3000,5)
@@ -122,7 +122,7 @@ zz_all <- scen_res %>%
 # unique(zz_all$Year)
 
 #  Pulling historical SLOAD data
-hist <- read_xlsx(file.path(getwd(),'data/HistSLOAD.xlsx')) #extended to 2019
+hist <- read_xlsx(file.path(getwd(),'data/HistSLOAD.xlsx'))
 
 # Formatting data frame to match zz_all
 hist$Scenario <- 'Historical SLOAD'
@@ -157,6 +157,8 @@ zz_all <- bind_rows(hist,zz_all)
 
 #use mycolors defined by Master rather than old Cloud colors 
 plotColors <-   c("#000000", mycolors,"#8B8682")  # #black, my colors, grey  
+plotColors <-   c("#000000", mycolors)  # #black, my colors, grey  
+
 
 # 
 # if(length(scens) == 4){
@@ -190,7 +192,7 @@ histLab = append(histLab, cloudLabs)
 # im_rast <- grid::rasterGrob(im, interpolate = T)
 
 ## create a pdf  
-pdf(file.path(oFigs,paste0("WQAnnClouds_woTitles_",Figs,".pdf")), width= width, height= height)
+pdf(file.path(oFigs,paste0("WQAnnClouds_MinMaxLines=",MinMaxLines,"_",Figs,".pdf")), width= width, height= height)
 
 ### Means ###
 
@@ -201,11 +203,11 @@ pdf(file.path(oFigs,paste0("WQAnnClouds_woTitles_",Figs,".pdf")), width= width, 
 NumCrit <- NA
 variable = "AnnlSlntyLsFrry_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
-title = "" 
-subtitle = ""
+title = "Colorado River at Lees Ferry" 
+subtitle = "Average Annual Concentration Comparison"
 ylims <- c(400,600)
 
-source("code/Cloud_plot_wHist_woTitles.R")
+source("code/Cloud_plot_wHist.R")
 
 #-------------------------------------------------------------------------------------
 # ++++++++++++++++++++++++++Below Mead+++++++++++++++++++++++++++++++++++++
@@ -219,7 +221,7 @@ title = "Colorado River below Hoover Dam"
 subtitle = "Average Annual Concentration Comparison"
 ylims <- c(545,750)
 
-source("code/Cloud_plot_wHist_woTitles.R")
+source("code/Cloud_plot_wHist.R")
 
 #-------------------------------------------------------------------------------------
 #------------------------------Below Parker-------------------------------------------------------
@@ -233,7 +235,7 @@ title = "Colorado River below Parker Dam"
 subtitle = "Average Annual Concentration Comparison"
 ylims <- c(550,750)
 
-source("code/Cloud_plot_wHist_woTitles.R")
+source("code/Cloud_plot_wHist.R")
 
 #-------------------------------------------------------------------------------------
 #-------------------------------At Imperial------------------------------------------------------
@@ -246,7 +248,7 @@ title = "Colorado River above Imperial Dam"
 subtitle = "Average Annual Concentration Comparison"
 ylims <- c(675,900)
 
-source("code/Cloud_plot_wHist_woTitles.R")
+source("code/Cloud_plot_wHist.R")
 
 dev.off()
 

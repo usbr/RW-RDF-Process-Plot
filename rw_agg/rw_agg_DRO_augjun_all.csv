@@ -1,0 +1,25 @@
+file,slot,period,summary,eval,t_s,variable
+UBDO.rdf,ExtendedOperations.AdditionalBlueMesaRelease,asis,NA,NA,NA,add_dro_rel_bm
+UBDO.rdf,ExtendedOperations.DROAprJulFlag,asis,NA,NA,NA,ubdo_aprjul_flag
+UBDO.rdf,ExtendedOperations.DROAugDecFlag,asis,NA,NA,NA,ubdo_augdec_flag
+UBDO.rdf,ExtendedOperations.DROJanMarFlag,asis,NA,NA,NA,ubdo_janmar_flag
+UBDO.rdf,ExtendedOperations.FlamingGorgeReleaseDifference,asis,NA,NA,NA,add_dro_rel_fg
+UBDO.rdf,ExtendedOperations.Navajo_TotalAdditionalRelease,asis,NA,NA,NA,add_dro_rel_nav
+UBDO.rdf,ExtendedOperations.PowellForecastDeficit,asis,NA,NA,NA,pow_forecast_deficit
+UBDO.rdf,ExtendedOperations.PowellForecastDeficitFlag,asis,NA,NA,NA,ubdo_flag
+UBRes.rdf,BlueMesa.Pool Elevation,asis,NA,NA,NA,BlueMesa.PE
+UBRes.rdf,FlamingGorge.Pool Elevation,asis,NA,NA,NA,FlamingGorge.PE
+UBRes.rdf,FlamingGorge.Outflow,asis,NA,NA,NA,FlamingGorge.Outflow
+UBRes.rdf,BlueMesa.Outflow,asis,NA,NA,NA,BlueMesa.Outflow
+UBRes.rdf,Navajo.Pool Elevation,asis,NA,NA,NA,Navajo.PE
+UBRes.rdf,Navajo.Outflow,asis,NA,NA,NA,Navajo.Outflow
+Res.rdf,Powell.Inflow,asis,NA,NA,NA,Powell.Inflow
+Res.rdf,Powell.Pool Elevation,asis,NA,NA,NA,Powell.PE
+Res.rdf,Powell.Outflow,asis,NA,NA,NA,Powell.Outflow
+UBRes.rdf,FlamingGorge.Storage,asis,NA,NA,NA,FlamingGorge.Storage
+UBRes.rdf,Navajo.Storage,asis,NA,NA,NA,Navajo.Storage
+UBRes.rdf,BlueMesa.Storage,asis,NA,NA,NA,BlueMesa.Storage
+Res.rdf,Powell.Storage,asis,NA,NA,NA,Powell.Storage
+StreamGages.rdf,ColoradoNearCisco.Gage Outflow,asis,NA,NA,NA,COCisco
+StreamGages.rdf,GreenAtGreenRiverUT.Gage Outflow,asis,NA,NA,NA,GreenGRUT
+StreamGages.rdf,SanJuanNearBluff.Gage Outflow,asis,NA,NA,NA,SJBluff

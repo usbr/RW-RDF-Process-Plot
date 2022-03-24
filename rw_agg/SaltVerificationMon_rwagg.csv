@@ -1,0 +1,61 @@
+file,slot,period,summary,eval,t_s,variable
+SaltVerification.rdf,UpperColoradoReach.Outflow,asis,NA,NA,NA,1_flow_glen
+SaltVerification.rdf,UpperColoradoAboveCameo.Outflow,asis,NA,NA,NA,2_flow_cameo
+SaltVerification.rdf,GunnisonRiverAboveGrandJunction.Outflow,asis,NA,NA,NA,6_flow_gunn
+SaltVerification.rdf,DoloresRiver.Outflow,asis,NA,NA,NA,7_flow_dolor
+SaltVerification.rdf,DoloresColorado.Outflow,asis,NA,NA,NA,8_flow_cisco
+SaltVerification.rdf,GreenRAboveGreenRiverWY.Outflow,asis,NA,NA,NA,10_flow_grwy
+SaltVerification.rdf,FlamingGorge.Outflow,asis,NA,NA,NA,11_flow_gdale
+SaltVerification.rdf,YampaRiver.Outflow,asis,NA,NA,NA,12_flow_yampa
+SaltVerification.rdf,DuchesneBelowStarv.Outflow,asis,NA,NA,NA,14_flow_duch
+SaltVerification.rdf,WhiteRiverAboveWatson.Outflow,asis,NA,NA,NA,15_flow_white
+SaltVerification.rdf,GreenRWhiteToSanRafael.Outflow,asis,NA,NA,NA,16_flow_grut
+SaltVerification.rdf,SanRafaelRiver.Outflow,asis,NA,NA,NA,17_flow_sanraf
+SaltVerification.rdf,Navajo.Outflow,asis,NA,NA,NA,18_flow_arch
+SaltVerification.rdf,LowerSanJuanRiver.Outflow,asis,NA,NA,NA,19_flow_bluf
+SaltVerification.rdf,Powell.Outflow,asis,NA,NA,NA,20_flow_lees
+SaltVerification.rdf,CoRivLittleCOToVirgin.Outflow,asis,NA,NA,NA,23_flow_grcan
+SaltVerification.rdf,VirginRiver.Outflow,asis,NA,NA,NA,24_flow_virgin
+SaltVerification.rdf,Mead.Outflow,asis,NA,NA,NA,25_flow_hoover
+SaltVerification.rdf,Havasu.Outflow,asis,NA,NA,NA,28_flow_parker
+SaltVerification.rdf,AboveImperialDamColoradoR.Outflow,asis,NA,NA,NA,29_flow_imper
+SaltVerification.rdf,UpperColoradoReach.Outflow Salt Mass,asis,NA,NA,NA,1_mass_glen
+SaltVerification.rdf,UpperColoradoAboveCameo.Outflow Salt Mass,asis,NA,NA,NA,2_mass_cameo
+SaltVerification.rdf,GunnisonRiverAboveGrandJunction.Outflow Salt Mass,asis,NA,NA,NA,6_mass_gunn
+SaltVerification.rdf,DoloresRiver.Outflow Salt Mass,asis,NA,NA,NA,7_mass_dolor
+SaltVerification.rdf,DoloresColorado.Outflow Salt Mass,asis,NA,NA,NA,8_mass_cisco
+SaltVerification.rdf,GreenRAboveGreenRiverWY.Outflow Salt Mass,asis,NA,NA,NA,10_mass_grwy
+SaltVerification.rdf,FlamingGorge.Outflow Salt Mass,asis,NA,NA,NA,11_mass_gdale
+SaltVerification.rdf,YampaRiver.Outflow Salt Mass,asis,NA,NA,NA,12_mass_yampa
+SaltVerification.rdf,DuchesneBelowStarv.Outflow Salt Mass,asis,NA,NA,NA,14_mass_duch
+SaltVerification.rdf,WhiteRiverAboveWatson.Outflow Salt Mass,asis,NA,NA,NA,15_mass_white
+SaltVerification.rdf,GreenRWhiteToSanRafael.Outflow Salt Mass,asis,NA,NA,NA,16_mass_grut
+SaltVerification.rdf,SanRafaelRiver.Outflow Salt Mass,asis,NA,NA,NA,17_mass_sanraf
+SaltVerification.rdf,Navajo.Outflow Salt Mass,asis,NA,NA,NA,18_mass_arch
+SaltVerification.rdf,LowerSanJuanRiver.Outflow Salt Mass,asis,NA,NA,NA,19_mass_bluf
+SaltVerification.rdf,Powell.Outflow Salt Mass,asis,NA,NA,NA,20_mass_lees
+SaltVerification.rdf,CoRivLittleCOToVirgin.Outflow Salt Mass,asis,NA,NA,NA,23_mass_grcan
+SaltVerification.rdf,VirginRiver.Outflow Salt Mass,asis,NA,NA,NA,24_mass_virgin
+SaltVerification.rdf,Mead.Outflow Salt Mass,asis,NA,NA,NA,25_mass_hoover
+SaltVerification.rdf,Havasu.Outflow Salt Mass,asis,NA,NA,NA,28_mass_parker
+SaltVerification.rdf,AboveImperialDamColoradoR.Outflow Salt Mass,asis,NA,NA,NA,29_mass_imper
+SaltVerification.rdf,UpperColoradoReach.Outflow Salt Concentration,asis,NA,NA,NA,1_conc_glen
+SaltVerification.rdf,UpperColoradoAboveCameo.Outflow Salt Concentration,asis,NA,NA,NA,2_conc_cameo
+SaltVerification.rdf,GunnisonRiverAboveGrandJunction.Outflow Salt Concentration,asis,NA,NA,NA,6_conc_gunn
+SaltVerification.rdf,DoloresRiver.Outflow Salt Concentration,asis,NA,NA,NA,7_conc_dolor
+SaltVerification.rdf,DoloresColorado.Outflow Salt Concentration,asis,NA,NA,NA,8_conc_cisco
+SaltVerification.rdf,GreenRAboveGreenRiverWY.Outflow Salt Concentration,asis,NA,NA,NA,10_conc_grwy
+SaltVerification.rdf,FlamingGorge.Outflow Salt Concentration,asis,NA,NA,NA,11_conc_gdale
+SaltVerification.rdf,YampaRiver.Outflow Salt Concentration,asis,NA,NA,NA,12_conc_yampa
+SaltVerification.rdf,DuchesneBelowStarv.Outflow Salt Concentration,asis,NA,NA,NA,14_conc_duch
+SaltVerification.rdf,WhiteRiverAboveWatson.Outflow Salt Concentration,asis,NA,NA,NA,15_conc_white
+SaltVerification.rdf,GreenRWhiteToSanRafael.Outflow Salt Concentration,asis,NA,NA,NA,16_conc_grut
+SaltVerification.rdf,SanRafaelRiver.Outflow Salt Concentration,asis,NA,NA,NA,17_conc_sanraf
+SaltVerification.rdf,Navajo.Outflow Salt Concentration,asis,NA,NA,NA,18_conc_arch
+SaltVerification.rdf,LowerSanJuanRiver.Outflow Salt Concentration,asis,NA,NA,NA,19_conc_bluf
+SaltVerification.rdf,Powell.Outflow Salt Concentration,asis,NA,NA,NA,20_conc_lees
+SaltVerification.rdf,CoRivLittleCOToVirgin.Outflow Salt Concentration,asis,NA,NA,NA,23_conc_grcan
+SaltVerification.rdf,VirginRiver.Outflow Salt Concentration,asis,NA,NA,NA,24_conc_virgin
+SaltVerification.rdf,Mead.Outflow Salt Concentration,asis,NA,NA,NA,25_conc_hoover
+SaltVerification.rdf,Havasu.Outflow Salt Concentration,asis,NA,NA,NA,28_conc_parker
+SaltVerification.rdf,AboveImperialDamColoradoR.Outflow Salt Concentration,asis,NA,NA,NA,29_conc_imper
