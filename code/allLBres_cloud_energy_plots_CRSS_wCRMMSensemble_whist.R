@@ -1,5 +1,5 @@
 # create cloud plots of FY/WY data w/ CRMMS Ensemble w/ Hist - June 2021 CRSS Offc 
-# mead, havasu, mohave (Alan's cloud_energy_plot.R) 
+# powell 
 
 library(tidyverse)
 library(zoo)
@@ -11,19 +11,35 @@ library(crssplot)
 library(rhdb)
 library(feather)
 
-# mtom_res_file <- "C:/Users/cfelletter/Documents/MTOM/Output Data/CRMMS_EnsembleOutput.xlsm" #my PC
-mtom_res_file <- "C:/Users/fellette/Documents/GIT/crmms/Output Data/CRMMS_EnsembleOutput.xlsm" #BA
+CRSSDIR <- Sys.getenv("CRSS_DIR")
+# CRSSDIR <- "C:/Users/cfelletter/Documents/crss.offc"
+# CRSSDIR <- "C:/Users/cfelletter/Documents/crss.trirvw2020"
+
+# where scenarios are folder are kept
+scen_dir <- file.path(CRSSDIR,"Scenario")
+
+mtom_res_file <- "C:/Users/cfelletter/Documents/MTOM/Output Data/CRMMS_EnsembleOutput.xlsm" #my PC
+# mtom_res_file <- "C:/Users/fellette/Documents/GIT/crmms/Output Data/CRMMS_EnsembleOutput.xlsm" #BA
+
+# get CRMMS start/end data 
+startcrmms <- ymd("2022-05-01")
+endcrmms <- ymd("2021-12-31")
 
 #plot_years <- 2019:2025
 #nrg_w <- 9.5
 #nrg_h <- 6.5
 
-dnf_base <- "Jun2021_2022,DNF,2016Dems,IG_DCP"
-st_base <- "Jun2021_2022,ISM1988_2019,2016Dems,IG_DCP"
+# dnf_base <- "Jun2021_2022,DNF,2016Dems,IG_DCP"
+st_base <- "Jan2022_2023,ISM1988_2019,2016Dems,IG_DCPnoUBDRO"
 
-dnf_scens <- rw_scen_gen_names(dnf_base, paste0("Trace", sprintf("%02d", 4:38)))
+results_dir <- file.path(CRSSDIR,'results',st_base) 
+if (!file.exists(results_dir)) {
+  message(paste('Creating folder:', results_dir))
+  dir.create(results_dir)
+}
 
-st_scens <- rw_scen_gen_names(st_base, paste0("Trace", sprintf("%02d", 4:38)))
+# dnf_scens <- rw_scen_gen_names(dnf_base, paste0("Trace", sprintf("%02d", 4:38)))
+st_scens <- rw_scen_gen_names(st_base, paste0("Trace", sprintf("%02d", 4:33)))
 #st_scens <- c("st")
 
 date_to_wy <- function(x) {
@@ -36,12 +52,29 @@ date_to_wy <- function(x) {
 }
 
 # data ---------------------------------------
-# CRSS
 # get CRSS data (Alan's get_scenario_data.R)
 if (FALSE){
   library(RWDataPlyr)
-  library(RWDataPlyr)
   
+  #Powell
+  rwa <- rwd_agg(data.frame(
+    file = "xtraRes.rdf",
+    slot = c("Powell.Energy"),
+    period = "asis",
+    summary = NA,
+    eval = NA,
+    t_s = NA,
+    variable = c("powell"),
+    stringsAsFactors = FALSE
+  ))
+  
+  rw_scen_aggregate(c(st_scens), #dnf_scens
+                    rwa, 
+                    scen_dir = "//manoa.colorado.edu/BOR/Shared/CRSS/2022/Scenario",
+                    # scen_dir = "M:/Shared/CRSS/2022/Scenario", 
+                    file = "powellenergy.feather")
+  
+  #Mead-Moh-Hav
   rwa <- rwd_agg(data.frame(
     file = "LBEnergy.rdf",
     slot = c("Mohave.Energy", "Havasu.Energy", "Mead.Energy"),
@@ -53,28 +86,30 @@ if (FALSE){
     stringsAsFactors = FALSE
   ))
   
-  dnf_scens <- rw_scen_gen_names("Jun2021_2022,DNF,2016Dems,IG_DCP", 
-                                 paste0("Trace", sprintf("%02d", 4:38)))
-  st_scens <- rw_scen_gen_names("Jun2021_2022,ISM1988_2019,2016Dems,IG_DCP", 
-                                paste0("Trace", sprintf("%02d", 4:38)))
-  
-  rw_scen_aggregate(c(dnf_scens, st_scens), rwa, 
-                    scen_dir = "M:/Shared/CRSS/2021/Scenario", 
+  rw_scen_aggregate(c(st_scens), rwa, 
+                    scen_dir = "//manoa.colorado.edu/BOR/Shared/CRSS/2022/Scenario",
+                    # scen_dir = "M:/Shared/CRSS/2022/Scenario", 
                     file = "mpd_energy.feather")
-  
 }
 
-crss <- read_feather(file.path(CRSSDIR,"LBEnergy.feather"))
+#the default feather file location is getwd() 
+powell <- read_feather(file.path("powellenergy.feather"))
+lbres <- read_feather(file.path("mpd_energy.feather"))
 
-crss <- read_feather("C:/Users/fellette/Downloads/20210820-HooverEnergy/20210820-HooverEnergy/mpd_energy.feather") %>%
-  # when I ran get_data I did not use correct variable names for the rest of the
-  # code, so fix that here. 
+crss <- rbind.data.frame(powell,lbres) %>%
   mutate(Variable = paste(Variable, "energy", sep = "_"))
 
-# MTOM - OND 2021 to combine with crss
-mead_ond2021 <- get_mtom_ond(mtom_res_file, "Mead.Energy", ymd("2021-10-01"), ymd("2021-12-31"))
-parker_ond2021 <- get_mtom_ond(mtom_res_file, "Havasu.Energy", ymd("2021-10-01"), ymd("2021-12-31"))
-davis_ond2021 <- get_mtom_ond(mtom_res_file, "Mohave.Energy", ymd("2021-10-01"), ymd("2021-12-31"))
+
+# CRMMS months to combine with crss
+powell_ond2021 <- get_mtom_ond(mtom_res_file, "Powell.Energy", startcrmms, endcrmms)
+mead_ond2021 <- get_mtom_ond(mtom_res_file, "Mead.Energy", startcrmms, endcrmms)
+parker_ond2021 <- get_mtom_ond(mtom_res_file, "Havasu.Energy", startcrmms, endcrmms)
+davis_ond2021 <- get_mtom_ond(mtom_res_file, "Mohave.Energy", startcrmms, endcrmms)
+
+
+###### development not complete below this, still need to intergrate Pow & LB Res codes
+# I stopped because now we are only using crmms, see allLBres_cloud_energy_plots_CRMMSonly_whist.R
+
 
 # and expand it to have correct scenarios and number of traces
 crss_ond <- bind_rows(
@@ -181,7 +216,7 @@ custom_colors <- c("Full Hydrology" = "#138d75",
 custom_cloud <- function(x, h, vv, tt, ss = 1.02) {
   
   h=h%>%filter(Year >= 2015)
-
+  
   scens_plot_cloud(
     x, 
     vars = vv,
@@ -233,3 +268,4 @@ ggsave("hoover.png", gg_m, width = ww, height = hh)
 ggsave("figures/davis.png", gg_d, width = ww, height = hh)
 ggsave("figures/parker.png", gg_p, width = ww, height = hh)
 ggsave("figures/parker_davis.png", gg_pd, width = ww, height = hh)
+

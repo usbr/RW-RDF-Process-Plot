@@ -2,23 +2,73 @@
 #This script creates SaltMassBal figures 
 ##############################################################################
 
+Model.Step.Name <- Figs <- "Salt_VerificationRuns_Compare_v4_v5"
+scens <- list(
+  # "2020TriRvw_Scen3_PulRvm3118" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
+  "CRSSv4" = "CRSSv4_2020TriRvw_SaltVerification",
+  "CRSSv5" = "CRSSJan2022_2000runwSalt"
+)
 
-rw_agg_file <- "SaltMassBal_Nov19Control.csv" #Use this with CRSS 2020 TriRvw projection model
+## Plot Parameters ##
+if(T){
+  width=9# 10 #9
+  height=6 #6.67 #6
+  
+  startyr <- 2020 #filter out all years > this year
+  endyr <- 2040 #60
+  
+  customcolorltpt <- F
+  
+  if(!file.exists(file.path(scen_dir, scens[1])) 
+     | !file.exists(file.path(scen_dir, scens[2])))
+    stop('Scenarios folder(s) do not exist or scen_dir is set up incorrectly. 
+         Please ensure Scenarios is set correctly.')
+  
+  oFigs <- file.path(CRSSDIR,'results') 
+  if (!file.exists(oFigs)) {
+    message(paste('Creating folder:', oFigs))
+    dir.create(oFigs)
+  }
+  
+  oFigs <- file.path(oFigs,Model.Step.Name) 
+  if (!file.exists(oFigs)) {
+    message(paste('Creating folder:', Model.Step.Name))
+    dir.create(oFigs)
+  }
+  
+  message('Figures and tables will be saved to: ', oFigs)
+  
+  if(customcolorltpt == F && length(scens) == 2){ #1 color, first scen dashed, second solid 
+    lt_scale <- rep(c(2, 1), 1)
+    pt_scale <- rep(c(1, 19), 1)
+    mycolors <- c("#ba9e66","#407ec9") #reclamation sand (old/baseline rslts), rec blue )
+    
+  } else if (customcolorltpt == F && length(scens) <= 4){ #4 colors, solid
+    lt_scale <- rep(1, 4)
+    pt_scale <- rep(19, 4)
+    mycolors <- c("#D55E00" , "#F0E442", "#009E73" , "#407ec9") #TRY 2 - color blind red, yellow, red (stop light), blue
+    
+  } else if (customcolorltpt == F && length(scens) > 4) {
+    stop("customcolorltpt not setup or too many Scens")
+  } 
+}
+
+rw_agg_file <- "SaltMassBal_CRSSv4_2022.csv"    #"SaltMassBal_Nov19Control.csv" #Use this with CRSS 2020 TriRvw projection model
 # rw_agg_file <- "SaltMassBal_CRSSv5_noExportExtra.csv" # use this for CRSS v4 Salt Verification
-rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"SaltMassBalance.rdf")))
+rdf_slot_names(read_rdf(iFile = file.path("C:/Users/cfelletter/Documents/crss.trirvw2020/results",scens[1],"SaltMassBalance.rdf")))
 rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) 
 
 #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
 scen_res <- rw_scen_aggregate(
   scens[1],
   agg = rwa1,
-  scen_dir = scen_dir
+  scen_dir = "C:/Users/cfelletter/Documents/crss.trirvw2020/results"
 )
 
 ########### CRSS v5 files #########
- 
+ ############ get it working ##############
 rw_agg_file <- "SaltMassBal_CRSSv5.csv" #slot names updated for v5 redo. see SaltVerification.control
-rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],"SaltMassBalance.rdf")))
+# rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[2],"SaltMassBalance.rdf")))
 rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) 
 
 ######### HACK because I didn't output UB Salt Mass Balance.ExportSaltMassExtra
@@ -29,7 +79,7 @@ rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFact
 scen_res2 <- rw_scen_aggregate(
   scens[2],
   agg = rwa1,
-  scen_dir = scen_dir
+  scen_dir = "C:/Users/cfelletter/Documents/crss.2023TRIRVW/results"
 )
 
 unique(scen_res$Variable) %in% unique(scen_res2$Variable)
@@ -65,7 +115,7 @@ if(length(scens) == 1){
 pdf(file.path(oFigs,paste0("SaltMassBalGrph_",Figs,".pdf")), width=9, height=6)
 
 ### Means ###
-
+if(T){
 variable = "UpperBasinBalance"
 y_lab = "Salt Mass (million tons/yr)"
 title = "Upper Basin Salt Mass Balance"
@@ -589,3 +639,4 @@ ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height
 
 dev.off()
 
+}
