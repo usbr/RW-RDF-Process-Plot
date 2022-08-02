@@ -66,9 +66,9 @@ if (!file.exists(fig_dir) | !file.exists(data_dir)) {
 
 
 nodes <- c('glen','cameo','gunn','dolor','cisco','grwy','gdale','yampa','duch',
-           'white','grut','sanraf','arch','bluf',"powellin")#,'lees','grcan','virgin','hoover',
-           # 'parker','imper')
-nodenums <- c(1,2,6:8,10:12,14:19,20)#,20,23:25,28,29)
+           'white','grut','sanraf','arch','bluf',"powellin",'lees','grcan','virgin','hoover',
+           'parker','imper')
+nodenums <- c(1,2,6:8,10:12,14:19,20,20,23:25,28,29)
 flownm <- paste0(nodenums,rep("_flow_",length(nodes)),nodes)
 massnm <- paste0(nodenums,rep("_mass_",length(nodes)),nodes)
 concnm <- paste0(nodenums,rep("_conc_",length(nodes)),nodes)
@@ -77,6 +77,9 @@ concnm <- paste0(nodenums,rep("_conc_",length(nodes)),nodes)
 df_obs$Scenario = "Obs" 
 df_annual_2020$Scenario = "CRSSv4_2020TriRvw"
 df_annual$Scenario = "CRSSv5"
+
+df_annual_2023$Scenario = "CRSSv5"
+df_annual=df_annual_2023
 
 unique(df_annual_2020$Variable) %in% unique(df_annual$Variable)
 

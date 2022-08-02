@@ -72,9 +72,9 @@ df_annual <- rdf_aggregate(rwa1, rdf_dir = file_dir) #MUST be in Scenario FOLDER
 df_annual <- as.data.frame(df_annual) #fix issues with class #i have to do this to get it to work, not sure why 
 
 nodes <- c('glen','cameo','gunn','dolor','cisco','grwy','gdale','yampa','duch',
-           'white','grut','sanraf','arch','bluf','powellin')#,'lees','grcan','virgin','hoover',
-           # 'parker','imper')
-nodenums <- c(1,2,6:8,10:12,14:19,20)#,20,23:25,28,29) #20 twice for powell inflow and outflow 
+           'white','grut','sanraf','arch','bluf',"powellin",'lees','grcan','virgin','hoover',
+           'parker','imper')
+nodenums <- c(1,2,6:8,10:12,14:19,20,20,23:25,28,29)
 flownm <- paste0(nodenums,rep("_flow_",length(nodes)),nodes)
 massnm <- paste0(nodenums,rep("_mass_",length(nodes)),nodes)
 concnm <- paste0(nodenums,rep("_conc_",length(nodes)),nodes)
