@@ -6,3 +6,7 @@ WQAnn.rdf,AnnualSalinity.Imperial_FWAAC,eocy,NA,NA,NA,AnnlSlntyImprl_FWAAC
 WQAnn.rdf,AnnualSalinity.Hoover_FWAAC,eocy,NA,>=,723,Exc_AnnlSlntyHvr_FWAAC
 WQAnn.rdf,AnnualSalinity.Parker_FWAAC,eocy,NA,>=,747,Exc_AnnlSlntyPrkr_FWAAC
 WQAnn.rdf,AnnualSalinity.Imperial_FWAAC,eocy,NA,>=,879,Exc_AnnlSlntyImprl_FWAAC
+WQAnn.rdf,AnnualSalinity.PowellInflow_FWAAC,eocy,NA,NA,NA,AnnlSlntyPwllInflw_FWAAC
+WQAnn.rdf,AnnualSalinity.CiscoColorado_FWAAC,eocy,NA,NA,NA,CiscoColorado_FWAAC
+WQAnn.rdf,AnnualSalinity.Bluff_FWAAC,eocy,NA,NA,NA,Bluff_FWAAC
+WQAnn.rdf,AnnualSalinity.GreenRiverUTGreen_FWAAC,eocy,NA,NA,NA,GreenRiverUTGreen_FWAAC

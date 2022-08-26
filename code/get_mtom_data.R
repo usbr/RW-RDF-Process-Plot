@@ -1,13 +1,13 @@
 library(tidyverse)
 library(readxl)
 
-get_mtom_data <- function(file, sheet, max_date, vname = sheet,crmmstraces = 4:33) {
+get_mtom_data <- function(file, sheet, max_date, vname = sheet) {
   zz <- read_xlsx(file, sheet = sheet, skip = 2)
   colnames(zz)[1] <- "Date"
 
   # remove trace1 - 3
   zz <- zz %>%
-    select_at(c("Date", paste0("Trace", crmmstraces))) %>%
+    select_at(c("Date", paste0("Trace", 4:38))) %>%
     filter(Date <= max_date) %>%
     mutate(Date = ymd(Date)) %>%
     pivot_longer(-Date, names_to = "Trace", values_to = "Value") %>%
@@ -16,7 +16,7 @@ get_mtom_data <- function(file, sheet, max_date, vname = sheet,crmmstraces = 4:3
   zz
 }
 
-get_mtom_ond <- function(file, variable, start_date, end_date,crmmstraces) {
+get_mtom_ond <- function(file, variable, start_date, end_date) {
   get_mtom_data(file, variable, end_date) %>%
     filter(Date >= start_date)
     #pivot_longer(-Date, names_to = "Trace", values_to = "Value")

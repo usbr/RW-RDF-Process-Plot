@@ -21,7 +21,7 @@ results_dir <- file.path(CRSSDIR,"results")
 #easier to make folder from output in the results dir than to move it 
 scen_dir <- file.path(CRSSDIR,"results") #file.path(CRSSDIR,"Scenario")
 # #containing the sub folders for each ensemble
-scens <- "CRSSJan2022_2000runwSalt" #### Elliot Change this to folder name you created in CRSSDIR/results/ ####
+scens <- "TriRvw.2.Verification"# "CRSSJan2022_2000runwSalt" #### Elliot Change this to folder name you created in CRSSDIR/results/ ####
 
 
 printfigs<-T#T#make png figures and dump data 

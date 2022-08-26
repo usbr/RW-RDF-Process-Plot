@@ -13,12 +13,12 @@ library(xml2)
 library(gridExtra)
 
 CRSSDIR <- Sys.getenv("CRSS_DIR")
-CRSSDIR <- "C:/Users/cfelletter/Documents/crss.trirvw2020"
-results_dir <- file.path(CRSSDIR,"results") 
+# CRSSDIR <- "C:/Users/cfelletter/Documents/crss.trirvw2020"
+results_dir <- file.path(CRSSDIR,"results") #results end up in the crss_dir
 # # where rdf results folder is kept
 
 #easier to make folder from output in the results dir than to move it 
-scen_dir <- file.path(CRSSDIR,"results") #file.path(CRSSDIR,"Scenario")
+scen_dir <- file.path(CRSSDIR,"Scenario") # file.path(CRSSDIR,"results")
 # #containing the sub folders for each ensemble
 scens <- "CRSSv4_2020TriRvw_SaltVerification" 
 
@@ -67,6 +67,8 @@ if (!file.exists(fig_dir) | !file.exists(data_dir)) {
 #do this with rwagg becasue you need different FWAAC slots 
 rw_agg_file <- "SaltVerificationAnn_rwagg_CRSSv4.csv" 
 rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) #ubres.rdf res.rdf
+# rwa1 <- rwa1[c(1:16,18:63),] #remove virgin 
+
 df_annual <- rdf_aggregate(rwa1, rdf_dir = file_dir) #MUST be in Scenario FOLDER! not results folder
 
 df_annual <- as.data.frame(df_annual) #fix issues with class #i have to do this to get it to work, not sure why 

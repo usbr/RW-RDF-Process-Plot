@@ -73,9 +73,154 @@ scen_res2$Scenario = factor(scen_res2$Scenario, levels=names(scens))
 ## create a pdf  
 pdf(file.path(oFigs,paste0("WQAnn_",Figs,".pdf")), width= width, height= height)
 
-# ++++++++++++++++++++++++++Below Powell+++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++Above Powell+++++++++++++++++++++++++++++++++++++
 
 ### Means ###
+
+variable = "CiscoColorado_FWAAC"
+y_lab = "Salt Concentration (mg/l)"
+title = "Cisco FWAAC" 
+subtitle = "Average Annual Concentration Comparison"
+# ylims <- c(400,600)
+
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+
+# View(df)
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() + 
+  # ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +
+  # # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
+  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+
+#-------------------------------------------------------------------------------------
+
+
+variable = "Bluff_FWAAC"
+y_lab = "Salt Concentration (mg/l)"
+title = "Bluff FWAAC" 
+subtitle = "Average Annual Concentration Comparison"
+# ylims <- c(400,600)
+
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+
+# View(df)
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() + 
+  # ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +
+  # # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
+  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+
+#-------------------------------------------------------------------------------------
+
+variable = "GreenRiverUTGreen_FWAAC"
+y_lab = "Salt Concentration (mg/l)"
+title = "Green River UT FWAAC" 
+subtitle = "Average Annual Concentration Comparison"
+# ylims <- c(400,600)
+
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+
+# View(df)
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() + 
+  # ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +
+  # # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
+  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+
+#-------------------------------------------------------------------------------------
+
+variable = "AnnlSlntyPwllInflw_FWAAC"
+y_lab = "Salt Concentration (mg/l)"
+title = "Powell Inflow FWAAC" 
+subtitle = "Average Annual Concentration Comparison"
+# ylims <- c(400,600)
+
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+
+# View(df)
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() + 
+  # ylim(ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +
+  # # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
+  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
+  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
+
+ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
+
+#-------------------------------------------------------------------------------------
 
 variable = "AnnlSlntyLsFrry_FWAAC"
 y_lab = "Salt Concentration (mg/l)"

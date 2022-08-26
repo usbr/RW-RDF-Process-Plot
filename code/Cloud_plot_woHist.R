@@ -120,7 +120,7 @@ ggc
 #final plot configuration 
 gg <- plot_grid(ggc, gglegend, rel_widths = c(2,.4))
 
-# print(gg) #do print it for now, just assign gg in and print in your main code 
+print(gg) #do print it for now, just assign gg in and print in your main code
 
   # # Read in Reclamation logo png
   # im <- load.image('code/BofR-horiz-cmyk.png')

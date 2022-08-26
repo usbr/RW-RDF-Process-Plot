@@ -55,19 +55,30 @@ customcolorltpt <- F
 #### Compare Models for Feb WORKGROUP #### - Ran on April 9th - can't do 3 panel since Nov19 CRSS did not have inflow 
 #
 #file names
-Model.Step.Name <- Figs <- "Jan2022_2020Scen3" #plot title and results/folder name #[plot type] identifying name .pdf
+Model.Step.Name <- Figs <- "Projections_wvswoResResampv3" #plot title and results/folder name #[plot type] identifying name .pdf
+
+scens <- list(
+  # "2020TriRvw_Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
+  "Jan2022_2020Scen3" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0",
+  # "Jan2022_NoResResample" = "CRMMS_Most,DNF with Salinity 19312018,Retry.NoResamp,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0"
+  "Jan2022_NoResResample" = "CRMMS_Most,DNF with Salinity 19312018,NoResamp.2023TriRvw,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0"
+)
+
+#file names
+Model.Step.Name <- Figs <- "2020v2023_Projections_PulRmv18" #plot title and results/folder name #[plot type] identifying name .pdf
 
 scens <- list(
   "2020TriRvw_Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
   "Jan2022_2020Scen3" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0"
 )
 
-Model.Step.Name <- Figs <- "Jan2022_2020Scen3_PulvST"
-scens <- list(
-  # "2020TriRvw_Scen3_PulRvm3118" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
-  "Jan2022_2020Scen3_PulRvm3118" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0",
-  "Jan2022_2020Scen3_ST8817" = "CRMMS_Most,DNF with Salinity 19882017,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0"
-  )
+
+# Model.Step.Name <- Figs <- "Jan2022_2020Scen3_PulvST"
+# scens <- list(
+#   # "2020TriRvw_Scen3_PulRvm3118" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
+#   "Jan2022_2020Scen3_PulRvm3118" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0",
+#   "Jan2022_2020Scen3_ST8817" = "CRMMS_Most,DNF with Salinity 19882017,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0"
+#   )
 
 # Model.Step.Name <- Figs <- "CRSSJan2022_2000runwSalt"
 # scens <- list(

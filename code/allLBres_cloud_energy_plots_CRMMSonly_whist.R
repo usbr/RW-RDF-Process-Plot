@@ -39,8 +39,18 @@ date_to_wy <- function(x) {
   yy
 }
 
+#### SOMETHING IS WRONG HERE with getting the CRMMS data - try old function
+
 # CRMMS months to pull, the get_mtom_ond function was expanded to be any start-end date 
-powell_ond2021 <- get_mtom_data(mtom_res_file, "Powell.Energy", endcrmms,crmmstraces)
+powell_ond2021 <- get_mtom_data(mtom_res_file, "Powell.Energy", startcrmms, endcrmms)#,crmmstraces)
+mead_ond2021 <- get_mtom_data(mtom_res_file, "Mead.Energy", startcrmms, endcrmms)
+parker_ond2021 <- get_mtom_data(mtom_res_file, "Havasu.Energy", startcrmms, endcrmms)
+davis_ond2021 <- get_mtom_data(mtom_res_file, "Mohave.Energy", startcrmms, endcrmms)
+
+### or the below uses my new function 
+
+# try to do with my new reversion of get_mtom_data
+powell_ond2021 <- get_mtom_data(mtom_res_file, "Powell.Energy", endcrmms)#,crmmstraces)
 mead_ond2021 <- get_mtom_data(mtom_res_file, "Mead.Energy", endcrmms,crmmstraces)
 parker_ond2021 <- get_mtom_data(mtom_res_file, "Havasu.Energy", endcrmms,crmmstraces)
 davis_ond2021 <- get_mtom_data(mtom_res_file, "Mohave.Energy", endcrmms,crmmstraces)
@@ -111,6 +121,8 @@ crmms$TraceNumber = crmms$Trace
 crmms <- crmms %>%
   mutate(Trace = as.numeric(stringr::str_remove(Trace, "Trace")))
 
+
+
 #check to make sure the data is what you want
 # head(first_WY_hist_astraces)
 # head(crmms)
@@ -120,6 +132,12 @@ unique(first_WY_hist_astraces$Trace)
 unique(crmms$Trace) #should be the same as above 
 unique(first_WY_hist_astraces$Variable)
 unique(crmms$Variable) #must get same names
+
+#### Hack Conor's leaving for Burning Man FML ####
+zz<-read.csv("dput(zz).csv")
+head(zz)
+crmms = zz
+#### Hack Conor's leaving for Burning Man FML ####
 
 crmms$properVarnm = crmms$Variable
 
@@ -191,6 +209,12 @@ custom_cloud <- function(x, h, vv, tt, ss = 1.02) {
 # write.csv(x = dput(zz),file = "dput(zz).csv")
 # write.csv(x = dput(hdata_sumd),file = "dput(hdata).csv")
 
+#### Hack Conor's leaving for Burning Man FML ####
+zz<-read.csv("dput(zz).csv")
+hdata_sumd<-read.csv("dput(hdata).csv")
+#### Hack Conor's leaving for Burning Man FML ####
+
+
 custom_cloud(zz, hdata_sumd, "mead_energy", "Hoover")
 custom_cloud(zz, hdata_sumd, "powell_energy", "Glen")
 
@@ -208,23 +232,23 @@ gg_d <- custom_cloud(zz, hdata_sumd, "davis_energy", "Davis", 1.008) +
 gg_p
 gg_d
 
-# # parker davis together -------------------
-# pd <- filter(zz, Variable %in% c("davis_energy", "parker_energy")) %>%
-#   group_by(Year, Trace, ScenarioGroup) %>%
-#   summarise(Value = sum(Value)) %>%
-#   mutate(Variable = "pd_energy")
-# 
-# pdh <- filter(hdata_sumd, Variable %in% c("davis_energy", "parker_energy")) %>%
-#   group_by(Year) %>%
-#   summarise(Value = sum(Value)) %>%
-#   mutate(Variable = "pd_energy")
-# 
-# avg_hist <- bind_rows(
-#   avg_hist, 
-#   data.frame("Variable" = "pd_energy", Value = mean(pdh$Value))
-# )
-# 
-# gg_pd <- custom_cloud(pd, pdh, "pd_energy", "Parker-Davis", 1.008)
+# parker davis together -------------------
+pd <- filter(zz, Variable %in% c("davis_energy", "parker_energy")) %>%
+  group_by(Year, Trace, ScenarioGroup) %>%
+  summarise(Value = sum(Value)) %>%
+  mutate(Variable = "pd_energy")
+
+pdh <- filter(hdata_sumd, Variable %in% c("davis_energy", "parker_energy")) %>%
+  group_by(Year) %>%
+  summarise(Value = sum(Value)) %>%
+  mutate(Variable = "pd_energy")
+
+avg_hist <- bind_rows(
+  avg_hist,
+  data.frame("Variable" = "pd_energy", Value = mean(pdh$Value))
+)
+
+gg_pd <- custom_cloud(pd, pdh, "pd_energy", "Parker-Davis", 1.008)
 
 ### Save pngs ### 
 
@@ -242,4 +266,7 @@ ggsave(file.path(results_dir,"hoover.png"), gg_m, width = ww, height = hh)
 ggsave(file.path(results_dir,"davis.png"), gg_d, width = ww, height = hh)
 ggsave(file.path(results_dir,"parker.png"), gg_p, width = ww, height = hh)
 ggsave(file.path(results_dir,"glen.png"), gg_g, width = ww, height = hh)
+
+ggsave(file.path(results_dir,"glen.png"), gg_pd, width = ww, height = hh)
+
 

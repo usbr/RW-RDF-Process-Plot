@@ -118,37 +118,37 @@ if(T){
 ## create a pdf  
 pdf(file.path(oFigs,paste0("Cloud_PowMeadInOut_",Figs,".pdf")), width= width, height= height)
   
-  # # need df from rw_agg_file <- "UB3GageFlowSaltMass.csv" 
-  # # run SingleTrace_Salt_Explore.R to load this data 
-  zz_all = UB_res_raw %>% 
-    dplyr::filter(Year %in% yrs) %>%
-    # compute the 10/50/90 and aggregate by start month
-    dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
-    dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
-                     'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
-                     'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot
-  
-  NumCrit = HistMin = HistMax = NA 
-  
-  variable = "8_conc_cisco"
-  y_lab = "Concentration (mg/l)"
-  title = "Cisco FWAAC" 
-  source("code/Cloud_plot_woHist.R")
-  c1 <- gg
-  
-  variable = "16_conc_grut"
-  y_lab = "Concentration (mg/l)"
-  title = "GRUT FWAAC" 
-  source("code/Cloud_plot_woHist.R")
-  c2 <- gg
-  
-  variable = "19_conc_bluf"
-  y_lab = "Concentration (mg/l)"
-  title = "Bluff FWAAC" 
-  source("code/Cloud_plot_woHist.R")
-  c3 <- gg
-  
-  grid.arrange(c1,c2,c3,ncol=1)
+  # # # need df from rw_agg_file <- "UB3GageFlowSaltMass.csv" 
+  # # # run SingleTrace_Salt_Explore.R to load this data 
+  # zz_all = UB_res_raw %>% 
+  #   dplyr::filter(Year %in% yrs) %>%
+  #   # compute the 10/50/90 and aggregate by start month
+  #   dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
+  #   dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
+  #                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
+  #                    'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot
+  # 
+  # NumCrit = HistMin = HistMax = NA 
+  # 
+  # variable = "8_conc_cisco"
+  # y_lab = "Concentration (mg/l)"
+  # title = "Cisco FWAAC" 
+  # source("code/Cloud_plot_woHist.R")
+  # c1 <- gg
+  # 
+  # variable = "16_conc_grut"
+  # y_lab = "Concentration (mg/l)"
+  # title = "GRUT FWAAC" 
+  # source("code/Cloud_plot_woHist.R")
+  # c2 <- gg
+  # 
+  # variable = "19_conc_bluf"
+  # y_lab = "Concentration (mg/l)"
+  # title = "Bluff FWAAC" 
+  # source("code/Cloud_plot_woHist.R")
+  # c3 <- gg
+  # 
+  # grid.arrange(c1,c2,c3,ncol=1)
   
 #-------------------------------------------------------------------------------------
 # Powell Inflow 

@@ -109,6 +109,7 @@ zz_all <- scen_res %>%
   dplyr::filter(Year %in% yrs, Variable %in% c("AnnlSlntyLsFrry_FWAAC",
                                                 "AnnlSlntyHvr_FWAAC",
                                                 "AnnlSlntyPrkr_FWAAC",
+                                               "AnnlSlntyPwllInflw_FWAAC",
                                                 "AnnlSlntyImprl_FWAAC")) %>%
   # compute the 10/50/90 and aggregate by start month
   dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
@@ -197,6 +198,31 @@ pdf(file.path(oFigs,paste0("WQAnnClouds_MinMaxLines=",MinMaxLines,"_",Figs,".pdf
 ### Means ###
 
 #-------------------------------------------------------------------------------------
+# ++++++++++++++++++++++++++Powell In+++++++++++++++++++++++++++++++++++++
+#-------------------------------------------------------------------------------------
+# zz_all_sv <- zz_all 
+# 
+# zz_all <- scen_res %>%
+#   dplyr::filter(Year %in% yrs, Variable %in% c("AnnlSlntyPwllInflw_FWAAC")) %>%
+#   # compute the 10/50/90 and aggregate by start month
+#   dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
+#   dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
+#                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
+#                    'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot 
+
+NumCrit <- NA
+variable = "AnnlSlntyPwllInflw_FWAAC"
+y_lab = "Salt Concentration (mg/l)"
+title = "Powell Inflow FWAAC"
+subtitle = "Average Annual Concentration Comparison"
+ylims <- c(NA,NA)
+
+source("code/Cloud_plot_wHist.R")
+
+# source("code/Cloud_plot_woHist.R")
+# zz_all = zz_all_sv  
+
+#-------------------------------------------------------------------------------------
 # ++++++++++++++++++++++++++Lees Ferry+++++++++++++++++++++++++++++++++++++
 #-------------------------------------------------------------------------------------
 
@@ -205,7 +231,8 @@ variable = "AnnlSlntyLsFrry_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River at Lees Ferry" 
 subtitle = "Average Annual Concentration Comparison"
-ylims <- c(400,600)
+ylims <- c(NA,NA)
+# ylims <- c(400,600)
 
 source("code/Cloud_plot_wHist.R")
 
@@ -219,7 +246,8 @@ variable = "AnnlSlntyHvr_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River below Hoover Dam" 
 subtitle = "Average Annual Concentration Comparison"
-ylims <- c(545,750)
+ylims <- c(NA,NA)
+#ylims <- c(545,750)
 
 source("code/Cloud_plot_wHist.R")
 
@@ -233,7 +261,8 @@ variable = "AnnlSlntyPrkr_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River below Parker Dam" 
 subtitle = "Average Annual Concentration Comparison"
-ylims <- c(550,750)
+ylims <- c(NA,NA)
+#ylims <- c(550,750)
 
 source("code/Cloud_plot_wHist.R")
 
@@ -246,7 +275,8 @@ variable = "AnnlSlntyImprl_FWAAC"
 y_lab = "Salt Concentration (mg/l)"
 title = "Colorado River above Imperial Dam" 
 subtitle = "Average Annual Concentration Comparison"
-ylims <- c(675,900)
+ylims <- c(NA,NA)
+#ylims <- c(675,900)
 
 source("code/Cloud_plot_wHist.R")
 
