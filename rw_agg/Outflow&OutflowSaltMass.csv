@@ -7,3 +7,11 @@ KeySlots.rdf,Havasu.Outflow,cy,sum,NA,NA,Havasu.Outflow
 Salt.rdf,Havasu.Outflow Salt Mass,cy,sum,NA,NA,Havasu.Outflow Salt Mass
 KeySlots.rdf,AboveImperialDamColoradoR.Outflow,cy,sum,NA,NA,AboveImperialDamColoradoR.Outflow
 Salt.rdf,AboveImperialDamColoradoR.Outflow Salt Mass,cy,sum,NA,NA,AboveImperialDamColoradoR.Outflow Salt Mass
+Salt.rdf,Powell.Inflow Salt Mass,cy,sum,NA,NA,Powell.Inflow Salt Mass
+Res.rdf,Powell.Inflow,cy,sum,NA,NA,Powell.Inflow
+StreamGages.rdf,ColoradoNearCisco.Gage Outflow,cy,sum,NA,NA,8_flow_cisco
+StreamGages.rdf,GreenAtGreenRiverUT.Gage Outflow,cy,sum,NA,NA,16_flow_grut
+StreamGages.rdf,SanJuanNearBluff.Gage Outflow,cy,sum,NA,NA,19_flow_bluf
+DivSalt.rdf,DoloresColorado.Outflow Salt Mass,cy,sum,NA,NA,8_mass_cisco
+DivSalt.rdf,LowerSanJuanRiver.Outflow Salt Mass,cy,sum,NA,NA,19_mass_bluf
+DivSalt.rdf,GreenRWhiteToSanRafael.Outflow Salt Mass,cy,sum,NA,NA,16_mass_grut
