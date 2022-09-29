@@ -1,5 +1,5 @@
 ##############################################################################
-#This script creates monthly boxplots of Outflow and PE to compare two MTOM runs
+#This script creates mean plots of PE to compare runs
 ##############################################################################
 
 #agg file specifying which slots
@@ -7,16 +7,11 @@
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# list.files(file.path(scen_dir,scens[2]))
-# 
-# rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[2],"WQANN.rdf")))
 
 rw_agg_file <- "PoolElevation.csv" #doesn't include outflow
 
 #read agg file specifying which slots
-# # NEW files are annual slots so use AsIs
 rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE))
-# # # Old files from 2017 review are monthly so use EOCY 
 
 #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
 scen_res <- rw_scen_aggregate(
@@ -32,14 +27,11 @@ names(lt_scale) <- unique(scen_res$Scenario)
 names(pt_scale) <- unique(scen_res$Scenario)
 names(mycolors) <- unique(scen_res$Scenario)
 
-
-# The blue gradient background is "graph trash" 
-# # make custom axis shading, don't use for now doesn't look good with plotte pallette
-# g <- rasterGrob(scales::alpha(blues9, 0.1), width=unit(1,"npc"), height = unit(1,"npc"), 
-#                 interpolate = TRUE) #alpha is the transperency  
+# # Adding factors so ggplot does not alphebetize legend
+scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens)) 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 4. Plot Custom UB Figures 
+## 4. Plot Custom Figures 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ## create a pdf  

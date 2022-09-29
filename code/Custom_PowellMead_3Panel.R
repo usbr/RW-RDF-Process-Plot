@@ -111,7 +111,7 @@ p1 <- df1 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims_pow_inoutflow) +
+  #ylim(ylims_pow_inoutflow) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -145,7 +145,7 @@ p3 <- df3 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims_pow_inoutflow) +
+  # ylim(ylims_pow_inoutflow) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -202,7 +202,7 @@ p1 <- df1 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims_pow_inoutmass) +
+  #ylim(ylims_pow_inoutmass) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -236,7 +236,7 @@ p3 <- df3 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims_pow_inoutmass) +
+  #ylim(ylims_pow_inoutmass) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -386,7 +386,7 @@ p1 <- df1 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims_mead_inoutflow) +
+  #ylim(ylims_mead_inoutflow) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -421,7 +421,7 @@ p3 <- df3 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims_mead_inoutflow) +
+  #ylim(ylims_mead_inoutflow) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -477,7 +477,7 @@ p1 <- df1 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims_mead_inoutmass) +
+  #ylim(ylims_mead_inoutmass) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
@@ -511,7 +511,7 @@ p3 <- df3 %>%
   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
   geom_line() +
   geom_point() + 
-  ylim(ylims_mead_inoutmass) +
+  #ylim(ylims_mead_inoutmass) +
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title

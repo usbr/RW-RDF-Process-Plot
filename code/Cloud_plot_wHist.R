@@ -76,10 +76,12 @@ ggc <- gg +
         panel.grid.minor = element_line(size = GridMin),
         panel.grid.major = element_line(size = GridMaj)) +
   
-  if (!is.na(NumCrit)){
-    #Adding lines for numeric criteria
-    geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) #+
-  }
+if (!is.na(NumCrit)){
+  #Adding lines for numeric criteria
+  geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) #+
+}
+
+
   
   
   guides(fill="none") #+
@@ -90,7 +92,10 @@ if (MinMaxLines == T){
     geom_line(data = zz, aes(x=Year, y=MaxOut, color=Scenario, group=Scenario),linetype = "dotted")   
 }
 
-ggc
+if (!is.na(HistMean)){
+  #Adding lines for numeric criteria
+  ggc = ggc + geom_hline(aes(yintercept=yintercept), data=HistMean, color = "black", lty = "dotted") 
+}
 
 #final plot configuration 
 gg <- plot_grid(ggc, gglegend, rel_widths = c(2,.4))

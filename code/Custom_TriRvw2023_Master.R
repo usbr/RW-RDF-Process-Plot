@@ -24,7 +24,7 @@ source(file.path(getwd(),"/code/plottingFunctions.R"))
 CRSSDIR <- Sys.getenv("CRSS_DIR")
 # CRSSDIR <- "C:/Users/cfelletter/Documents/crss.offc"
 # CRSSDIR <- "C:/Users/cfelletter/Documents/crss.trirvw2020"
-
+# CRSSDIR <- "C:/Users/cfelletter/Documents/crss.trirvw2023"
 
 # where scenarios are folder are kept
 scen_dir <- file.path(CRSSDIR,"Scenario")
@@ -54,45 +54,67 @@ customcolorltpt <- F
 
 #### Compare Models for Feb WORKGROUP #### - Ran on April 9th - can't do 3 panel since Nov19 CRSS did not have inflow 
 #
-#file names
-Model.Step.Name <- Figs <- "Projections_wvswoResResampv3" #plot title and results/folder name #[plot type] identifying name .pdf
-
-scens <- list(
-  # "2020TriRvw_Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
-  "Jan2022_2020Scen3" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0",
-  # "Jan2022_NoResResample" = "CRMMS_Most,DNF with Salinity 19312018,Retry.NoResamp,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0"
-  "Jan2022_NoResResample" = "CRMMS_Most,DNF with Salinity 19312018,NoResamp.2023TriRvw,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0"
-)
-
-#file names
-Model.Step.Name <- Figs <- "2020v2023_Projections_PulRmv18" #plot title and results/folder name #[plot type] identifying name .pdf
-
-scens <- list(
-  "2020TriRvw_Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
-  "Jan2022_2020Scen3" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0"
-)
-
-
-# Model.Step.Name <- Figs <- "Jan2022_2020Scen3_PulvST"
+# #file names
+# Model.Step.Name <- Figs <- "PartialDirectUBCompare" #plot title and results/folder name #[plot type] identifying name .pdf
+# 
 # scens <- list(
-#   # "2020TriRvw_Scen3_PulRvm3118" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
-#   "Jan2022_2020Scen3_PulRvm3118" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0",
-#   "Jan2022_2020Scen3_ST8817" = "CRMMS_Most,DNF with Salinity 19882017,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0"
-#   )
-
-# Model.Step.Name <- Figs <- "CRSSJan2022_2000runwSalt"
+#   # "2020TriRvw_Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
+#   "Jan2022_2020Scen3" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0",
+#   "DirectUB" = "CRMMS_Most,DNF with Salinity 19312018,NoResamp.2023TriRvw,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0",
+#   "DirectUBExceptAbvLF" = "CRMMS_Most,DNF with Salinity 19312018,NFSinput_2018_DirectRegressabvPwll,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0",
+#   "DirectUBExceptAbvLFBluffCiscoGRUT" = "CRMMS_Most,Direct Minus 4,NFSinput_2018_DirectRegressabvPwll,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0"
+# )
+# 
+# Model.Step.Name <- Figs <- "2023vs2020Scens" #plot title and results/folder name #[plot type] identifying name .pdf
+# 
 # scens <- list(
-#   # "2020TriRvw_Scen3_PulRvm3118" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
-#   "CRSSv4" = "CRSSv4_2020TriRvw_SaltVerification",
-#   "CRSSv5" = "CRSSJan2022_2000runwSalt"
+#   # "2020TriRvw_Scen3" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.3,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000.rls,WQIP_Scenario1_2023_20220818",
+#   "Jan2022_2020Scen3" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.0,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0",
+#   # "Jan2022_2023Scen3" = "CRMMS_Most,DNF with Salinity 19312018,NFSinput_2018_DirectRegressabvPwll,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0",
+#   "Jan2022_2023Scen3" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.3,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000.rls,WQIP_Scenario3_2023_20220818"
 # )
 
-# Model.Step.Name <- Figs <- "Check_2020TriRvwRerun" #plot title and results/folder name #[plot type] identifying name .pdf
-# customcolorltpt <- F
+# Model.Step.Name <- Figs <- "2023Scens_20220818" #plot title and results/folder name #[plot type] identifying name .pdf
+# 
 # scens <- list(
-#   "2020TriRvw_Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
-#   "ReRun" = "ReRun_2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409"
+#   "Jan2022_2023Scen1" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen1,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000",
+#   "Jan2022_2023Scen2" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen2,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000",
+#   "Jan2022_2023Scen3" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen3,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000",
+#   "Jan2022_2023Scen4" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen4,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000"
 # )
+# 
+# Model.Step.Name <- Figs <- "Compare2020vs2023final" #plot title and results/folder name #[plot type] identifying name .pdf
+# scens <- list(
+#   "2020Rvw_Scen2" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario2_2020_20200409",
+#   "2020Rvw_Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
+#   "Jan2022_2023Scen2" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen2,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000",
+#   "Jan2022_2023Scen3" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen3,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000"
+# )
+
+Model.Step.Name <- Figs <- "TestOctoberChanges" #plot title and results/folder name #[plot type] identifying name .pdf
+scens <- list(
+    "2020Rvw_Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
+    "SeptWrkGrp_PulRmv_Scn3" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen3,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000",
+    "2021FWAAC_PulRmv_Scn3" = "DNF with Salinity 19312018,2023TriRvw.6_2021FWAACics,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_20220926",
+    "2021FWAAC_ST_Scn3" = "DNF with Salinity Stress Test 88_17,2023TriRvw.6_2021FWAACics,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_20220926"
+)
+
+# Model.Step.Name <- Figs <- "CompareICs" #plot title and results/folder name #[plot type] identifying name .pdf
+# scens <- list(
+#   "2020Rvw_Scen1" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario1_2020_20200409",
+#   "2020RvwSaltIC_2023Scen1" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.3,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000.rls,WQIP_Scenario1_2023_20220818",
+#   "UpdatedSaltIC_2023Scen1" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.4_Scen1,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000",
+#   "UpdatedStor&SaltIC_2023Scen1" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen1,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000"
+# )
+
+
+# Model.Step.Name <- Figs <- "Compare2020vs2023_mdl&ICupdates" #plot title and results/folder name #[plot type] identifying name .pdf
+# scens <- list(
+#   "CRSSv4_2020ICs_2020Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
+#   "CRSSv5_2022ICs_2020Scen3" ="DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5.has2022ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2020_20210526"
+# )
+
+
 
 # # ##########################################################################
 
@@ -172,11 +194,11 @@ source("code/Custom_WQAnn_CloudswHist.R") #clouds for FWAAC - has titles
 #SaltMassBal
 source("code/Custom_MassBalAnn.R")
 #Doesn't include UB Salt Mass Balance.ExportSaltMassExtra since this needs to be recreated in CRSS.OFFC
-source("code/Custom_MassBalAnn - CRSSv4 vs v5.R") #only works for 2 scens 
+# source("code/Custom_MassBalAnn - CRSSv4 vs v5.R") #only works for 2 scens 
 
 source("code/Custom_PowellMead_3Panel.R") #grouped by flow, mass, conc
 
-source("code/Custom_PowellMead_3Panel_Clouds.R") #grouped by Pow.In, Pow.Stor, Pow.Out
+# source("code/Custom_PowellMead_3Panel_Clouds.R") # NOT WORKING #grouped by Pow.In, Pow.Stor, Pow.Out
 
  
 # # #Saltstorage

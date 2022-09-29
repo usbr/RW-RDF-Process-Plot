@@ -50,13 +50,14 @@ record_start <- '1988-1'
 #############
 #Single set of trace files 
 tmp <- file.path(oFolder, paste0("NFSinput_", x,"01"))
+tmp <- "C:\\Users\\cfelletter\\Documents\\crss.2023TRIRVW/dmi/Test"
 dir.create(tmp)
 CRSSIO::crssi_create_dnf_files(
   "CoRiverNF",
   oFolder = tmp,
-  startYear = 2022,
+  startYear = 2023,
   endYear = 2053,
-  recordToUse = zoo::as.yearmon(c(record_start,'2019-12')), #zero out for whole record
+  recordToUse = zoo::as.yearmon(c(record_start,'2018-12')), #zero out for whole record
   overwriteFiles = T
 )
 
@@ -146,8 +147,9 @@ CRSSIO::crssi_create_hist_nf_xlsx()
 
 
 ### Change CRSS v4 NFS inputs to v5 names ###################################
-iFolder<-'C:/Users/cfelletter/Documents/crss.trirvw2020/dmi/NFSinput_2018_binational'
-oFolder <-'C:/Users/cfelletter/Documents/crss.2023trirvw/dmi/NFSinput_2018_binational_CRSSv5'
+# iFolder<-"C:/Users/cfelletter/Documents/NatSalt_RCode/RWfiles"
+iFolder<-"C:/Users/cfelletter/Documents/crss.trirvw2020/dmi/NFSinput_2018_binational"
+oFolder <-"C:/Users/cfelletter/Documents/crss.2023TRIRVW/dmi/NFSinput_2018_DirectRegressabvPwll"
 oldFileNames <- c(CRSSIO::nf_file_names(version = 4),CRSSIO::natsalt_file_names(version = 4))
 newFileNames <- c(CRSSIO::nf_file_names(version = 5),CRSSIO::natsalt_file_names(version = 5))
 CRSSIO::crssi_change_nf_file_names(iFolder, oFolder, 88,oldFileNames, newFileNames)

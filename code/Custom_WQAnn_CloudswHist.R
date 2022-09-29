@@ -216,6 +216,7 @@ y_lab = "Salt Concentration (mg/l)"
 title = "Powell Inflow FWAAC"
 subtitle = "Average Annual Concentration Comparison"
 ylims <- c(NA,NA)
+HistMean <- data.frame(yintercept=462) #1999-2020 Avg from 2020 NFSM run 
 
 source("code/Cloud_plot_wHist.R")
 
@@ -233,6 +234,7 @@ title = "Colorado River at Lees Ferry"
 subtitle = "Average Annual Concentration Comparison"
 ylims <- c(NA,NA)
 # ylims <- c(400,600)
+HistMean <- data.frame(yintercept=460) #1999-2021 Avg based on Aug2022 SLOAD
 
 source("code/Cloud_plot_wHist.R")
 
@@ -248,6 +250,7 @@ title = "Colorado River below Hoover Dam"
 subtitle = "Average Annual Concentration Comparison"
 ylims <- c(NA,NA)
 #ylims <- c(545,750)
+HistMean <- data.frame(yintercept=584) #1999-2021 Avg based on Aug2022 SLOAD
 
 source("code/Cloud_plot_wHist.R")
 
@@ -263,6 +266,7 @@ title = "Colorado River below Parker Dam"
 subtitle = "Average Annual Concentration Comparison"
 ylims <- c(NA,NA)
 #ylims <- c(550,750)
+HistMean <- data.frame(yintercept=600) #1999-2021 Avg based on Aug2022 SLOAD
 
 source("code/Cloud_plot_wHist.R")
 
@@ -277,6 +281,7 @@ title = "Colorado River above Imperial Dam"
 subtitle = "Average Annual Concentration Comparison"
 ylims <- c(NA,NA)
 #ylims <- c(675,900)
+HistMean <- data.frame(yintercept=692) #1999-2021 Avg based on Aug2022 SLOAD
 
 source("code/Cloud_plot_wHist.R")
 

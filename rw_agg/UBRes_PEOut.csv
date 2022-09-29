@@ -1,0 +1,7 @@
+file,slot,period,summary,eval,t_s,variable
+UBRes.rdf,Navajo.Pool Elevation,eocy,NA,NA,NA,Navajo.PoolElevation
+UBRes.rdf,FlamingGorge.Pool Elevation,eocy,NA,NA,NA,FlamingGorge.PoolElevation
+UBRes.rdf,BlueMesa.Pool Elevation,eocy,NA,NA,NA,BlueMesa.PoolElevation
+UBRes.rdf,Navajo.Outflow,cy,sum,NA,NA,Navajo.Outflow
+UBRes.rdf,FlamingGorge.Outflow,cy,sum,NA,NA,FlamingGorge.Outflow
+UBRes.rdf,BlueMesa.Outflow,cy,sum,NA,NA,BlueMesa.Outflow

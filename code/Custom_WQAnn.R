@@ -81,13 +81,12 @@ pdf(file.path(oFigs,paste0("WQAnn_",Figs,".pdf")), width= width, height= height)
 ##### CISCO #####
 #--Flow--#
 variable = "8_flow_cisco" # "16_flow_grut" "19_flow_bluf"
-y_lab = "Flow (kaf/yr)"
-title = "Cisco Flow" 
+y_lab = "Outflow (million acre-ft/year)"
+title = "Cisco Average Annual Flow" 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
-  dplyr::mutate(Value = Value/1000) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
 pf <- df %>%
@@ -105,13 +104,12 @@ write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 #--Mass--#
 variable = "8_mass_cisco" #"19_mass_bluf" "16_mass_grut"
-y_lab = "Salt Mass (ktons/yr)"
-title = "Cisco Salt Mass" 
+y_lab = "Outflow Salt Mass (million tons/year)"
+title = "Cisco Average Annual Outflow Salt Mass"  
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
-  dplyr::mutate(Value = Value/1000) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
 pm <- df %>%
@@ -201,13 +199,12 @@ write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 #--Flow--#
 variable = "16_flow_grut" # "16_flow_grut" "19_flow_bluf"
-y_lab = "Flow (kaf/yr)"
-title = "GRUT Flow" 
+y_lab = "Outflow (million acre-ft/year)"
+title = "GRUT Average Annual Flow" 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
-  dplyr::mutate(Value = Value/1000) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
 pf <- df %>%
@@ -225,13 +222,12 @@ write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 #--Mass--#
 variable = "16_mass_grut" #"19_mass_bluf" "16_mass_grut"
-y_lab = "Salt Mass (ktons/yr)"
-title = "GRUT Salt Mass" 
+y_lab = "Outflow Salt Mass (million tons/year)"
+title = "GRUT Average Annual Outflow Salt Mass" 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
-  dplyr::mutate(Value = Value/1000) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
 pm <- df %>%
@@ -255,13 +251,12 @@ ggsave(filename = file.path(oFigs,paste0("GRUT_3Panel.png")), width= width, heig
 ##### Bluff #####
 #--Flow--#
 variable = "19_flow_bluf" # "16_flow_grut" "19_flow_bluf"
-y_lab = "Flow (kaf/yr)"
-title = "Bluff Flow" 
+y_lab = "Outflow (million acre-ft/year)"
+title = "Bluff Average Annual Flow" 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
-  dplyr::mutate(Value = Value/1000) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
 pf <- df %>%
@@ -279,13 +274,12 @@ write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 #--Mass--#
 variable = "19_mass_bluf" #"19_mass_bluf" "16_mass_grut"
-y_lab = "Salt Mass (ktons/yr)"
-title = "Bluff Salt Mass" 
+y_lab = "Outflow Salt Mass (million tons/year)"
+title = "Bluff Average Annual Outflow Salt Mass" 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
-  dplyr::mutate(Value = Value/1000) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
 pm <- df %>%

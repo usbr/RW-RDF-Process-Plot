@@ -118,11 +118,13 @@ variable = "UB_Natural_Inflow"
 title = variable
 ylims <- c(-1,6) #c(0,7)
 
+
 df_ub <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),
+                   'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
 p <- df_ub %>%
   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
@@ -136,6 +138,15 @@ print(p)
 ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df_ub,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
+
+# #Work on this ####
+# zz_all <- df_ub 
+# NumCrit <- NA
+# title = "UB Natural Salt In" 
+# subtitle = NA
+ylims <- c(NA,NA) #c(0,7)
+# source("code/Cloud_plot_woHist.R")
+
 
 #-------------------------------------------------------------------------------------
 
