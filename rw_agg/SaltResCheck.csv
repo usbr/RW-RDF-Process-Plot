@@ -1,0 +1,5 @@
+file,slot,period,summary,eval,t_s,variable
+Salt.rdf,Powell.Inflow Salt Mass,cy,sum,NA,NA,Powell.InSaltMass
+Res.rdf,Powell.Inflow,cy,sum,NA,NA,Powell.Inflow
+Salt.rdf,Powell.Reservoir Salt Mass,eocy,NA,NA,NA,Powell.ReservoirSaltMass
+Salt.rdf,Mead.Reservoir Salt Mass,eocy,NA,NA,NA,Mead.ReservoirSaltMass

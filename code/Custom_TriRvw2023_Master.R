@@ -24,7 +24,7 @@ source(file.path(getwd(),"/code/plottingFunctions.R"))
 CRSSDIR <- Sys.getenv("CRSS_DIR")
 # CRSSDIR <- "C:/Users/cfelletter/Documents/crss.offc"
 # CRSSDIR <- "C:/Users/cfelletter/Documents/crss.trirvw2020"
-# CRSSDIR <- "C:/Users/cfelletter/Documents/crss.trirvw2023"
+CRSSDIR <- "C:/Users/cfelletter/Documents/crss.2023TRIRVW"
 
 # where scenarios are folder are kept
 scen_dir <- file.path(CRSSDIR,"Scenario")
@@ -74,29 +74,46 @@ customcolorltpt <- F
 #   "Jan2022_2023Scen3" = "CRMMS_Most,DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.3,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000.rls,WQIP_Scenario3_2023_20220818"
 # )
 
-# Model.Step.Name <- Figs <- "2023Scens_20220818" #plot title and results/folder name #[plot type] identifying name .pdf
+Model.Step.Name <- Figs <- "2023Scens_ST_20221017" #plot title and results/folder name #[plot type] identifying name .pdf
+
+scens <- list(
+  "Scenario 1" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario1_2023_OctForum",
+  "Scenario 2" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario2_2023_OctForum",
+  "Scenario 3" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
+  "Scenario 4" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario4_2023_OctForum"
+)
 # 
+# Model.Step.Name <- Figs <- "Compare2020vs2023_Oct_Scen3" #plot title and results/folder name #[plot type] identifying name .pdf
 # scens <- list(
-#   "Jan2022_2023Scen1" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen1,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000",
-#   "Jan2022_2023Scen2" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen2,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000",
-#   "Jan2022_2023Scen3" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen3,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000",
-#   "Jan2022_2023Scen4" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen4,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000"
+#   # "2020Rvw_Scen2" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario2_2020_20200409",
+#   "2020Rvw_PulRmv" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
+#   # "Jan2022_2023Scen2" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen2,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000",
+#   "2023Rvw_ST" = "DNF with Salinity Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_20220926"
+#   # "Jan2022_2023Scen3" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen3,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000"
 # )
 # 
-# Model.Step.Name <- Figs <- "Compare2020vs2023final" #plot title and results/folder name #[plot type] identifying name .pdf
+
+
+# Model.Step.Name <- Figs <- "ICSensitivity_4OctWG" #plot title and results/folder name #[plot type] identifying name .pdf
+# #all scenarios in this use Scen3 
 # scens <- list(
-#   "2020Rvw_Scen2" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario2_2020_20200409",
-#   "2020Rvw_Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
-#   "Jan2022_2023Scen2" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen2,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000",
-#   "Jan2022_2023Scen3" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen3,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000"
+#   "2020Rvw_Pwll_372" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
+#   "2023Rvw_Pwll_372" = "DNF with Salinity 19312018,2023TriRvw.6_2020ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_20220926",
+#   "2023Rvw_Pwl_450" = "DNF with Salinity 19312018,2023TriRvw.6_2021FWAACics,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_20220926",
+#   "20223Rvw_Pwl_506" = "DNF with Salinity 19312018,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_20220926"
 # )
 
-Model.Step.Name <- Figs <- "TestOctoberChanges" #plot title and results/folder name #[plot type] identifying name .pdf
+
+Model.Step.Name <- Figs <- "HydroComparePulRmvvsST" #plot title and results/folder name #[plot type] identifying name .pdf
 scens <- list(
-    "2020Rvw_Scen3" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
-    "SeptWrkGrp_PulRmv_Scn3" = "DNF with Salinity 19312018,CRSS.V5.3.0.203.Jan2022.2023TriRvw.5_Scen3,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000",
-    "2021FWAAC_PulRmv_Scn3" = "DNF with Salinity 19312018,2023TriRvw.6_2021FWAACics,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_20220926",
-    "2021FWAAC_ST_Scn3" = "DNF with Salinity Stress Test 88_17,2023TriRvw.6_2021FWAACics,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_20220926"
+  "1931-2018" = "19312018,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
+  "1988-2017" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum"
+)
+
+Model.Step.Name <- Figs <- "ParadoxOnOff" #plot title and results/folder name #[plot type] identifying name .pdf
+scens <- list(
+  "ParadoxOff" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum_OffParadox",
+  "Paradox100k" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum"
 )
 
 # Model.Step.Name <- Figs <- "CompareICs" #plot title and results/folder name #[plot type] identifying name .pdf
@@ -207,6 +224,10 @@ source("code/Custom_PowellMead_3Panel.R") #grouped by flow, mass, conc
 #FlowMassBal
 source("code/Custom_FlowBalAnn.R")
 # 
+### UB PE and Outflow
+source("code/Custom_UBResPEandOut.R")
+
+
 # # Powell Mead PE
 source("code/Custom_ResPE.R")
 source("code/Custom_PE_CloudswHist.R") #clouds for PE - UNDER DEVELOPMENT

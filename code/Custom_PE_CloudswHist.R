@@ -200,6 +200,8 @@ title = "Lake Powell Pool Elevation"
 subtitle = ""
 ylims <- c(3490,3570)
 NumCrit <- NA
+HistMean <- NA
+
 
 source("code/Cloud_plot_wHist.R")
 
@@ -213,6 +215,8 @@ title = "Lake Mead Pool Elevation"
 ylims <- c(3490,3570)
 subtitle = ""
 NumCrit <- NA
+HistMean <- NA #must add this for updated cloud plot whist script 
+
 
 source("code/Cloud_plot_wHist.R")
 

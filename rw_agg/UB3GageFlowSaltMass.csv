@@ -1,0 +1,10 @@
+file,slot,period,summary,eval,t_s,variable
+WQAnn.rdf,AnnualSalinity.GreenRiverUTGreen_FWAAC,asis,NA,NA,NA,16_conc_grut
+WQAnn.rdf,AnnualSalinity.Bluff_FWAAC,asis,NA,NA,NA,19_conc_bluf
+WQAnn.rdf,AnnualSalinity.CiscoColorado_FWAAC,asis,NA,NA,NA,8_conc_cisco
+StreamGages.rdf,ColoradoNearCisco.Gage Outflow,cy,sum,NA,NA,8_flow_cisco
+StreamGages.rdf,GreenAtGreenRiverUT.Gage Outflow,cy,sum,NA,NA,16_flow_grut
+StreamGages.rdf,SanJuanNearBluff.Gage Outflow,cy,sum,NA,NA,19_flow_bluf
+SaltVerification.rdf,DoloresColorado.Outflow Salt Mass,cy,sum,NA,NA,8_mass_cisco
+SaltVerification.rdf,LowerSanJuanRiver.Outflow Salt Mass,cy,sum,NA,NA,19_mass_bluf
+KeySlots.rdf,TotVal.Powell,cy,sum,NA,NA,TotVal.Powell

@@ -1,0 +1,64 @@
+file,slot,period,summary,eval,t_s,variable
+WQAnn.rdf,AnnualSalinity.Glenwood_FWAAC,December,NA,NA,NA,1_conc_glen
+WQAnn.rdf,AnnualSalinity.Cameo_FWAAC,December,NA,NA,NA,2_conc_cameo
+WQAnn.rdf,AnnualSalinity.GrandJunction_FWAAC,December,NA,NA,NA,6_conc_gunn
+WQAnn.rdf,AnnualSalinity.CiscoDolores_FWAAC,December,NA,NA,NA,7_conc_dolor
+WQAnn.rdf,AnnualSalinity.CiscoColorado_FWAAC,December,NA,NA,NA,8_conc_cisco
+WQAnn.rdf,AnnualSalinity.GreenRiverWY_FWAAC,December,NA,NA,NA,10_conc_grwy
+WQAnn.rdf,AnnualSalinity.Greendale_FWAAC,December,NA,NA,NA,11_conc_gdale
+WQAnn.rdf,AnnualSalinity.Maybell_FWAAC,December,NA,NA,NA,12_conc_yampa
+WQAnn.rdf,AnnualSalinity.Randlett_FWAAC,December,NA,NA,NA,14_conc_duch
+WQAnn.rdf,AnnualSalinity.Watson_FWAAC,December,NA,NA,NA,15_conc_white
+WQAnn.rdf,AnnualSalinity.GreenRiverUTGreen_FWAAC,December,NA,NA,NA,16_conc_grut
+WQAnn.rdf,AnnualSalinity.GreenRiverUTSanRafael_FWAAC,December,NA,NA,NA,17_conc_sanraf
+WQAnn.rdf,AnnualSalinity.Archeuleta_FWAAC,December,NA,NA,NA,18_conc_arch
+WQAnn.rdf,AnnualSalinity.Bluff_FWAAC,December,NA,NA,NA,19_conc_bluf
+WQAnn.rdf,AnnualSalinity.LeesFerry_FWAAC,December,NA,NA,NA,20_conc_lees
+WQAnn.rdf,AnnualSalinity.GrandCanyon_FWAAC,December,NA,NA,NA,23_conc_grcan
+WQAnn.rdf,AnnualSalinity.Virgin_FWAAC,December,NA,NA,NA,24_conc_virgin
+WQAnn.rdf,AnnualSalinity.Hoover_FWAAC,December,NA,NA,NA,25_conc_hoover
+WQAnn.rdf,AnnualSalinity.Parker_FWAAC,December,NA,NA,NA,28_conc_parker
+WQAnn.rdf,AnnualSalinity.Imperial_FWAAC,December,NA,NA,NA,29_conc_imper
+SaltVerification.rdf,UpperColoradoReach.Outflow,cy,sum,NA,NA,1_flow_glen
+SaltVerification.rdf,UpperColoradoAboveCameo.Outflow,cy,sum,NA,NA,2_flow_cameo
+SaltVerification.rdf,GunnisonRiverAboveGrandJunction.Outflow,cy,sum,NA,NA,6_flow_gunn
+SaltVerification.rdf,DoloresRiver.Outflow,cy,sum,NA,NA,7_flow_dolor
+SaltVerification.rdf,DoloresColorado.Outflow,cy,sum,NA,NA,8_flow_cisco
+SaltVerification.rdf,GreenRAboveGreenRiverWY.Outflow,cy,sum,NA,NA,10_flow_grwy
+SaltVerification.rdf,FlamingGorge.Outflow,cy,sum,NA,NA,11_flow_gdale
+SaltVerification.rdf,YampaRiver.Outflow,cy,sum,NA,NA,12_flow_yampa
+SaltVerification.rdf,DuchesneBelowStarv.Outflow,cy,sum,NA,NA,14_flow_duch
+SaltVerification.rdf,WhiteRiverAboveWatson.Outflow,cy,sum,NA,NA,15_flow_white
+SaltVerification.rdf,GreenRWhiteToSanRafael.Outflow,cy,sum,NA,NA,16_flow_grut
+SaltVerification.rdf,SanRafaelRiver.Outflow,cy,sum,NA,NA,17_flow_sanraf
+SaltVerification.rdf,Navajo.Outflow,cy,sum,NA,NA,18_flow_arch
+SaltVerification.rdf,LowerSanJuanRiver.Outflow,cy,sum,NA,NA,19_flow_bluf
+SaltVerification.rdf,Powell.Outflow,cy,sum,NA,NA,20_flow_lees
+SaltVerification.rdf,CoRivLittleCOToVirgin.Outflow,cy,sum,NA,NA,23_flow_grcan
+SaltVerification.rdf,VirginRiver.Outflow,cy,sum,NA,NA,24_flow_virgin
+SaltVerification.rdf,Mead.Outflow,cy,sum,NA,NA,25_flow_hoover
+SaltVerification.rdf,Havasu.Outflow,cy,sum,NA,NA,28_flow_parker
+SaltVerification.rdf,AboveImperialDamColoradoR.Outflow,cy,sum,NA,NA,29_flow_imper
+SaltVerification.rdf,UpperColoradoReach.Outflow Salt Mass,cy,sum,NA,NA,1_mass_glen
+SaltVerification.rdf,UpperColoradoAboveCameo.Outflow Salt Mass,cy,sum,NA,NA,2_mass_cameo
+SaltVerification.rdf,GunnisonRiverAboveGrandJunction.Outflow Salt Mass,cy,sum,NA,NA,6_mass_gunn
+SaltVerification.rdf,DoloresRiver.Outflow Salt Mass,cy,sum,NA,NA,7_mass_dolor
+SaltVerification.rdf,DoloresColorado.Outflow Salt Mass,cy,sum,NA,NA,8_mass_cisco
+SaltVerification.rdf,GreenRAboveGreenRiverWY.Outflow Salt Mass,cy,sum,NA,NA,10_mass_grwy
+SaltVerification.rdf,FlamingGorge.Outflow Salt Mass,cy,sum,NA,NA,11_mass_gdale
+SaltVerification.rdf,YampaRiver.Outflow Salt Mass,cy,sum,NA,NA,12_mass_yampa
+SaltVerification.rdf,DuchesneBelowStarv.Outflow Salt Mass,cy,sum,NA,NA,14_mass_duch
+SaltVerification.rdf,WhiteRiverAboveWatson.Outflow Salt Mass,cy,sum,NA,NA,15_mass_white
+SaltVerification.rdf,GreenRWhiteToSanRafael.Outflow Salt Mass,cy,sum,NA,NA,16_mass_grut
+SaltVerification.rdf,SanRafaelRiver.Outflow Salt Mass,cy,sum,NA,NA,17_mass_sanraf
+SaltVerification.rdf,Navajo.Outflow Salt Mass,cy,sum,NA,NA,18_mass_arch
+SaltVerification.rdf,LowerSanJuanRiver.Outflow Salt Mass,cy,sum,NA,NA,19_mass_bluf
+SaltVerification.rdf,Powell.Outflow Salt Mass,cy,sum,NA,NA,20_mass_lees
+SaltVerification.rdf,CoRivLittleCOToVirgin.Outflow Salt Mass,cy,sum,NA,NA,23_mass_grcan
+SaltVerification.rdf,VirginRiver.Outflow Salt Mass,cy,sum,NA,NA,24_mass_virgin
+SaltVerification.rdf,Mead.Outflow Salt Mass,cy,sum,NA,NA,25_mass_hoover
+SaltVerification.rdf,Havasu.Outflow Salt Mass,cy,sum,NA,NA,28_mass_parker
+SaltVerification.rdf,AboveImperialDamColoradoR.Outflow Salt Mass,cy,sum,NA,NA,29_mass_imper
+Res.rdf,Powell.Inflow,cy,sum,NA,NA,20_flow_powellin
+Salt.rdf,Powell.Inflow Salt Mass,cy,sum,NA,NA,20_mass_powellin
+WQAnn.rdf,AnnualSalinity.PowellInflow_FWAAC,December,NA,NA,NA,20_conc_powellin
