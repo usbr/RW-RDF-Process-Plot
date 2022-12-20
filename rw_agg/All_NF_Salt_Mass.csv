@@ -1,0 +1,24 @@
+file,slot,period,summary,eval,t_s,variable
+Salt.rdf,GlenwoodSpringsNF.Inflow Salt Mass,cy,sum,NA,NA,1_GlenwoodSpringsNF.Mass
+Salt.rdf,CameoNF.Inflow Salt Mass,cy,sum,NA,NA,2_CameoNF.Mass
+Salt.rdf,GrandJunctionNF.Inflow Salt Mass,cy,sum,NA,NA,6_GrandJunctionNF.Mass
+Salt.rdf,CiscoDoloresNF.Inflow Salt Mass,cy,sum,NA,NA,7_CiscoDoloresNF.Mass
+Salt.rdf,CiscoColoradoNF.Inflow Salt Mass,cy,sum,NA,NA,8_CiscoColoradoNF.Mass
+Salt.rdf,GreenRiverWYNF.Inflow Salt Mass,cy,sum,NA,NA,10_GreenRiverWYNF.Mass
+Salt.rdf,GreendaleNF.Inflow Salt Mass,cy,sum,NA,NA,11_GreendaleNF.Mass
+Salt.rdf,MaybellNF.Inflow Salt Mass,cy,sum,NA,NA,12_MaybellNF.Mass
+Salt.rdf,RandlettNF.Inflow Salt Mass,cy,sum,NA,NA,14_RandlettNF.Mass
+Salt.rdf,WatsonNF.Inflow Salt Mass,cy,sum,NA,NA,15_WatsonNF.Mass
+Salt.rdf,GreenRiverUTGreenNF.Inflow Salt Mass,cy,sum,NA,NA,16_GreenRiverUTGreenNF.Mass
+Salt.rdf,GreenRiverUTSanRafaelNF.Inflow Salt Mass,cy,sum,NA,NA,17_GreenRiverUTSanRafaelNF.Mass
+Salt.rdf,ArchuletaNF.Inflow Salt Mass,cy,sum,NA,NA,18_ArchuletaNF.Mass
+Salt.rdf,BluffNF.Inflow Salt Mass,cy,sum,NA,NA,19_BluffNF.Mass
+Salt.rdf,LeesFerryNF.Inflow Salt Mass,cy,sum,NA,NA,20_LeesFerryNF.Mass
+Salt.rdf,LeesFerryPariaNF.Inflow Salt Mass,cy,sum,NA,NA,21_LeesFerryPariaNF.Mass
+Salt.rdf,CameronNF.Inflow Salt Mass,cy,sum,NA,NA,22_CameronNF.Mass
+Salt.rdf,GrandCanyonNF.Inflow Salt Mass,cy,sum,NA,NA,23_GrandCanyonNF.Mass
+Salt.rdf,LittlefieldNF.Inflow Salt Mass,cy,sum,NA,NA,24_LittlefieldNF.Mass
+Salt.rdf,HooverNF.Inflow Salt Mass,cy,sum,NA,NA,25_HooverNF.Mass
+Salt.rdf,DavisNF.Inflow Salt Mass,cy,sum,NA,NA,26_DavisNF.Mass
+Salt.rdf,AlamoNF.Inflow Salt Mass,cy,sum,NA,NA,27_AlamoNF.Mass
+Salt.rdf,ParkerNF.Inflow Salt Mass,cy,sum,NA,NA,28_ParkerNF.Mass

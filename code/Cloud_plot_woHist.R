@@ -1,8 +1,7 @@
 zz <- zz_all %>%
   dplyr::filter(Variable == variable) 
 
-# write.csv(zz,file.path(oFigs,paste0(variable,"_stats.csv")))
-write.csv(zz,file.path(oFigs,paste0(title,"_stats.csv")))
+# write.csv(zz,file.path(oFigs,paste0(title,"_stats.csv")))
 
 
 # if (powtiers){
@@ -47,7 +46,7 @@ ggb <- gg + geom_line(size=Medians) +
                      values = plotColors) + #, labels = str_wrap(histLab, 15)) +
   theme(legend.text = element_text(size=LegendText),legend.title = element_text(size=LegendLabText, face="bold"),
         legend.box.margin = margin(0,0,0,0)) 
-ggb
+# ggb
 legendb <- get_legend(ggb)
 
 # Make legend grob.  4 rows used to make legend close together and in the middle with respects to the vertical

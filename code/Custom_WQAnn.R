@@ -98,7 +98,7 @@ pf <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +
   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
@@ -121,7 +121,7 @@ pm <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +
   labs(title = title, y = y_lab, x = "")+ 
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
@@ -153,16 +153,15 @@ pc <- df %>%
   scale_color_manual(values = mycolors) +
   # # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
   labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
-#ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+# ggsave(filename = file.path(oFigs,paste0(variable,".png")),plot=pc, width= width, height= height) #print just the concentration as png plot
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
-
 grid.arrange(pf,pm,pc,ncol=1)
-ggsave(filename = file.path(oFigs,paste0("Cisco_3Panel.png")), width= width, height= height)
+ggsave(plot = p3,filename = file.path(oFigs,paste0("Cisco_3Panel.png")), width= width, height= height)
 
 
 #-------------------------------------------------------------------------------------
@@ -190,7 +189,7 @@ pc <- df %>%
   scale_color_manual(values = mycolors) +
   # # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
   labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
@@ -216,7 +215,7 @@ pf <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +
   labs(title = title, y = y_lab, x = "")+ 
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
@@ -239,13 +238,13 @@ pm <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +
   labs(title = title, y = y_lab, x = "")+ 
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
 
-grid.arrange(pf,pm,pc,ncol=1)
-ggsave(filename = file.path(oFigs,paste0("GRUT_3Panel.png")), width= width, height= height)
+p3 <- grid.arrange(pf,pm,pc,ncol=1)
+ggsave(plot = p3,filename = file.path(oFigs,paste0("GRUT_3Panel.png")), width= width, height= height)
 
 #-------------------------------------------------------------------------------------
 ##### Bluff #####
@@ -267,8 +266,8 @@ pf <- df %>%
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +
-  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
@@ -290,8 +289,8 @@ pm <- df %>%
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +
-  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
@@ -319,15 +318,15 @@ pc <- df %>%
   scale_color_manual(values = mycolors) +
   # # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
   labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
-grid.arrange(pf,pm,pc,ncol=1)
-ggsave(filename = file.path(oFigs,paste0("Bluff_3Panel.png")), width= width, height= height)
+p3 <- grid.arrange(pf,pm,pc,ncol=1)
+ggsave(plot = p3,filename = file.path(oFigs,paste0("Bluff_3Panel.png")), width= width, height= height)
 
 #-------------------------------------------------------------------------------------
 
@@ -361,7 +360,7 @@ pc <- df %>%
   scale_color_manual(values = mycolors) +
   # # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
   labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
@@ -393,7 +392,7 @@ pf <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 # #print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
@@ -422,15 +421,15 @@ pm <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 # #print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
-grid.arrange(pf,pm,pc,ncol=1)
-ggsave(filename = file.path(oFigs,paste0("PowIn_3Panel.png")), width= width, height= height)
+p3 <- grid.arrange(pf,pm,pc,ncol=1)
+ggsave(plot = p3,filename = file.path(oFigs,paste0("PowIn_3Panel.png")), width= width, height= height)
 
 
 #-------------------------------------------------------------------------------------
@@ -459,10 +458,10 @@ pc <- df %>%
   scale_color_manual(values = mycolors) +
   # # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
   labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
-#ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+#ggsave(filename = file.path(oFigs,paste0(variable,".png")),plot=pc, width= width, height= height) #print just the concentration as png plot
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
@@ -491,7 +490,7 @@ pf <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
@@ -523,15 +522,15 @@ pm <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
-grid.arrange(pf,pm,pc,ncol=1)
-ggsave(filename = file.path(oFigs,paste0("LF_3Panel.png")), width= width, height= height)
+p3 <- grid.arrange(pf,pm,pc,ncol=1)
+ggsave(plot = p3,filename = file.path(oFigs,paste0("LF_3Panel.png")), width= width, height= height)
 
 # ++++++++++++++++++++++++++Below Mead+++++++++++++++++++++++++++++++++++++
 
@@ -561,11 +560,10 @@ pc <- df %>%
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
   geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
   labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
-#ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
-# #ggsave(filename = file.path(oFigs,paste0(variable,"_Median.png")), width= width, height= height)
+#ggsave(filename = file.path(oFigs,paste0(variable,".png")),plot=pc, width= width, height= height) #print just the concentration as png plot
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 # write.csv(df,file = paste0(oFigs,'/','Median_',variable,'.csv'))
@@ -594,7 +592,7 @@ pf <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
@@ -627,15 +625,15 @@ pm <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 
-grid.arrange(pf,pm,pc,ncol=1)
-ggsave(filename = file.path(oFigs,paste0("Mead_3Panel.png")), width= width, height= height)
+p3 <- grid.arrange(pf,pm,pc,ncol=1)
+ggsave(plot = p3,filename = file.path(oFigs,paste0("Mead_3Panel.png")), width= width, height= height)
 
 #------------------------------Below Parker-------------------------------------------------------
 
@@ -665,10 +663,10 @@ pc <- df %>%
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
   geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
   labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
-#ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+#ggsave(filename = file.path(oFigs,paste0(variable,".png")),plot=pc, width= width, height= height) #print just the concentration as png plot
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -697,8 +695,8 @@ pf <- df %>%
   scale_linetype_manual(values = lt_scale) +
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
@@ -731,13 +729,13 @@ pm <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
-grid.arrange(pf,pm,pc,ncol=1)
-ggsave(filename = file.path(oFigs,paste0("Parker_3Panel.png")), width= width, height= height)
+p3 <- grid.arrange(pf,pm,pc,ncol=1)
+ggsave(plot = p3,filename = file.path(oFigs,paste0("Parker_3Panel.png")), width= width, height= height)
 
 #-------------------------------At Imperial------------------------------------------------------
 
@@ -767,10 +765,11 @@ pc <- df %>%
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
   geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) +
   labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+
 #print(p)
 
-#ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
+#ggsave(filename = file.path(oFigs,paste0(variable,".png")),plot=pc, width= width, height= height) #print just the concentration as png plot
 
 write.csv(df,file = paste0(oFigs,'/','Stats_',variable,'.csv'))
 #-------------------------------------------------------------------------------------
@@ -800,7 +799,7 @@ pf <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
@@ -833,14 +832,15 @@ pm <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "")+ #remove model step name from title
   labs(title = title, y = y_lab, x = "")+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 #print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
 
-grid.arrange(pf,pm,pc,ncol=1)
-ggsave(filename = file.path(oFigs,paste0("Imperial_3Panel.png")), width= width, height= height)
+p3 <- grid.arrange(pf,pm,pc,ncol=1)
+
+ggsave(plot = p3,filename = file.path(oFigs,paste0("Imperial_3Panel.png")), width= width, height= height)
 
 #-------------------------------------------------------------------------------------
 ### Exceedence ###
@@ -869,12 +869,12 @@ p <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
   labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-#print(p)
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df,file = paste0(oFigs,'/',variable,'.csv'))
+#write.csv(df,file = paste0(oFigs,'/',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 variable = "Exc_AnnlSlntyPrkr_FWAAC"
@@ -901,12 +901,12 @@ p <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
   labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-#print(p)
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df,file = paste0(oFigs,'/',variable,'.csv'))
+#write.csv(df,file = paste0(oFigs,'/',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 variable = "Exc_AnnlSlntyImprl_FWAAC"
@@ -932,12 +932,12 @@ p <- df %>%
   scale_shape_manual(values = pt_scale) +
   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
   labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-#print(p)
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+print(p)
 
 #ggsave(filename = file.path(oFigs,paste0(variable,".png")), width= width, height= height)
 
-write.csv(df,file = paste0(oFigs,'/',variable,'.csv'))
+#write.csv(df,file = paste0(oFigs,'/',variable,'.csv'))
 
 #------------------------------------------------------------
 

@@ -1,6 +1,6 @@
 file,slot,period,summary,eval,t_s,variable
-MassBalance.rdf,UB Flow Mass Balance.Inflow,cy,sum,NA,NA,UBFlow_Inflow
-MassBalance.rdf,UB Flow Mass Balance.Outflow,cy,sum,NA,NA,UBFlow_Outflow
-MassBalance.rdf,UB Flow Mass Balance.Other Losses,cy,sum,NA,NA,UBFlow_OtherLosses
+MassBalance.rdf,UB Flow Mass Balance.Upper Basin Flow Mass_Upper Basin Balance.Inflow,cy,sum,NA,NA,UBFlow_Inflow
+MassBalance.rdf,UB Flow Mass Balance.Upper Basin Flow Mass_Upper Basin Balance.Outflow,cy,sum,NA,NA,UBFlow_Outflow
+MassBalance.rdf,UB Flow Mass Balance.Upper Basin Flow Mass_Upper Basin Balance.Other Losses,cy,sum,NA,NA,UBFlow_OtherLosses
 MassBalance.rdf,UB Flow Mass Balance.ChangeInReservoirStorage,cy,sum,NA,NA,UBFlow_ChangeInReservoirStorage
 MassBalance.rdf,LB Flow Mass Balance.ChangeInReservoirStorage,cy,sum,NA,NA,LBFlow_ChangeInReservoirStorage

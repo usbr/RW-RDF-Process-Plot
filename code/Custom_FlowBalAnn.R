@@ -18,7 +18,7 @@ rw_agg_file <- "FlowMassBal.csv" #20190402: Add back in UB Salt Mass Balance.AgS
 
 #read agg file specifying which slots
 # # NEW files are annual slots so use AsIs
-rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) 
+rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE))
 
 #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
 scen_res <- rw_scen_aggregate(
@@ -27,7 +27,7 @@ scen_res <- rw_scen_aggregate(
   scen_dir = scen_dir
 )
 
-unique(scen_res$Variable) #check variable names 
+# unique(scen_res$Variable) #check variable names 
 
 ## Divide Values by 1,000,000 to present data in Million of Tons/Year
 

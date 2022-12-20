@@ -67,6 +67,8 @@ colorNames <- c("Historical SLOAD",names(scens))
 
 #####UPDATE THIS EVERY TIME #### OR UPDATE LATER IN DOCUMENT USING 
 
+#source("code/Std_Cloud_Plot_Parameters.R")
+
 # Parameters for cloud plot customization (line thicknesses, text size, etc.)
 # Have been pulled out for convenience
 #Text
@@ -101,6 +103,8 @@ yrs <- startyr:endyr #simplify
 
 cloudScen <- names(scens)
 cloudLabs <- names(scens)
+
+### Read Data ###
 
 ### Read Data ###
 
