@@ -404,24 +404,28 @@ ylims <- c(0,15) #c(0,4)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
-                   'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
+  dplyr::filter(startyr <= Year && Year <= endyr)# %>% #filter year
 
 variable2 = "CoRivPariaToLittleCO.Outflow Salt Mass"
 df2 <- scen_res %>%
   dplyr::filter(Variable == variable2) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise(Value = mean(Value))
+  dplyr::filter(startyr <= Year && Year <= endyr) #%>% #filter year
 
 ##Subtracting out the UB portion of LB Natural Salt Load
 df_lb = df
 
-df_lb$Mean <- df$Mean - df2$Value #subtract off UB, used to be call $Value
-#######AM I DOING THIS WRONG calling the Mean - Value? ##### 
+df_lb$Value <- df$Value - df2$Value #don't just use the mean 
 
+variable = "LB_NaturalSalt_InflowOnly"
+df_lb <- df_lb %>%
+  mutate(Variable = variable)
+
+scen_res = rbind.data.frame(scen_res,df_lb)
+
+df_lb <- df_lb %>%
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),
+                   'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
 
 p <- df_lb %>%
   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +

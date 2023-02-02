@@ -250,6 +250,27 @@ ylims <- c(675,900)
 
 source("code/Cloud_plot_wHist_woTitles.R")
 
+# #-------------------------------------------------------------------------------------
+# # ++++++++++++++++++++++++++Below Davis+++++++++++++++++++++++++++++++++++++
+# #-------------------------------------------------------------------------------------
+# 
+# 
+# zz_all <- scen_res %>%
+#   dplyr::filter(Year %in% yrs) %>%
+#   # compute the 10/50/90 and aggregate by start month
+#   dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
+#   dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
+#                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
+#                    'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot 
+# 
+# 
+# NumCrit <- HistMin <- NA
+# variable = "Davis_FWAAC"
+# y_lab = "Salt Concentration (mg/l)"
+# title = "Colorado River below Davis Dam" 
+# subtitle = "Average Annual Concentration Comparison"
+# ylims <- c(NA,NA)
+# 
+# source("code/Cloud_plot_woHist.R")
+
 dev.off()
-
-

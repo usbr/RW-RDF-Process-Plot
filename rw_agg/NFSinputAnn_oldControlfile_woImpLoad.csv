@@ -1,0 +1,14 @@
+file,slot,period,summary,eval,t_s,variable
+Salt.rdf,DavisNF.Inflow Salt Mass,cy,sum,NA,NA,DavisNF.Mass
+Salt.rdf,ParkerNF.Inflow Salt Mass,cy,sum,NA,NA,ParkerNF.Mass
+Salt.rdf,HooverNF.Inflow Salt Mass,cy,sum,NA,NA,HooverNF.Mass
+Salt.rdf,WatsonNF.Inflow Salt Mass,cy,sum,NA,NA,WatsonNF.Mass
+Rch.rdf,AboveImperialDamColoradoR:GainsOnColoRAboveImperialDam.Local Inflow,cy,sum,NA,NA,ImperialNF.Flow
+Rch.rdf,CoRivMeadToMohave:GainsAboveDavis.Local Inflow,cy,sum,NA,NA,DavisNF.Flow
+Rch.rdf,CoRivMohaveToHavasu:GainsAboveParker.Local Inflow,cy,sum,NA,NA,ParkerNF.Flow
+Rch.rdf,CoRivVirginToMead:GainsAboveHoover.Local Inflow,cy,sum,NA,NA,HooverNF.Flow
+UBRch.rdf,WhiteRiverAboveWatson.Inflow,cy,sum,NA,NA,WatsonNF.Flow
+Salt.rdf,LeesFerryNF.Inflow Salt Mass,cy,sum,NA,NA,LeesFerryNF.Mass
+Salt.rdf,RandlettNF.Inflow Salt Mass,cy,sum,NA,NA,RandlettNF.Mass
+Salt.rdf,GrandCanyonNF.Inflow Salt Mass,cy,sum,NA,NA,GrandCanyonNF.Mass
+Salt.rdf,GreenRiverUTSanRafaelNF.Inflow Salt Mass,cy,sum,NA,NA,GreenRiverUTSanRafaelNF.Mass

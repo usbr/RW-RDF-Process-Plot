@@ -50,8 +50,9 @@ plotColors <-   mycolors  # #black, my colors, grey
 ### Read Data ###
 
 zz_all <- scen_res %>%
-  dplyr::filter(Year %in% yrs, Variable %in% c("UB_Natural_Inflow",
-                                               "LB_Natural_Inflow")) %>%
+  # dplyr::filter(Year %in% yrs, Variable %in% c("UB_Natural_Inflow",  #for some reason this was causing it to error, don't need it
+  #                                              "LB_Natural_Inflow",
+  #                                              "LB_NaturalSalt_InflowOnly")) #%>%
   # compute the 10/50/90 and aggregate by start month
   dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
   dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
@@ -85,35 +86,19 @@ source("code/Cloud_plot_woHist.R")
 
 ### remove UB salt inflows ###
 
-variable = "LB_Natural_Inflow"
-df <- scen_res  %>%
-  dplyr::filter(Variable == variable)
-variable2 = "CoRivPariaToLittleCO.Outflow Salt Mass"
-df2 <- scen_res %>%
-  dplyr::filter(Variable == variable2)
-
-df$Value <- df$Value - df2$Value #subtract off UB, used to be call $Value
-df$Variable = rep("LBOnly_Natural_Inflow",length(df$Variable))
-
-
-zz_all <- df %>% dplyr::filter(Year %in% yrs) %>%
-  # compute the 10/50/90 and aggregate by start month
-  dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
-  dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
-                   'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
-                   'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot 
-
-# # Adding factors so ggplot does not alphebetize legend
-zz_all$Scenario = factor(zz_all$Scenario, levels=names(scens))
-
 NumCrit <- HistMin <- NA
-variable = "LBOnly_Natural_Inflow"
+variable = "LB_NaturalSalt_InflowOnly"
 y_lab = "Salt Mass (million tons/yr)"
 title = "LB Only Natural Inflow Salt Mass"
 subtitle = NA
 ylims <- c(NA,NA)
 
 source("code/Cloud_plot_woHist.R")
+
+# # don't need the below any more since now is handled by Custom_MassBalAnn.R
+# df_temp <- zz_all %>% filter(Variable == variable)
+# write.csv(df_temp,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
+
 
 dev.off()
 

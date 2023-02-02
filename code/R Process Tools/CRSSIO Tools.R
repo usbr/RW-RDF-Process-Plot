@@ -18,20 +18,40 @@ library(RWDataPlyr) # i
 
 #########create Single set of trace files################################
 
-CRSSDIR <- Sys.getenv("CRSS_DIR")
+# CRSSDIR <- Sys.getenv("CRSS_DIR")
+# CRSSDIR = "C://Users//cfelletter//Documents//CRSS"
+CRSSDIR = "C://Users//cfelletter//Documents//crss.2023TRIRVW"
+CRSSDIR #check CAREFUL!!!!
 dmi_folder_nm <- "StressTest"
 oFolder <- file.path(CRSSDIR,"dmi",dmi_folder_nm) 
 record_start <- '1988-1'
-nf_file <- 'NaturalFlows1906-2019_Nvj+Pwll_E-V_20211026.xlsx'  #'NaturalFlows1906-2019_NvjE-V_20211026.xlsx'
+nf_file <- 'NaturalFlows1906-2020_2023USGSLBNoPhreat.xlsx'  
+# nf_file <- 'NaturalFlows1906-2020_USGSLB_WITHPhreat.xlsx'
 iFile <- file.path('C:/Users/cfelletter/Documents/natflowsaltmodel/results',nf_file)
 # iFile <- file.path('M:/Shared/CRSS/2021/results_dev/PowellElVol_NewInactCap',nf_file)
 # dir.create(oFolder)
 CRSSIO::crssi_create_dnf_files(
   iFile,
   oFolder = oFolder,
-  startYear = 2022,
-  endYear = 2053,
-  recordToUse = zoo::as.yearmon(c(record_start,'2019-12')), #zero out for whole record
+  startYear = 2023,
+  endYear = 2055, ## for ST don't forget to update this a year!!! 
+  recordToUse = zoo::as.yearmon(c(record_start,'2020-12')), #zero out for whole record
+  overwriteFiles = T
+)
+
+dmi_folder_nm <- "NFSinput"
+oFolder <- file.path(CRSSDIR,"dmi",dmi_folder_nm) 
+record_start <- '1906-1'
+nf_file <- 'NaturalFlows1906-2020_20221115.xlsx'  #'NaturalFlows1906-2019_NvjE-V_20211026.xlsx'
+iFile <- file.path('C:/Users/cfelletter/Documents/natflowsaltmodel/results',nf_file)
+# iFile <- file.path('M:/Shared/CRSS/2021/results_dev/PowellElVol_NewInactCap',nf_file)
+# dir.create(oFolder)
+CRSSIO::crssi_create_dnf_files(
+  iFile,
+  oFolder = oFolder,
+  startYear = 2023,
+  endYear = 2070,
+  recordToUse = zoo::as.yearmon(c(record_start,'2020-12')), #zero out for whole record
   overwriteFiles = T
 )
 
@@ -79,8 +99,8 @@ lapply(yy, function(x) {
 })
 
 #change the start date of traces################################
-CRSSIO::crssi_change_nf_start_date(folder = "C:/Users/cfelletter/Documents/NatSalt_RCode/RWfiles/NF_2000",
-                                   start_year = 2000,nTrace = 114)
+CRSSIO::crssi_change_nf_start_date(folder = "C:/Users/cfelletter/Documents/CRSS/dmi/Verification2000",
+                                   start_year = 2000,nTrace = 1)
 
 CRSSIO::crssi_change_nf_start_date(folder = "C:/Users/cfelletter/Documents/crss.2023TRIRVW/dmi/NFSinput_2018_binational_CRSSv5",
                                    start_year = 2023,nTrace = 88)

@@ -116,4 +116,4 @@ print(gg)
 # source("code/add_logo.R") #alan's way, bottom right corner
 # add_logo_horiz(gg)
 
-ggsave(filename = file.path(oFigs,paste0(variable,"_Cloud_MinMaxLines=",MinMaxLines,".png")), width= width, height= height)
+ggsave(filename = file.path(fig_dir,paste0(variable,"_Cloud_MinMaxLines=",MinMaxLines,".png")), width= width, height= height)

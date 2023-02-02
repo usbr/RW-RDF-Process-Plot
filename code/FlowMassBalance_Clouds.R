@@ -34,4 +34,7 @@ ylims <- c(NA,NA)
 
 source("code/Cloud_plot_woHist.R")
 
+ggsave(filename = file.path(oFigs,paste0("Cloud_",variable,".png")), width= width, height= height)
+
+
 dev.off()

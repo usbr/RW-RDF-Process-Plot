@@ -15,3 +15,5 @@ StreamGages.rdf,SanJuanNearBluff.Gage Outflow,cy,sum,NA,NA,19_flow_bluf
 DivSalt.rdf,DoloresColorado.Outflow Salt Mass,cy,sum,NA,NA,8_mass_cisco
 DivSalt.rdf,LowerSanJuanRiver.Outflow Salt Mass,cy,sum,NA,NA,19_mass_bluf
 DivSalt.rdf,GreenRWhiteToSanRafael.Outflow Salt Mass,cy,sum,NA,NA,16_mass_grut
+KeySlots.rdf,Mohave.Outflow,cy,sum,NA,NA,Mohave.Outflow
+Salt.rdf,Mohave.Outflow Salt Mass,cy,sum,NA,NA,Mohave.Outflow Salt Mass

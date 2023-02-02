@@ -136,4 +136,4 @@ print(gg) #do print it for now, just assign gg in and print in your main code
 # source("code/add_logo.R") #alan's way, bottom right corner
 # add_logo_horiz(gg)
 
-# ggsave(filename = file.path(oFigs,paste0(title,"_Cloud.png")), width = widths[1],height = heights[1])#width= width, height= height)
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
