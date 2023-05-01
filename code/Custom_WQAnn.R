@@ -949,99 +949,99 @@ ggsave(plot = p3,filename = file.path(fig_dir,paste0("Imperial_3Panel.png")), wi
 #-------------------------------------------------------------------------------------
 ### Exceedence ###
 #-------------------------------------------------------------------------------------
-# variable = "Exc_AnnlSlntyHvr_FWAAC"
-# y_lab = "Probability of Exceedance"
-# title = "Colorado River below Hoover Dam" 
-# subtitle = "Probability of Exceeding (>=) 723 mg/l"
-# ylims <- c(0,0.5)
-# 
-# df <- scen_res %>%
-#   dplyr::filter(Variable == variable) %>%
-#   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-#   dplyr::group_by(Scenario, Year) %>%
-#   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-# 
-# 
-# p <- df %>%
-#   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-# 
-#   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
-#   geom_line() +
-#   geom_point() + 
-#   scale_y_continuous(labels = scales::percent_format(accuracy = 1))+ #, limits = ylims) +
-#   scale_linetype_manual(values = lt_scale) +
-#   scale_shape_manual(values = pt_scale) +
-#   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-#   labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-#   theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-# print(p)
-# 
-# #ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
-# 
-# #write.csv(df,file = paste0(data_dir,'/',variable,'.csv'))
-# 
-# #-------------------------------------------------------------------------------------
-# variable = "Exc_AnnlSlntyPrkr_FWAAC"
-# y_lab = "Probability of Exceedance"
-# title = "Colorado River below Parker Dam" 
-# subtitle = "Probability of Exceeding (>=) 747 mg/l"
-# ylims <- c(0,0.5)
-# 
-# df <- scen_res %>%
-#   dplyr::filter(Variable == variable) %>%
-#   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-#   dplyr::group_by(Scenario, Year) %>%
-#   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-# 
-# 
-# p <- df %>%
-#   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-# 
-#   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
-#   geom_line() +
-#   geom_point() +
-#   scale_y_continuous(labels = scales::percent_format(accuracy = 1))+ #, limits = ylims) +
-#   scale_linetype_manual(values = lt_scale) +
-#   scale_shape_manual(values = pt_scale) +
-#   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-#   labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-#   theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-# print(p)
-# 
-# #ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
-# 
-# #write.csv(df,file = paste0(data_dir,'/',variable,'.csv'))
-# 
-# #-------------------------------------------------------------------------------------
-# variable = "Exc_AnnlSlntyImprl_FWAAC"
-# y_lab = "Probability of Exceedance"
-# title = "Colorado River above Imperial Dam" 
-# subtitle = "Probability of Exceeding (>=) 879 mg/l"
-# 
-# ylims <- c(0,0.5)
-# df <- scen_res %>%
-#   dplyr::filter(Variable == variable) %>%
-#   dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
-#   dplyr::group_by(Scenario, Year) %>%
-#   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
-# 
-# 
-# p <- df %>%
-#   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-#   scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
-#   geom_line() +
-#   geom_point() + 
-#   scale_y_continuous(labels = scales::percent_format(accuracy = 1))+ #, limits = ylims) +
-#   scale_linetype_manual(values = lt_scale) +
-#   scale_shape_manual(values = pt_scale) +
-#   scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
-#   labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
-#   theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-# print(p)
-# 
-# #ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
-# 
-# #write.csv(df,file = paste0(data_dir,'/',variable,'.csv'))
+variable = "Exc_AnnlSlntyHvr_FWAAC"
+y_lab = "Probability of Exceedance"
+title = "Colorado River below Hoover Dam"
+subtitle = "Probability of Exceeding (>=) 723 mg/l"
+ylims <- c(0,0.5)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value))
+
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1))+ #, limits = ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+#print(p)
+
+#ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(data_dir,'/',variable,'.csv'))
+
+#-------------------------------------------------------------------------------------
+variable = "Exc_AnnlSlntyPrkr_FWAAC"
+y_lab = "Probability of Exceedance"
+title = "Colorado River below Parker Dam"
+subtitle = "Probability of Exceeding (>=) 747 mg/l"
+ylims <- c(0,0.5)
+
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value))
+
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1))+ #, limits = ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
+  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+#print(p)
+
+#ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(data_dir,'/',variable,'.csv'))
+
+#-------------------------------------------------------------------------------------
+variable = "Exc_AnnlSlntyImprl_FWAAC"
+y_lab = "Probability of Exceedance"
+title = "Colorado River above Imperial Dam"
+subtitle = "Probability of Exceeding (>=) 879 mg/l"
+
+ylims <- c(0,0.5)
+df <- scen_res %>%
+  dplyr::filter(Variable == variable) %>%
+  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::group_by(Scenario, Year) %>%
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value))
+
+
+p <- df %>%
+  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+  scale_shape_identity() + #tells it to use the numeric codes directly for point shapes
+  geom_line() +
+  geom_point() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1))+ #, limits = ylims) +
+  scale_linetype_manual(values = lt_scale) +
+  scale_shape_manual(values = pt_scale) +
+  scale_color_manual(values = mycolors) +  # annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + # make custom axis shading, don't use for now doesn't look good with plotte pallette
+  labs(title = title, y = y_lab, x = "",subtitle = subtitle)+ #remove model step name from title
+  theme(text = element_text(size=8),axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+#print(p)
+
+#ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(data_dir,'/',variable,'.csv'))
 
 #------------------------------------------------------------
 
