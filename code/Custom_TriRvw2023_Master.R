@@ -254,8 +254,8 @@ if(customcolorltpt == F && length(scens) == 2){ #1 color, first scen dashed, sec
 source("code/Custom_WQAnn.R") #means only w exceed
 ## MUST RUN WQAnn.R before running any of the cloud plots scripts 
 # source("code/Custom_WQAnn_OldControl.R") #for 2017 Review compare
-source("code/Custom_WQAnn_CloudswHist.R") #clouds for FWAAC - has titles
-# source("code/Custom_WQAnn_CloudswHist_woTitles.R") #clouds for Review, no title and larger margins
+# source("code/Custom_WQAnn_CloudswHist.R") #clouds for FWAAC - has titles
+source("code/Custom_WQAnn_CloudswHist_woTitles.R") #clouds for Review, no title and larger margins
 
 #MinMax must be run after a code has created scen_res but could work any scen_res
 # source("code/MinMax_Check_NoFct.R") #RUNS REALLY SLOW WITH MONTHLY so only use with WQAnn
