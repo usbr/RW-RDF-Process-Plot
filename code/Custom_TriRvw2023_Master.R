@@ -57,23 +57,6 @@ customcolorltpt <- F
 
 # # ##########################################################################
 
-
-# # ##########################################################################
-# 
-# Model.Step.Name <- Figs <- "Oct22vsFeb23allScens" #plot title and results/folder name #[plot type] identifying name .pdf
-# 
-# scens <- list(
-#   "Feb23_Scen1" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario1_2023_OctForum",
-#   "Oct22_Scen1" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario1_2023_OctForum",
-#   "Feb23_Scen2" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario2_2023_OctForum",
-#   "Oct22_Scen2" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario2_2023_OctForum",
-#   "Feb23_Scen3" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
-#   "Oct22_Scen3" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
-#   "Feb23_Scen4" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario4_2023_OctForum",
-#   "Oct22_Scen4" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario4_2023_OctForum",
-#   
-# )
-# 
 # Model.Step.Name <- Figs <- "Feb23_ParadoxOnOffallScens" #plot title and results/folder name #[plot type] identifying name .pdf
 # 
 # scens <- list(
@@ -88,91 +71,46 @@ customcolorltpt <- F
 # )
 # 
 # 
-# Model.Step.Name <- Figs <- "2020ReviewvsFeb23allScens" #plot title and results/folder name #[plot type] identifying name .pdf
+# Model.Step.Name <- Figs <- "2020ReviewvsFinalScens" #plot title and results/folder name #[plot type] identifying name .pdf
 # 
 # scens <- list(
 #   "2020_Scen1_1.22M" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario1_2020_20200409",
-#   "2023_Scen1_1.34M" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario1_2023_OctForum",
+#   "2023_Scen1_1.27M" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario1_2023_OctForum",
 #   "2020_Scen2_1.59M" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario2_2020_20200409",
-#   "2023_Scen2_1.59M" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario2_2023_OctForum",
+#   "2023_Scen2_1.49M" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario2_2023_OctForum_OffParadox",
 #   "2020_Scen3_1.7M" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
-#   "2023_Scen3_1.65M" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
-#   "2020_Scen4_2.3M" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario4_2020_20200409",
-#   "2023_Scen4_2.3M" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario4_2023_OctForum"
+#   "2023_Scen3_1.55M" = "Fixed_Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum_OffParadox"
+#   # "2020_Scen4_2.3M" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario4_2020_20200409",
+#   # "2023_Scen4_2.3M" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario4_2023_OctForum"
 # )
 # ## special colors and point types for comparing mean of different reviews (8)
 # customcolorltpt = T
 # lt_scale <- rep(c(2,1), 4)
 # pt_scale <- rep(c(1,19), 4)
 # mycolors <- c("#D55E00" ,"#D55E00", "#F0E442","#F0E442", "#009E73" , "#009E73" ,"#407ec9","#407ec9") #TRY 2 - color blind red, yellow, red (stop light), blue
-# 
-# 
-# 
+
 # 
 # ## All the following can use non custom colors 
 # 
-# customcolorltpt = F 
-# 
-# Model.Step.Name <- Figs <- "Oct22vsFeb23onlyScen3" #plot title and results/folder name #[plot type] identifying name .pdf
-# 
-# scens <- list(
-#   "Oct22_Scen3" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
-#   "Feb23_Scen3" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum"
-# )
-# 
-# 
-#   
-# # Model.Step.Name <- Figs <- "HydroComparePulRmvvsST" #plot title and results/folder name #[plot type] identifying name .pdf
-# # scens <- list(
-# #   "1931-2018" = "19312018,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
-# #   "1988-2017" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum"
-# # )
-# 
-# 
-# # Model.Step.Name <- Figs <- "ParadoxOnOff" #plot title and results/folder name #[plot type] identifying name .pdf
-# # scens <- list(
-# #   "ParadoxOff" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum_OffParadox",
-# #   "Paradox100k" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum"
-# # )
-# 
-# Model.Step.Name <- Figs <- "2020USGSvs2017NFS_bothwPhreat" #plot title and results/folder name #[plot type] identifying name .pdf
-# scens <- list(
-#   "OctForum_1988-2017_wPhreat" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
-#   "1988-2020_wPhreat" = "CRMMS_Most_Aug22,ST8820_LBusgs_WITHPhreat,2023TriRvw.9_Wphreat,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum"
-# )
-# 
-# Model.Step.Name <- Figs <- "2020USGSwVSwoPhreat" #plot title and results/folder name #[plot type] identifying name .pdf
-# scens <- list(
-#   "2020USGS_WithPhreat" = "CRMMS_Most_Aug22,ST8820_LBusgs_WITHPhreat,2023TriRvw.9_Wphreat,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
-#   "2020USGS_NoPhreat" = "CRMMS_Most_Aug22,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.9,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum"
-# )
-# 
-# Model.Step.Name <- Figs <- "DevSinceOct" #plot title and results/folder name #[plot type] identifying name .pdf
-# scens <- list(
-#   "OctForum" = "Stress Test 88_17,2023TriRvw.6_122021ICs,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
-#   "2020NFS" = "CRMMS_Most_Aug22,ST8820_LBusgs_WITHPhreat,2023TriRvw.9_Wphreat,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
-#   "NoPhreat" = "CRMMS_Most_Aug22,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.9,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
-#   "2022ICs" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum"
-#   )
-# 
-# Model.Step.Name <- Figs <- "ICsSensitivity" #plot title and results/folder name #[plot type] identifying name .pdf
-# scens <- list(
-#   "Oct22_ICs" = "CRMMS_Most_Aug22,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.9,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
-#   "Jan23Obs_ICs" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum"
-# )
-
-
-Model.Step.Name <- Figs <- "2023Scens_ST_20230130" #plot title and results/folder name #[plot type] identifying name .pdf
+Model.Step.Name <- Figs <- "2023Scens_ST_20230505_ParadoxOff" #plot title and results/folder name #[plot type] identifying name .pdf
 
 scens <- list(
-  "Scenario 1" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario1_2023_OctForum",
-  "Scenario 2" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario2_2023_OctForum",
-  "Scenario 3" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
-  "Scenario 4" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario4_2023_OctForum"
+  "Scenario 1" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario1_2023_OctForum_OffParadox",
+  "Scenario 2" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario2_2023_OctForum_OffParadox",
+  "Scenario 3" = "Fixed_Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum_OffParadox"#,
+  # "Scenario 4" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario4_2023_OctForum"
 )
 
-
-
+# 
+# Model.Step.Name <- Figs <- "ICsSensitivity_w3" #plot title and results/folder name #[plot type] identifying name .pdf
+# scens <- list(
+#   # "Oct22_ICs" = "CRMMS_Most_Aug22,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.9,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
+#   "2020 IC" = "Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2019IC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_202 fixf__OffPFfaradox", #powell release and mead tier changed to 2020
+#   # "2020 Conc, 2023 Condition" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2019IC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_202 fixf__OffPFfaradox", #only reservoir elevations
+#   "2020 Conc, 2023 Condition" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2019IC_andSystemConditions,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_202 fixf__OffPFfaradox", #only reservoir elevations
+#   "2023 IC" = "Fixed_Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum_OffParadox"
+#   
+# )
 
 
 # # ##########################################################################
@@ -253,8 +191,8 @@ if(customcolorltpt == F && length(scens) == 2){ #1 color, first scen dashed, sec
 #WQAnn
 source("code/Custom_WQAnn.R") #means only w exceed
 ## MUST RUN WQAnn.R before running any of the cloud plots scripts 
-# source("code/Custom_WQAnn_OldControl.R") #for 2017 Review compare
-# source("code/Custom_WQAnn_CloudswHist.R") #clouds for FWAAC - has titles
+# source("code/Custom_WQAnn_OldControl.R") #for 2020 Review compare
+source("code/Custom_WQAnn_CloudswHist.R") #clouds for FWAAC - has titles
 source("code/Custom_WQAnn_CloudswHist_woTitles.R") #clouds for Review, no title and larger margins
 
 #MinMax must be run after a code has created scen_res but could work any scen_res

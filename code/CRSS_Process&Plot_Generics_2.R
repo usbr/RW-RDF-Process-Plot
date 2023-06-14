@@ -47,8 +47,8 @@ model <- "CRSS"
 #### Normally You'll Only Change The Below ####
 #scens you want to compare, list as "your plot name" = "folder name"
 scens <- list(
-  "Aug 2018" = "2007Dems,DNF,9001,IG v 2.7 9000",
-  "Aug 2018 + MaxDivSalt" = "2007Dems,DNF,9002 wMaxDivSalt,IG v 2.7 9000"
+  "v601_ST" = "V6.0.1,ISM1988_2020,2016Dems,IGv6.0.1,CRMMS_Most",
+  "NavajoDev_ST" = "NavajoDev.V6.0.2,ISM1988_2020,2016Dems,NavajoRls.V6.0.2,CRMMS_Most"
 )
 
 # #list rdf files in dir
@@ -103,21 +103,23 @@ model <<- "CRSS" #"CRSS" or "MTOM"
 minmaxchk <- T #only works for monthly currently (12/6/18)
 
 # Annual UB Plots ## USE Repeats ##
-variables <<- c("Fontenelle.Inflow","Fontenelle.Pool Elevation","Fontenelle.Outflow","FlamingGorge.Pool Elevation","FlamingGorge.Outflow","TaylorPark.Inflow","BlueMesa.Pool Elevation","BlueMesa.Outflow","Crystal.Pool Elevation","Crystal.Outflow","Navajo.Inflow","Navajo.Pool Elevation","Navajo.Outflow") #RW Object.Slot
+variables <<- c("Navajo.Pool Elevation","Navajo.Outflow") #RW Object.Slot
 rdffiles <- rep("UBres.rdf",times = length(variables))  #rdf file with slot you want
+timesteps <- rep("monthly",times = length(variables))
 timesteps <- rep("annual",times = length(variables))
-floworpes <- c("flow","pe","flow","pe","flow","flow","pe","flow","pe","flow","flow","pe","flow") #"flow" or "pe"
-cyorwys <- rep("cy",times = length(variables))  #"cy" or "wy". wy not tested for all plot configurations
+floworpes <- c("pe","flow") #"flow" or "pe"
+cyorwys <- rep("wy",times = length(variables))  #"cy" or "wy". wy not tested for all plot configurations
 mainScenGroup <<- names(scens)[2] #name of the subfolder this analysis will be stored
 combineplots <<- T #F for individual files saved, true to combineplots multiple file
-figuretypes <- rep(2,times = length(variables))  #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance
+figuretypes <- rep(1,times = length(variables))  #1 is Trace Mean, 2 is Bxplt of Traces, 3 is Exceedance
 exc_months <- rep(NA,times = length(variables)) #c(NA,NA,NA,NA,NA) #1 - Jan, 12 - Dec
-startyrs <<- rep(2045,times = length(variables)) #c(2019,2019,2019,2019,2019) #filter out all years > this year
-endyrs <<- rep(2060,times = length(variables)) #c(2019,2026,2026,2026) #filter out all years > this year
+startyrs <<- rep(2024,times = length(variables)) #c(2019,2019,2019,2019,2019) #filter out all years > this year
+endyrs <<- rep(2055,times = length(variables)) #c(2019,2026,2026,2026) #filter out all years > this year
+endyrs <<- rep(2034,times = length(variables)) #c(2019,2026,2026,2026) #filter out all years > this year
 customcaptions <- rep(NA,times = length(variables)) #c(NA,NA,"Inflow Exceedance",NA) #NA or this will over write the default caption on boxplots
 custom_y_labs <- rep(NA,times = length(variables)) #c(NA,NA,"Inflow Exceedance",NA) #NA gives defaults, enter if want soemthing different
 # Note: use of custom caption and labels
-figname <<- paste0('UBRes_PEOut_Annual',startyrs[1],endyrs[1])
+figname <<- paste0('UBRes_PEOut_',timesteps[1],startyrs[1],endyrs[1],'_fig',figuretypes[1])
 minmaxchk <- F #only works for monthly currently (12/6/18)
 
 #### End Examples #### 
