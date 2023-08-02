@@ -19,8 +19,9 @@ list.dirs(scen_dir) #list dirs in set folder folder for us in next input
 
 #scens you want to compare, list as "your plot name" = "folder name"
 scens <- list(
-  "Apr2021_2022" = "Apr2021_2022,ISM1988_2019,2016Dems,IG_DCP,MTOM_Most", #what I compared in my first anlysis
-  "CRSS.V5.1.3.2022.Apr2021" = "CRSS.V5.1.3.2022.Apr2021,ISM1988_2019,2016Dems,IG_DCP,MTOM_Most" #Verify 
+  "Scenario 2" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario2_2023_OctForum_OffParadox",
+  "Fixed_Obs_Jan23" = "Fixed_Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum_OffParadox"#,
+  # "Scenario 4" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario4_2023_OctForum"
 )
 
 #list rdf files in dir
@@ -29,7 +30,6 @@ list.files(file.path(scen_dir,scens[1]))
 ## could revise this into a list of slots which are associated with multiple variables 
 rdffile <- c("KeySlots.rdf") #rdf file with slot you want
 # rdffile <- c("Res.rdf") #rdf file with slot you want
-
 
 # #list slots in rdf
 # rdf_slot_names(read_rdf(iFile = file.path(scen_dir,scens[1],rdffile[1])))
@@ -43,22 +43,24 @@ variable <- c("Powell.Inflow") #RW Object.Slot
 
 i=1
 # for (i in 1:length(rdffile)) {
-  
   # 
+
   ub_old <- read_rdf(iFile = file.path(scen_dir,scens[1],rdffile[i]))
   ub_new <- read_rdf(iFile = file.path(scen_dir,scens[2],rdffile[i]))
+
+  all.equal(ub_old,ub_new) # just do this, no need to go through the below unless there are diffs
   
-  for (j in 1:length(variable)) {
-    #alan's diffing slot script 
-    diffM <- rdf_get_slot(ub_old, variable[j]) - rdf_get_slot(ub_new, variable[j])
-    
-    plot(apply(abs(diffM), 2, max), type = 'h')
-    
-    trace <- 61
-    
-    plot(diffM[,trace], type = 'h')
-    
-  }
-  
+  # for (j in 1:length(variable)) {
+  #   #alan's diffing slot script 
+  #   diffM <- rdf_get_slot(ub_old, variable[j]) - rdf_get_slot(ub_new, variable[j])
+  #   
+  #   plot(apply(abs(diffM), 2, max), type = 'h')
+  #   
+  #   trace <- 61
+  #   
+  #   plot(diffM[,trace], type = 'h')
+  #   
+  # }
+  # 
 # }
 
