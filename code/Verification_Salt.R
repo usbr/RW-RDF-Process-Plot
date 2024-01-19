@@ -21,15 +21,17 @@ results_dir <- file.path(CRSSDIR,"results")
 #easier to make folder from output in the results dir than to move it 
 scen_dir <- file.path(CRSSDIR,"results") #file.path(CRSSDIR,"Scenario")
 # #containing the sub folders for each ensemble
-scens <- "TriRvw.2.Verification"# "CRSSJan2022_2000runwSalt" #### Elliot Change this to folder name you created in CRSSDIR/results/ ####
-
+scens <- "9005_McPhee_Verification"
+# scens <- "9002"
+# scens <- "V6,CRSS.V6.2.0.2024.Aug2023_2000SaltVerification,20231002NFS" 
+# scens <- "V5.TriRvw,CRSS.V5.3.0.203.Jan2022.2023TriRvw.10.2022SaltIC.2000start.mdl,20221115NFS"
 
 printfigs<-T#T#make png figures and dump data 
 
 mycolors <- c("#61bd17","#009E73","#6bbd28","#0072B2") #for Sector plots mid dark green - schedule depl, dark green - depl rqst, light green - depletion, blue - CUL, 
 mylinetypes <- c("dotdash","dashed","solid","solid","dotdash")  #schedule depl, depl rqst, depletion, CUL, 
 
-nyears <- length(2000:2019) #currently only used one place to calculate average
+nyears <- length(2000:2020) #currently only used one place to calculate average
 
 #standard powerpoint figure sizes 
 # gage an, an gage resid, gage mon, mon gage resid, total use  
@@ -62,6 +64,9 @@ if (!file.exists(fig_dir) | !file.exists(data_dir)) {
   dir.create(fig_dir)
   dir.create(data_dir)
 }
+
+
+
 ################################################################################
 #### #### A. Read flow data  ####  ####
 ################################################################################
@@ -93,7 +98,8 @@ df_annual <- rbind.data.frame(df_annual[,names(df_obs)],df_obs)
 
 #### monthly ####
 
-rw_agg_file <- "SaltVerificationMon_rwagg.csv" 
+rw_agg_file <- "SaltVerificationMon_rwagg.csv" #requires a different file for DOlores in V5 
+
 rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) #ubres.rdf res.rdf
 df_monthly <- rdf_aggregate(rwa1, rdf_dir = file_dir) #MUST be in Scenario FOLDER! not results folder
 #get everything on a date 
@@ -104,7 +110,7 @@ df_monthly$MonthNum = as.numeric(format.Date(df_monthly$Date, format = "%m"))
 df_monthly$DataType = rep("Sim",times=dim(df_monthly)[1])
 
 df_monthly_obs <- readxl::read_xlsx('data/HistFlowMassConcMonthly.xlsx',col_names = T, ) 
-df_monthly_obs = df_monthly_obs %>% pivot_longer(cols=names(df_monthly_obs)[3:62],names_to = 'Variable',values_to = 'Value')
+df_monthly_obs = df_monthly_obs %>% pivot_longer(cols=names(df_monthly_obs)[3:dim(df_monthly_obs)[2]],names_to = 'Variable',values_to = 'Value')
 
 #convert EOM Date to 1st of M to match df_monthly (could just make df_monthly EOM)
 df_monthly_obs$Month = format.Date(df_monthly_obs$Date, format = "%B")
@@ -373,18 +379,18 @@ if(T){
 
 dev.off() #mega plot
 
-df_annual$Scenario = "CRSSv5"
+# df_annual$Scenario = "CRSSv5"
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 5. Plot Mass Balance 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # match Inputs used in TriRvw_Master.R
-if (F){
+if (T){
   oFigs <- fig_dir
   Model.Step.Name <- Figs <- scens #plot title and results/folder name #[plot type] identifying name .pdf
   startyr <- 2000 #filter out all years > this year
-  endyr <- 2019
+  endyr <- 2020
   width=9# 10 #9
   height=6 #6.67 #6
   customcolorltpt <- F

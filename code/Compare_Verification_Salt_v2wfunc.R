@@ -11,24 +11,97 @@ library(RWDataPlyr)
 library(CRSSIO)
 library(xml2)
 library(gridExtra)
+source("code/Verification_Salt_Function.R")
 
-CRSSDIR <- Sys.getenv("CRSS_DIR")
-# CRSSDIR <- "C:/Users/cfelletter/Documents/crss.trirvw2020"
-results_dir <- file.path(CRSSDIR,"results") 
-# # where rdf results folder is kept
-
-
+CRSSDIR <- Sys.getenv("CRSS_DIR") # CRSSDIR <- "C:/Users/cfelletter/Documents/crss.trirvw2020"
+results_dir <- file.path(CRSSDIR,"results") # where rdf results folder is kept
 scen_dir <- file.path(CRSSDIR,"Scenario") #file.path(CRSSDIR,"results") #easier to make folder from output in the results dir than to move it 
-# #containing the sub folders for each ensemble
-# scens <- "V6,CRSS.V6.2.0.2024.Aug2023_2000SaltVerification,20231002NFS" 
-# "V5.TriRvw,CRSS.V5.3.0.203.Jan2022.2023TriRvw.10.2022SaltIC.2000start.mdl,20221115NFS"
 
+# UPDATE INputs #### 
+scens <- c("9002_Verification","9005_McPhee_Verification")
+process_scen <- c(F,T) #process only new run 
+plot_scen <-c(F,F)  #c(T,T)
+
+scens <- c("CRSSv5","9005_McPhee_Verification")
+process_scen <- c(F,F) #Never process V5, if you have to must switch out rw_agg files to have DoloresRiver.Out 
+plot_scen <-c(F,F)  #c (T,T)
+
+process_scen <- c(T,T)
+plot_scen <-c(F,F)  #c(T,T)
+
+### Currently NOT set up to take this input. Folder names must equal plot names 
+# scens <- list("9002_Verification" = "9002_Verification",
+#               "9005_McPhee_Verification" = "9005_McPhee_Verification")
+
+##standard inputs 
 printfigs<-T#T#make png figures and dump data 
-
 mycolors <- c("#61bd17","#009E73","#6bbd28","#0072B2") #for Sector plots mid dark green - schedule depl, dark green - depl rqst, light green - depletion, blue - CUL, 
 mylinetypes <- c("dotdash","dashed","solid","solid","dotdash")  #schedule depl, depl rqst, depletion, CUL, 
-
 nyears <- length(2000:2020) #currently only used one place to calculate average
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## 3. Process Results 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# ################################################################################
+# #### #### A. Read flow data  ####  ####
+# ################################################################################
+
+###
+# for (i in 1:2) {
+  # verification_salt_process_plot(scens[i],process_scen[i],plot_scen[i])
+# }
+
+df_annual_baseline <- verification_salt_process_plot(scens[1],process_scen[1],plot_scen[1])
+df_annual <- verification_salt_process_plot(scens[2],process_scen[2],plot_scen[2])
+
+# head(df_annual)
+# head(df_annual_baseline)
+# df1 %>% filter(Variable == "7_mass_dolor")
+
+df1 = df_annual %>% 
+  filter(DataType == "Sim")
+
+df2 = df_annual_baseline %>% 
+  filter(DataType == "Sim")
+
+df_obs = df_annual %>% 
+  filter(DataType == "Obs")
+df_obs$Scenario = "Obs" 
+
+# # Debug/Checks 
+# unique(df1$Variable) %in% unique(df2$Variable)
+# head(df1)
+# head(df2)
+# head(df_obs)
+# which(unique(df2$Variable) %in% unique(df1$Variable))
+
+df <- rbind.data.frame(df1,df2,df_obs)
+# head(df)
+# unique(df$Variable)
+# saveRDS(df,file = "df_compare",scens[1],scens[2])) #not needed now that I can read individual RDS
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## 4. Plot Node Figures 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#standard settings 
+if(T){
+
+file_dir <- file.path(results_dir,scens[2])
+if (!file.exists(file_dir)) {
+  message(paste('Creating folder:', file_dir,'move results rdfs into this dir and then proceed with code'))
+  dir.create(file_dir)
+  stop() #if created folder need to move results rdfs into this dir and then proceed with code
+}
+
+fig_dir <-  file.path(file_dir,"png_figures")
+data_dir <-  file.path(file_dir,"csv_data")
+
+if (!file.exists(fig_dir) | !file.exists(data_dir)) {
+  dir.create(fig_dir)
+  dir.create(data_dir)
+}
 
 #standard powerpoint figure sizes 
 # gage an, an gage resid, gage mon, mon gage resid, total use  
@@ -43,90 +116,17 @@ sect_heights <- c(3,4.2,3)
 sect_widths <- c(3.33,5,3.33)
 sect_heights <- c(2,3,2)
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 3. Process Results 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#### File Checks #####
-# file_dir <- file.path(results_dir,scens[1])
-# if (!file.exists(file_dir)) {
-#   message(paste('Creating folder:', file_dir,'move results rdfs into this dir and then proceed with code'))
-#   dir.create(file_dir)
-#   stop() #if created folder need to move results rdfs into this dir and then proceed with code
-# }
-# 
-# fig_dir <-  file.path(file_dir,"png_figures")
-# data_dir <-  file.path(file_dir,"csv_data")
-# 
-# if (!file.exists(fig_dir) | !file.exists(data_dir)) {
-#   dir.create(fig_dir)
-#   dir.create(data_dir)
-# }
-# ################################################################################
-# #### #### A. Read flow data  ####  ####
-# ################################################################################
-# 
-# 
-# nodes <- c('glen','cameo','gunn','dolor','cisco','grwy','gdale','yampa','duch',
-#            'white','grut','sanraf','arch','bluf',"powellin",'lees','grcan','virgin','hoover',
-#            'parker','imper')
-# nodenums <- c(1,2,6:8,10:12,14:19,20,20,23:25,28,29)
-# flownm <- paste0(nodenums,rep("_flow_",length(nodes)),nodes)
-# massnm <- paste0(nodenums,rep("_mass_",length(nodes)),nodes)
-# concnm <- paste0(nodenums,rep("_conc_",length(nodes)),nodes)
+nodes <- c('glen','cameo','gunn','dolor','cisco','grwy','gdale','yampa','duch',
+           'white','grut','sanraf','arch','bluf','powellin','lees','grcan','virgin','hoover',
+           'parker','imper')
+nodenums <- c(1,2,6:8,10:12,14:20,20,23:25,28,29) #20 twice for powell inflow and outflow 
+flownm <- paste0(nodenums,rep("_flow_",length(nodes)),nodes)
+massnm <- paste0(nodenums,rep("_mass_",length(nodes)),nodes)
+concnm <- paste0(nodenums,rep("_conc_",length(nodes)),nodes)
 
-#combine the data from 2 runs of Verification_Salt.R
-df_obs$Scenario = "Obs" 
-# df_annual_baseline$Scenario = "CRSSv5_2023TriRvw"
+} #end standard settings 
 
-# df_annual <- readRDS(file = "AbvOnly.9001")
-
-# df_annual$Scenario = "CRSSv5"
-# saveRDS(df_annual,file = "df_annual_baselineTriRvw")
-
-###TO DO turn this next part into a loop which process and handles two scenarios ###
-scens
-scen_nm <- scens
-df_annual$Scenario = scen_nm #"V6.9005.McPhee"
-saveRDS(df_annual,file = scen_nm) #should be saving it in a better place
-
-
-# unique(df_annual_baseline$Variable) %in% unique(df_annual$Variable)
-
-#### save the files before I mess it up #### 
-# saveRDS(df_annual,file = "df_annual_baselineTriRvw")
-
-# df_annual_baseline <- readRDS(file = "df_annual_v6")
-df_annual_baseline <- readRDS(file = "df_annual_V6.9002")  #"df_annual_baselineTriRvw")
-
-
-head(df_annual)
-head(df_annual_baseline)
-
-df1 = df_annual %>% 
-  filter(DataType == "Sim")
-
-df2 = df_annual_baseline %>% 
-  filter(DataType == "Sim")
-
-unique(df1$Variable) %in% unique(df2$Variable)
-head(df1)
-head(df2)
-head(df_obs)
-
-
-
-# which(unique(df2$Variable) %in% unique(df1$Variable))
-
-df <- rbind.data.frame(df1,df2,df_obs)
-head(df)
-unique(df$Variable)
-saveRDS(df,file = "df_compare_saltruns_9002vs9005")#"df_compare_saltruns_9002vsV5")
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## 4. Plot Node Figures 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-pdf(file = file.path(file_dir,paste("Compare2_SaltVerificationRuns.pdf")), width=9, height=6)
+pdf(file = file.path(file_dir,paste("Compare2",scens[1],"v",scens[2],"SaltVerificationRuns.pdf")), width=9, height=6)
 
 for (i in 1:length(nodes)) {
   # for (i in 1) {
@@ -200,10 +200,10 @@ dev.off() #mega plot
 #   mycolors <- c("#D55E00" , "#F0E442", "#009E73" , "#407ec9") #TRY 2 - color blind red, yellow, red (stop light), blue
 #   
 
-scens <- list(
-  "V6.9002" = "9002",
-  "V5.TriRvw" = "V5.TriRvw,CRSS.V5.3.0.203.Jan2022.2023TriRvw.10.2022SaltIC.2000start.mdl,20221115NFS"
-)
+# scens <- list(
+#   "V6.9002" = "9002",
+#   "V5.TriRvw" = "V5.TriRvw,CRSS.V5.3.0.203.Jan2022.2023TriRvw.10.2022SaltIC.2000start.mdl,20221115NFS"
+# )
 
 #   #SaltMassBal
 #   source("code/Custom_MassBalAnn.R")  
