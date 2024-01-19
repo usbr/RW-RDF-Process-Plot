@@ -3,34 +3,39 @@ rm(list=ls()) #clear the enviornment
 library(RWDataPlyr)
 library(tidyverse)
 library(patchwork)
+library(scales)
 
 CRSSDIR <- Sys.getenv("CRSS_DIR")
 
-# scen_dir <- file.path(CRSSDIR,"Scenario") 
-scen_dir <- "//manoa.colorado.edu/BOR/Shared/CRSS/2023/Scenario"
+# scen_dir <- file.path(CRSSDIR,"Scenario")
+scen_dir <- "//manoa.colorado.edu/BOR/Shared/CRSS/2023/WYdataRequest"
 # scen_dir <- "M:/Shared/CRSS/2021/Scenario_dev/"
 
 results_dir <- file.path(CRSSDIR,"results") 
 
-
-
 scens <-  c(
-
-  "1931_2020_IG" = "Mar2023_2024,ISM1931_2020,2016Dems,IG_DCPnoUBDRO,CRMMS_Most",
+  # "CMIP3_IG" = "Mar2023_2024,CMIP3,2016Dems,IG_DCPnoUBDRO,CRMMS_Most",
+  # "CMIP3_NA" = "Mar2023_2024,CMIP3,2016Dems,NA_noUBDRO,CRMMS_Most"#,
+  # "DNF_IG" ="Mar2023_2024,DNF,2016Dems,IG_DCPnoUBDRO,CRMMS_Most",
+  # "DNF_NA" = "Mar2023_2024,DNF,2016Dems,NA_noUBDRO,CRMMS_Most",
+  # "1931_2020_IG" = "Mar2023_2024,ISM1931_2020,2016Dems,IG_DCPnoUBDRO,CRMMS_Most",
   # "1931_2020_NA" = "Mar2023_2024,ISM1931_2020,2016Dems,NA_noUBDRO,CRMMS_Most",
   "1988_2020_IG" = "Mar2023_2024,ISM1988_2020,2016Dems,IG_DCPnoUBDRO,CRMMS_Most",
-  # "1988_2020_NA" = "Mar2023_2024,ISM1988_2020,2016Dems,NA_noUBDRO,CRMMS_Most",
-  "2000_2020_IG" ="Mar2023_2024,ISM2000_2020,2016Dems,IG_DCPnoUBDRO,CRMMS_Most",
-  # "2000_2020_NA" = "Mar2023_2024,ISM2000_2020,2016Dems,NA_noUBDRO,CRMMS_Most",
-  "CMIP3_IG" = "Mar2023_2024,CMIP3,2016Dems,IG_DCPnoUBDRO,CRMMS_Most",
-  # "CMIP3_NA" = "Mar2023_2024,CMIP3,2016Dems,NA_noUBDRO,CRMMS_Most",
-  "DNF_IG" ="Mar2023_2024,DNF,2016Dems,IG_DCPnoUBDRO,CRMMS_Most",
-  # "DNF_NA" = "Mar2023_2024,DNF,2016Dems,NA_noUBDRO,CRMMS_Most",
+  "1988_2020_NA" = "Mar2023_2024,ISM1988_2020,2016Dems,NA_noUBDRO,CRMMS_Most"#,
+  # "2000_2020_IG" ="Mar2023_2024,ISM2000_2020,2016Dems,IG_DCPnoUBDRO,CRMMS_Most"#,
+  # "2000_2020_NA" = "Mar2023_2024,ISM2000_2020,2016Dems,NA_noUBDRO,CRMMS_Most"#,
 )
 
-mainScenGroup <- "IG_allHydro"
-mycolors <- hue_pal()(5)
+# library(scales)
+# mainScenGroup <- "IG_allHydro"
+# mycolors <- hue_pal()(5)
 
+# mainScenGroup <- "CIMP3_IG_NA"
+mainScenGroup <- "ST_IG_NA"
+mycolors <- hue_pal()(2)
+
+# mainScenGroup <- "all"
+# mycolors <- hue_pal()(10)
 
 ofigs <- file.path(results_dir,mainScenGroup) 
 if (!file.exists(ofigs)) {
@@ -43,8 +48,11 @@ message('Figures will be saved to: ', ofigs)
 # list.files(scen_dir)
 
 # mycolors <- c("#407ec9" , "#6b8f00", "#9a3324" , "#FECB00") #Reclamation blue, green, red, yellow
+#output image parameters 
+width <- widths <- 9 #inches
+height <- heights <- 6
 
-endyr <- 2033
+endyr <- 2060
 startyr <-2024
 
 if (!any(list.files(ofigs) == "lf_dnf.RDS")) {
@@ -73,9 +81,15 @@ if (!any(list.files(ofigs) == "lf_dnf.RDS")) {
 saveRDS(dnf,file=file.path(ofigs,paste0("lf_dnf.RDS"))) #prevent neeed to reprocess
 
 zz <- dnf 
-# zz <- zz %>% #filter out scens you don't want to keep for plots
-#   dplyr::filter(Scenario %in% keepscens)
-  
+
+if(F){
+  #filter out scenarios from a larger set of all scenarios which you have a RDS of 
+  zz <- readRDS(file.path(results_dir,"all",paste0("lf_dnf.RDS")))
+  zz <- zz %>% #filter out scens you don't want to keep for plots
+    dplyr::filter(Scenario %in% names(scens))
+  unique(zz$Scenario)
+}
+
 # dnf$hydrology <- "Full Hydrology"
 # st$hydrology <- "Stress Test Hydrology"
 
@@ -91,11 +105,6 @@ var_name <- c(
   "lf_10yr_lt825" = "Risk of 10-year Volume at Lee Ferry < 82.5 maf"
 )
 
-
-#output image parameters 
-width <- widths <- 9 #inches
-height <- heights <- 6
-
 gg <- list()
 
 # colors <- mycolors
@@ -107,6 +116,9 @@ tomaf <- function(x) {
 zz <- zz %>%
   filter(Year <= endyr) #last year is bad
   
+# lf_10yr is raw data 
+# lf_10yr_lt75 is lf_10yr <= 75000000  
+# lf_10yr_lt825 is  lf_10yr <= 82500000 
 
 pdf(file.path(ofigs,paste0("LF10yr_",mainScenGroup,".pdf")), width = widths[1],height = heights[1]) #width= width, height= height)
 
@@ -116,11 +128,22 @@ pdf(file.path(ofigs,paste0("LF10yr_",mainScenGroup,".pdf")), width = widths[1],h
   # tmp_colors <- mycolors #colors[[s]]
   
   # plot 75 maf over 10
-  p2 <- zz %>%
-    filter(Variable != "lf_10yr") %>%
+
+Variable = "lf_10yr_lt75"
+  d1 <- zz %>%
+    # filter(Variable != "lf_10yr") %>%
+    filter(Variable == "lf_10yr_lt75") %>%
     mutate(Variable = var_name[Variable]) %>%
+    # mutate(Value = 1 - Value) %>%
+      
     group_by(Year, Scenario, Variable) %>%
-    summarise(Value = mean(Value)) %>%
+    #average by year - variable over each of the traces 
+    summarise(Value = mean(Value)) #%>%
+  
+  export <- pivot_wider(d1,names_from=Scenario,values_from=Value)
+  write.csv(file = file.path(ofigs,paste0("Risk10yrblw75.csv")),x = export)
+  
+    p1 <- d1 %>% 
     ungroup() %>%
     ggplot(aes(Year, Value, color = Scenario)) %+%
     geom_line(size = 1) %+%
@@ -137,8 +160,45 @@ pdf(file.path(ofigs,paste0("LF10yr_",mainScenGroup,".pdf")), width = widths[1],h
     theme(legend.position = "bottom") + 
     scale_color_manual(values = mycolors)
   
-  p2
-  ggsave(filename = file.path(ofigs,paste0("10yrLFvolbyYr.png")), width = widths[1],height = heights[1])#width= width, height= height)
+  p1
+  ggsave(filename = file.path(ofigs,paste0("Risk10yrblw75.png")), width = widths[1],height = heights[1])#width= width, height= height)
+  
+  # plot 825 maf over 10
+
+    Variable = "lf_10yr_lt825"
+    d2 <- zz %>%
+      # filter(Variable != "lf_10yr") %>%
+      filter(Variable == "lf_10yr_lt825") %>%
+      mutate(Variable = var_name[Variable]) %>%
+      # mutate(Value = 1 - Value) %>%
+      
+      group_by(Year, Scenario, Variable) %>%
+      #average by year - variable over each of the traces 
+      summarise(Value = mean(Value)) #%>%
+    
+    export <- pivot_wider(d2,names_from=Scenario,values_from=Value)
+    write.csv(file = file.path(ofigs,paste0("Risk10yrblw825.csv")),x = export)
+    
+    p2 <- d2 %>% 
+      ungroup() %>%
+      ggplot(aes(Year, Value, color = Scenario)) %+%
+      geom_line(size = 1) %+%
+      facet_wrap(~Variable, nrow = 2) %+%
+      labs(
+        x = NULL,
+        y = NULL,
+        color = "Scenario:"#,
+        # caption = s
+      ) %+%
+      coord_cartesian(ylim = c(0, 1)) %+%
+      scale_y_continuous(labels = scales::percent, breaks = seq(0, 1, .2)) %+%
+      scale_x_continuous(breaks = seq(2020, 2060, 5), minor_breaks = 2020:2060) +
+      theme(legend.position = "bottom") + 
+      scale_color_manual(values = mycolors)
+    
+    p2
+    ggsave(filename = file.path(ofigs,paste0("Risk10yrblw825.png")), width = widths[1],height = heights[1])#width= width, height= height)
+  
   
   # gg[[paste(s, "p2")]] <- p2
   
@@ -171,6 +231,11 @@ pdf(file.path(ofigs,paste0("LF10yr_",mainScenGroup,".pdf")), width = widths[1],h
 # }
 
 dev.off()
+
+
+
+
+
 
 
 # # save in one pdf
