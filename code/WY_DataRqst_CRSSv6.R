@@ -15,24 +15,26 @@ results_dir <- file.path(CRSSDIR,"results")
 
 scens <-  c(
   # "CMIP3_IG" = "Mar2023_2024,CMIP3,2016Dems,IG_DCPnoUBDRO,CRMMS_Most",
-  # "CMIP3_NA" = "Mar2023_2024,CMIP3,2016Dems,NA_noUBDRO,CRMMS_Most"#,
+  "CMIP3_NA" = "Mar2023_2024,CMIP3,2016Dems,NA_noUBDRO,CRMMS_Most",
   # "DNF_IG" ="Mar2023_2024,DNF,2016Dems,IG_DCPnoUBDRO,CRMMS_Most",
-  # "DNF_NA" = "Mar2023_2024,DNF,2016Dems,NA_noUBDRO,CRMMS_Most",
+  "DNF_NA" = "Mar2023_2024,DNF,2016Dems,NA_noUBDRO,CRMMS_Most",
   # "1931_2020_IG" = "Mar2023_2024,ISM1931_2020,2016Dems,IG_DCPnoUBDRO,CRMMS_Most",
-  # "1931_2020_NA" = "Mar2023_2024,ISM1931_2020,2016Dems,NA_noUBDRO,CRMMS_Most",
-  "1988_2020_IG" = "Mar2023_2024,ISM1988_2020,2016Dems,IG_DCPnoUBDRO,CRMMS_Most",
-  "1988_2020_NA" = "Mar2023_2024,ISM1988_2020,2016Dems,NA_noUBDRO,CRMMS_Most"#,
+  "1931_2020_NA" = "Mar2023_2024,ISM1931_2020,2016Dems,NA_noUBDRO,CRMMS_Most",
+  # "1988_2020_IG" = "Mar2023_2024,ISM1988_2020,2016Dems,IG_DCPnoUBDRO,CRMMS_Most",
+  "1988_2020_NA" = "Mar2023_2024,ISM1988_2020,2016Dems,NA_noUBDRO,CRMMS_Most",
   # "2000_2020_IG" ="Mar2023_2024,ISM2000_2020,2016Dems,IG_DCPnoUBDRO,CRMMS_Most"#,
-  # "2000_2020_NA" = "Mar2023_2024,ISM2000_2020,2016Dems,NA_noUBDRO,CRMMS_Most"#,
+  "2000_2020_NA" = "Mar2023_2024,ISM2000_2020,2016Dems,NA_noUBDRO,CRMMS_Most"#,
 )
 
 # library(scales)
-# mainScenGroup <- "IG_allHydro"
-# mycolors <- hue_pal()(5)
+mainScenGroup <- "IG_allHydro"
+mainScenGroup <- "NA_allHydro"
+mainScenGroup <- "NA_allHydro_10"
+mycolors <- hue_pal()(5)
 
 # mainScenGroup <- "CIMP3_IG_NA"
-mainScenGroup <- "ST_IG_NA"
-mycolors <- hue_pal()(2)
+# mainScenGroup <- "ST_IG_NA"
+# mycolors <- hue_pal()(2)
 
 # mainScenGroup <- "all"
 # mycolors <- hue_pal()(10)

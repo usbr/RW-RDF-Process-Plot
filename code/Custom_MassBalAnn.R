@@ -199,6 +199,10 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
+
 #-------------------------------------------------------------------------------------
 
 variable = "UB_AgSaltLoadingExtra"
@@ -221,6 +225,10 @@ p <- df %>%
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
@@ -245,6 +253,10 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
+
 #-------------------------------------------------------------------------------------
 
 variable = "UB_ExportSaltMass"
@@ -268,6 +280,10 @@ p <- df %>%
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
 
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
+
 #-------------------------------------------------------------------------------------
 
 variable = "UB_ExportSaltMassExtra"
@@ -290,6 +306,10 @@ p <- df %>%
   labs(title = paste(title,Model.Step.Name), y = y_lab, x = "Year")+
   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
 print(p)
+
+ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
+
+write.csv(df,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
