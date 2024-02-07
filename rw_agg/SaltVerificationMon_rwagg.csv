@@ -2,7 +2,7 @@ file,slot,period,summary,eval,t_s,variable
 SaltVerification.rdf,UpperColoradoReach.Outflow,asis,NA,NA,NA,1_flow_glen
 SaltVerification.rdf,UpperColoradoAboveCameo.Outflow,asis,NA,NA,NA,2_flow_cameo
 SaltVerification.rdf,GunnisonRiverAboveGrandJunction.Outflow,asis,NA,NA,NA,6_flow_gunn
-SaltVerification.rdf,DoloresRiver.Outflow,asis,NA,NA,NA,7_flow_dolor
+SaltVerification.rdf,CiscoDoloresTribJoin.Outflow,asis,NA,NA,NA,7_flow_dolor
 SaltVerification.rdf,DoloresColorado.Outflow,asis,NA,NA,NA,8_flow_cisco
 SaltVerification.rdf,GreenRAboveGreenRiverWY.Outflow,asis,NA,NA,NA,10_flow_grwy
 SaltVerification.rdf,FlamingGorge.Outflow,asis,NA,NA,NA,11_flow_gdale
@@ -22,7 +22,7 @@ SaltVerification.rdf,AboveImperialDamColoradoR.Outflow,asis,NA,NA,NA,29_flow_imp
 SaltVerification.rdf,UpperColoradoReach.Outflow Salt Mass,asis,NA,NA,NA,1_mass_glen
 SaltVerification.rdf,UpperColoradoAboveCameo.Outflow Salt Mass,asis,NA,NA,NA,2_mass_cameo
 SaltVerification.rdf,GunnisonRiverAboveGrandJunction.Outflow Salt Mass,asis,NA,NA,NA,6_mass_gunn
-SaltVerification.rdf,DoloresRiver.Outflow Salt Mass,asis,NA,NA,NA,7_mass_dolor
+SaltVerification.rdf,CiscoDoloresTribJoin.Outflow Salt Mass,asis,NA,NA,NA,7_mass_dolor
 SaltVerification.rdf,DoloresColorado.Outflow Salt Mass,asis,NA,NA,NA,8_mass_cisco
 SaltVerification.rdf,GreenRAboveGreenRiverWY.Outflow Salt Mass,asis,NA,NA,NA,10_mass_grwy
 SaltVerification.rdf,FlamingGorge.Outflow Salt Mass,asis,NA,NA,NA,11_mass_gdale
@@ -42,7 +42,7 @@ SaltVerification.rdf,AboveImperialDamColoradoR.Outflow Salt Mass,asis,NA,NA,NA,2
 SaltVerification.rdf,UpperColoradoReach.Outflow Salt Concentration,asis,NA,NA,NA,1_conc_glen
 SaltVerification.rdf,UpperColoradoAboveCameo.Outflow Salt Concentration,asis,NA,NA,NA,2_conc_cameo
 SaltVerification.rdf,GunnisonRiverAboveGrandJunction.Outflow Salt Concentration,asis,NA,NA,NA,6_conc_gunn
-SaltVerification.rdf,DoloresRiver.Outflow Salt Concentration,asis,NA,NA,NA,7_conc_dolor
+SaltVerification.rdf,CiscoDoloresTribJoin.Outflow Salt Mass,asis,NA,NA,NA,7_conc_dolor
 SaltVerification.rdf,DoloresColorado.Outflow Salt Concentration,asis,NA,NA,NA,8_conc_cisco
 SaltVerification.rdf,GreenRAboveGreenRiverWY.Outflow Salt Concentration,asis,NA,NA,NA,10_conc_grwy
 SaltVerification.rdf,FlamingGorge.Outflow Salt Concentration,asis,NA,NA,NA,11_conc_gdale
@@ -59,3 +59,6 @@ SaltVerification.rdf,VirginRiver.Outflow Salt Concentration,asis,NA,NA,NA,24_con
 SaltVerification.rdf,Mead.Outflow Salt Concentration,asis,NA,NA,NA,25_conc_hoover
 SaltVerification.rdf,Havasu.Outflow Salt Concentration,asis,NA,NA,NA,28_conc_parker
 SaltVerification.rdf,AboveImperialDamColoradoR.Outflow Salt Concentration,asis,NA,NA,NA,29_conc_imper
+Res.rdf,Powell.Inflow,asis,NA,NA,NA,20_flow_powellin
+Salt.rdf,Powell.Inflow Salt Mass,asis,NA,NA,NA,20_mass_powellin
+Salt.rdf,Powell.Inflow Salt Concentration,asis,NA,NA,NA,20_conc_powellin

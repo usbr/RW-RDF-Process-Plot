@@ -33,7 +33,7 @@ gga <- gg + geom_ribbon(data = subset(zz,Scenario %in% cloudScen),aes(ymin=Min, 
 legenda <- get_legend(gga)
 
 # # Generate plot b to take medians legend
-if (MinMaxLines == T ){ # T is want dotted line as min max of any given trace 
+if (exists("MinMaxLines") && MinMaxLines == T){ # T is want dotted line as min max of any given trace 
   lengendtitle <- "Min, Mean, Max" #
 } else {
   # lengendtitle <- "Mean"
@@ -94,13 +94,14 @@ ggc <- gg +
   #   annotate("text", x = 2022, y = 3450, label = "Lower Elevation Balancing Tier",size = 3,hjust = 0)
   # }
 
-if (!is.na(NumCrit)){
+if (exists("NumCrit") && !is.na(NumCrit)){
   ggc <- ggc +
   #Adding lines for numeric criteria
   geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) #+
 }
 
-if (!is.na(HistMin)){
+#use && and only evaluate the first statement before proceeding 
+if (exists("HistMin") && !is.na(HistMin)){
   ggc <- ggc +
     #Adding lines for historic min and max 
     geom_hline(aes(yintercept=yintercept), data=HistMin, color = "red", lty = 3) +
@@ -108,7 +109,7 @@ if (!is.na(HistMin)){
 }
 
 
-if (MinMaxLines == T){
+if (exists("MinMaxLines") && MinMaxLines == T){
   ggc <- ggc + 
     geom_line(data = zz, aes(x=Year, y=MinOut, color=Scenario, group=Scenario),linetype = "dotted") +  
     geom_line(data = zz, aes(x=Year, y=MaxOut, color=Scenario, group=Scenario),linetype = "dotted")   

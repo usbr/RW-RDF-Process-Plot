@@ -1,3 +1,8 @@
 file,slot,period,summary,eval,t_s,variable
-UBres.rdf,Navajo.Outflow,asis,NA,NA,NA,BlueMesa.Pool Elevation
-StreamGages.rdf,SanJuanNearBluff.Gage Inflow,asis,NA,NA,NA,Bluff
+UBres.rdf,Navajo.Outflow,asis,NA,NA,NA,Navajo.Outflow
+StreamGages.rdf,SanJuanNearBluff.Gage Outflow,asis,NA,NA,NA,Bluff_AF
+UBres.rdf,Navajo.Pool Elevation,asis,NA,NA,NA,Navajo.PoolElevation
+StreamGages.rdf,SanJuanNearArchuleta.Gage Inflow,asis,NA,NA,NA,Arch
+StreamGages.rdf,SanJuanNearBluff.Gage Inflow,asis,NA,NA,NA,Bluff_CFS
+StreamGages.rdf,SanJuanNearArchuleta.Gage Inflow,asis,NA,<=,250,Arch_250
+StreamGages.rdf,SanJuanNearBluff.Gage Inflow,asis,NA,<=,500,Bluff_Less_500

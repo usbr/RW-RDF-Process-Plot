@@ -1,10 +1,12 @@
 zz <- zz_all %>%
   dplyr::filter(Variable == variable) 
 
-write.csv(zz,file.path(ofigs,"Stats",paste0(Hydro,'_',variable,"_stats.csv")))
+#don't require hydro input file name 
+write.csv(zz,file.path(ofigs,"Stats",paste0(variable,"_stats.csv")))
+# write.csv(zz,file.path(ofigs,"Stats",paste0(Hydro,'_',variable,"_stats.csv")))
 
 
-if (powtiers){
+if (exists("powtiers")){
   powelltiers <- read.csv(file.path(getwd(),"data", "PowellTiers.csv"),header = T)
 }
 
@@ -33,7 +35,7 @@ gga
 legenda <- get_legend(gga)
 
 # # Generate plot b to take medians legend
-if (MinMaxLines == T ){ # T is want dotted line as min max of any given trace 
+if (exists("MinMaxLines") && MinMaxLines == T){ # T is want dotted line as min max of any given trace 
   lengendtitle <- "Min, Mean, Max" #
 } else {
   # lengendtitle <- "Mean"
@@ -100,13 +102,13 @@ ggc <- gg +
     annotate("text", x = 2023, y = 3450, label = "Lower Elevation Balancing Tier",size = 4,hjust = 0)
   }
 
-if (!is.na(NumCrit)){
+if (exists("NumCrit") && !is.na(NumCrit)){
   ggc <- ggc +
   #Adding lines for numeric criteria
   geom_hline(aes(yintercept=yintercept), data=NumCrit, color = "red", lty = 2) #+
 }
 
-if (MinMaxLines == T){
+if (exists("MinMaxLines") && MinMaxLines == T){ # T is want dotted line as min max of any given trace 
   ggc <- ggc + 
     geom_line(data = zz, aes(x=Year, y=MinOut, color=Scenario, group=Scenario),linetype = "dotted") +  
     geom_line(data = zz, aes(x=Year, y=MaxOut, color=Scenario, group=Scenario),linetype = "dotted")   
@@ -117,7 +119,11 @@ ggc
 #final plot configuration 
 gg <- plot_grid(ggc, gglegend, rel_widths = c(2,.4))
 
-ggsave(plot = gg,filename = file.path(ofigs,paste0(Hydro,'_',variable,"_Cloud.png")), width = widths[1],height = heights[1])#width= width, height= height)
+# ggsave(plot = gg,filename = file.path(ofigs,paste0(Hydro,'_',variable,"_Cloud.png")), width = widths[1],height = heights[1])#width= width, height= height)
+#don't require hydro input file name 
+ggsave(plot = gg,filename = file.path(ofigs,paste0(variable,"_Cloud.png")), width = widths[1],height = heights[1])#width= width, height= height)
+
+
 
   # # Read in Reclamation logo png
   # im <- load.image('code/BofR-horiz-cmyk.png')

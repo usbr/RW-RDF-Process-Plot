@@ -20,7 +20,8 @@ scen_dir <- file.path(CRSSDIR,"Scenario") #file.path(CRSSDIR,"results") #easier 
 # UPDATE INputs #### 
 scens <- c("9002_Verification","9005_McPhee_Verification")
 process_scen <- c(F,T) #process only new run 
-plot_scen <-c(F,F)  #c(T,T)
+plot_scen <-c(F,T)  #c(T,T)
+##### Also must us plot_scen = T to calculate the residuals #### 
 
 scens <- c("CRSSv5","9005_McPhee_Verification")
 process_scen <- c(F,F) #Never process V5, if you have to must switch out rw_agg files to have DoloresRiver.Out 

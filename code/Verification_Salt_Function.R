@@ -1,4 +1,4 @@
-#### Salt Verification Script ########
+#### Salt Function Script ########
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 3. Process Results 
@@ -100,7 +100,7 @@ verification_salt_process_plot <- function(scen_nm,process_scen,plot_scen) {
     
   }
   
-  return(df_annual)
+  # return(df_annual)
   
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     ## 4. Plot Node Figures 
@@ -364,8 +364,10 @@ verification_salt_process_plot <- function(scen_nm,process_scen,plot_scen) {
   
   # df_annual$Scenario = "CRSSv5"
   
+  
 }
-    
+  return(df_annual)
+  
     
   }
   

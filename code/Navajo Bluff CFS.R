@@ -29,23 +29,22 @@ source('code/stat-boxplot-custom.r')
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #all scens 
 scens <- list(
-  "v601_ST" = "V6.0.1,ISM1988_2020,2016Dems,IGv6.0.1,CRMMS_Most",
-  "NavajoDev_ST" = "NavajoDev.V6.0.2,ISM1988_2020,2016Dems,NavajoRls.V6.0.2,CRMMS_Most",
-  "9003_NoRefire" = "NavajoDev.V6.0.2,ISM1988_2020,2016Dems,V6.0.3 NoRefire,CRMMS_Most",
-  "9003_Refire" = "NavajoDev.V6.0.2,ISM1988_2020,2016Dems,V6.0.3 wRefire,CRMMS_Most"
+  "Baseline" = "CRSS.V6.2.0.2024.Aug2023,CMIP3,2016Dems,IGDCPnoUBDRO.v6.1.0,CRMMS_Most",
+  "EveryMonthCalc_SetOnlyT" = "CRSS.V6.2.0.2024.Aug2023,CMIP3,2016Dems,UBDRO.v6.1.0.9000_EveryMonthCalc_SetOnlyt_AllYears,CRMMS_Most"
+ 
 )
 
-Figs <- "NavajoDev_ST_9003"
+Figs <- "EveryMonthCalc_SetOnlyT"
 
 ###
 
-scens <- list(
-  "Mar.V6.0.1" = "V6.0.1,ISM1988_2020,2016Dems,IGv6.0.1,CRMMS_Most",
-  "NavajoDev.V6.0.2.9003" = "NavajoDev.V6.0.2,ISM1988_2020,2016Dems,V6.0.2.9003_FinalJune1,CRMMS_Most"
-)
-
-Figs <-
-  'ST-NavajoDev.V6.0.2.9003 vs 6.0.1'
+# scens <- list(
+#   "Mar.V6.0.1" = "V6.0.1,ISM1988_2020,2016Dems,IGv6.0.1,CRMMS_Most",
+#   "NavajoDev.V6.0.2.9003" = "NavajoDev.V6.0.2,ISM1988_2020,2016Dems,V6.0.2.9003_FinalJune1,CRMMS_Most"
+# )
+# 
+# Figs <-
+#   'ST-NavajoDev.V6.0.2.9003 vs 6.0.1'
 
 ## pick which scens to plot from larger group to process and save as RDS files for later analysis 
 keepscens <- names(scens)
@@ -68,8 +67,11 @@ printfigs_exceed<-T#T#make png figures
 # mylinetypes <- c("dashed","solid","solid")
 #standard powerpoint figure sizes 
 # first is for monthly plots, second is for daily plots 
-widths <- c(9.5,9.5) #smaller looks really bad, better to just resize larger image
-heights <- c(7,7)
+width <- c(9,9) #smaller looks really bad, better to just resize larger image
+height <- c(7)
+
+startyr <- 2024 #filter out all years > this year
+endyr <- 2040 #60
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #                               END USER INPUT
@@ -162,9 +164,9 @@ scen_res$MonthNum = as.numeric(format.Date(scen_res$MonthNum, format = "%m"))
 #     dplyr::filter(Year >= first(yrs2show)) %>%
 #     dplyr::filter(Year <= last(yrs2show))
 
-AFMonCFS <- c(61.48760331,55.53719008,61.48760331,59.50413223,61.48760331,59.50413223,61.48760331,
-  61.48760331,59.50413223,61.48760331,59.50413223,61.48760331)
-CFSAFMon <- 1/AFMonCFS  
+# AFMonCFS <- c(61.48760331,55.53719008,61.48760331,59.50413223,61.48760331,59.50413223,61.48760331,
+#   61.48760331,59.50413223,61.48760331,59.50413223,61.48760331)
+# CFSAFMon <- 1/AFMonCFS  
 
 # # Adding factors so ggplot does not alphebetize legend
 scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
@@ -183,7 +185,7 @@ unique(scen_res_monthly$Scenario)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 5. Plot monthly figures  
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  pdf(file.path(ofigs,paste("Monthly",Figs)), width=9, height=6)
+  pdf(file.path(ofigs,paste("Monthly",Figs,".pdf")), width=9, height=6)
   
   
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -238,30 +240,53 @@ unique(scen_res_monthly$Scenario)
   print(p)
   if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste(title,variable,".png")), width = widths[1],height = heights[1])}
   
+  
+  variable = "Arch"
+  title = "Arch  Inflow" #paste(variable,first(yrs2show),"-",last(yrs2show))
+  #monthly boxplot of outflows vs month
+  y_lab = "Flow (CFS)"
+  target <- data.frame(yintercept=250)
+  p <- scen_res_monthly %>%
+    dplyr::filter(Variable == variable) %>%
+    # mutate(Value = Value/1000) %>% #convert to KAF 
+    dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
+    dplyr::group_by(Scenario, MonthNum) %>%
+    ggplot(aes(x = factor(MonthNum), y = Value, color = Scenario)) +
+    geom_boxplot() +
+    theme_light() + 
+    scale_color_manual(values = mycolors) +
+    geom_hline(aes(yintercept=yintercept), data=target) +
+    scale_x_discrete("Month",labels = month.abb) + #display abb. month names
+    labs(title = title, y = y_lab)
+  print(p)
+  if(printfigs_monthly==T){ ggsave(filename = file.path(ofigs,paste(title,variable,".png")), width = widths[1],height = heights[1])}
+  
  dev.off()
   
-  # #release Aug - Sept  
-  # exc_month <- c(8,9) # April - July
-  # title <- paste(maintitle,month.name[first(exc_month)],'-',month.name[last(exc_month)])
-  # # ymin <- c(0,0) ; ymax <- c(8600,50000); mybreaks <- c(2000,5000)#old GREAT 
-  # p <- scen_res_monthly %>%
-  #   dplyr::filter(Variable == variable) %>% 
-  #   dplyr::filter(Year <= last(yrs2show)) %>% #2060 has NA values so filter that out
-  #   dplyr::filter(MonthNum%in%exc_month) %>% #This is currently set to filter
-  #   #all but one month otherwise would lump all the months together
-  #   dplyr::group_by(Scenario) %>%
-  #   ggplot(aes(Value, color = Scenario)) +
-  #   theme_light() + 
-  #   stat_eexccrv() +
-  #   scale_color_manual(values = mycolors) +
-  #   # coord_cartesian(xlim =c(0,1), ylim = c(ymin[j],ymax[j]), expand = expand) + #don't drop data 
-  #   # scale_y_continuous(breaks=seq(ymin[j],ymax[j],mybreaks[j])) + 
-  #   scale_x_continuous("Percent Exceedance",labels = scales::percent,breaks=seq(0,1,.2)) + 
-  #   labs(title = title,
-  #        y = y_lab) + #, caption = caption) +
-  #   theme(plot.caption = element_text(hjust = 0)) #left justify  
-  # if(no_legend){p <- p + theme(legend.position="none")}
-  # print(p)
-  # if(printfigs_exceed==T){ ggsave(filename = file.path(ofigs,paste('Exceed 5',title,".png")), width = widths[1],height = heights[1])}
-  # 
+ ### ###
+ 
+ rw_agg_file <- "rw_agg_NIIP.csv"
+ #read agg file specifying which slots
+ rwa1 <- rwd_agg(read.csv(file.path(getwd(),"rw_agg", rw_agg_file), stringsAsFactors = FALSE)) #ubres.rdf res.rdf
+ 
+ #rw_scen_aggregate() will aggregate and summarize multiple scenarios, essentially calling rdf_aggregate() for each scenario. Similar to rdf_aggregate() it relies on a user specified rwd_agg object to know how to summarize and process the scenarios.
+ scen_res2 <- rw_scen_aggregate(
+   scens,
+   agg = rwa1,
+   scen_dir = scen_dir
+ ) 
+ 
+ 
+ scen_res1 <- scen_res
+ scen_res <- scen_res2
+ 
+ 
+ zz_all %>%
+   # dplyr::filter(Year == 2040)
+   dplyr::filter(Variable == variables[1])
+ 
+ 
+ 
+ 
+ 
   # 

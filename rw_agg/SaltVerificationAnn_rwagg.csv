@@ -22,7 +22,7 @@ WQAnn.rdf,AnnualSalinity.Imperial_FWAAC,December,NA,NA,NA,29_conc_imper
 SaltVerification.rdf,UpperColoradoReach.Outflow,cy,sum,NA,NA,1_flow_glen
 SaltVerification.rdf,UpperColoradoAboveCameo.Outflow,cy,sum,NA,NA,2_flow_cameo
 SaltVerification.rdf,GunnisonRiverAboveGrandJunction.Outflow,cy,sum,NA,NA,6_flow_gunn
-SaltVerification.rdf,DoloresRiver.Outflow,cy,sum,NA,NA,7_flow_dolor
+SaltVerification.rdf,CiscoDoloresTribJoin.Outflow,cy,sum,NA,NA,7_flow_dolor
 SaltVerification.rdf,DoloresColorado.Outflow,cy,sum,NA,NA,8_flow_cisco
 SaltVerification.rdf,GreenRAboveGreenRiverWY.Outflow,cy,sum,NA,NA,10_flow_grwy
 SaltVerification.rdf,FlamingGorge.Outflow,cy,sum,NA,NA,11_flow_gdale
@@ -42,7 +42,7 @@ SaltVerification.rdf,AboveImperialDamColoradoR.Outflow,cy,sum,NA,NA,29_flow_impe
 SaltVerification.rdf,UpperColoradoReach.Outflow Salt Mass,cy,sum,NA,NA,1_mass_glen
 SaltVerification.rdf,UpperColoradoAboveCameo.Outflow Salt Mass,cy,sum,NA,NA,2_mass_cameo
 SaltVerification.rdf,GunnisonRiverAboveGrandJunction.Outflow Salt Mass,cy,sum,NA,NA,6_mass_gunn
-SaltVerification.rdf,DoloresRiver.Outflow Salt Mass,cy,sum,NA,NA,7_mass_dolor
+SaltVerification.rdf,CiscoDoloresTribJoin.Outflow Salt Mass,cy,sum,NA,NA,7_mass_dolor
 SaltVerification.rdf,DoloresColorado.Outflow Salt Mass,cy,sum,NA,NA,8_mass_cisco
 SaltVerification.rdf,GreenRAboveGreenRiverWY.Outflow Salt Mass,cy,sum,NA,NA,10_mass_grwy
 SaltVerification.rdf,FlamingGorge.Outflow Salt Mass,cy,sum,NA,NA,11_mass_gdale
