@@ -18,9 +18,9 @@ library(RWDataPlyr) # i
 
 #########create Single set of trace files################################
 
-# CRSSDIR <- Sys.getenv("CRSS_DIR")
+CRSSDIR <- Sys.getenv("CRSS_DIR")
 # CRSSDIR = "C://Users//cfelletter//Documents//CRSS"
-CRSSDIR = "C://Users//cfelletter//Documents//crss.2023TRIRVW"
+# CRSSDIR = "C://Users//cfelletter//Documents//crss.2023TRIRVW"
 CRSSDIR #check CAREFUL!!!!
 dmi_folder_nm <- "StressTest"
 oFolder <- file.path(CRSSDIR,"dmi",dmi_folder_nm) 
@@ -102,8 +102,10 @@ lapply(yy, function(x) {
 CRSSIO::crssi_change_nf_start_date(folder = "C:/Users/cfelletter/Documents/CRSS/dmi/Verification2000",
                                    start_year = 2000,nTrace = 1)
 
-CRSSIO::crssi_change_nf_start_date(folder = "C:/Users/cfelletter/Documents/crss.2023TRIRVW/dmi/NFSinput_2018_binational_CRSSv5",
-                                   start_year = 2023,nTrace = 88)
+dmi_folder_nm <- "loca-knn"
+oFolder <- file.path(CRSSDIR,"dmi",dmi_folder_nm) 
+CRSSIO::crssi_change_nf_start_date(folder = oFolder,
+                                   start_year = 2024,nTrace = 64)
 
 #or use for easy interface ################################
 CRSSIO:::crss_input_addin() #this function is currently not exported 

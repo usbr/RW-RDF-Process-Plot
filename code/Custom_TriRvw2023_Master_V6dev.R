@@ -57,39 +57,6 @@ customcolorltpt <- F
 
 # # ##########################################################################
 
-# Model.Step.Name <- Figs <- "Feb23_ParadoxOnOffallScens" #plot title and results/folder name #[plot type] identifying name .pdf
-# 
-# scens <- list(
-#   "ParadoxOn_Scen1" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario1_2023_OctForum",
-#   "ParadoxOff_Scen1" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario1_2023_OctForum_OffParadox",
-#   "ParadoxOn_Scen2" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario2_2023_OctForum",
-#   "ParadoxOff_Scen2" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario2_2023_OctForum_OffParadox",
-#   "ParadoxOn_Scen3" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum",
-#   "ParadoxOff_Scen3" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum_OffParadox",
-#   "ParadoxOn_Scen4" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario4_2023_OctForum",
-#   "ParadoxOff_Scen4" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario1_2023_OctForum_OffParadox"
-# )
-# 
-# 
-# Model.Step.Name <- Figs <- "2020ReviewvsFinalScens" #plot title and results/folder name #[plot type] identifying name .pdf
-# 
-# scens <- list(
-#   "2020_Scen1_1.22M" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario1_2020_20200409",
-#   "2023_Scen1_1.27M" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario1_2023_OctForum",
-#   "2020_Scen2_1.59M" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario2_2020_20200409",
-#   "2023_Scen2_1.49M" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario2_2023_OctForum_OffParadox",
-#   "2020_Scen3_1.7M" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario3_2020_20200409",
-#   "2023_Scen3_1.55M" = "Fixed_Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum_OffParadox"
-#   # "2020_Scen4_2.3M" = "2007Dems,MTOM_Most,DNF with Salinity 19312018,Jan2020_RW8,IG_DCP_4.4.0_RW8,WQIP_Scenario4_2020_20200409",
-#   # "2023_Scen4_2.3M" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario4_2023_OctForum"
-# )
-# ## special colors and point types for comparing mean of different reviews (8)
-# customcolorltpt = T
-# lt_scale <- rep(c(2,1), 4)
-# pt_scale <- rep(c(1,19), 4)
-# mycolors <- c("#D55E00" ,"#D55E00", "#F0E442","#F0E442", "#009E73" , "#009E73" ,"#407ec9","#407ec9") #TRY 2 - color blind red, yellow, red (stop light), blue
-
-# 
 # ## All the following can use non custom colors 
 # 
 # Model.Step.Name <- Figs <- "2023Scens_ST_20230505_ParadoxOff" #plot title and results/folder name #[plot type] identifying name .pdf
@@ -101,30 +68,20 @@ customcolorltpt <- F
 #   # "Scenario 4" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario4_2023_OctForum"
 # )
 
-# Model.Step.Name <- Figs <- "CRSSv5_vs_v6.9001" #plot title and results/folder name #[plot type] identifying name .pdf
-Model.Step.Name <- Figs <- "CRSSv5_vs_v6.9002" #plot title and results/folder name #[plot type] identifying name .pdf
+
+
+Model.Step.Name <- Figs <- "CRSSv5_vs_v6.9011" #plot title and results/folder name #[plot type] identifying name .pdf
+Model.Step.Name <- Figs <- "CRSSv5_vs_v6.9011vs9003" #plot title and results/folder name #[plot type] identifying name .pdf
+
 
 scens <- list(
-  "V5.TriRvw" = "Fixed_Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_2023_OctForum_OffParadox",
-  # "V6.9001" = "2016Dems,Scenario_3_20221014_ParadoxOff,ISM1988_2020,Salt9001.AbvOnly.2023,IG_DCPnoUBDRO",
-  "V6.9001.CameoRedux" = "2016Dems,Scenario_3_20221014_ParadoxOff,ISM1988_2020_1115CameoRedux,Salt9001.AbvOnly.2023,IG_DCPnoUBDRO",
-  "V6.9002" = "2016Dems,Scenario_3_20221014_ParadoxOff,ISM1988_2020_1115CameoRedux,Salt9002.2023,IG_DCPnoUBDRO"
-)
-
-
-Model.Step.Name <- Figs <- "CRSSv5_vs_v6.9003MB" #plot title and results/folder name #[plot type] identifying name .pdf
-
-scens <- list(
-  "V5.TriRvw.MB" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC_MBfix,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_202 fixf__OffPFfaradox",
-  "V6.9003MB" = "2016Dems,Scenario_3_20221014_ParadoxOff,ISM1988_2020_1115CameoRedux,Salt9003MB.2023,IG_DCPnoUBDRO"
-)
-
-
-Model.Step.Name <- Figs <- "MineralsReturn.vs.9003" #plot title and results/folder name #[plot type] identifying name .pdf
-scens <- list(
+  "V5.TriRvw" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC_MBfix,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_202 fixf__OffPFfaradox",
   "V6.9003MB" = "2016Dems,Scenario_3_20221014_ParadoxOff,ISM1988_2020_1115CameoRedux,Salt9003MB.2023,IG_DCPnoUBDRO",
-  "MineralsReturn.9003" = "Scenario_3_20221014_ParadoxOff,ISM1988_2020_1115CameoRedux,MineralReturnFlow_CRSS.V6.2.0.2024.Aug2023.Salt9003MB.2023,IG_DCPnoUBDRO"
+  "V6.9011" = "2016Dems,Scenario_3_20221014_ParadoxOff,ISM1988_2020_wSalt,CRSS.V6.2.0.2024.Aug2023.9011.RW921.2023start,IG.v6.1.0.9006.RW921"
 )
+
+
+
 
 
 # # ##########################################################################

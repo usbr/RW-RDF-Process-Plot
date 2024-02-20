@@ -21,12 +21,12 @@ rdf2excel <- "C:/Program Files/CADSWES/RdfToExcel/RdfToExcelExecutable.exe"
 # # folderpath <- "C:/Users/cfelletter/Documents/CRSS/Scenario" #CRSS scens
 # scen <- list.files(folderpath)
 ### from BA CRSS results 
-folderpath <- "C:/Users/fellette/Documents/GIT/CRSS/Scenario" #BA
-scen <- list.files(folderpath) #only if want all scenarios 
+# folderpath <- "C:/Users/fellette/Documents/GIT/CRSS/Scenario" #BA
+# scen <- list.files(folderpath) #only if want all scenarios 
 
-folderpath <- "C:/Users/fellette/Documents/GIT/crss.trirvw2020/Scenario" #BA
-scen <- c("Base_NoDO_8004.mdl,ISM1988_2018,2007Dems,NoDO_GREAT_7001,MTOM_Most_Aug21IC",
-          "All_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7001,MTOM_Most_Aug21IC")
+folderpath <- "C:/Users/fellette/Documents/GIT/crss.v6/Scenario" #BA
+# scen <- c("Base_NoDO_8004.mdl,ISM1988_2018,2007Dems,NoDO_GREAT_7001,MTOM_Most_Aug21IC",
+#           "All_8004_NoDO,ISM1988_2018,2007Dems,NoDO_GREAT_7001,MTOM_Most_Aug21IC")
 
 ### from Manoa CRSS results 
 folderpath <- "M:/Shared/CRSS/2021/Scenario_dev" 
@@ -38,13 +38,13 @@ scen <- scens
 
 ###always check this before proceeding 
 
-## which rdf files 
-rdf <- c('AspinallOps') #c('UBRch')
-## CRSS-MTOM files
-rdf <- c("SystemConditions","Res","UBRes","xtraRes")  #"UBRch.rdf"
+# ## which rdf files 
+# rdf <- c('AspinallOps') #c('UBRch')
+# ## CRSS-MTOM files
+# rdf <- c("SystemConditions","Res","UBRes","xtraRes")  #"UBRch.rdf"
 
 ## GREAT files
-rdf <- c("DailyFlows","Res","UBRes")#,"UBDO","Drought") #don't need UBDO since no DO, or Drought for HClass
+rdf <- c("Salt","WQIP","DivSalt")#,"UBDO","Drought") #don't need UBDO since no DO, or Drought for HClass
 
 # files for Process CRSS
 rdf <- c("KeySlots","Check","MPPE","MWDICS","SystemConditions","Res","CSD_ann","CSD_mon")  
