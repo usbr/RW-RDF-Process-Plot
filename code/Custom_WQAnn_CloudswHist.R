@@ -111,6 +111,7 @@ cloudLabs <- names(scens)
 
 zz_all <- scen_res %>%
   dplyr::filter(Year %in% yrs, Variable %in% c("AnnlSlntyLsFrry_FWAAC",
+                                               "CiscoColorado_FWAAC","Bluff_FWAAC","GreenRiverUTGreen_FWAAC",
                                                 "AnnlSlntyHvr_FWAAC",
                                                 "AnnlSlntyPrkr_FWAAC",
                                                "AnnlSlntyPwllInflw_FWAAC",
@@ -200,6 +201,37 @@ histLab = append(histLab, cloudLabs)
 pdf(file.path(oFigs,paste0("WQAnnClouds_MinMaxLines=",MinMaxLines,"_",Figs,".pdf")), width= width, height= height)
 
 ### Means ###
+
+NumCrit <- HistMean <- NA
+variable = "CiscoColorado_FWAAC"
+y_lab = "Salt Concentration (mg/l)"
+title = "CiscoColorado_FWAAC"
+subtitle = "Average Annual Concentration Comparison"
+ylims <- c(NA,NA)
+# HistMean <- data.frame(yintercept=462) #1999-2020 Avg from 2020 NFSM run
+
+source("code/Cloud_plot_wHist.R")
+
+NumCrit <- NA
+variable = "GreenRiverUTGreen_FWAAC"
+y_lab = "Salt Concentration (mg/l)"
+title = "GreenRiverUTGreen_FWAAC"
+subtitle = "Average Annual Concentration Comparison"
+# HistMean <- data.frame(yintercept=462) #1999-2020 Avg from 2020 NFSM run 
+
+source("code/Cloud_plot_wHist.R")
+
+variable = "Bluff_FWAAC"
+y_lab = "Salt Concentration (mg/l)"
+title = "Bluff_FWAAC"
+subtitle = "Average Annual Concentration Comparison"
+# HistMean <- data.frame(yintercept=462) #1999-2020 Avg from 2020 NFSM run 
+
+source("code/Cloud_plot_wHist.R")
+
+
+
+
 
 #-------------------------------------------------------------------------------------
 # ++++++++++++++++++++++++++Powell In+++++++++++++++++++++++++++++++++++++
@@ -294,6 +326,11 @@ source("code/Cloud_plot_wHist.R")
 # ++++++++++++++++++++++++++Below Davis+++++++++++++++++++++++++++++++++++++
 #-------------------------------------------------------------------------------------
 
+#future development 
+#THIS WILL eliminate your zz_all from before. You must limit zz_all to do Davis with no history but do this smarter 
+#in the future by turning Cloud_Plot_wohist into a function that can take any named data object  
+zz_all_save <- zz_all
+
 
 zz_all <- scen_res %>%
   dplyr::filter(Year %in% yrs) %>%
@@ -312,6 +349,9 @@ subtitle = "Average Annual Concentration Comparison"
 ylims <- c(NA,NA)
 
 source("code/Cloud_plot_woHist.R")
+
+zz_all <- zz_all_save #for ease of redoing and testing code 
+
 
 dev.off()
 
