@@ -160,27 +160,34 @@ if(customcolorltpt == F && length(scens) == 2){ #1 color, first scen dashed, sec
 } 
 
 #WQAnn
-source("code/Custom_WQAnn.R") #means only w exceed
+source("code/Salt1_WQAnn.R") #means only w exceed
 ## MUST RUN WQAnn.R before running any of the cloud plots scripts 
 # source("code/Custom_WQAnn_OldControl.R") #for 2020 Review compare
-source("code/Custom_WQAnn_CloudswHist.R") #clouds for FWAAC - has titles
+source("code/Salt1_WQAnn_CloudswHist.R") #clouds for FWAAC - has titles
 # source("code/Custom_WQAnn_CloudswHist_woTitles.R") #clouds for Review, no title and larger margins
+source("code/Salt1_SaltMassAnn_CloudswHist.R") 
+source("code/Salt1_FlowAnn_CloudswHist.R") 
 
 #MinMax must be run after a code has created scen_res but could work any scen_res
 # source("code/MinMax_Check_NoFct.R") #RUNS REALLY SLOW WITH MONTHLY so only use with WQAnn
 
 #SaltMassBal
-source("code/Custom_MassBalAnn.R")
-source("code/SaltMassBalance_Clouds.R")
+source("code/Salt2_MassBalAnn.R")
+source("code/Salt2_SaltMassBalance_Clouds.R")
+source("code/Salt2_MassBalAnn_ByTrib.R") 
 
 #Doesn't include UB Salt Mass Balance.ExportSaltMassExtra since this needs to be recreated in CRSS.OFFC
 # source("code/Custom_MassBalAnn - CRSSv4 vs v5.R") #only works for 2 scens 
 
-source("code/Custom_PowellMead_3Panel.R") #grouped by flow, mass, conc
-
+source("code/Salt3_PowellMead_3Panel.R") #grouped by flow, mass, conc
 # source("code/Custom_PowellMead_3Panel_Clouds.R") # NOT WORKING #grouped by Pow.In, Pow.Stor, Pow.Out
 
- 
+
+source("code/Salt3_PowellMead_3Panel.R") #grouped by flow, mass, conc
+
+#salt gains (inputs) 
+source("code/GainsSaltMass_InputPlots.R")
+
 # # #Saltstorage
 # source("code/Custom_SaltStorage.R")
 

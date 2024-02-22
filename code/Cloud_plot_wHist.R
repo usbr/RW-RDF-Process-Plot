@@ -66,8 +66,8 @@ ggc <- gg +
   
   scale_x_continuous(minor_breaks = 1990:3000, breaks = myXLabs,
                      labels = myXLabs, expand = c(0,0)) +
-  scale_y_continuous(minor_breaks = seq(300,9000,25),
-                     breaks = myYLabs, labels = comma) +
+  # scale_y_continuous(minor_breaks = seq(300,9000,25),  #2024: Don't limit the y so you can use this for other plot types than just conc
+  #                    breaks = myYLabs, labels = comma) +
   
   theme(plot.title = element_text(size = TitleSize),
         ## axis.text.x = element_text(size = AxisLab),

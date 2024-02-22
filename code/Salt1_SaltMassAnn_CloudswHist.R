@@ -109,13 +109,13 @@ cloudLabs <- names(scens)
 ### Read Data ###
 
 
-zz_all <- scen_res %>%
-  dplyr::filter(Year %in% yrs, Variable %in% c("AnnlSlntyLsFrry_FWAAC",
-                                               "CiscoColorado_FWAAC","Bluff_FWAAC","GreenRiverUTGreen_FWAAC",
-                                                "AnnlSlntyHvr_FWAAC",
-                                                "AnnlSlntyPrkr_FWAAC",
-                                               "AnnlSlntyPwllInflw_FWAAC",
-                                                "AnnlSlntyImprl_FWAAC")) %>%
+zz_all <- scen_res2 %>%
+  dplyr::filter(Year %in% yrs, Variable %in% c("Powell.Outflow Salt Mass",
+                                               "Powell.Inflow Salt Mass","19_mass_bluf","16_mass_grut",
+                                                "Mead.Outflow Salt Mass",
+                                                "Havasu.Outflow Salt Mass",
+                                               "AboveImperialDamColoradoR.Outflow Salt Mass",
+                                                "8_mass_cisco")) %>%
   # compute the 10/50/90 and aggregate by start month
   dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
   dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
@@ -124,11 +124,14 @@ zz_all <- scen_res %>%
 
 # # debug
 # head(zz_all)
-# unique(zz_all$Variable)
+unique(zz_all$Variable)
 # unique(zz_all$Year)
 
 #  Pulling historical SLOAD data
-hist <- read_xlsx(file.path(getwd(),'data/HistSLOAD.xlsx'))
+hist <- read_xlsx(file.path(getwd(),'data/HistSLOAD_SaltMass.xlsx'))
+
+## Divide Values by 1,000,000 to present data in Million of Tons/Year or MAF
+hist$Value=(hist$Value)/1000000
 
 # Formatting data frame to match zz_all
 hist$Scenario <- 'Historical SLOAD'
@@ -197,160 +200,35 @@ histLab = append(histLab, cloudLabs)
 # im <- load.image('logo/660LT-TK-flush.png')
 # im_rast <- grid::rasterGrob(im, interpolate = T)
 
+vars <- unique(zz_all$Variable)
+
 ## create a pdf  
-pdf(file.path(oFigs,paste0("WQAnnClouds_MinMaxLines=",MinMaxLines,"_",Figs,".pdf")), width= width, height= height)
+pdf(file.path(oFigs,paste0("SaltMassAnnClouds_MinMaxLines=",MinMaxLines,"_",Figs,".pdf")), width= width, height= height)
 
 ### Means ###
 
-NumCrit <- HistMean <- NA
-variable = "CiscoColorado_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
-title = "CiscoColorado_FWAAC"
-subtitle = "Average Annual Concentration Comparison"
-ylims <- c(NA,NA)
-# HistMean <- data.frame(yintercept=462) #1999-2020 Avg from 2020 NFSM run
-
-source("code/Cloud_plot_wHist.R")
-
 NumCrit <- NA
-variable = "GreenRiverUTGreen_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
-title = "GreenRiverUTGreen_FWAAC"
-subtitle = "Average Annual Concentration Comparison"
-# HistMean <- data.frame(yintercept=462) #1999-2020 Avg from 2020 NFSM run 
-
-source("code/Cloud_plot_wHist.R")
-
-variable = "Bluff_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
-title = "Bluff_FWAAC"
-subtitle = "Average Annual Concentration Comparison"
-# HistMean <- data.frame(yintercept=462) #1999-2020 Avg from 2020 NFSM run 
-
-source("code/Cloud_plot_wHist.R")
-
-
-
-
-
-#-------------------------------------------------------------------------------------
-# ++++++++++++++++++++++++++Powell In+++++++++++++++++++++++++++++++++++++
-#-------------------------------------------------------------------------------------
-# zz_all_sv <- zz_all 
-# 
-# zz_all <- scen_res %>%
-#   dplyr::filter(Year %in% yrs, Variable %in% c("AnnlSlntyPwllInflw_FWAAC")) %>%
-#   # compute the 10/50/90 and aggregate by start month
-#   dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
-#   dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
-#                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
-#                    'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot 
-
-NumCrit <- NA
-variable = "AnnlSlntyPwllInflw_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
-title = "Powell Inflow FWAAC"
-subtitle = "Average Annual Concentration Comparison"
-ylims <- c(NA,NA)
-HistMean <- data.frame(yintercept=462) #1999-2020 Avg from 2020 NFSM run 
-
-source("code/Cloud_plot_wHist.R")
-
-# source("code/Cloud_plot_woHist.R")
-# zz_all = zz_all_sv  
-
-#-------------------------------------------------------------------------------------
-# ++++++++++++++++++++++++++Lees Ferry+++++++++++++++++++++++++++++++++++++
-#-------------------------------------------------------------------------------------
-
-NumCrit <- NA
-variable = "AnnlSlntyLsFrry_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
-title = "Colorado River at Lees Ferry" 
-subtitle = "Average Annual Concentration Comparison"
-ylims <- c(NA,NA)
-# ylims <- c(400,600)
-HistMean <- data.frame(yintercept=460) #1999-2021 Avg based on Aug2022 SLOAD
-
-source("code/Cloud_plot_wHist.R")
-
-#-------------------------------------------------------------------------------------
-# ++++++++++++++++++++++++++Below Mead+++++++++++++++++++++++++++++++++++++
-#-------------------------------------------------------------------------------------
-
-
-NumCrit <- data.frame(yintercept=723)
-variable = "AnnlSlntyHvr_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
-title = "Colorado River below Hoover Dam" 
-subtitle = "Average Annual Concentration Comparison"
-ylims <- c(NA,NA)
-#ylims <- c(545,750)
-HistMean <- data.frame(yintercept=584) #1999-2021 Avg based on Aug2022 SLOAD
-
-source("code/Cloud_plot_wHist.R")
-
-#-------------------------------------------------------------------------------------
-#------------------------------Below Parker-------------------------------------------------------
-#-------------------------------------------------------------------------------------
-
-
-NumCrit <- data.frame(yintercept=747)
-variable = "AnnlSlntyPrkr_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
-title = "Colorado River below Parker Dam" 
-subtitle = "Average Annual Concentration Comparison"
-ylims <- c(NA,NA)
-#ylims <- c(550,750)
-HistMean <- data.frame(yintercept=600) #1999-2021 Avg based on Aug2022 SLOAD
-
-source("code/Cloud_plot_wHist.R")
-
-#-------------------------------------------------------------------------------------
-#-------------------------------At Imperial------------------------------------------------------
-#-------------------------------------------------------------------------------------
-
-NumCrit <- data.frame(yintercept=879)
-variable = "AnnlSlntyImprl_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
-title = "Colorado River above Imperial Dam" 
-subtitle = "Average Annual Concentration Comparison"
-ylims <- c(NA,NA)
-#ylims <- c(675,900)
-HistMean <- data.frame(yintercept=692) #1999-2021 Avg based on Aug2022 SLOAD
-
-source("code/Cloud_plot_wHist.R")
-
-
-#-------------------------------------------------------------------------------------
-# ++++++++++++++++++++++++++Below Davis+++++++++++++++++++++++++++++++++++++
-#-------------------------------------------------------------------------------------
-
-#future development 
-#THIS WILL eliminate your zz_all from before. You must limit zz_all to do Davis with no history but do this smarter 
-#in the future by turning Cloud_Plot_wohist into a function that can take any named data object  
-zz_all_save <- zz_all
-
-
-zz_all <- scen_res %>%
-  dplyr::filter(Year %in% yrs) %>%
-  # compute the 10/50/90 and aggregate by start month
-  dplyr::group_by(Scenario, Year,Variable) %>% #by leaving Variable in I keep the name in the resulting df
-  dplyr::summarise('Mean' = mean(Value), 'Med' = median(Value),
-                   'Min' = quantile(Value,.1),'Max' = quantile(Value,.9),
-                   'MinOut' = min(Value),'MaxOut' = max(Value)) #add in outliers for plot 
-
-
-NumCrit <- HistMin <- NA
-variable = "Davis_FWAAC"
-y_lab = "Salt Concentration (mg/l)"
-title = "Colorado River below Davis Dam" 
-subtitle = "Average Annual Concentration Comparison"
+y_lab = "Salt Mass (1,000,000 tons)"
+subtitle = "Average Annual Mass Comparison"
 ylims <- c(NA,NA)
 
-source("code/Cloud_plot_woHist.R")
+means <- zz_all %>%
+  dplyr::filter(Scenario == "Historical SLOAD") %>%
+  dplyr::group_by(Variable) %>% #by leaving Variable in I keep the name in the resulting df
+  dplyr::summarise('Mean' = mean(Mean)) #add in outliers for plot 
 
-zz_all <- zz_all_save #for ease of redoing and testing code 
+
+for (i in 1:length(vars)) {
+  variable = vars[i]
+  title = variable
+  
+  mean_var<- means %>%
+    dplyr::filter(Variable == variable) 
+  HistMean <- data.frame(yintercept=as.numeric(mean_var$Mean)) #1999-2022 Avg based on 2023 SLOAD
+  
+  source("code/Cloud_plot_wHist.R")
+  
+}
 
 
 dev.off()
