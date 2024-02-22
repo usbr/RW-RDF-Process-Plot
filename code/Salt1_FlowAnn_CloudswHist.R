@@ -209,7 +209,7 @@ pdf(file.path(oFigs,paste0("FlowAnnClouds_MinMaxLines=",MinMaxLines,"_",Figs,".p
 
 NumCrit <- NA
 y_lab = "Flow (1,000,000 AF/yr)"
-subtitle = "Average Annual Mass Comparison"
+subtitle = "Average Annual Flow Comparison"
 ylims <- c(NA,NA)
 
 means <- zz_all %>%

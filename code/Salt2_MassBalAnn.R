@@ -74,6 +74,7 @@ if(length(scens) == 1){
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 4. Plot Custom UB Figures 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+if(T){
 
 ## create a pdf  
 pdf(file.path(file_dir,paste0("SaltMassBalGrph_",Figs,".pdf")), width=9, height=6)
@@ -86,7 +87,7 @@ ylims <- c(-1,1)
 
 df_ub <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -122,7 +123,7 @@ ylims <- c(-1,6) #c(0,7)
 
 df_ub <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -157,7 +158,7 @@ ylims <- c(0,7)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -184,7 +185,7 @@ ylims <- c(0,7)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -211,7 +212,7 @@ ylims <- c(-1,6) #c(0,7)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -238,7 +239,7 @@ ylims <- c(0,7)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -265,7 +266,7 @@ ylims <- c(0,7)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -292,7 +293,7 @@ title = "Extra (acting like) UB Exports"#variable
 ylims <- c(0,7)
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -318,7 +319,7 @@ title = variable
 ylims <- c(0,7)
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -344,7 +345,7 @@ title = variable
 ylims <- c(-3.5,3.5)
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -369,7 +370,7 @@ title = variable
 ylims <- c(-3.5,3.5)
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -396,7 +397,7 @@ ylims <- c(-1,1)
 
 df_ub <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -418,50 +419,54 @@ write.csv(df_ub,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
 
 #-------------------------------------------------------------------------------------
 
-variable = "LB_Natural_Inflow"
-title = variable
-ylims <- c(0,15) #c(0,4)
+### something is causing this to fail around this point, I can't isolate it to this or that function
+# variable = "LB_Natural_Inflow"
+# title = variable
+# ylims <- c(0,15) #c(0,4)
+# 
+# df <- scen_res %>%
+#   dplyr::filter(Variable == variable) %>%
+#   dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr)# %>% #filter year
+# 
+# variable2 = "CoRivPariaToLittleCO.Outflow Salt Mass"
+# df2 <- scen_res %>%
+#   dplyr::filter(Variable == variable2) %>%
+#   dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) #%>% #filter year
+# 
+# ##Subtracting out the UB portion of LB Natural Salt Load
+# df_lb = df
+# 
+# df_lb$Value <- df$Value - df2$Value #don't just use the mean
+# 
+# variable = "LB_NaturalSalt_InflowOnly"
+# df_lb <- df_lb %>%
+#   mutate(Variable = variable)
+# 
+# scen_res = rbind.data.frame(scen_res,df_lb)
+# 
+# df_lb <- df_lb %>%
+#   dplyr::group_by(Scenario, Year) %>%
+#   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),
+#                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9))
+# 
+# ### something is causing this to fail around this point, I can't isolate it to this or that function
+# 
+# p <- df_lb %>%
+#   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
+#   geom_line() +
+#   geom_point() +
+#   ylim(ylims) +
+#   scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
+#   labs(title = paste(title,Model.Step.Name) , y = y_lab, x = "Year")+
+#   theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
+# print(p)
+# 
+# ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
+# 
+# write.csv(df_lb,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
+### something is causing this to fail around this point, I can't isolate it to this or that function
 
-df <- scen_res %>%
-  dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr)# %>% #filter year
-
-variable2 = "CoRivPariaToLittleCO.Outflow Salt Mass"
-df2 <- scen_res %>%
-  dplyr::filter(Variable == variable2) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) #%>% #filter year
-
-##Subtracting out the UB portion of LB Natural Salt Load
-df_lb = df
-
-df_lb$Value <- df$Value - df2$Value #don't just use the mean 
-
-variable = "LB_NaturalSalt_InflowOnly"
-df_lb <- df_lb %>%
-  mutate(Variable = variable)
-
-scen_res = rbind.data.frame(scen_res,df_lb)
-
-df_lb <- df_lb %>%
-  dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),
-                   'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
-
-p <- df_lb %>%
-  ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
-  geom_line() +
-  geom_point() +
-  ylim(ylims) +
-  scale_linetype_manual(values = lt_scale) +   scale_shape_manual(values = pt_scale) +   scale_color_manual(values = mycolors) +
-  labs(title = paste(title,Model.Step.Name) , y = y_lab, x = "Year")+
-  theme(axis.text.x = element_text(angle=90,size=8,vjust=0.5))
-print(p)
-
-ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, height= height)
-
-write.csv(df_lb,file = paste0(data_dir,'/','Stats_',variable,'.csv'))
-
-#-------------------------------------------------------------------------------------
+##-------------------------------------------------------------------------------------
 
 variable = "LB_Agricultural_Inflow"
 title = variable
@@ -469,11 +474,11 @@ ylims <- c(0,7)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
-  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
-                   'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
-
+  dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),
+                   'Min' = quantile(Value,.1),'Max' = quantile(Value,.9))
+#
 p <- df %>%
   ggplot(aes(x = factor(Year), y = Mean, color = Scenario, group = Scenario, linetype = Scenario, shape = Scenario)) + theme_light() +
   geom_line() +
@@ -491,7 +496,7 @@ title = variable
 ylims <- c(0,7)
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -514,7 +519,7 @@ title = variable
 ylims <- c(0,7)
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -537,7 +542,7 @@ title = variable
 ylims <- c(-7.5,7.5) #c(-3.5,3.5)
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -562,7 +567,7 @@ title = variable
 ylims <- c(-7.5,7.5) #c(-3.5,3.5)
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value),                    
                    'Min' = quantile(Value,.1),'Max' = quantile(Value,.9)) 
@@ -581,3 +586,4 @@ ggsave(filename = file.path(fig_dir,paste0(variable,".png")), width= width, heig
 
 dev.off()
 
+}

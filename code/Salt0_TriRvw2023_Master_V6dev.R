@@ -82,6 +82,15 @@ scens <- list(
 
 
 
+Model.Step.Name <- Figs <- "Nov23_v_Feb24salts_mdl9011" #plot title and results/folder name #[plot type] identifying name .pdf
+scens <- list(
+  # "V5.TriRvw" = "Obs_Jan23,Stress Test 88_20_LBUSGSnoPhreat,2023TriRvw.10.2022SaltIC_MBfix,CRSS.Baseline.2027IGDCPnoUBDRO.v5.3.0.9000,WQIP_Scenario3_202 fixf__OffPFfaradox",
+  "Nov23.Salt" = "2016Dems,Scenario_3_20221014_ParadoxOff,ISM1988_2020_wSalt,CRSS.V6.2.0.2024.Aug2023.9011.RW921.2023start,IG.v6.1.0.9006.RW921",
+  "Feb24.Salt" = "2016Dems,Scenario_3_20221014_ParadoxOff,RedoNoCameo_ISM1988_2020_wSalt,CRSS.V6.2.0.2024.Aug2023.9011.RW921.2023start,IG.v6.1.0.9006.RW921"
+)
+
+
+
 
 
 # # ##########################################################################
@@ -165,8 +174,11 @@ source("code/Salt1_WQAnn.R") #means only w exceed
 # source("code/Custom_WQAnn_OldControl.R") #for 2020 Review compare
 source("code/Salt1_WQAnn_CloudswHist.R") #clouds for FWAAC - has titles
 # source("code/Custom_WQAnn_CloudswHist_woTitles.R") #clouds for Review, no title and larger margins
-source("code/Salt1_SaltMassAnn_CloudswHist.R") 
+
+source("code/Salt1_SaltMassAnn_CloudswHist.R") #new mass and flow plots
 source("code/Salt1_FlowAnn_CloudswHist.R") 
+
+source("code/Salt1_CalcMeanDiff.R") # after running Salt1_WQAnn.R use this code to compare scenario 2-1 mean over entire run period and report out diff 
 
 #MinMax must be run after a code has created scen_res but could work any scen_res
 # source("code/MinMax_Check_NoFct.R") #RUNS REALLY SLOW WITH MONTHLY so only use with WQAnn

@@ -61,11 +61,11 @@ scen_res$Scenario = factor(scen_res$Scenario, levels=names(scens))
 scen_res2$Scenario = factor(scen_res2$Scenario, levels=names(scens))
 
 ###### Future Development: remove this filtering from each individual call and do it here
-# scen_res <- dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+# scen_res <- dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
 #   dplyr::group_by(Scenario, Year) %>%
 #   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 # 
-# scen_res2 <- dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+# scen_res2 <- dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
 #   dplyr::group_by(Scenario, Year) %>%
 #   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -90,7 +90,7 @@ y_lab = "Outflow (million acre-ft/year)"
 title = "Cisco Average Annual Flow" 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -113,7 +113,7 @@ y_lab = "Outflow Salt Mass (million tons/year)"
 title = "Cisco Average Annual Outflow Salt Mass"  
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -139,7 +139,7 @@ subtitle = "Average Annual Concentration Comparison"
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -177,7 +177,7 @@ subtitle = "Average Annual Concentration Comparison"
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -206,7 +206,7 @@ y_lab = "Outflow (million acre-ft/year)"
 title = "GRUT Average Annual Flow" 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -229,7 +229,7 @@ y_lab = "Outflow Salt Mass (million tons/year)"
 title = "GRUT Average Annual Outflow Salt Mass" 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -258,7 +258,7 @@ y_lab = "Outflow (million acre-ft/year)"
 title = "Bluff Average Annual Flow" 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -281,7 +281,7 @@ y_lab = "Outflow Salt Mass (million tons/year)"
 title = "Bluff Average Annual Outflow Salt Mass" 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -306,7 +306,7 @@ subtitle = "Average Annual Concentration Comparison"
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -346,7 +346,7 @@ subtitle = "Average Annual Concentration Comparison"
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -380,7 +380,7 @@ title = "Lake Powell Average Annual Inflow"
 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -411,7 +411,7 @@ title = "Lake Powell Average Annual Inflow Salt Mass"
 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value))
 
@@ -447,7 +447,7 @@ ylims <- c(400,600)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -479,7 +479,7 @@ title = "Lake Powell Average Annual Outflow"
 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -511,7 +511,7 @@ ylims <- c(0,10)
 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value))
 
@@ -548,7 +548,7 @@ ylims <- c(545,750)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 # dplyr::summarise(Value = median(Value)) 
@@ -582,7 +582,7 @@ ylims <- c(7,10)
 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -613,7 +613,7 @@ ylims <- c(0,10)
 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -650,7 +650,7 @@ subtitle = "Average Annual Concentration Comparison"
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 # dplyr::summarise(Value = median(Value)) 
@@ -683,7 +683,7 @@ ylims <- c(0,10)
 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -717,7 +717,7 @@ ylims <- c(0,10)
 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -754,7 +754,7 @@ ylims <- c(550,750)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -786,7 +786,7 @@ ylims <- c(0,10)
 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -817,7 +817,7 @@ ylims <- c(0,10)
 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -853,7 +853,7 @@ ylims <- c(675,900)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -888,7 +888,7 @@ ylims <- c(0,10)
 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -920,7 +920,7 @@ ylims <- c(0,10)
 
 df <- scen_res2 %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value)) 
 
@@ -957,7 +957,7 @@ ylims <- c(0,0.5)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value))
 
@@ -989,7 +989,7 @@ ylims <- c(0,0.5)
 
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value))
 
@@ -1021,7 +1021,7 @@ subtitle = "Probability of Exceeding (>=) 879 mg/l"
 ylims <- c(0,0.5)
 df <- scen_res %>%
   dplyr::filter(Variable == variable) %>%
-  dplyr::filter(startyr <= Year && Year <= endyr) %>% #filter year
+  dplyr::filter(startyr <= Year) %>% dplyr::filter(Year <= endyr) %>% #filter year
   dplyr::group_by(Scenario, Year) %>%
   dplyr::summarise('Mean' = mean(Value),'Med' = median(Value),'MinOut' = min(Value),'MaxOut' = max(Value))
 
