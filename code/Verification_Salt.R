@@ -22,7 +22,7 @@ results_dir <- file.path(CRSSDIR,"results")
 scen_dir <- file.path(CRSSDIR,"results") #file.path(CRSSDIR,"Scenario")
 # #containing the sub folders for each ensemble
 scens <- "9005_McPhee_Verification"
-# scens <- "9002"
+scens <- "9011.ReCal.SJAggFix"
 # scens <- "V6,CRSS.V6.2.0.2024.Aug2023_2000SaltVerification,20231002NFS" 
 # scens <- "V5.TriRvw,CRSS.V5.3.0.203.Jan2022.2023TriRvw.10.2022SaltIC.2000start.mdl,20221115NFS"
 
@@ -88,7 +88,7 @@ flownm <- paste0(nodenums,rep("_flow_",length(nodes)),nodes)
 massnm <- paste0(nodenums,rep("_mass_",length(nodes)),nodes)
 concnm <- paste0(nodenums,rep("_conc_",length(nodes)),nodes)
 
-df_obs <- readxl::read_xlsx('data/HistFlowMassConcAnn.xlsx',col_names = T, ) 
+df_obs <- readxl::read_xlsx('data/HistFlowMassConcAnn.xlsx',col_names = T,sheet = "R_Input" ) 
 df_obs = df_obs %>% pivot_longer(cols=names(df_obs)[3:65],names_to = 'Variable',values_to = 'Value')
 unique(df_obs$Variable)
 
@@ -109,7 +109,7 @@ df_monthly$MonthNum = as.numeric(format.Date(df_monthly$Date, format = "%m"))
 
 df_monthly$DataType = rep("Sim",times=dim(df_monthly)[1])
 
-df_monthly_obs <- readxl::read_xlsx('data/HistFlowMassConcMonthly.xlsx',col_names = T, ) 
+df_monthly_obs <- readxl::read_xlsx('data/HistFlowMassConcMonthly.xlsx',col_names = T,sheet = "R_Input" ) 
 df_monthly_obs = df_monthly_obs %>% pivot_longer(cols=names(df_monthly_obs)[3:dim(df_monthly_obs)[2]],names_to = 'Variable',values_to = 'Value')
 
 #convert EOM Date to 1st of M to match df_monthly (could just make df_monthly EOM)
@@ -356,14 +356,14 @@ if(T){
   bias_flow <- round(sum(diff$Value)/length(diff$Value))
   error_perc_flow <- round(mae_flow/mean(gage$Value)*100)
   mon_avgflow <- round(mean(gage$Value))
-  
+
   #create a sperate matrix of monthly stats to store the % of gage erorr
   if(!exists("monstats") | i==1){
     monstats <- array(c(nodes[i],mae,bias,mon_avgmass,error_perc,mae_flow,bias_flow,mon_avgflow,error_perc_flow))
   } else {
     monstats <- rbind(monstats,c(nodes[i],mae,bias,mon_avgmass,error_perc,mae_flow,bias_flow,mon_avgflow,error_perc_flow))
   }
-  
+
   #make row names then don't print reach
   if (dim(monstats)[1]==length(nodes)) { #this should mean you ran all of the traces
     colnames(monstats) <- c("Reach","MAE Mon Mass","Bias Mon Mass","Avg Mon Mass","Error % of Avg Mon Mass",
@@ -373,6 +373,7 @@ if(T){
   } else {
     write.csv(monstats,file = file.path(file_dir,paste0("Partial_MonthlyVerificationStats",scens,".csv")))
   }
+  
 } #### end monthly ####
 
   } #end node loop

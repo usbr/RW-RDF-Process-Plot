@@ -5,8 +5,8 @@
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #### File Checks #####
 
-# process_scen = T #should a process, or reprocess if there is already and RDS, the scen?
-# plot_scen = T #should I plot the scen?
+process_scen = T #should a process, or reprocess if there is already and RDS, the scen?
+plot_scen = T #should I plot the scen?
 
 verification_salt_process_plot <- function(scen_nm,process_scen,plot_scen) { 
   
@@ -60,7 +60,7 @@ verification_salt_process_plot <- function(scen_nm,process_scen,plot_scen) {
     massnm <- paste0(nodenums,rep("_mass_",length(nodes)),nodes)
     concnm <- paste0(nodenums,rep("_conc_",length(nodes)),nodes)
     
-    df_obs <- readxl::read_xlsx('data/HistFlowMassConcAnn.xlsx',col_names = T, ) 
+    df_obs <- readxl::read_xlsx('data/HistFlowMassConcAnn.xlsx',col_names = T,sheet = "R_Input" ) 
     df_obs = df_obs %>% pivot_longer(cols=names(df_obs)[3:65],names_to = 'Variable',values_to = 'Value')
     unique(df_obs$Variable)
     
@@ -81,7 +81,7 @@ verification_salt_process_plot <- function(scen_nm,process_scen,plot_scen) {
     
     df_monthly$DataType = rep("Sim",times=dim(df_monthly)[1])
     
-    df_monthly_obs <- readxl::read_xlsx('data/HistFlowMassConcMonthly.xlsx',col_names = T, ) 
+    df_monthly_obs <- readxl::read_xlsx('data/HistFlowMassConcMonthly.xlsx',col_names = T,sheet = "R_Input"  ) 
     df_monthly_obs = df_monthly_obs %>% pivot_longer(cols=names(df_monthly_obs)[3:dim(df_monthly_obs)[2]],names_to = 'Variable',values_to = 'Value')
     
     #convert EOM Date to 1st of M to match df_monthly (could just make df_monthly EOM)

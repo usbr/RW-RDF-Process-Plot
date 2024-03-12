@@ -23,7 +23,7 @@ process_scen <- c(F,T) #process only new run
 plot_scen <-c(F,T)  #c(T,T)
 ##### Also must us plot_scen = T to calculate the residuals #### 
 
-scens <- c("CRSSv5","9005_McPhee_Verification")
+scens <- c("CRSSv5","9011.ReCal.SJAggFix")
 process_scen <- c(F,F) #Never process V5, if you have to must switch out rw_agg files to have DoloresRiver.Out 
 plot_scen <-c(F,F)  #c (T,T)
 
@@ -53,7 +53,17 @@ nyears <- length(2000:2020) #currently only used one place to calculate average
   # verification_salt_process_plot(scens[i],process_scen[i],plot_scen[i])
 # }
 
-df_annual_baseline <- verification_salt_process_plot(scens[1],process_scen[1],plot_scen[1])
+if(scens[1]=="CRSSv5"){
+  #Error: `find_all_slots` is `TRUE`, and the following slots were not found in the SaltVerification.rdf file:
+  # CiscoDoloresTribJoin.Outflow
+  # CiscoDoloresTribJoin.Outflow Salt Mass
+  df_annual_baseline <- read_rds("C:/Users/cfelletter/Documents/CRSS.v6/results/CRSSv5/CRSSv5.RDS")
+  
+} else {
+  df_annual_baseline <- verification_salt_process_plot(scens[1],process_scen[1],plot_scen[1])
+  
+}
+
 df_annual <- verification_salt_process_plot(scens[2],process_scen[2],plot_scen[2])
 
 # head(df_annual)

@@ -77,8 +77,8 @@ if(length(scens) == 1){
 vars <- unique(scen_res$Variable)
 
 ## create a pdf  
-pdf(file.path(file_dir,paste0("Gain_SaltMass_",Figs,".pdf")), width=9, height=6)
-
+pdf(file.path(file_dir,paste0("Gain_Annual_SaltMass_",Figs,".pdf")), width=9, height=6)
+### Note this doesn't capture the DISAGGREGATION 
 
 for (i in 1:length(vars)) {
   variable = vars[i]
